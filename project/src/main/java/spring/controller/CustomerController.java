@@ -1,6 +1,7 @@
 package spring.controller;
 
-public class MainController {
+public class CustomerController {
+
  public void test() {
 	 
  }
