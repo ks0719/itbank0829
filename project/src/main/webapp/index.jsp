@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    
 
 
 <html>
@@ -17,9 +16,9 @@
 		<h1><a href="#">요청게시판 이동</a></h1>
 		<h1><a href="#">판매게시판 이동</a></h1>
 		<h1>고객센터</h1>
-		<h1><a href="#">고객센터 홈</a></h1>
-		<h1><a href="#">사이트 규정</a></h1>
-		<h1><a href="#">1:1질문</a></h1>
+		<h1><a href="consumer/basic">고객센터 홈</a></h1>
+		<h1><a href="consumer/rule">사이트 규정</a></h1>
+		<h1><a href="consumer/b2c">1:1질문</a></h1>
 		<h1>내정보</h1>
 		<h1><a href="#">메인정보</a></h1>
 		<h1><a href="#">수정하기</a></h1>
