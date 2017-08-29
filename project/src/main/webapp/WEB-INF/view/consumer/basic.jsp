@@ -5,6 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>기본 QnA</h1>
+	<h1>기본 QnA홈</h1>
 </body>
 </html>
