@@ -5,6 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+쪽지함입니다.
 </body>
 </html>
