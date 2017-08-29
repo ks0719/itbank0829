@@ -28,7 +28,7 @@
 		<h1><a href="data/pay">마일리지결제</a></h1>
 		<h1><a href="data/point">포인트정보</a></h1>
 		<h1>수업 정보</h1>
-		<h1><a href="#">메인수업페이지</a></h1>
+		<h1><a href="<c:url ">메인수업페이지</a></h1>
 		<h1><a href="#">강사정보</a></h1>
 		<h1><a href="#">수업정보</a></h1>
 		<h1><a href="#">수강하기</a></h1>
