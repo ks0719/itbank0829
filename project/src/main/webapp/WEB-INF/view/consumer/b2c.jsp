@@ -5,6 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<h1>1:1 문의</h1>
 </body>
 </html>
