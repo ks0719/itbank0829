@@ -28,10 +28,10 @@
 		<h1><a href="#">마일리지결제</a></h1>
 		<h1><a href="#">포인트정보</a></h1>
 		<h1>수업 정보</h1>
-		<h1><a href="<c:url ">메인수업페이지</a></h1>
-		<h1><a href="#">강사정보</a></h1>
-		<h1><a href="#">수업정보</a></h1>
-		<h1><a href="#">수강하기</a></h1>
-		<h1><a href="#">평가하기</a></h1>
+		<h1><a href="<c:url value="/study"/>">메인수업페이지</a></h1>
+		<h1><a href="<c:url value="/teacher"/>">강사정보</a></h1>
+		<h1><a href="<c:url value="/class"/>">수업정보</a></h1>
+		<h1><a href="<c:url value="/req"/>">수강하기</a></h1>
+		<h1><a href="<c:url value="/assess"/>">평가하기</a></h1>
 	</body>
 </html>
