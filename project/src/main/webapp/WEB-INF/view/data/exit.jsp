@@ -5,6 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+회원탈퇴페이지입니다
 </body>
 </html>
