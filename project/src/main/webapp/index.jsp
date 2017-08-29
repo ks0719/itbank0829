@@ -21,12 +21,12 @@
 		<h1><a href="#">사이트 규정</a></h1>
 		<h1><a href="#">1:1질문</a></h1>
 		<h1>내정보</h1>
-		<h1><a href="#">메인정보</a></h1>
-		<h1><a href="#">수정하기</a></h1>
-		<h1><a href="#">회원탈퇴</a></h1>
-		<h1><a href="#">쪽지함</a></h1>
-		<h1><a href="#">마일리지결제</a></h1>
-		<h1><a href="#">포인트정보</a></h1>
+		<h1><a href="data/maininfo">메인정보</a></h1>
+		<h1><a href="data/edit">수정하기</a></h1>
+		<h1><a href="data/exit">회원탈퇴</a></h1>
+		<h1><a href="data/note">쪽지함</a></h1>
+		<h1><a href="data/pay">마일리지결제</a></h1>
+		<h1><a href="data/point">포인트정보</a></h1>
 		<h1>수업 정보</h1>
 		<h1><a href="#">메인수업페이지</a></h1>
 		<h1><a href="#">강사정보</a></h1>

@@ -5,6 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+메인정보페이지입니다.
 </body>
 </html>

@@ -5,6 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+포인트페이지입니다.
 </body>
 </html>
