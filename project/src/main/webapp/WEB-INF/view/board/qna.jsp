@@ -5,6 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<h1>qna.jsp</h1>
 </body>
 </html>
