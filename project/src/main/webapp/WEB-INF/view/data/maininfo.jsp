@@ -1,49 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ include file="/WEB-INF/view/template/header.jsp" %>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<style>
-    .overflow{
-        width:100%;
-        height:100px; 
-        overflow:auto 
-    }
-    .text{
-        text-decoration: none;
-        text-align: center; 
-        display: block
-    }
-#nav ul{
-display:inline-block;
-border: 1px solid black;
-}
-#nav ul li{
-	display: block;
-	float: left;
 
- }    
- a.no-uline { 
-text-decoration:none; 
-text-align:center;
-         display: block; 
-          width: 176px;
-          
- }
-    nav.navline{
-        display: inline-block;
-        width: 600px;
-        margin: 15px;
-        height: 400px;
-        border: 1px solid black;
-        
-    }
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-    </style>
-</head>
-<body>
 <table>
 <thead>
 <nav id="nav" >
@@ -113,6 +72,7 @@ text-align:center;
         </div>
          
 </nav>
-</body>
-</html>
-   <%@ include file="/WEB-INF/view/template/footer.jsp" %>
+</tbody>
+</table>
+
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>
