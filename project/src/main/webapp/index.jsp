@@ -3,47 +3,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Welcome</title>
-</head> 
-<body>
-	
-	<table>
-		<tr>
-			<th rowspan="5">
-                <div>
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
+                
                     <h3>회원정보 넣을 곳</h3>
-                </div>
-                <div>
-                    <h3><a href="${pageContext.request.contextPath}/board/free">커뮤니티(자유게시판)</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/lecture/study">수업정보</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/lecture/teacher">강사정보</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
-                </div>
-			</th>
-            
-            
-            <td style="vertical-align: top">
-                <table>
-                    <tr>
-                        <th>
-                            공지/그림/광고
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div>
-                                	메인이 위치할 공간
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-              	  홈페이지 정보
-            </td>
-		</tr>
-	</table>
+                    
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>              
 	
 	
 <!-- 		<h1>게시판</h1> -->
@@ -72,5 +36,3 @@
 <!-- 		<h1><a href="lecture/class">수업정보</a></h1> -->
 <!-- 		<h1><a href="lecture/req">수강하기</a></h1> -->
 <!-- 		<h1><a href="lecture/assess">평가하기</a></h1> -->
-	</body>
-</html>

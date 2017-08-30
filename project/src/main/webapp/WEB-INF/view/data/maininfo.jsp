@@ -1,12 +1,95 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<<<<<<< HEAD
+
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
+
+=======
+    <%@ include file="/WEB-INF/view/template/header.jsp" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+
 </head>
 <body>
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
+<table>
+<thead>
+<nav id="nav" >
+	<ul>
+		<li><a href="#" class="no-uline">내 정보 확인</a></li>     
+        <li><a href="#" class="no-uline">비밀번호 변경</a></li>
+		<li><a href="#" class="no-uline">수강 내역</a></li>
+		<li><a href="#" class="no-uline">포인트 샾</a></li>
+		<li><a href="#" class="no-uline">회원 탈퇴</a></li>
+		<li><a href="#" class="no-uline">강사 신청</a></li>
+		<li><a href="#" class="no-uline">내가 쓴글</a></li>
+	</ul>
+</nav>
+</thead>
+<tbody>
+<hr>
+<nav class="navline">
+<h1>내 프로필</h1><hr>
+<div class="overflow">
+    <div style="border: 1px solid black; display: inline-block; width: 60px; margin: 10px;margin-right: -10px; background-color: aqua;">
+    아이디
+    </div>
+    <div style="display: inline-block;border-top: 1px solid; border-right: 1px solid; border-bottom:  1px solid;padding-left: 10px  ">
+    안녕하세요
+    </div>
+</div>
+</nav>
+<nav class="navline">
+<h1>현재 진행중인 수강정보</h1><hr>
+    <div class="overflow">
+    <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+    <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+        <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+        <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+        
+    </div>
+</nav>
+    <nav class="navline">
+<h1>포인트 사용 내역</h1><hr>
+        <div class="overflow">
+      <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+    <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+        <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+        <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>  
+        </div>
+</nav>
+    <nav class="navline">
+<h1>내가 쓴 글</h1><hr>
+        
+        <div class="overflow">
+      <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+    <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+        <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>
+        <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
+    <hr></div>  
+        </div>
+         
+</nav>
+<<<<<<< HEAD
+</tbody>
+</table>
 
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>
+=======
 </body>
 </html>
+   <%@ include file="/WEB-INF/view/template/footer.jsp" %>
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
