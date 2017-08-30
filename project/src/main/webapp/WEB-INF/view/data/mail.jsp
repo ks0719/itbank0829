@@ -2,6 +2,16 @@
     pageEncoding="UTF-8"%>
 
 <html>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script>
+	$(document).ready(function() {
+		$(".mail").on("click", function() {
+			window.open('${pageContext.request.contextPath}/data/mail/mailDetail', '', 'width=500, height=500, menubar=no');
+		});
+	});
+</script>
+
 <head>
 <title>쪽지함</title>
 </head>
@@ -36,8 +46,16 @@
                         <th>보낸날짜</th>
                         <th>읽기여부</th>
                     </tr>
+                    <tr class="mail">
+                        <td>메일1</td>
+                    </tr>
+                    <tr class="mail">
+                        <td>메일2</td>
+                    </tr>
+                    <tr class="mail">
+                        <td>메일3</td>
+                    </tr>
                 </table>
-                
             </td>
 		</tr>
 	</table>
