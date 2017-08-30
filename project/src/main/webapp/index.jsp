@@ -27,10 +27,10 @@
 		<h1><a href="data/pay">마일리지결제</a></h1>
 		<h1><a href="data/point">포인트정보</a></h1>
 		<h1>수업 정보</h1>
-		<h1><a href="study/study">메인수업페이지</a></h1>
-		<h1><a href="study/teacher">강사정보</a></h1>
-		<h1><a href="study/class">수업정보</a></h1>
-		<h1><a href="study/req">수강하기</a></h1>
-		<h1><a href="study/assess">평가하기</a></h1>
+		<h1><a href="lecture/lecture">메인수업페이지</a></h1>
+		<h1><a href="lecture/teacher">강사정보</a></h1>
+		<h1><a href="lecture/class">수업정보</a></h1>
+		<h1><a href="lecture/req">수강하기</a></h1>
+		<h1><a href="lecture/assess">평가하기</a></h1>
 	</body>
 </html>
