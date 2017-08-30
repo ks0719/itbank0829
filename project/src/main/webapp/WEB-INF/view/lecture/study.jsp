@@ -51,7 +51,7 @@
 <script>
 	$(document).ready(function() {
 		$(".clickToinfo").on("click", function() {
-			window.open('class', '수업정보', 'width=600, height=600, menubar=no');
+			window.open('class', '', 'width=1000, height=700, menubar=no');
 		});
 	});
 </script>
