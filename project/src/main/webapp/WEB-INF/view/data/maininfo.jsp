@@ -71,9 +71,11 @@
     <hr></div>  
         </div>
          
+
 </nav>
 </tbody>
 </table>
 
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>
+
 
