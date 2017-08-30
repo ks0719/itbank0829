@@ -6,11 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DataController {
 	
-	@RequestMapping("/data/data")
-	 public String data() {
-		 
-		return "data/data";
-	 }
 	@RequestMapping("/data/edit")
 	public String edit() {
 		
