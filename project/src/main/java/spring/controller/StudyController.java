@@ -28,7 +28,6 @@ public class StudyController {
 	public String req() {
 		
 		return "study/req";
-		
 	}
 	
 	@RequestMapping("/study/study")

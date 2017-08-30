@@ -23,7 +23,10 @@
 		<h1><a href="data/maininfo">메인정보</a></h1>
 		<h1><a href="data/edit">수정하기</a></h1>
 		<h1><a href="data/exit">회원탈퇴</a></h1>
-		<h1><a href="data/note">쪽지함</a></h1>
+		
+		<h1><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=500, height=500'); return false;">쪽지함</a></h1>
+		<h1><a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=800, height=500'); return false;">수강관리</a></h1>
+		
 		<h1><a href="data/pay">마일리지결제</a></h1>
 		<h1><a href="data/point">포인트정보</a></h1>
 		<h1>수업 정보</h1>
