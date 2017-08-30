@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-
 <table>
 <thead>
 <nav id="nav" >
