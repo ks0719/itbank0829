@@ -5,9 +5,22 @@
 <div class="page-wrap">
 	<div class="table-wrap">
 		<table border="1" class="study" rules=rows>
-			<tr class="clickToinfo">
-				<td class="title">
+			<tr>
+				<th>
 					[수업태그]
+				</th>
+				<th class="title">
+					[제목]
+				</th>
+				<th class="teacher">
+					[강사정보]
+				</th>
+			</tr>
+			<tr class="clickToinfo">
+				<td>
+					[수업태그]
+				</td>
+				<td class="title">
 					[제목]
 				</td>
 				<td class="teacher">
@@ -15,8 +28,10 @@
 				</td>
 			</tr>
 			<tr class="clickToinfo">
-				<td class="title">
+				<td>
 					[수업태그]
+				</td>
+				<td class="title">
 					[제목]
 				</td>
 				<td class="teacher">
@@ -24,8 +39,10 @@
 				</td>
 			</tr>
 			<tr class="clickToinfo">
-				<td class="title">
+				<td>
 					[수업태그]
+				</td>
+				<td class="title">
 					[제목]
 				</td>
 				<td class="teacher">
@@ -33,17 +50,10 @@
 				</td>
 			</tr>
 			<tr class="clickToinfo">
-				<td class="title">
+				<td>
 					[수업태그]
-					[제목]
 				</td>
-				<td class="teacher">
-					[강사정보]
-				</td>
-			</tr>
-			<tr class="clickToinfo">
 				<td class="title">
-					[수업태그]
 					[제목]
 				</td>
 				<td class="teacher">

@@ -46,8 +46,9 @@ text-align:center;
  		margin: 10px auto;
 	}
 	.title {
-		width: 80%;
+		width: 60%;
 		padding: 10px;
+		text-align: left;
 	}
 	.teacher {
 		text-align: right;
