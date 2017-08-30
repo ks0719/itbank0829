@@ -45,7 +45,7 @@
 			<tbody>
 				<tr>
 					<td rowspan="2" width="20%">image</td>
-                    <td><input type="text" class="row" placeholder="[수업태그]//[제목]"></td>
+                    <td><input type="text" class="row" placeholder="[수업태그]//[제목]"></td> 
 				</tr>
 				
 				<tr>
