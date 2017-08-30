@@ -109,7 +109,7 @@ text-align:center;
         <div><a href="#" class="text">테스트와 함께하는 즐거운 테스트 시간</a>
     <hr></div>  
         </div>
-        
+         
 </nav>
 </tbody>
 </table>
