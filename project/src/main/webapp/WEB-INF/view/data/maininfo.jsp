@@ -1,52 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<style>
-    .overflow{
-        width:100%;
-        height:100px; 
-        overflow:auto 
-    }
-    .text{
-        text-decoration: none;
-        text-align: center; 
-        display: block
-    }
-#nav ul{
-display:inline-block;
-border: 1px solid black;
-}
-#nav ul li{
-	display: block;
-	float: left;
 
- }    
- a.no-uline { 
-text-decoration:none; 
-text-align:center;
-         display: block; 
-          width: 176px;
-          
- }
-    nav.navline{
-        display: inline-block;
-        width: 600px;
-        margin: 15px;
-        height: 400px;
-        border: 1px solid black;
-        
-    }
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-    </style>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
-</head>
-<body>
-<<<<<<< HEAD
-=======
 <table>
 <thead>
 <nav id="nav" >
@@ -118,9 +74,5 @@ text-align:center;
 </nav>
 </tbody>
 </table>
-</body>
-</html>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 
-</body>
-</html>
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>
