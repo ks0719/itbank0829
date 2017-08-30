@@ -2,38 +2,39 @@ package spring.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class StudyController {
 
-	@RequestMapping("/study/teacher")
+	@RequestMapping("/lecture/teacher")
 	public String teacher() {
 		
-		return "study/teacher";
+		return "lecture/teacher";
 	}
 	
-	@RequestMapping("/study/assess")
+	@RequestMapping("/lecture/assess")
 	public String assess() {
 		
-		return "study/assess";
+		return "lecture/assess";
 	}
 	
-	@RequestMapping("/study/class")
+	@RequestMapping("/lecture/class")
 	public String lesson() {
 		
-		return "study/class";
+		return "lecture/class";
 	}
 	
-	@RequestMapping("/study/req")
+	@RequestMapping("/lecture/req")
 	public String req() {
 		
-		return "study/req";
+		return "lecture/req";
 		
 	}
 	
-	@RequestMapping("/study/study")
-	public String study() {
+	@RequestMapping("/lecture/study")
+	public String study(String type, String key) {
 		
-		return "study/study";
+		return "lecture/study";
 	}
 }
