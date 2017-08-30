@@ -1,19 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<<<<<<< HEAD
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-=======
-    <%@ include file="/WEB-INF/view/template/header.jsp" %>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-
-</head>
-<body>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 <table>
 <thead>
 <nav id="nav" >
@@ -83,13 +72,7 @@
         </div>
          
 </nav>
-<<<<<<< HEAD
 </tbody>
 </table>
 
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>
-=======
-</body>
-</html>
-   <%@ include file="/WEB-INF/view/template/footer.jsp" %>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
