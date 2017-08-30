@@ -40,4 +40,8 @@ public class DataController {
 	public String manageLecture() {
 		return "data/manageLecture";
 	}
+	@RequestMapping("/data/mail/mailDetail")
+	public String mailDetail() {
+		return "data/mailDetail";
+	}
 }
