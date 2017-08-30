@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+    <%@ include file="/WEB-INF/view/template/header.jsp" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -42,11 +42,8 @@ text-align:center;
     }
 
     </style>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 </head>
 <body>
-<<<<<<< HEAD
-=======
 <table>
 <thead>
 <nav id="nav" >
@@ -116,11 +113,6 @@ text-align:center;
         </div>
          
 </nav>
-</tbody>
-</table>
 </body>
 </html>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
-
-</body>
-</html>
+   <%@ include file="/WEB-INF/view/template/footer.jsp" %>
