@@ -17,10 +17,10 @@
                     <h3>회원정보 넣을 곳</h3>
                 </div>
                 <div>
-                    <h3><a href="board/free">커뮤니티(자유게시판)</a></h3>
-                    <h3><a href="lecture/study">수업정보</a></h3>
-                    <h3><a href="lecture/teacher">강사정보</a></h3>
-                    <h3><a href="consumer/basic">고객센터(고객센터 홈)</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/board/free">커뮤니티(자유게시판)</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/lecture/study">수업정보</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/lecture/teacher">강사정보</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
                 </div>
 			</th>
             
@@ -34,7 +34,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <div style="width: 500; height: 500;">
+                            <div>
                                 	메인이 위치할 공간
                             </div>
                         </td>
