@@ -1,59 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<html>
-<head>
-<style>
-	        .wrap{
-            width:850px;
-            margin: auto;
-            margin-top: 100px;
-        }
-        
-           .left{
-                display: inline-block;
-                width:15%
-            }
-            .right{
-                display: inline-block;
-                width: 77%;
-            }
-            .row{
-                display: block;
-                width:100%;
-                height: 100%;
-                margin:20px 0px;
-                padding:20px;
-                font-size:20px;
-            }
-        .borN{
-            border: none;
-        }
-        .textarea{
-            width: 100%;
-            height: 200;
-            resize: none;
-        }
-</style>
-<title>Insert title here</title>
-</head>
-<body>
-	<title>상세보기</title>
-</head>
-<body>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
+
 	<div class="wrap">
-		<table width="800" class="borN">
+		<table width="600" class="borN">
 			<tbody>
 				<tr>
-					<td rowspan="2" width="20%">image</td>
-                    <td><input type="text" class="row" placeholder="[수업태그]//[제목]"></td> 
+					<td rowspan="2" width="20%">
+						<img src="<c:url value="/img/bono.png"/>" width="180" height="180">
+					</td>
+                    <td><input type="text" class="row" value="[${info.tag}] ${info.title}" readonly></td> 
 				</tr>
 				
 				<tr>
-                     <td><input type="text" class="row" placeholder="자기어필"></td>
+                     <td><input type="text" class="row" value="${info.intro}" readonly></td>
 				</tr>
  
                 <tr>
-                    <td colspan="2"><textarea class="textarea" placeholder="강의 내용"></textarea></td>
+                    <td colspan="2"><textarea class="textarea" readonly>${info.detail}</textarea></td>
                 </tr>
 			</tbody>
 		</table>	
@@ -63,11 +29,8 @@
         </div>
         <div class="right" align="right">
         <a href="#">신청하기</a>
-        <a href="#">목록보기</a>
+        <a href="study?page=1">목록보기</a>
         </div>
 	</div>
 
-</body>
-</html>
-</body>
-</html>
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>

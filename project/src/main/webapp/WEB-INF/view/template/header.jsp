@@ -5,12 +5,11 @@
 <script>
 	$(document).ready(function() {
 		$(".clickToinfo").on("click", function() {
-			window.open('class', '', 'width=1000, height=700, menubar=no');
+			var no = $(this).data('no');
+			location.href = "class?no=" + no;
 		});
 	});
 </script>
-
-
 
 <head>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
@@ -33,7 +32,7 @@
                 </div>
                 <div>
                     <h3><a href="${pageContext.request.contextPath}/board/free">커뮤니티(자유게시판)</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/lecture/study">수업정보</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/lecture/study?page=1">수업정보</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/lecture/teacher">강사정보</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
                 </div>
