@@ -1,10 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<html>
-<head>
-<title>Insert title here</title>
-</head>
-<body>
+<%@ include file="/WEB-INF/view/template/header.jsp"%>
 	<h1>1:1 문의</h1>
-</body>
-</html>
+	<form action="${pageContext.request.contextPath}/consumer/b2c" method="post">
+	아이디 <input type="text" name="id" required enctype="multipart/form-data"><br>
+	문의유형 <select name="type" required>
+	<option value="환불">환불</option>
+	<option value="강의">강의</option>
+	<option value="계정">계정</option>
+	<option value="일반">일반</option>
+	</select><br>
+	제목<input type="text" name="title" required><br>
+	내용<br>
+	<textarea rows="30" cols="30" name="detail" required></textarea>
+	파일등록<input type="file">
+	<input type="submit" value="등록하기">
+	</form>
+<%@ include file="/WEB-INF/view/template/footer.jsp"%>

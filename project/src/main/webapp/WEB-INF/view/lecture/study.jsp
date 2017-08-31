@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 <div class="page-wrap">
@@ -7,68 +8,59 @@
 		<table border="1" class="study" rules=rows>
 			<tr>
 				<th>
-					[수업태그]
+					수업태그
 				</th>
 				<th class="title">
-					[제목]
+					제목
 				</th>
 				<th class="teacher">
-					[강사정보]
+					강사정보
 				</th>
 			</tr>
-			<tr class="clickToinfo">
+			<c:forEach var="info" items="${list}">
+			<tr data-no="${info.no}" class="clickToinfo" style="cursor: pointer">
 				<td>
-					[수업태그]
+					[${info.tag}]
 				</td>
 				<td class="title">
-					[제목]
+					[${info.title}]
 				</td>
 				<td class="teacher">
-					[강사정보]
+					[${info.teacher}]
 				</td>
 			</tr>
-			<tr class="clickToinfo">
-				<td>
-					[수업태그]
-				</td>
-				<td class="title">
-					[제목]
-				</td>
-				<td class="teacher">
-					[강사정보]
-				</td>
-			</tr>
-			<tr class="clickToinfo">
-				<td>
-					[수업태그]
-				</td>
-				<td class="title">
-					[제목]
-				</td>
-				<td class="teacher">
-					[강사정보]
-				</td>
-			</tr>
-			<tr class="clickToinfo">
-				<td>
-					[수업태그]
-				</td>
-				<td class="title">
-					[제목]
-				</td>
-				<td class="teacher">
-					[강사정보]
-				</td>
-			</tr>
+			</c:forEach>
 		</table>
 	</div>
 	<div class="empty-row"></div>
-	<form action="study/study">
+	<div class="paging-wrap">
+		<c:if test="${startBlock > 1}">
+	        <div class="paging-unit"><a href="${url}&page=${startBlock - 1}">&lt;</a></div>
+		</c:if>
+		
+		<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
+			<c:choose>
+				<c:when test="${i eq page}">
+					<div class="paging-unit active">${i}</div>
+				</c:when>
+				<c:otherwise>
+        			<div class="paging-unit"><a href="${url}&page=${i}">${i}</a></div>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		
+		<c:if test="${endBlock < blockTotal}">
+        	<div class="paging-unit"><a href="${url}&page=${endBlock + 1}">&gt;</a></div>
+		</c:if>
+    </div>
+	<div class="empty-row"></div>
+	<form action="study" class="wrap">
+		<input type="hidden" name="page" value="1">
 		<select name="type" class="user-input">
 			<option value="">분류 선택</option>
-			<option value="수업태그">수업태그</option>
-			<option value="제목">제목</option>
-			<option value="강사명">강사명</option>
+			<option value="tag">수업태그</option>
+			<option value="title">제목</option>
+			<option value="teacher">강사명</option>
 		</select>
 		<input type="search" name="key" class="user-input" placeholder="검색 내용" required>
 		<input type="submit" value="검색" class="input-btn">
