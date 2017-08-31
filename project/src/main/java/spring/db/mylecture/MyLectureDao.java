@@ -19,24 +19,24 @@ public class MyLectureDao {
 	
 	private static final int LENGTH = 10;
 	
-	@Override
-	public List<Board> list(String type, String key, int start, int end) {
-		String sql = "select * from ("
-								+ "select rownum rn, TMP.* from("
-								+ "select * from springboard "
-								+ "where "+type+" like '%'||?||'%' order by no desc"	
-								+ ")TMP) "
-							+ "where rn between ? and ?";
-		Object[] args = new Object[] {key, start, end};
-		List<Board> list = jdbcTemplate.query(sql, args, mapper);
-		System.out.println(type);
-		System.out.println(key);
-		System.out.println(list.size());
-		return list;
-	}
+//	@Override
+//	public List<Board> list(String type, String key, int start, int end) {
+//		String sql = "select * from ("
+//								+ "select rownum rn, TMP.* from("
+//								+ "select * from springboard "
+//								+ "where "+type+" like '%'||?||'%' order by no desc"	
+//								+ ")TMP) "
+//							+ "where rn between ? and ?";
+//		Object[] args = new Object[] {key, start, end};
+//		List<Board> list = jdbcTemplate.query(sql, args, mapper);
+//		System.out.println(type);
+//		System.out.println(key);
+//		System.out.println(list.size());
+//		return list;
+//	}
 	
 	
-	public List<MyLecture> list(String id, String box) throws Exception {
+	public List<MyLecture> list(String id, String box, int start, int end) throws Exception {
 		String sql = "select * from ("
 				+ "select rownum rn, TMP.* from("
 				+ "select * from mylecture "
@@ -65,12 +65,7 @@ public class MyLectureDao {
 				+ ")TMP) "
 			+ "where rn between ? and ?";
 		
-		
-		
-		
-		String sql;
-		
-		return jdbcTemplate.query(sql,new Object[]{id},mapper);
+		return jdbcTemplate.query(sql,new Object[]{id, start, end},mapper);
 	}
 	
 }

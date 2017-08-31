@@ -50,13 +50,16 @@ public class DataController {
 	@RequestMapping("/data/manageLecture")
 	public String manageLecture(Model m, @RequestParam String box) throws Exception {
 		
-		List<MyLecture> list = myLectureDao.list("운영자-회원", box);
+		List<MyLecture> list = myLectureDao.list("운영자-회원", box, 1, 10);
 		
 		m.addAttribute("list", list);
 		return "data/manageLecture";
 	}
 	@RequestMapping("/data/mail/mailDetail")
 	public String mailDetail() {
+		
+		
+		
 		return "data/mailDetail";
 	}
 }
