@@ -8,5 +8,24 @@
     <!-- Uncomment and add your base-package here:
          <context:component-scan
             base-package="org.springframework.samples.service"/>  -->
+            
+	<!-- database설정 -->
+	<context:property-placeholder location="/WEB-INF/*.properties"/>
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="${database.driver}"/>
+		<property name="url" value="${database.url}"/>
+		<property name="username" value="${database.username}"/>
+		<property name="password" value="${database.password}"/>
+		
+		<property name="maxTotal" value="${database.maxAction}"/>
+		<property name="maxIdle" value="${database.maxIdle}"/>
+		<property name="maxWaitMillis" value="${database.maxWait}"/>
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<context:component-scan base-package="spring.db"/>
 
 </beans>

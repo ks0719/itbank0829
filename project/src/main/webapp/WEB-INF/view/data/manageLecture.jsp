@@ -21,11 +21,11 @@
                         <th>분류</th>
                         <th>강사</th>
                         <th>과목명</th>
-                        <th>수강시간</th>
+                        <th>강의시간</th>
                         <th>수강형태</th>
                         <th>수강상태</th>
+                        <th>수강날짜</th>
                         <th>결제금액</th>
-                        <th></th>
                     </tr>
                     <tr>
                         <td colspan="8">
