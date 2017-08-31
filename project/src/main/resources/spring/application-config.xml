@@ -8,8 +8,8 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-		<property name="username" value="system"/>
-		<property name="password" value="oracle"/>
+		<property name="username" value="sw1"/>
+		<property name="password" value="sw1"/>
 
 		
 		<property name="maxTotal" value="20"/>
@@ -23,5 +23,6 @@
 	</bean>
 	
 	<context:component-scan base-package="spring.db"/>
+	 
 
 </beans>
