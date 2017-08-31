@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -28,31 +29,42 @@
 			
             <td style="vertical-align: top">
                 <table>
-                    <tr>
-                        <td colspan="8">
-                            <button>삭제하기</button>
-                            <button>쪽지쓰기</button>
-                            <button>보관하기</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <th>아이디</th>
-                        <th>분류</th>
-                        <th>제목</th>
-                        <th>내용</th>
-                        <th>보낸날짜</th>
-                        <th>읽기여부</th>
-                    </tr>
-                    <tr class="mail">
-                        <td>메일1</td>
-                    </tr>
-                    <tr class="mail">
-                        <td>메일2</td>
-                    </tr>
-                    <tr class="mail">
-                        <td>메일3</td>
-                    </tr>
+                   
+                    
+                    <thead>
+                   		 <tr>
+                        	<td colspan="7">
+	                            <button>삭제하기</button>
+	                            <button>쪽지쓰기</button>
+	                            <button>보관하기</button>
+                        	</td>
+                    	</tr> 
+                    
+	                    <tr>
+	                        <th><input type="checkbox"></th>
+	                        <th>아이디</th>
+	                        <th>분류</th>
+	                        <th>제목</th>
+	                        <th>내용</th>
+	                        <th>보낸날짜</th>
+	                        <th>읽기여부</th>
+	                    </tr>
+                    </thead>
+                    
+                    <tbody>
+                    	<c:forEach var="list" items="${list }">
+                    		<tr>
+	                    		<td><input type="checkbox"></td>
+		                        <td>${list.mail_writer }</td>
+		                        <td>${list.mail_tag}</td>
+		                        <td>${list.mail_title }</td>
+		                        <td>${list.mail_content }</td>
+		                        <td>${list.mail_reg }</td>
+		                        <td>${list.mail_read }</td>
+                    		</tr>
+                    	</c:forEach>
+                    </tbody>
+               
                 </table>
             </td>
 		</tr>

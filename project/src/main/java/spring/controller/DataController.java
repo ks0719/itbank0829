@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import spring.db.mail.Mail;
+import spring.db.mail.MailDao;
 import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
 
@@ -17,6 +19,7 @@ public class DataController {
 	
 	@Autowired
 	private MyLectureDao myLectureDao;
+	private MailDao mailDao;
 	
 	@RequestMapping("/data/edit")
 	public String edit() {
@@ -34,8 +37,10 @@ public class DataController {
 		return "data/maininfo";
 	}
 	@RequestMapping("/data/mail")
-	public String note() {
+	public String note(Model m, HttpServletRequest req) {
 		
+		List<Mail>list=mailDao.list("회원(수신이)",req.getParameterMap().get("box")[0]);
+		m.addAttribute("list", list);
 		return "data/mail";
 	}
 	@RequestMapping("/data/pay")
@@ -60,6 +65,7 @@ public class DataController {
 	public String mailDetail() {
 		
 		
+	
 		
 		return "data/mailDetail";
 	}
