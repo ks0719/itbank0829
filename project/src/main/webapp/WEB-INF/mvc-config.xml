@@ -13,12 +13,7 @@
 
     <mvc:annotation-driven />
     <context:component-scan base-package="spring.controller"/>
-<<<<<<< HEAD
-    
-    
-=======
-    <context:component-scan base-package="spring.db"/>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829
+
 	<mvc:resources location="/resource/css/" mapping="/css/**"/>
 	<mvc:resources location="/resource/img/" mapping="/img/**"/>
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
