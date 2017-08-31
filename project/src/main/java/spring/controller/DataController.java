@@ -2,11 +2,12 @@ package spring.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
@@ -48,9 +49,9 @@ public class DataController {
 		return "data/point";
 	}
 	@RequestMapping("/data/manageLecture")
-	public String manageLecture(Model m, @RequestParam String box) throws Exception {
+	public String manageLecture(Model m, HttpServletRequest req) throws Exception {
 		
-		List<MyLecture> list = myLectureDao.list("운영자-회원", box, 1, 10);
+		List<MyLecture> list = myLectureDao.list("운영자-회원", req.getParameterMap().get("box")[0], 1, 10);
 		
 		m.addAttribute("list", list);
 		return "data/manageLecture";
