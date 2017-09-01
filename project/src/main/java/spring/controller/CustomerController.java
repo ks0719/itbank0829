@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.B2CDao;
 import spring.db.B2CDto;
@@ -38,7 +39,12 @@ public class CustomerController {
 		model.addAttribute("list", list);
 		return "consumer/b2clist";
 	}
-	
+	@RequestMapping("/consumer/detail")
+	public String detail(@RequestParam(required=true) int no,Model model) {
+		dto=dao.detail(no);
+		model.addAttribute("dto", dto);
+		return "consumer/detail";
+	}
 	
 	@RequestMapping("/consumer/basic")
 	public String QnA() {
