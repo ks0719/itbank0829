@@ -17,11 +17,11 @@ public class LectureDao {
 	};
 	
 	public boolean insert(LectureInfo info) {
-		String sql = "insert into lecture_info values(lecture_info_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'yes', ?, 'no', sysdate)";
+		String sql = "insert into lecture_info values(lecture_info_seq.nextval, ?, ?, 0, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, '등록 가능', ?, 'false', sysdate)";
 		
 		Object[] args = new Object[] {info.getTag(), info.getTitle(), info.getTeacher(), info.getPicture_name(), 
-				info.getPicture_realname(), info.getPicture_type(), info.getPicture_size(), info.getIntro(), info.getDetail(), 
-				info.getPrice()};
+				info.getPicture_realname(), info.getPicture_type(), info.getPicture_size(), info.getIntro(),
+				info.getDetail(), info.getTime(), info.getPrice()};
 		
 		return jdbcTemplate.update(sql, args) > 0;
 	}
@@ -39,7 +39,7 @@ public class LectureDao {
 	}
 	
 	public LectureInfo showOne(int no) {
-		String sql = "select * from lecture_info where accept = 'yes' and no = ?";
+		String sql = "select * from lecture_info where state = '등록 가능' and accept = 'true' and no = ?";
 		
 		List<LectureInfo> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
 		
@@ -47,17 +47,17 @@ public class LectureDao {
 	}
 	
 	public int count() {
-		return jdbcTemplate.queryForObject("select count(*) from lecture_info where accept = 'yes'", Integer.class);
+		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true'", Integer.class);
 	}
 	
 	public int count(String type, String key) {
 		if (type == null || key == null) return count();
-		return jdbcTemplate.queryForObject("select count(*) from lecture_info where " + type + " like '%'||'"+ key +"'||'%'", Integer.class);
+		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true' and " + type + " like '%'||'"+ key +"'||'%'", Integer.class);
 	}
 	
 	public List<LectureInfo> list(int start, int end) {
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from lecture_info where possible = 'yes' and accept = 'yes' order by no desc)"
+				+ "select * from lecture_info where state = '등록 가능' and accept = 'true' order by no desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {start, end}, mapper);
@@ -67,7 +67,7 @@ public class LectureDao {
 		if (type == null || key == null) return list(start, end);
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from lecture_info where possible = 'yes' and accept = 'yes' and lower (" + type + ") like '%'||?||'%' order by no desc)"
+				+ "select * from lecture_info where state = '등록 가능' and accept = 'true' and lower (" + type + ") like '%'||?||'%' order by no desc)"
 						+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);
