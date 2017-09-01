@@ -13,6 +13,8 @@
 
     <mvc:annotation-driven />
     <context:component-scan base-package="spring.controller"/>
+   
+
 	<mvc:resources location="/resource/css/" mapping="/css/**"/>
 	<mvc:resources location="/resource/img/" mapping="/img/**"/>
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

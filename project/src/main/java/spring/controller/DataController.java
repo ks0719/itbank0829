@@ -1,6 +1,7 @@
 package spring.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,10 +17,12 @@ import spring.db.mylecture.MyLectureDao;
 
 @Controller
 public class DataController {
+	public static final int MY_LECTURE_PAGE = 10;
 	
 	@Autowired
 	private MyLectureDao myLectureDao;
 	private MailDao mailDao;
+	
 	
 	@RequestMapping("/data/edit")
 	public String edit() {
@@ -56,9 +59,29 @@ public class DataController {
 	@RequestMapping("/data/manageLecture")
 	public String manageLecture(Model m, HttpServletRequest req) throws Exception {
 		
-		List<MyLecture> list = myLectureDao.list("운영자-회원", req.getParameterMap().get("box")[0], 1, 10);
+		Map<String, String[]> parameters = req.getParameterMap();
+		
+		int pageno;
+		
+		try {
+			pageno = Integer.parseInt(parameters.get("pageno")[0]);
+		}catch(Exception e) {
+			pageno=1;
+		}
+		pageno=(pageno<1)?1:pageno;
+		
+		String box = (parameters.get("box")==null)?"index":parameters.get("box")[0];
+		
+		List<MyLecture> list = myLectureDao.list("운영자-회원", box, pageno);
+		
+		int start = (pageno-1)/MY_LECTURE_PAGE*MY_LECTURE_PAGE+1;
+		int end = start + MY_LECTURE_PAGE-1;
+		//여기 end 고쳐야함
 		
 		m.addAttribute("list", list);
+		m.addAttribute("pageno", pageno);
+		m.addAttribute("start", start);
+		m.addAttribute("end", end);
 		return "data/manageLecture";
 	}
 	@RequestMapping("/data/mail/mailDetail")
