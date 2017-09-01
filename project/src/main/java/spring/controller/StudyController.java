@@ -2,6 +2,8 @@ package spring.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,14 +49,22 @@ public class StudyController {
 	}
 	
 	@RequestMapping("/lecture/study")
-	public String study(String type, String key, int page, Model m) {
-		if (page <= 0) page = 1;
+	public String study(HttpServletRequest request, Model m) {
+		String type = request.getParameter("type");
+		String key = request.getParameter("key");
+		int pageNo;
+		try {
+			pageNo = Integer.parseInt(request.getParameter("page"));
+		} catch(Exception e) {
+			pageNo = 1;
+		}
+		if (pageNo <= 0 ) pageNo = 1;
 		
 		int listCount = lectureDao.count(type, key);
 		log.debug(String.valueOf(listCount));
 		
 		int boardSize = 10;
-		int start = boardSize * page - 9;
+		int start = boardSize * pageNo - 9;
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
 		
@@ -62,7 +72,7 @@ public class StudyController {
 		
 		int blockSize = 10;
 		int blockTotal = (listCount + boardSize - 1) / boardSize;
-		int startBlock = (page - 1) / blockSize * blockSize + 1;
+		int startBlock = (pageNo - 1) / blockSize * blockSize + 1;
 		int endBlock = startBlock + blockSize - 1;
 		if (endBlock > blockTotal) endBlock = blockTotal;
 		
@@ -71,7 +81,7 @@ public class StudyController {
 			url += "type=" + type + "&key=" + key + "&";
 		
 		m.addAttribute("list", list);
-		m.addAttribute("page", page);
+		m.addAttribute("page", pageNo);
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
 		m.addAttribute("url", url);
