@@ -57,7 +57,7 @@ public class LectureDao {
 	
 	public List<LectureInfo> list(int start, int end) {
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from lecture_info where accept = 'yes' order by reg desc)"
+				+ "select * from lecture_info where accept = 'yes' order by no desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {start, end}, mapper);
@@ -67,7 +67,7 @@ public class LectureDao {
 		if (type == null || key == null) return list(start, end);
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from lecture_info where accept = 'yes' and lower (" + type + ") like '%'||?||'%' order by reg desc)"
+				+ "select * from lecture_info where accept = 'yes' and lower (" + type + ") like '%'||?||'%' order by no desc)"
 						+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);

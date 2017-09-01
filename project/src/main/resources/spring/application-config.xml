@@ -4,14 +4,11 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-    
-    <!-- Uncomment and add your base-package here:
-         <context:component-scan
-            base-package="org.springframework.samples.service"/>  -->
-            
-	<!-- database설정 -->
+
 	<context:property-placeholder location="/WEB-INF/*.properties"/>
+
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		
 		<property name="driverClassName" value="${database.driver}"/>
 		<property name="url" value="${database.url}"/>
 		<property name="username" value="${database.username}"/>
@@ -21,11 +18,10 @@
 		<property name="maxIdle" value="${database.maxIdle}"/>
 		<property name="maxWaitMillis" value="${database.maxWait}"/>
 	</bean>
-	
+    	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	
 	<context:component-scan base-package="spring.db"/>
-
 </beans>
