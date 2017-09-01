@@ -1,4 +1,4 @@
-package spring.db;
+package spring.db.lecture;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,19 +7,20 @@ public class LectureInfo {
 	private int no;
 	private String tag;
 	private String title;
+	private String teacher;
+	private String time;
+	private String type;
+	private int price;
+	private String state;
 	private double kin_grade;
 	private double price_grade;
 	private double kind_grade;
-	private String teacher;
 	private String picture_name;
 	private String picture_realname;
 	private String picture_type;
 	private long picture_size;
 	private String intro;
 	private String detail;
-	private String time;
-	private String state;
-	private int price;
 	private String accept;
 	private String reg;
 	
@@ -27,19 +28,20 @@ public class LectureInfo {
 		setNo(rs.getInt("no"));
 		setTag(rs.getString("tag"));
 		setTitle(rs.getString("title"));
+		setTeacher(rs.getString("teacher"));
+		setTime(rs.getString("time"));
+		setType(rs.getString("type"));
+		setPrice(rs.getInt("price"));
+		setState(rs.getString("state"));
 		setKin_grade(rs.getDouble("kin_grade"));
 		setPrice_grade(rs.getDouble("price_grade"));
 		setKind_grade(rs.getDouble("kind_grade"));
-		setTeacher(rs.getString("teacher"));
 		setPicture_name(rs.getString("picture_name"));
 		setPicture_realname(rs.getString("picture_realname"));
 		setPicture_type(rs.getString("picture_type"));
 		setPicture_size(rs.getLong("picture_size"));
 		setIntro(rs.getString("intro"));
 		setDetail(rs.getString("detail"));
-		setTime(rs.getString("time"));
-		setState(rs.getString("state"));
-		setPrice(rs.getInt("price"));
 		setAccept(rs.getString("accept"));
 		setReg(rs.getString("reg"));
 	}
@@ -68,6 +70,46 @@ public class LectureInfo {
 		this.title = title;
 	}
 
+	public String getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	public double getKin_grade() {
 		return kin_grade;
 	}
@@ -90,14 +132,6 @@ public class LectureInfo {
 
 	public void setKind_grade(double kind_grade) {
 		this.kind_grade = kind_grade;
-	}
-
-	public String getTeacher() {
-		return teacher;
-	}
-
-	public void setTeacher(String teacher) {
-		this.teacher = teacher;
 	}
 
 	public String getPicture_name() {
@@ -148,30 +182,6 @@ public class LectureInfo {
 		this.detail = detail;
 	}
 
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
 	public String getAccept() {
 		return accept;
 	}
@@ -187,5 +197,5 @@ public class LectureInfo {
 	public void setReg(String reg) {
 		this.reg = reg;
 	}
-
+	
 }

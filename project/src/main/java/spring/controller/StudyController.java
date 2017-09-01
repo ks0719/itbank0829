@@ -11,8 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import spring.db.LectureDao;
-import spring.db.LectureInfo;
+import spring.db.lecture.LectureDao;
+import spring.db.lecture.LectureInfo;
 
 @Controller
 public class StudyController {
