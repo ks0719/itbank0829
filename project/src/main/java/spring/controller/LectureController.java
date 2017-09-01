@@ -38,6 +38,7 @@ public class LectureController {
 		LectureInfo info = lectureDao.showOne(no);
 		
 		m.addAttribute("info", info);
+		m.addAttribute("no", no);
 		m.addAttribute("page", page);
 		
 		return "lecture/class";

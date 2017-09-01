@@ -29,7 +29,7 @@
         </div>
         <div class="right" align="right">
         <a href="#">찜하기</a>
-        <a href="${pageContext.request.contextPath}/lecture/req">신청하기</a>
+        <a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
         <a href="study?page=${page}">목록보기</a>
         </div>
 	</div>
