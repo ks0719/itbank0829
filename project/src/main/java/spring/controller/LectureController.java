@@ -15,7 +15,7 @@ import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
 
 @Controller
-public class StudyController {
+public class LectureController {
 	private Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -34,10 +34,11 @@ public class StudyController {
 	}
 	
 	@RequestMapping("/lecture/class")
-	public String lesson(@RequestParam(required=true) int no, Model m) {
+	public String lesson(@RequestParam(required=true) int no, int page, Model m) {
 		LectureInfo info = lectureDao.showOne(no);
 		
 		m.addAttribute("info", info);
+		m.addAttribute("page", page);
 		
 		return "lecture/class";
 	}
