@@ -43,10 +43,11 @@ text-align:center;
 .study {
 	border-collapse: collapse;
 	width: 90%;
-		margin: 10px auto;
+	margin: 10px auto;
+	padding: 5px;
 }
 .title {
-	width: 60%;
+	width: 40%;
 	padding: 10px;
 	text-align: left;
 }

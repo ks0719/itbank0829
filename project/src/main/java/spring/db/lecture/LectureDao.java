@@ -1,4 +1,4 @@
-package spring.db;
+package spring.db.lecture;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ public class LectureDao {
 	};
 	
 	public boolean insert(LectureInfo info) {
-		String sql = "insert into lecture_info values(lecture_info_seq.nextval, ?, ?, 0, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, '등록 가능', ?, 'false', sysdate)";
+		String sql = "insert into lecture_info values(lecture_info_seq.nextval, ?, ?, ?, ?, ?, ?, '등록 가능', 0, 0, 0, ?, ?, ?, 0, ?, ?, 'false', sysdate)";
 		
-		Object[] args = new Object[] {info.getTag(), info.getTitle(), info.getTeacher(), info.getPicture_name(), 
-				info.getPicture_realname(), info.getPicture_type(), info.getPicture_size(), info.getIntro(),
-				info.getDetail(), info.getTime(), info.getPrice()};
+		Object[] args = new Object[] {info.getTag(), info.getTitle(), info.getTeacher(), info.getTime(), info.getType(), 
+				info.getPrice(), info.getPicture_name(), info.getPicture_realname(), info.getPicture_type(), 
+				info.getPicture_size(), info.getIntro(), info.getDetail()};
 		
 		return jdbcTemplate.update(sql, args) > 0;
 	}
