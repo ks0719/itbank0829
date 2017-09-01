@@ -1,7 +1,6 @@
 package spring.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -60,18 +59,16 @@ public class DataController {
 	public String manageLecture(Model m, HttpServletRequest req) throws Exception {
 		String id = "운영자-회원";
 		
-		Map<String, String[]> parameters = req.getParameterMap();
-		
 		//page 넘버 설정
 		int page;
 		try {
-			page = Integer.parseInt(parameters.get("page")[0]);
+			page = Integer.parseInt(req.getParameter("page"));
 		}catch(Exception e) {
 			page=1;
 		}
 		page=(page<1)?1:page;
 		
-		String box = (parameters.get("box")==null)?"index":parameters.get("box")[0];
+		String box = (req.getParameter("box")==null)?"index":req.getParameter("box");
 		
 		List<MyLecture> list = myLectureDao.list(id, box, page);
 		
