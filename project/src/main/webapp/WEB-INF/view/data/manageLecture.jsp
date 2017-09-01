@@ -66,7 +66,5 @@
             </td>
 		</tr>
 	</table>
-	
-	<h1>${param.box}</h1>
 </body>
 </html>
