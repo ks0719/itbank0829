@@ -23,9 +23,7 @@
 				</th>
 			</tr>
 		<c:forEach var="list" items="${list }">
-		
-			<tr>
-			<a href="#">
+			<tr style="cursor: pointer" onclick="location.href='${pageContext.request.contextPath}/consumer/detail?no=${list.no }'">
 				<th>
 					[${list.rn }]
 				</th>
@@ -41,10 +39,8 @@
 				<th >
 					[${list.state }]
 				</th>
-				</a>
 			</tr>
 			</c:forEach>
 		</table>
 	</div>
-	<div class="empty-row"></div>
 <%@ include file="/WEB-INF/view/template/footer.jsp"%>

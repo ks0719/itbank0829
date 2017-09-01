@@ -37,6 +37,7 @@ public B2CDto(HttpServletRequest request) {
 	
 }
 public B2CDto(ResultSet rs) throws SQLException {
+	
 	setRn(rs.getInt("rn"));
 	setNo(rs.getInt("no"));
 	setId(rs.getString("id"));
