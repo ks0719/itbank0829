@@ -28,14 +28,9 @@
         <a href="#">강사 정보</a>
         </div>
         <div class="right" align="right">
-<<<<<<< HEAD
-        <a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
-        <a href="study?page=1">목록보기</a>
-=======
         <a href="#">찜하기</a>
         <a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
         <a href="study?page=${page}">목록보기</a>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
         </div>
 	</div>
 
