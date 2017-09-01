@@ -1,0 +1,36 @@
+1:1문의 DB
+
+번호
+아이디
+문의유형
+제목
+상세내용
+첨부파일 이름
+첨부파일 저장이름
+첨부파일 저장형태
+첨부파일 형태
+첨부파일 크기
+작성시간
+진행상태
+
+
+create table b2c(
+no number primary key,
+id varchar2(20) not null,
+type varchar2(15) not null,
+title varchar2(60) not null,
+detail varchar2(4000) not null,
+filename varchar2(300), 
+realname varchar2(60), 
+filetype varchar2(20), 
+filesize number, 
+reg date not null,
+state varchar2(10) not null
+);
+
+create sequence b2c_seq nocache;
+
+select b2c_seq.NEXTVAL from dual;
+
+
+select * from (select rownum rn, tmp.* from(select * from b2c order by reg desc)tmp)where id='aaaa' order by rn asc;
