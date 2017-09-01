@@ -34,12 +34,24 @@ public class LectureController {
 	}
 	
 	@RequestMapping("/lecture/class")
-	public String lesson(@RequestParam(required=true) int no, int page, Model m) {
+	public String lesson(String noS, String page, Model m) throws Exception {
+		int no, pageNo;
+		try {
+			pageNo = Integer.parseInt(page);
+		} catch(Exception e) {
+			pageNo = 1;
+		}
+		try {
+			no = Integer.parseInt(noS);
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		
 		LectureInfo info = lectureDao.showOne(no);
 		
 		m.addAttribute("info", info);
 		m.addAttribute("no", no);
-		m.addAttribute("page", page);
+		m.addAttribute("page", pageNo);
 		
 		return "lecture/class";
 	}

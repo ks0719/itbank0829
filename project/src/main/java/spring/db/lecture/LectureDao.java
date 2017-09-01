@@ -38,11 +38,12 @@ public class LectureDao {
 		return jdbcTemplate.update(sql, no) > 0;
 	}
 	
-	public LectureInfo showOne(int no) {
+	public LectureInfo showOne(int no) throws Exception {
 		String sql = "select * from lecture_info where state = '등록 가능' and accept = 'true' and no = ?";
 		
 		List<LectureInfo> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
 		
+		if (list.isEmpty()) throw new Exception("404");
 		return list.get(0);
 	}
 	
