@@ -6,14 +6,8 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-    <!-- Uncomment and your base-package here:
-         <context:component-scan
-            base-package="org.springframework.samples.web"/>  -->
-
-
     <mvc:annotation-driven />
     <context:component-scan base-package="spring.controller"/>
-   
 
 	<mvc:resources location="/resource/css/" mapping="/css/**"/>
 	<mvc:resources location="/resource/img/" mapping="/img/**"/>

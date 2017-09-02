@@ -6,7 +6,8 @@
 	$(document).ready(function() {
 		$(".clickToinfo").on("click", function() {
 			var no = $(this).data('no');
-			location.href = "class?no=" + no;
+			var page = $(this).data('page');
+			location.href = "class?no=" + no + "&page=" + page;
 		});
 	});
 </script>
