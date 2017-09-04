@@ -22,7 +22,7 @@
                     <td colspan="2"><textarea class="textarea" readonly>${info.detail}</textarea></td>
                 </tr>
 			</tbody>
-		</table>	
+		</table>
         
         <div class="left" align="left">
         <a href="#">강사 정보</a>
