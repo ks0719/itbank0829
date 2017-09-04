@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 public class B2CDto {
 private int rn;
 private int no;
@@ -28,6 +30,20 @@ public B2CDto(HttpServletRequest request) {
 	setType(request.getParameter("type"));
 	setTitle(request.getParameter("title"));
 	setDetail(request.getParameter("detail"));
+//	setFilename(request.getParameter("filename"));
+//	setFiletype(request.getParameter("filetype"));
+//	setFilesize(Long.parseLong(request.getParameter("filesize")));
+	setFilename("이름");
+	setFiletype("타입");
+	setFilesize(1245);
+	
+}
+public B2CDto(MultipartHttpServletRequest mRequest) {
+	
+	setId(mRequest.getParameter("id"));
+	setType(mRequest.getParameter("type"));
+	setTitle(mRequest.getParameter("title"));
+	setDetail(mRequest.getParameter("detail"));
 //	setFilename(request.getParameter("filename"));
 //	setFiletype(request.getParameter("filetype"));
 //	setFilesize(Long.parseLong(request.getParameter("filesize")));
@@ -86,7 +102,7 @@ public void setTitle(String title) {
 	this.title = title;
 }
 public String getDetail() {
-	return detail;
+	return detail.replaceAll("</p>", "<br>").replaceAll("<p>","");
 }
 public void setDetail(String detail) {
 	this.detail = detail;
