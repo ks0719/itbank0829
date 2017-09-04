@@ -85,7 +85,7 @@ public class MyLectureDao {
 	}
 	
 	public int wish(String id, int no, LectureInfo lecture) {
-		String sql = "select * from mylecture where id = ? and no = ?";
+		String sql = "select * from mylecture where id = ? and no = ? or wish = ''";
 		
 		int result = jdbcTemplate.update(sql, new Object[] {id, no});
 		
