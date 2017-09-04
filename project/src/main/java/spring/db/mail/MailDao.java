@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Repository("mailDao")
 public class MailDao {
@@ -20,8 +19,11 @@ public class MailDao {
 	};
 	
 	public List<Mail> list(String mail_receiver, String box){
+<<<<<<< HEAD
 		
 		
+=======
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 		String sql="select * from mail";
 		switch(box) {
 			//무관
