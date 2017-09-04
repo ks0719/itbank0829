@@ -3,6 +3,8 @@
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <form target="${pageContext.request.contextPath}/lecture/req" method="post">
+과목명 <br><input type="text" value="" readonly><br>
+강사명<br><input type="text" value="" readonly><br>
 보유 포인트 <input type="number" value="" readonly><br>
 차감 포인트<input type="number" value="" readonly><br> 
 잔여 포인트<input type="number" value="" readonly><br>
