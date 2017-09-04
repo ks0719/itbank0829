@@ -66,7 +66,7 @@
 						</c:if>
 				    </div>
 					<div class="empty-row"></div>
-					<form action="study" class="wrap">
+					<form action="qna" class="wrap">
 						<input type="hidden" name="page" value="1">
 						<select name="type" class="user-input">
 							<option value="">분류 선택</option>
