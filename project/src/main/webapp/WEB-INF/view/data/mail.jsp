@@ -27,8 +27,6 @@
                 <h3><a href="${pageContext.request.contextPath}/data/mail?box=garbage">휴지통</a></h3>
 			</th>
 			
-			
-			
             <td style="vertical-align: top">
                 <table>
                    

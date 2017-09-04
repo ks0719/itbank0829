@@ -4,17 +4,21 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.B2CDao;
 import spring.db.B2CDto;
 
 @Controller
 public class CustomerController {
+	private Logger log=LoggerFactory.getLogger(getClass());
 	@Autowired
 	private B2CDao dao;
 	private B2CDto dto;
@@ -25,6 +29,8 @@ public class CustomerController {
 	@RequestMapping(value="/consumer/b2c",method=RequestMethod.POST)
 	public String b2cpost(HttpServletRequest request, Model model) {
 	dto=new B2CDto(request);
+	dto.setId(request.getParameter("id"));
+	log.debug("dto="+dto.toString());
 	dao.insert(dto);
 	List<B2CDto> list;
 	list=dao.list("aaaa");
@@ -38,7 +44,12 @@ public class CustomerController {
 		model.addAttribute("list", list);
 		return "consumer/b2clist";
 	}
-	
+	@RequestMapping("/consumer/detail")
+	public String detail(@RequestParam(required=true) int no,Model model) {
+		dto=dao.detail(no);
+		model.addAttribute("dto", dto);
+		return "consumer/detail";
+	}
 	
 	@RequestMapping("/consumer/basic")
 	public String QnA() {
