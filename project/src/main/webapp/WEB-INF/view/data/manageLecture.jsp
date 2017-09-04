@@ -48,7 +48,18 @@
                     
                     <tfoot>
                     	<tr>
-                    		<td colspan="8">[1][2][3][4][5][6][7][8][9][10]</td>
+                    		<td colspan="8">
+                    			<c:forEach begin="${start}" end="${end}" var="i">
+                    				<c:choose>
+                    					<c:when test="${param.pageno == i}">
+                    						[${i}]
+                    					</c:when>
+                    					<c:otherwise>
+                    						<a href="?box=${param.box}&pageno=${i}">[${i}]</a>
+                    					</c:otherwise>
+                    				</c:choose>
+                    			</c:forEach>
+                    		</td>
                     	</tr>
                     </tfoot>
                 </table>

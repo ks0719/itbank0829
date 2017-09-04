@@ -11,7 +11,6 @@
 		<property name="username" value="sw1"/>
 		<property name="password" value="sw1"/>
 
-		
 		<property name="maxTotal" value="20"/>
 		<property name="maxIdle" value="10"/>
 		<property name="maxWaitMillis" value="-1"/>
