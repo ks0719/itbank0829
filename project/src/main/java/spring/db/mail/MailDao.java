@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Repository("mailDao")
 public class MailDao {
@@ -40,7 +41,14 @@ public class MailDao {
 		}
 //		"select * from mail where mail_writer=? order by mail_reg desc"
 		return jdbcTemplate.query(sql, new Object[] {mail_writer,box},mapper);
+	}
+	
+	//영구 삭제
+	public boolean delete(String mail_writer) {
 		
+		String sql="delete from mail where mail_writer=?";
 		
+		int res=jdbcTemplate.update(sql, mail_writer);
+		return res>0;
 	}
 }

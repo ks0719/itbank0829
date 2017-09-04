@@ -11,6 +11,36 @@
 			window.open('${pageContext.request.contextPath}/data/mail/mailDetail', '', 'width=500, height=500, menubar=no');
 		});
 	});
+	
+	$(document).ready(function(){
+		$("#checkAll").click(function(){
+			if($("#checkAll").prop("checked")){
+				$("input[name=chk]").prop("checked",true);
+			}else{
+				$("input[name=chk]").prop("checked",false);
+			}
+		});
+	});
+	
+// 	$(document).ready(function(){
+// 		$("#remove").click(function(){
+// 			if($("input[name=chk]").prop("checked")){
+
+// 			}
+// 		});
+// 	});
+
+
+// 	function del() {
+// 		$("input:checked").each(function() {
+// 			var checked = $(this).attr("checked"); // 체크된 값만을 불러 들인다.
+// 			if (checked == true) {
+// 				$(this).next().remove(); //span내용지우기
+// 				$(this).remove(); //checkbox 지우기
+// 			}
+// 		});
+// 	}
+
 </script>
 
 <head>
@@ -34,14 +64,16 @@
                     <thead>
                    		 <tr>
                         	<td colspan="7">
-	                            <button>삭제하기</button>
-	                            <button>쪽지쓰기</button>
-	                            <button>보관하기</button>
+<!--                         		<form action="#" method="post"> -->
+	                            	<button id="remove">삭제하기</button>
+<!-- 	                            </form> -->
+	                            	<button>쪽지쓰기</button>
+	                            	<button>보관하기</button>
                         	</td>
                     	</tr> 
                     
 	                    <tr>
-	                        <th><input type="checkbox"></th>
+	                        <th><input id="checkAll" type="checkbox" ></th>
 	                        <th>아이디</th>
 	                        <th>분류</th>
 	                        <th>제목</th>
@@ -54,7 +86,7 @@
                     <tbody>
                     	<c:forEach var="list" items="${list }">
                     		<tr>
-	                    		<td><input type="checkbox"></td>
+	                    		<td><input type="checkbox" name="chk" ></td>
 		                        <td>${list.mail_writer }</td>
 		                        <td>${list.mail_tag}</td>
 		                        <td>${list.mail_title }</td>

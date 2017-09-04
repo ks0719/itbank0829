@@ -20,6 +20,8 @@ public class DataController {
 	
 	@Autowired
 	private MyLectureDao myLectureDao;
+	
+	@Autowired
 	private MailDao mailDao;
 	
 	
