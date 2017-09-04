@@ -20,8 +20,9 @@ public class DataController {
 	
 	@Autowired
 	private MyLectureDao myLectureDao;
-	private MailDao mailDao;
 	
+	@Autowired
+	private MailDao mailDao;
 	
 	@RequestMapping("/data/edit")
 	public String edit() {
@@ -41,7 +42,10 @@ public class DataController {
 	@RequestMapping("/data/mail")
 	public String note(Model m, HttpServletRequest req) {
 		
-		List<Mail>list=mailDao.list("회원(수신이)",req.getParameterMap().get("box")[0]);
+		System.out.println(mailDao);
+		
+		List<Mail>list=mailDao.list("회원(수신이)",req.getParameter("box"));
+		
 		m.addAttribute("list", list);
 		return "data/mail";
 	}
