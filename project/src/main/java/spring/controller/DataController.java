@@ -57,7 +57,7 @@ public class DataController {
 	}
 	@RequestMapping("/data/manageLecture")
 	public String manageLecture(Model m, HttpServletRequest req) throws Exception {
-		String id = "운영자-회원";
+		String id = "테스트유저1";
 		
 		//page 넘버 설정
 		int page;
