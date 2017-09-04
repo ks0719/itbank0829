@@ -14,6 +14,7 @@
 	
 	$(document).ready(function(){
 		$("#checkAll").click(function(){
+			
 			if($("#checkAll").prop("checked")){
 				$("input[name=chk]").prop("checked",true);
 			}else{
@@ -22,24 +23,18 @@
 		});
 	});
 	
-// 	$(document).ready(function(){
-// 		$("#remove").click(function(){
-// 			if($("input[name=chk]").prop("checked")){
-
-// 			}
-// 		});
-// 	});
-
-
-// 	function del() {
-// 		$("input:checked").each(function() {
-// 			var checked = $(this).attr("checked"); // 체크된 값만을 불러 들인다.
-// 			if (checked == true) {
-// 				$(this).next().remove(); //span내용지우기
-// 				$(this).remove(); //checkbox 지우기
-// 			}
-// 		});
-// 	}
+	function fn_delRow(chkObjNm) { 
+			console.log($("input[name=chk]").prop("checked"));
+// 		﻿         if ($("input[name="+chkObjNm+"]").is(":checked")){ 
+// 		﻿            if (confirm("삭제 하시겠습니까?")) { 
+// 		﻿                for(var i=$("[name='"+chkObjNm+"']:checked").length-1; i>-1; i--){ 
+// 		﻿                    $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove(); 
+// 		                }﻿ 
+// 		            }﻿ 
+// 		         } else { 
+// 		﻿            alert("선택된 데이터가 없습니다.");  
+// 		         }﻿ 
+		    }﻿ 
 
 </script>
 
@@ -65,7 +60,9 @@
                    		 <tr>
                         	<td colspan="7">
 <!--                         		<form action="#" method="post"> -->
-	                            	<button id="remove">삭제하기</button>
+<!-- 	                            	<button onClick="fn_delRow('chkObject');">삭제하기</button> -->
+	                            	<a href="${pageContext.request.contextPath}/data/mail?box=${box}">삭제하기</a>
+<!-- 	                            	<button>삭제하기</button> -->
 <!-- 	                            </form> -->
 	                            	<button>쪽지쓰기</button>
 	                            	<button>보관하기</button>
@@ -84,9 +81,12 @@
                     </thead>
                     
                     <tbody>
-                    	<c:forEach var="list" items="${list }">
+                    	<c:forEach var="list" items="${list}">
                     		<tr>
-	                    		<td><input type="checkbox" name="chk" ></td>
+	                    		<td>
+	                    			<input type="checkbox" name="chk"  value="${list.no }">
+<%-- 	                    			<input type="hidden"  name="no"  value="${list.no }" > --%>
+	                    		</td>
 		                        <td>${list.mail_writer }</td>
 		                        <td>${list.mail_tag}</td>
 		                        <td>${list.mail_title }</td>
