@@ -19,6 +19,11 @@ public class MailDao {
 	};
 	
 	public List<Mail> list(String mail_receiver, String box){
+<<<<<<< HEAD
+		
+		
+=======
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 		String sql="select * from mail";
 		switch(box) {
 			//무관
