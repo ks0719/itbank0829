@@ -44,7 +44,9 @@ text-align:center;
 	border-collapse: collapse;
 	width: 90%;
 	margin: 10px auto;
-	padding: 5px;
+}
+.study th, .study td {
+	padding: 10px;
 }
 .title {
 	width: 40%;
