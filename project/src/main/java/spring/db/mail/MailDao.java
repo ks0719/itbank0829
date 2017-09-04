@@ -42,8 +42,7 @@ public class MailDao {
 			break;
 		}
 //		"select * from mail where mail_writer=? order by mail_reg desc"
-<<<<<<< HEAD
-		return jdbcTemplate.query(sql, new Object[] {mail_writer,box},mapper);
+		return jdbcTemplate.query(sql, new Object[] {mail_receiver,box},mapper);
 	}
 	
 	//영구 삭제
@@ -53,8 +52,6 @@ public class MailDao {
 		
 		int res=jdbcTemplate.update(sql, mail_writer);
 		return res>0;
-=======
-		return jdbcTemplate.query(sql, new Object[] {mail_receiver,box},mapper);
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
+//		return jdbcTemplate.query(sql, new Object[] {mail_receiver,box},mapper);
 	}
 }
