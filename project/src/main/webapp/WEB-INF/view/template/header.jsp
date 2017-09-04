@@ -10,7 +10,7 @@
 			var page = $(this).data('page');
 			var type = $(this).data('type');
 			var key = $(this).data('key');
-			if (type != null && key != null) {
+			if (type != "" && key != "") {
 				location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
 			} else {
 				location.href = "class?no=" + no + "&page=" + page;
