@@ -8,7 +8,13 @@
 		$(".clickToinfo").on("click", function() {
 			var no = $(this).data('no');
 			var page = $(this).data('page');
-			location.href = "class?no=" + no + "&page=" + page;
+			var type = $(this).data('type');
+			var key = $(this).data('key');
+			if (type != null && key != null) {
+				location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+			} else {
+				location.href = "class?no=" + no + "&page=" + page;
+			}
 		});
 	});
 	  $(function(){

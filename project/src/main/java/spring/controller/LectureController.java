@@ -34,7 +34,7 @@ public class LectureController {
 	}
 	
 	@RequestMapping("/lecture/class")
-	public String lesson(String no, String page, Model m) throws Exception {
+	public String lesson(String no, String page, String type, String key, Model m) throws Exception {
 		int noI, pageNo;
 		try {
 			noI = Integer.parseInt(no);
@@ -49,9 +49,12 @@ public class LectureController {
 		
 		LectureInfo info = lectureDao.showOne(noI);
 		
+		String url = "study?page=" + page;
+		if (type != null && key != null) url += "&type=" + type + "&key=" + key;
+		
 		m.addAttribute("info", info);
 		m.addAttribute("no", noI);
-		m.addAttribute("page", pageNo);
+		m.addAttribute("url", url);
 		
 		return "lecture/class";
 	}
@@ -91,8 +94,11 @@ public class LectureController {
 		if (endBlock > blockTotal) endBlock = blockTotal;
 		
 		String url = "study?";
-		if (type != null && key != null)
+		if (type != null && key != null) {
 			url += "type=" + type + "&key=" + key + "&";
+			m.addAttribute("type", type);
+			m.addAttribute("key", key);
+		}
 		
 		m.addAttribute("list", list);
 		m.addAttribute("page", pageNo);

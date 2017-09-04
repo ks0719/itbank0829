@@ -29,12 +29,13 @@ public class MyLectureDao {
 		
 		switch(box) {
 		case "all":
+			sql += " and state!='미결제'";
 			break;
 		case "comp":
 			sql += " and state='수료'";
 			break;
 		case "eval":
-			sql += " and eval='미평가'";
+			sql += " and eval='미평가' and state='수료'";
 			break;
 		case "wish":
 			sql += " and wish='wish'";

@@ -23,6 +23,7 @@ public class LectureInfo {
 	private String detail;
 	private String accept;
 	private String reg;
+	private String open;
 	
 	public LectureInfo(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
@@ -44,6 +45,7 @@ public class LectureInfo {
 		setDetail(rs.getString("detail"));
 		setAccept(rs.getString("accept"));
 		setReg(rs.getString("reg"));
+		setOpen(rs.getString("open"));
 	}
 
 	public int getNo() {
@@ -196,6 +198,14 @@ public class LectureInfo {
 
 	public void setReg(String reg) {
 		this.reg = reg;
+	}
+
+	public String getOpen() {
+		return open;
+	}
+
+	public void setOpen(String open) {
+		this.open = open;
 	}
 	
 }
