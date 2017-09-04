@@ -14,7 +14,6 @@
 	
 	$(document).ready(function(){
 		$("#checkAll").click(function(){
-			
 			if($("#checkAll").prop("checked")){
 				$("input[name=chk]").prop("checked",true);
 			}else{
@@ -24,16 +23,21 @@
 	});
 	
 	function fn_delRow(chkObjNm) { 
-			console.log($("input[name=chk]").prop("checked"));
-// 		﻿         if ($("input[name="+chkObjNm+"]").is(":checked")){ 
-// 		﻿            if (confirm("삭제 하시겠습니까?")) { 
-// 		﻿                for(var i=$("[name='"+chkObjNm+"']:checked").length-1; i>-1; i--){ 
-// 		﻿                    $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove(); 
-// 		                }﻿ 
-// 		            }﻿ 
-// 		         } else { 
-// 		﻿            alert("선택된 데이터가 없습니다.");  
-// 		         }﻿ 
+				var chk = $("input[name=chk]");
+				var tnf = false;
+				
+				console.log("${param.box eq 'garbage'}");
+				for(var i=0; i<chk.length; i++){
+					if($(chk[i]).prop("checked")){
+						console.log($(chk[i]).val());
+						$(".delete").append("<input type='text' name='chk' value='"+$(chk[i]).val()+"'>");
+						tnf=true;
+					}
+				}
+				if(tnf) {
+					if(${param.box eq 'garbage'}) alert("메일이 삭제되었습니다");
+					else alert("메일이 휴지통으로 이동되었습니다");
+				}
 		    }﻿ 
 
 </script>
@@ -59,11 +63,9 @@
                     <thead>
                    		 <tr>
                         	<td colspan="7">
-<!--                         		<form action="#" method="post"> -->
-<!-- 	                            	<button onClick="fn_delRow('chkObject');">삭제하기</button> -->
-	                            	<a href="${pageContext.request.contextPath}/data/mail?box=${box}">삭제하기</a>
-<!-- 	                            	<button>삭제하기</button> -->
-<!-- 	                            </form> -->
+                        		<form action="" method="post" class="delete">
+	                            	<input onClick="fn_delRow('chkObject'); return false;" type="submit" value="삭제하기">
+	                            </form>
 	                            	<button>쪽지쓰기</button>
 	                            	<button>보관하기</button>
                         	</td>
@@ -84,7 +86,7 @@
                     	<c:forEach var="list" items="${list}">
                     		<tr>
 	                    		<td>
-	                    			<input type="checkbox" name="chk"  value="${list.no }">
+	                    			<input type="checkbox" name="chk" value="${list.no}">
 <%-- 	                    			<input type="hidden"  name="no"  value="${list.no }" > --%>
 	                    		</td>
 		                        <td>${list.mail_writer }</td>

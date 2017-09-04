@@ -1,6 +1,5 @@
 package spring.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,11 +41,16 @@ public class DataController {
 	}
 	@RequestMapping("/data/mail")
 	public String note(Model m, HttpServletRequest req) {
-		String [] values=req.getParameterValues("chk");
-		System.out.println(values);
+		String id = "회원(수신이)";
 		
+		String[] chks = req.getParameterValues("chk");
+		if(chks!=null) {
+			for(String chk : chks) {
+				mailDao.delete(id, Integer.parseInt(chk), req.getParameter("box"));
+			}
+		}
 		
-		List<Mail>list=mailDao.list("회원(수신이)",req.getParameter("box"));
+		List<Mail>list=mailDao.list(id,req.getParameter("box"));
 		
 		m.addAttribute("list", list);
 		return "data/mail";

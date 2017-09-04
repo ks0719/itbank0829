@@ -43,12 +43,16 @@ public class MailDao {
 	}
 	
 	//영구 삭제
-	public boolean delete(String mail_writer) {
+	public boolean delete(String mail_receiver, int chk ,String box) {
 		
-		String sql="delete from mail where mail_writer=?";
+		String sql;
+		if(box.equals("garbage")) {
+			sql="delete from mail where mail_receiver=? and no=?";
+		}else {
+			sql = "update mail set mail_position='garbage' where mail_receiver=? and no=?";
+		}
 		
-		int res=jdbcTemplate.update(sql, mail_writer);
+		int res=jdbcTemplate.update(sql, new Object[] {mail_receiver, chk});
 		return res>0;
-//		return jdbcTemplate.query(sql, new Object[] {mail_receiver,box},mapper);
 	}
 }
