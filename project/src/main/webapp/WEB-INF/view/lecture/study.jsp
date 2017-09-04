@@ -13,20 +13,26 @@
 				<th class="title">
 					제목
 				</th>
+				<th>
+					평점
+				</th>
 				<th class="teacher">
 					강사정보
 				</th>
 			</tr>
 			<c:forEach var="info" items="${list}">
-			<tr data-no="${info.no}" class="clickToinfo" style="cursor: pointer">
+			<tr data-no="${info.no}" data-page="${page}" class="clickToinfo" style="cursor: pointer">
 				<td>
 					[${info.tag}]
 				</td>
 				<td class="title">
-					[${info.title}]
+					${info.title}
+				</td>
+				<td>
+					${info.kin_grade}/${info.price_grade}/${info.kind_grade}
 				</td>
 				<td class="teacher">
-					[${info.teacher}]
+					${info.teacher}
 				</td>
 			</tr>
 			</c:forEach>

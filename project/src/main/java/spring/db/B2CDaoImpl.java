@@ -34,9 +34,16 @@ public List<B2CDto> list(String id){
 @Override
 public B2CDto detail(int no) {
 	RowMapper<B2CDto> mapper=(rs,index)->{
-		return new B2CDto(rs);
+		B2CDto dto=new B2CDto();
+		dto.setId(rs.getString("id"));
+		dto.setType(rs.getString("type"));
+		dto.setTitle(rs.getString("title"));
+		dto.setDetail(rs.getString("detail"));
+		return dto;
+		
 		};
 	String sql="select * from b2c where no=?";
-	return (B2CDto) jdbcTemplate.query(sql, mapper);
+	List<B2CDto> list= jdbcTemplate.query(sql,new Object[] {no}, mapper);
+	return list.get(0);
 }
 }

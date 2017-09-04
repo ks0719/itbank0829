@@ -1,7 +1,6 @@
 package spring.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -58,32 +57,34 @@ public class DataController {
 	}
 	@RequestMapping("/data/manageLecture")
 	public String manageLecture(Model m, HttpServletRequest req) throws Exception {
+		String id = "테스트유저1";
 		
-		Map<String, String[]> parameters = req.getParameterMap();
-		
-		int pageno;
-		
+		//page 넘버 설정
+		int page;
 		try {
-			pageno = Integer.parseInt(parameters.get("pageno")[0]);
+			page = Integer.parseInt(req.getParameter("page"));
 		}catch(Exception e) {
-			pageno=1;
+			page=1;
 		}
-		pageno=(pageno<1)?1:pageno;
+		page=(page<1)?1:page;
 		
-		String box = (parameters.get("box")==null)?"index":parameters.get("box")[0];
+		String box = (req.getParameter("box")==null)?"index":req.getParameter("box");
 		
-		List<MyLecture> list = myLectureDao.list("운영자-회원", box, pageno);
+		List<MyLecture> list = myLectureDao.list(id, box, page);
 		
-		int start = (pageno-1)/MY_LECTURE_PAGE*MY_LECTURE_PAGE+1;
+		int start = (page-1)/MY_LECTURE_PAGE*MY_LECTURE_PAGE+1;
 		int end = start + MY_LECTURE_PAGE-1;
-		//여기 end 고쳐야함
+		
+		int maxPage = myLectureDao.maxPage(id, box);
+		end = (end>maxPage)?maxPage:end;
 		
 		m.addAttribute("list", list);
-		m.addAttribute("pageno", pageno);
+		m.addAttribute("page", page);
 		m.addAttribute("start", start);
 		m.addAttribute("end", end);
 		return "data/manageLecture";
 	}
+	
 	@RequestMapping("/data/mail/mailDetail")
 	public String mailDetail() {
 		

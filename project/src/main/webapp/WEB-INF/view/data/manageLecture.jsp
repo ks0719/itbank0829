@@ -28,6 +28,7 @@
 	                        <th>수강상태</th>
 	                        <th>수강날짜</th>
 	                        <th>결제금액</th>
+	                        <th></th>
 	                    </tr>
                 	</thead>
                     
@@ -36,26 +37,27 @@
 		                    <tr>
 		                        <td>${mylecture.tag}</td>
 		                        <td>${mylecture.teacher}</td>
-		                        <td>${mylecture.subject}</td>
+		                        <td>${mylecture.title}</td>
 		                        <td>${mylecture.time}</td>
 		                        <td>${mylecture.type}</td>
 		                        <td>${mylecture.state}</td>
 		                        <td>${mylecture.reg}</td>
 		                        <td>${mylecture.price}</td>
+		                        <td>자세히 보기</td>
 		                    </tr>
 	                    </c:forEach>
                     </tbody>
                     
                     <tfoot>
                     	<tr>
-                    		<td colspan="8">
+                    		<td colspan="9">
                     			<c:forEach begin="${start}" end="${end}" var="i">
                     				<c:choose>
-                    					<c:when test="${param.pageno == i}">
+                    					<c:when test="${param.page == i || page==i}">
                     						[${i}]
                     					</c:when>
                     					<c:otherwise>
-                    						<a href="?box=${param.box}&pageno=${i}">[${i}]</a>
+                    						<a href="?box=${param.box}&page=${i}">[${i}]</a>
                     					</c:otherwise>
                     				</c:choose>
                     			</c:forEach>
@@ -66,7 +68,5 @@
             </td>
 		</tr>
 	</table>
-	
-	<h1>${param.box}</h1>
 </body>
 </html>
