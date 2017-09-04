@@ -8,6 +8,16 @@
 	<context:property-placeholder location="/WEB-INF/*.properties"/>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+<<<<<<< HEAD
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="sw1"/>
+		<property name="password" value="sw1"/>
+
+		<property name="maxTotal" value="20"/>
+		<property name="maxIdle" value="10"/>
+		<property name="maxWaitMillis" value="-1"/>
+=======
 		
 		<property name="driverClassName" value="${database.driver}"/>
 		<property name="url" value="${database.url}"/>
@@ -17,6 +27,7 @@
 		<property name="maxTotal" value="${database.maxAction}"/>
 		<property name="maxIdle" value="${database.maxIdle}"/>
 		<property name="maxWaitMillis" value="${database.maxWait}"/>
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829
 	</bean>
     	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
