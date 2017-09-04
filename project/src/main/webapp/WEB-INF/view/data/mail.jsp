@@ -21,12 +21,16 @@
 // 			}
 // 		});
 // 	});
+	
+	
+
   	 window.onload = function(){
                var all = document.querySelector("#all");
                 var unit = document.querySelectorAll(".unit");
                 
                 //전체 선택을 누르면 항목들을 체크/해제
                 all.addEventListener("click", function(){
+                	
                     //unit의 체크를 할지 말지를 결정
                     for(var i=0; i<unit.length; i++){
                         unit[i].checked = this.checked;
@@ -41,19 +45,6 @@
                         }
                     });
                 }
-                
-                //버튼을 누르면 체크된 항목들의 title 속성을 불러옴
-                document.querySelector("button").addEventListener("click", function(){
-                    var text = "";
-                    //unit을 검사
-                    for(var i=0; i<unit.length; i++){
-                        if(unit[i].checked){
-                            text += unit[i].title +"<br>";
-                            console.log(unit[i].title);
-                        }
-                    }
-                    document.querySelector("#result").innerHTML = text;
-                });
             };
 </script>
 
@@ -103,7 +94,7 @@
                     	<c:forEach var="list" items="${list}">
                     		<tr>
 	                    		<td>
-	                    			<input type="checkbox" class="unit"  value="${list.no }">
+	                    			<input type="checkbox"  name="checkOne" class="unit"  value="${list.no }">
 <%-- 	                    			<input type="hidden"  name="no"  value="${list.no }" > --%>
 	                    		</td>
 		                        <td>${list.mail_writer }</td>
