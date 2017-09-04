@@ -26,8 +26,8 @@ public class CustomerController {
 		return "consumer/b2c";
 	}
 	@RequestMapping(value="/consumer/b2c",method=RequestMethod.POST)
-	public String b2cpost(MultipartHttpServletRequest mrequest, Model model) {
-	dto.setId(mrequest.getParameter("id"));
+	public String b2cpost(MultipartHttpServletRequest mRequest, Model model) {
+	dto=new B2CDto(mRequest);
 	log.debug("dto="+dto.toString());
 	dao.insert(dto);
 	List<B2CDto> list;

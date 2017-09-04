@@ -18,8 +18,8 @@ public class MailDao {
 		return new Mail(rs);
 	};
 	
-	public List<Mail> list(String mail_receiver, String box){
 		
+	public List<Mail> list(String mail_receiver, String box){
 		String sql="select * from mail";
 		switch(box) {
 			//무관
