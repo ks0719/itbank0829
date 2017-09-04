@@ -16,6 +16,9 @@
 				<th>
 					평점
 				</th>
+				<th>
+					개강일
+				</th>
 				<th class="teacher">
 					강사정보
 				</th>
@@ -30,6 +33,9 @@
 				</td>
 				<td>
 					${info.kin_grade}/${info.price_grade}/${info.kind_grade}
+				</td>
+				<td>
+					${info.open}
 				</td>
 				<td class="teacher">
 					${info.teacher}
@@ -68,7 +74,7 @@
 			<option value="title">제목</option>
 			<option value="teacher">강사명</option>
 		</select>
-		<input type="search" name="key" class="user-input" placeholder="검색 내용" required>
+		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
 		<input type="submit" value="검색" class="input-btn">
 	</form>
 </div>

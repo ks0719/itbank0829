@@ -9,7 +9,11 @@
 			var page = $(this).data('page');
 			var type = $(this).data('type');
 			var key = $(this).data('key');
-			location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+			if (type != null && key != null) {
+				location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+			} else {
+				location.href = "class?no=" + no + "&page=" + page;
+			}
 		});
 	});
 </script>
