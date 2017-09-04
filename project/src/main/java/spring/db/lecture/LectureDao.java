@@ -52,7 +52,7 @@ public class LectureDao {
 	}
 	
 	public int count(String type, String key) {
-		if (type == null || key == null) return count();
+		if (type == "" || key == null) return count();
 		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true' and " + type + " like '%'||'"+ key +"'||'%'", Integer.class);
 	}
 	
@@ -65,7 +65,7 @@ public class LectureDao {
 	}
 	
 	public List<LectureInfo> list(String type, String key, int start, int end) {
-		if (type == null || key == null) return list(start, end);
+		if (type == "" || key == null) return list(start, end);
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from lecture_info where state = '등록 가능' and accept = 'true' and lower (" + type + ") like '%'||?||'%' order by no desc)"

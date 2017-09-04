@@ -21,7 +21,7 @@
 				</th>
 			</tr>
 			<c:forEach var="info" items="${list}">
-			<tr data-no="${info.no}" data-page="${page}" class="clickToinfo" style="cursor: pointer">
+			<tr data-no="${info.no}" data-page="${page}" data-type="${type}" data-key="${key}" class="clickToinfo" style="cursor: pointer">
 				<td>
 					[${info.tag}]
 				</td>

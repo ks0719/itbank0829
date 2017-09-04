@@ -34,7 +34,7 @@ public class LectureController {
 	}
 	
 	@RequestMapping("/lecture/class")
-	public String lesson(String no, String page, Model m) throws Exception {
+	public String lesson(String no, String page, String type, String key, Model m) throws Exception {
 		int noI, pageNo;
 		try {
 			noI = Integer.parseInt(no);
@@ -52,6 +52,8 @@ public class LectureController {
 		m.addAttribute("info", info);
 		m.addAttribute("no", noI);
 		m.addAttribute("page", pageNo);
+		m.addAttribute("type", type);
+		m.addAttribute("key", key);
 		
 		return "lecture/class";
 	}
@@ -99,6 +101,8 @@ public class LectureController {
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
 		m.addAttribute("url", url);
+		m.addAttribute("type", type);
+		m.addAttribute("key", key);
 		
 		return "lecture/study";
 	}
