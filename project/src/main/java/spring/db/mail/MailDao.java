@@ -19,9 +19,6 @@ public class MailDao {
 	};
 	
 	public List<Mail> list(String mail_receiver, String box){
-		
-		System.out.println(box);
-		
 		String sql="select * from mail";
 		switch(box) {
 			//무관
