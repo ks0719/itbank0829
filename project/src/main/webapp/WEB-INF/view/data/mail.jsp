@@ -12,30 +12,49 @@
 		});
 	});
 	
-	$(document).ready(function(){
-		$("#checkAll").click(function(){
-			
-			if($("#checkAll").prop("checked")){
-				$("input[name=chk]").prop("checked",true);
-			}else{
-				$("input[name=chk]").prop("checked",false);
-			}
-		});
-	});
-	
-	function fn_delRow(chkObjNm) { 
-			console.log($("input[name=chk]").prop("checked"));
-// 		﻿         if ($("input[name="+chkObjNm+"]").is(":checked")){ 
-// 		﻿            if (confirm("삭제 하시겠습니까?")) { 
-// 		﻿                for(var i=$("[name='"+chkObjNm+"']:checked").length-1; i>-1; i--){ 
-// 		﻿                    $("[name='"+chkObjNm+"']:checked").eq(i).closest("tr").remove(); 
-// 		                }﻿ 
-// 		            }﻿ 
-// 		         } else { 
-// 		﻿            alert("선택된 데이터가 없습니다.");  
-// 		         }﻿ 
-		    }﻿ 
-
+// 	$(document).ready(function(){
+// 		$("#checkAll").click(function(){
+// 			if($("#checkAll").prop("checked")){
+// 				$("input[name=chk]").prop("checked",true);
+// 			}else{
+// 				$("input[name=chk]").prop("checked",false);
+// 			}
+// 		});
+// 	});
+  	 window.onload = function(){
+               var all = document.querySelector("#all");
+                var unit = document.querySelectorAll(".unit");
+                
+                //전체 선택을 누르면 항목들을 체크/해제
+                all.addEventListener("click", function(){
+                    //unit의 체크를 할지 말지를 결정
+                    for(var i=0; i<unit.length; i++){
+                        unit[i].checked = this.checked;
+                    }
+                });
+                
+                //각각의 항목의 체크가 풀리면 전체 선택의 체크 해제
+                for(var i=0; i<unit.length; i++){
+                    unit[i].addEventListener("click", function(){
+                        if(!this.checked){
+                            all.checked = false;
+                        }
+                    });
+                }
+                
+                //버튼을 누르면 체크된 항목들의 title 속성을 불러옴
+                document.querySelector("button").addEventListener("click", function(){
+                    var text = "";
+                    //unit을 검사
+                    for(var i=0; i<unit.length; i++){
+                        if(unit[i].checked){
+                            text += unit[i].title +"<br>";
+                            console.log(unit[i].title);
+                        }
+                    }
+                    document.querySelector("#result").innerHTML = text;
+                });
+            };
 </script>
 
 <head>
@@ -70,7 +89,7 @@
                     	</tr> 
                     
 	                    <tr>
-	                        <th><input id="checkAll" type="checkbox" ></th>
+	                        <th><input id="all" type="checkbox" ></th>
 	                        <th>아이디</th>
 	                        <th>분류</th>
 	                        <th>제목</th>
@@ -84,7 +103,7 @@
                     	<c:forEach var="list" items="${list}">
                     		<tr>
 	                    		<td>
-	                    			<input type="checkbox" name="chk"  value="${list.no }">
+	                    			<input type="checkbox" class="unit"  value="${list.no }">
 <%-- 	                    			<input type="hidden"  name="no"  value="${list.no }" > --%>
 	                    		</td>
 		                        <td>${list.mail_writer }</td>
