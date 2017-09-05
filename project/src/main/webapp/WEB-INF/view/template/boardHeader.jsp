@@ -56,8 +56,6 @@
 			<th rowspan="5">
                 <div>
                     <h3>회원정보 넣을 곳</h3>
-                    <h3><a href="${pageContext.request.contextPath}/member/login">로그인</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
                     <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
 					<h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;">내 수강정보</a></h3>
@@ -84,3 +82,16 @@
                     <tr>
                         <td>
                             <div>
+                            	<table>
+									<tr>
+										<th rowspan="5">
+							                <div>
+							                    <h3><a href="${pageContext.request.contextPath}/board/free">자유게시판</a></h3>
+							                    <h3><a href="${pageContext.request.contextPath}/board/info">정보게시판</a></h3>
+							                    <h3><a href="${pageContext.request.contextPath}/board/qna">QnA게시판</a></h3>
+							                    <h3><a href="${pageContext.request.contextPath}/board/require">요청게시판</a></h3>
+							                    <h3><a href="${pageContext.request.contextPath}/board/store">판매게시판</a></h3>
+							                </div>
+										</th>
+									
+										<td>
