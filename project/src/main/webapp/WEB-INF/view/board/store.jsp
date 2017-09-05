@@ -40,9 +40,27 @@
 							</tr>
 							<c:forEach var="info" items="${list}">
 							<tr>
+								<td>
+									${info.no}
+								</td>
+								<td class="title">
+									[${info.head}] <a href="${path}/detail?no=${info.no}">${info.title}</a>
+								</td>
+								<td>
+									${info.writer}
+								</td>
+								<td>
+									${info.read}
+								</td>
+								<td>
+									free.jsp
+								</td>
 							</tr>
 							</c:forEach>
 						</table>
+					</div>
+					<div class="row align-right">
+						<input type="button" value="글쓰기" onclick="location.href='${path}/write';">
 					</div>
 					<div class="empty-row"></div>
 					<div class="paging-wrap">
