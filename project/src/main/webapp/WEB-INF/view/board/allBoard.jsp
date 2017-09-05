@@ -4,7 +4,23 @@
     
 <%@ include file="/WEB-INF/view/template/boardHeader.jsp" %> 
 
-<h1>QnA게시판</h1>
+<c:choose>
+	<c:when test="${path eq 'free'}">
+		<h1>자유게시판</h1>
+	</c:when>
+	<c:when test="${path eq 'info'}">
+		<h1>정보게시판</h1>
+	</c:when>
+	<c:when test="${path eq 'qna'}">
+		<h1>QnA게시판</h1>
+	</c:when>
+	<c:when test="${path eq 'require'}">
+		<h1>요청게시판</h1>
+	</c:when>
+	<c:when test="${path eq 'store'}">
+		<h1>판매게시판</h1>
+	</c:when>
+</c:choose>
 
 <div class="page-wrap">
 	<div class="table-wrap">

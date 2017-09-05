@@ -42,13 +42,32 @@ public class MailDao {
 		return jdbcTemplate.query(sql, new Object[] {mail_receiver,box},mapper);
 	}
 	
-	//영구 삭제
-	public boolean delete(String mail_writer) {
-		
-		String sql="delete from mail where mail_writer=?";
-		
-		int res=jdbcTemplate.update(sql, mail_writer);
+	public boolean protect(String mail_receiver, int no) {
+		String sql = "update mail set mail_position='protect' where mail_receiver=? and no=?";
+		int res=jdbcTemplate.update(sql, new Object[] {mail_receiver, no});
 		return res>0;
-//		return jdbcTemplate.query(sql, new Object[] {mail_receiver,box},mapper);
+	}
+	
+	public boolean delete(String mail_receiver, int no) {
+		String sql="delete from mail where mail_receiver=? and no=?";
+		int res=jdbcTemplate.update(sql, new Object[] {mail_receiver, no});
+		return res>0;
+	}
+	
+	public boolean update(String mail_receiver, String location, int no) {
+		String sql = "update mail set mail_position=? where mail_receiver=? and no=?";
+		int res=jdbcTemplate.update(sql, new Object[] {location, mail_receiver, no});
+		return res>0;
+		
+	}
+	
+	public Mail select(String id, int no) {
+		String sql = "select * from mail where mail_receiver=? and no=?";
+		return jdbcTemplate.query(sql, new Object[] {id, no}, mapper).get(0);
+	}
+	
+	public String location(int no) {
+		String sql = "select mail_position from mail where no=?";
+		return jdbcTemplate.queryForObject(sql,new Object[] {no}, String.class);
 	}
 }
