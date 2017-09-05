@@ -20,26 +20,42 @@
 				$("input[name=chk]").prop("checked",false);
 			}
 		});
+		
+		$("input[name=chk]").click(function(){
+			var chk = $("input[name=chk]");
+			var tnf = true;
+			
+			for(var i=0; i<chk.length; i++){
+				if(!$(chk[i]).prop("checked")){
+					tnf=false;
+				}
+			}
+			$("#checkAll").prop("checked", tnf);
+		});
+		
 	});
 	
-	function fn_delRow(chkObjNm) { 
-				var chk = $("input[name=chk]");
-				var tnf = false;
+	function fn_delRow(chkObjNm) {
+		var chk = $("input[name=chk]");
+		var tnf = false;
 				
-				console.log("${param.box eq 'garbage'}");
-				for(var i=0; i<chk.length; i++){
-					if($(chk[i]).prop("checked")){
-						console.log($(chk[i]).val());
-						$(".delete").append("<input type='text' name='chk' value='"+$(chk[i]).val()+"'>");
-						tnf=true;
-					}
-				}
-				if(tnf) {
-					if(${param.box eq 'garbage'}) alert("메일이 삭제되었습니다");
-					else alert("메일이 휴지통으로 이동되었습니다");
-				}
-		    }﻿ 
+		if(chk.length==0) alert("체크된 메일이 없습니다");
+		
+		for(var i=0; i<chk.length; i++){
+			if($(chk[i]).prop("checked")){
+				console.log($(chk[i]).val());
+				$("#delete").append("<input type='hidden' name='chk' value='"+$(chk[i]).val()+"'>");
+				tnf=true;
+			}
+		}
+		
+		if(tnf) {
+			if(${param.box=='garbage'}) alert("메일이 삭제되었습니다");
+			else alert("메일이 휴지통으로 이동되었습니다");
+		}
+    }﻿ 
 
+    
 </script>
 
 <head>
@@ -63,11 +79,10 @@
                     <thead>
                    		 <tr>
                         	<td colspan="7">
-                        		<form action="" method="post" class="delete">
-	                            	<input onClick="fn_delRow('chkObject'); return false;" type="submit" value="삭제하기">
-	                            </form>
-	                            	<button>쪽지쓰기</button>
-	                            	<button>보관하기</button>
+                        		<form action="" method="post" name="delete" id="delete"></form>
+                            	<button onclick="fn_delRow('chkObject'); document.delete.submit();">삭제하기</button>
+                            	<button>쪽지쓰기</button>
+                            	<button>보관하기</button>
                         	</td>
                     	</tr> 
                     

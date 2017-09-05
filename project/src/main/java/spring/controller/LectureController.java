@@ -3,6 +3,7 @@ package spring.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.JOptionPane;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
+import spring.db.mylecture.MyLectureDao;
 
 @Controller
 public class LectureController {
@@ -20,6 +22,9 @@ public class LectureController {
 	
 	@Autowired
 	private LectureDao lectureDao;
+	
+	@Autowired
+	private MyLectureDao myLectureDao;
 
 	@RequestMapping("/lecture/teacher")
 	public String teacher() {
@@ -34,8 +39,10 @@ public class LectureController {
 	}
 	
 	@RequestMapping("/lecture/class")
-	public String lesson(String no, String page, String type, String key, Model m) throws Exception {
+	public String lesson(String no, String page, String type, String key, String wish, Model m) throws Exception {
 		int noI, pageNo;
+		boolean wishB;
+		String id = "테스트유저1";
 		try {
 			noI = Integer.parseInt(no);
 		} catch(Exception e) {
@@ -46,10 +53,21 @@ public class LectureController {
 		} catch(Exception e) {
 			pageNo = 1;
 		}
+		try {
+			wishB = Boolean.parseBoolean(wish);
+		} catch(Exception e) {
+			wishB = false;
+		}
 		
 		LectureInfo info = lectureDao.showOne(noI);
 		
-		String url = "study?page=" + page;
+		if (wishB) {
+			int result = myLectureDao.wish(id, noI, info);
+			if (result == 1) JOptionPane.showMessageDialog(null, "찜하기가 완료되었습니다.");
+			else JOptionPane.showMessageDialog(null, "이미 찜이 되어있거나 할 수 없습니다.");
+		}
+		
+		String url = "?page=" + page;
 		if (type != null && key != null) url += "&type=" + type + "&key=" + key;
 		
 		m.addAttribute("info", info);
