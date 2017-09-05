@@ -134,10 +134,11 @@ public class DataController {
 			throw new Exception("404");
 		}
 		
+		//여기 에러남 수정 해야함 => if문 써서 box가 sent일때 아닐때 나누기
 		Mail mail = mailDao.select(id, no);
 		if(mail==null) throw new Exception("404");
 		
-		String box = mailDao.location(Integer.parseInt(req.getParameter("no")));
+		String box = req.getParameter("box");
 		
 		m.addAttribute("mail", mail);
 		m.addAttribute("box", box);
@@ -158,5 +159,24 @@ public class DataController {
 		}
 		
 		return "redirect:mail?box="+box;
+	}
+	
+	@RequestMapping(value="data/mail/send", method=RequestMethod.GET)
+	public String sendGet() {
+		return "data/send";
+	}
+	
+	@RequestMapping(value="data/mail/send", method=RequestMethod.POST)
+	public String sendPost(HttpServletRequest req) {
+		String id = "회원(수신이)";
+		
+		//db 연결해서 mail 테이블에 정보 추가하기
+		Mail mail = new Mail(req);
+		mail.setMail_writer(id);
+		mail.setMail_read("안읽음");
+		
+		mailDao.insert(mail);
+		
+		return "redirect:/data/mail";
 	}
 }

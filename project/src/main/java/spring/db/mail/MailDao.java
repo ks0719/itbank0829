@@ -31,15 +31,14 @@ public class MailDao {
 		case "spam":
 			//보낸 사람이 나일때
 		case "sent":
-			sql+=" where mail_writer=? and mail_position=? order by mail_reg desc, no desc";
-			break;
+			sql+=" where mail_writer=? order by mail_reg desc, no desc";
+			return jdbcTemplate.query(sql, new Object[] {mail_receiver},mapper);
 			//받는 사람이 나일때  or box가 없을때
 		default:
 			sql+=" where mail_receiver=? and mail_position='index' order by mail_reg desc, no desc";
 			return jdbcTemplate.query(sql, new Object[] {mail_receiver},mapper);
 		}
 //		"select * from mail where mail_writer=? order by mail_reg desc"
-		return jdbcTemplate.query(sql, new Object[] {mail_receiver,box},mapper);
 	}
 	
 	public boolean protect(String mail_receiver, int no) {
@@ -63,11 +62,16 @@ public class MailDao {
 	
 	public Mail select(String id, int no) {
 		String sql = "select * from mail where mail_receiver=? and no=?";
+		List<Mail> list = jdbcTemplate.query(sql, new Object[] {id, no}, mapper);
+		if(list==null) return null;
 		return jdbcTemplate.query(sql, new Object[] {id, no}, mapper).get(0);
 	}
 	
-	public String location(int no) {
-		String sql = "select mail_position from mail where no=?";
-		return jdbcTemplate.queryForObject(sql,new Object[] {no}, String.class);
+	public boolean insert(Mail mail) {
+		String sql = "insert into mail values(?,?,?,?,sysdate,?,?,'index', mail_seq.nextval)";
+		int res=jdbcTemplate.update(sql, new Object[] {
+				mail.getMail_writer(), mail.getMail_tag(), mail.getMail_title(), mail.getMail_content(), mail.getMail_read(), mail.getMail_receiver()
+		});
+		return res>0;
 	}
 }
