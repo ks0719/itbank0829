@@ -68,7 +68,7 @@ public class BoardController {
 		m.addAttribute("endBlock", endBlock);
 		m.addAttribute("url", url);
 		m.addAttribute("path", path);
-		return "board/allBoard";
+		return "board/" + path;
 	}
 	
 	@RequestMapping(value="/{path}/write", method=RequestMethod.POST)
