@@ -42,17 +42,22 @@ public class MailDao {
 		return jdbcTemplate.query(sql, new Object[] {mail_receiver,box},mapper);
 	}
 	
-	//영구 삭제
-	public boolean delete(String mail_receiver, int chk ,String box) {
-		
-		String sql;
-		if(box.equals("garbage")) {
-			sql="delete from mail where mail_receiver=? and no=?";
-		}else {
-			sql = "update mail set mail_position='garbage' where mail_receiver=? and no=?";
-		}
-		
-		int res=jdbcTemplate.update(sql, new Object[] {mail_receiver, chk});
+	public boolean protect(String mail_receiver, int no) {
+		String sql = "update mail set mail_position='protect' where mail_receiver=? and no=?";
+		int res=jdbcTemplate.update(sql, new Object[] {mail_receiver, no});
 		return res>0;
+	}
+	
+	public boolean delete(String mail_receiver, int no) {
+		String sql="delete from mail where mail_receiver=? and no=?";
+		int res=jdbcTemplate.update(sql, new Object[] {mail_receiver, no});
+		return res>0;
+	}
+	
+	public boolean update(String mail_receiver, String key, int no) {
+		String sql = "update mail set mail_position=? where mail_receiver=? and no=?";
+		int res=jdbcTemplate.update(sql, new Object[] {key, mail_receiver, no});
+		return res>0;
+		
 	}
 }

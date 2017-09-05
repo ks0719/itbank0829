@@ -6,12 +6,6 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 
 <script>
-	$(document).ready(function() {
-		$(".mail").on("click", function() {
-			window.open('${pageContext.request.contextPath}/data/mail/mailDetail', '', 'width=500, height=500, menubar=no');
-		});
-	});
-	
 	$(document).ready(function(){
 		$("#checkAll").click(function(){
 			if($("#checkAll").prop("checked")){
@@ -32,30 +26,41 @@
 			}
 			$("#checkAll").prop("checked", tnf);
 		});
-		
 	});
 	
-	function fn_delRow(chkObjNm) {
+	function mailDetail(no){
+		//페이지 이동해야함
+		location.href = "${pageContext.request.contextPath}/data/mailDetail?no="+no;
+	}
+	
+	function moving(location) {
 		var chk = $("input[name=chk]");
-		var tnf = false;
-				
-		if(chk.length==0) alert("체크된 메일이 없습니다");
+		var tnf;
 		
-		for(var i=0; i<chk.length; i++){
-			if($(chk[i]).prop("checked")){
-				console.log($(chk[i]).val());
-				$("#delete").append("<input type='hidden' name='chk' value='"+$(chk[i]).val()+"'>");
-				tnf=true;
+		if(location=='garbage'){
+			for(var i=0; i<chk.length; i++){
+				if($(chk[i]).prop("checked")){
+					$("#garbage").append("<input type='hidden' name='garbage' value='"+$(chk[i]).val()+"'>");
+					tnf='del';
+				}
+			}
+		}else if(location=='protect'){
+			for(var i=0; i<chk.length; i++){
+				if($(chk[i]).prop("checked")){
+					$("#protect").append("<input type='hidden' name='protect' value='"+$(chk[i]).val()+"'>");
+					tnf='protect';
+				}
 			}
 		}
 		
-		if(tnf) {
+		if(tnf=='del') {
 			if(${param.box=='garbage'}) alert("메일이 삭제되었습니다");
 			else alert("메일이 휴지통으로 이동되었습니다");
+		}else if(tnf=='protect'){
+			alert("메일이 보관함으로 이동되었습니다");
 		}
+		else alert("체크된 메일이 없습니다");
     }﻿ 
-
-    
 </script>
 
 <head>
@@ -74,15 +79,16 @@
 			
             <td style="vertical-align: top">
                 <table>
-                   
-                    
                     <thead>
                    		 <tr>
                         	<td colspan="7">
-                        		<form action="" method="post" name="delete" id="delete"></form>
-                            	<button onclick="fn_delRow('chkObject'); document.delete.submit();">삭제하기</button>
+                        		<form action="" method="post" name="garbage" id="garbage"></form>
+                        		<form action="" method="post" name="protect" id="protect"></form>
+                            	<button onclick="moving('garbage'); document.garbage.submit();">삭제하기</button>
+                            	<c:if test="${param.box!='protect'}">
+	                            	<button onclick="moving('protect'); document.protect.submit();">보관하기</button>
+                            	</c:if>
                             	<button>쪽지쓰기</button>
-                            	<button>보관하기</button>
                         	</td>
                     	</tr> 
                     
@@ -99,21 +105,18 @@
                     
                     <tbody>
                     	<c:forEach var="list" items="${list}">
+                    		
                     		<tr>
-	                    		<td>
-	                    			<input type="checkbox" name="chk" value="${list.no}">
-<%-- 	                    			<input type="hidden"  name="no"  value="${list.no }" > --%>
-	                    		</td>
-		                        <td>${list.mail_writer }</td>
-		                        <td>${list.mail_tag}</td>
-		                        <td>${list.mail_title }</td>
-		                        <td>${list.mail_content }</td>
-		                        <td>${list.mail_reg }</td>
-		                        <td>${list.mail_read }</td>
+	                    		<td><input type="checkbox" name="chk" value="${list.no}"></td>
+		                        <td onclick="mailDetail(${list.no});">${list.mail_writer }</td>
+		                        <td onclick="mailDetail(${list.no});">${list.mail_tag}</td>
+		                        <td onclick="mailDetail(${list.no});">${list.mail_title }</td>
+		                        <td onclick="mailDetail(${list.no});">${list.mail_content }</td>
+		                        <td onclick="mailDetail(${list.no});">${list.mail_reg }</td>
+		                        <td onclick="mailDetail(${list.no});">${list.mail_read }</td>
                     		</tr>
                     	</c:forEach>
                     </tbody>
-               
                 </table>
             </td>
 		</tr>

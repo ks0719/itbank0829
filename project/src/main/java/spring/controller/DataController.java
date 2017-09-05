@@ -1,6 +1,8 @@
 package spring.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
@@ -39,14 +42,35 @@ public class DataController {
 		
 		return "data/maininfo";
 	}
-	@RequestMapping("/data/mail")
-	public String note(Model m, HttpServletRequest req) {
+	
+	@RequestMapping(value="/data/mail", method=RequestMethod.GET)
+	public String mailGet(Model m, HttpServletRequest req) {
+		String id = "회원(수신이)";
+		List<Mail>list=mailDao.list(id,req.getParameter("box"));
+		
+		m.addAttribute("list", list);
+		return "data/mail";
+	}
+	
+	@RequestMapping(value="/data/mail", method=RequestMethod.POST)
+	public String mailPost(Model m, HttpServletRequest req) {
 		String id = "회원(수신이)";
 		
-		String[] chks = req.getParameterValues("chk");
-		if(chks!=null) {
-			for(String chk : chks) {
-				mailDao.delete(id, Integer.parseInt(chk), req.getParameter("box"));
+		//delete,no[] 또는 protect,no[] 이렇게 들어옴
+		Map<String, String[]> map = req.getParameterMap();
+		Set<String> keys = map.keySet();
+		
+		for(String key:keys) {
+			for(String no : map.get(key)) {
+				if(key.equals("protect")) {
+					mailDao.update(id, key, Integer.parseInt(no));
+				}else if(key.equals("garbage")) {
+					if(req.getParameter("box").equals("garbage")) {
+						mailDao.delete(id, Integer.parseInt(no));
+					}else {
+						mailDao.update(id, key, Integer.parseInt(no));
+					}
+				}
 			}
 		}
 		
@@ -55,6 +79,9 @@ public class DataController {
 		m.addAttribute("list", list);
 		return "data/mail";
 	}
+	
+	
+	
 	@RequestMapping("/data/pay")
 	public String pay() {
 		
@@ -95,11 +122,8 @@ public class DataController {
 		return "data/manageLecture";
 	}
 	
-	@RequestMapping("/data/mail/mailDetail")
+	@RequestMapping("/data/mailDetail")
 	public String mailDetail() {
-		
-		
-	
 		
 		return "data/mailDetail";
 	}
