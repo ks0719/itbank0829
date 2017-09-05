@@ -8,13 +8,6 @@ public class Mail {
 	private int no;
 	private String mail_writer;
 	private String mail_title;
-	public int getNo() {
-		return no;
-	}
-
-	public void setNo(int no) {
-		this.no = no;
-	}
 	private String mail_content;
 	private String mail_receiver;
 	private String mail_read;
@@ -22,8 +15,13 @@ public class Mail {
 	private String mail_reg;
 	private String mail_tag;
 	
+	public int getNo() {
+		return no;
+	}
 
-
+	public void setNo(int no) {
+		this.no = no;
+	}
 	public Mail() {
 		super();
 	}

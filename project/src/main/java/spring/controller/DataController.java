@@ -46,7 +46,9 @@ public class DataController {
 	@RequestMapping(value="/data/mail", method=RequestMethod.GET)
 	public String mailGet(Model m, HttpServletRequest req) {
 		String id = "회원(수신이)";
-		List<Mail>list=mailDao.list(id,req.getParameter("box"));
+		String box = (req.getParameter("box")==null)?"index":req.getParameter("box");
+		
+		List<Mail>list=mailDao.list(id,box);
 		
 		m.addAttribute("list", list);
 		return "data/mail";
@@ -60,15 +62,15 @@ public class DataController {
 		Map<String, String[]> map = req.getParameterMap();
 		Set<String> keys = map.keySet();
 		
-		for(String key:keys) {
-			for(String no : map.get(key)) {
-				if(key.equals("protect")) {
-					mailDao.update(id, key, Integer.parseInt(no));
-				}else if(key.equals("garbage")) {
+		for(String location:keys) {
+			for(String no : map.get(location)) {
+				if(location.equals("protect")) {
+					mailDao.update(id, location, Integer.parseInt(no));
+				}else if(location.equals("garbage")) {
 					if(req.getParameter("box").equals("garbage")) {
 						mailDao.delete(id, Integer.parseInt(no));
 					}else {
-						mailDao.update(id, key, Integer.parseInt(no));
+						mailDao.update(id, location, Integer.parseInt(no));
 					}
 				}
 			}
@@ -122,9 +124,39 @@ public class DataController {
 		return "data/manageLecture";
 	}
 	
-	@RequestMapping("/data/mailDetail")
-	public String mailDetail() {
+	@RequestMapping(value="/data/mailDetail", method=RequestMethod.GET)
+	public String mailDetailGet(Model m, HttpServletRequest req) throws Exception {
+		String id = "회원(수신이)";//사용자 아이디
+		int no;
+		try {
+			no = Integer.parseInt(req.getParameter("no"));
+		}catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		Mail mail = mailDao.select(id, no);
+		if(mail==null) throw new Exception("404");
+		
+		String box = mailDao.location(Integer.parseInt(req.getParameter("no")));
+		
+		m.addAttribute("mail", mail);
+		m.addAttribute("box", box);
 		
 		return "data/mailDetail";
+	}
+	
+	@RequestMapping(value="/data/mailDetail", method=RequestMethod.POST)
+	public String mailDetailPost(Model m,HttpServletRequest req) throws Exception {
+		String id = "회원(수신이)";
+		
+		String box = req.getParameter("box");
+		
+		if(box.equals("garbage")) {
+			mailDao.delete(id, Integer.parseInt(req.getParameter("no")));
+		}else {
+			mailDao.update(id, "garbage", Integer.parseInt(req.getParameter("no")));
+		}
+		
+		return "redirect:mail?box="+box;
 	}
 }

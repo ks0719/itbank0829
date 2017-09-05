@@ -54,10 +54,20 @@ public class MailDao {
 		return res>0;
 	}
 	
-	public boolean update(String mail_receiver, String key, int no) {
+	public boolean update(String mail_receiver, String location, int no) {
 		String sql = "update mail set mail_position=? where mail_receiver=? and no=?";
-		int res=jdbcTemplate.update(sql, new Object[] {key, mail_receiver, no});
+		int res=jdbcTemplate.update(sql, new Object[] {location, mail_receiver, no});
 		return res>0;
 		
+	}
+	
+	public Mail select(String id, int no) {
+		String sql = "select * from mail where mail_receiver=? and no=?";
+		return jdbcTemplate.query(sql, new Object[] {id, no}, mapper).get(0);
+	}
+	
+	public String location(int no) {
+		String sql = "select mail_position from mail where no=?";
+		return jdbcTemplate.queryForObject(sql,new Object[] {no}, String.class);
 	}
 }
