@@ -22,15 +22,15 @@
                     <td colspan="2"><textarea class="textarea" readonly>${info.detail}</textarea></td>
                 </tr>
 			</tbody>
-		</table>	
+		</table>
         
         <div class="left" align="left">
         <a href="#">강사 정보</a>
         </div>
         <div class="right" align="right">
-        <a href="#">찜하기</a>
+        <a href="class${url}&no=${no}&wish=true">찜하기</a>
         <a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
-        <a href="study?page=${page}">목록보기</a>
+        <a href="study${url}">목록보기</a>
         </div>
 	</div>
 

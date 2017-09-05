@@ -2,8 +2,6 @@ package spring.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.B2CDao;
 import spring.db.B2CDto;
@@ -27,9 +26,8 @@ public class CustomerController {
 		return "consumer/b2c";
 	}
 	@RequestMapping(value="/consumer/b2c",method=RequestMethod.POST)
-	public String b2cpost(HttpServletRequest request, Model model) {
-	dto=new B2CDto(request);
-	dto.setId(request.getParameter("id"));
+	public String b2cpost(MultipartHttpServletRequest mRequest, Model model) {
+	dto=new B2CDto(mRequest);
 	log.debug("dto="+dto.toString());
 	dao.insert(dto);
 	List<B2CDto> list;
@@ -59,5 +57,9 @@ public class CustomerController {
 	@RequestMapping("/consumer/rule")
 	public String rule() {
 		return "consumer/rule";
+	}
+	@RequestMapping("/consumer/test")
+	public String edit() {
+		return "consumer/test";
 	}
 }

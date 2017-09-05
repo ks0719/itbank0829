@@ -17,11 +17,11 @@ public class LectureDao {
 	};
 	
 	public boolean insert(LectureInfo info) {
-		String sql = "insert into lecture_info values(lecture_info_seq.nextval, ?, ?, ?, ?, ?, ?, '등록 가능', 0, 0, 0, ?, ?, ?, 0, ?, ?, 'false', sysdate)";
+		String sql = "insert into lecture_info values(lecture_info_seq.nextval, ?, ?, ?, ?, ?, ?, '등록 가능', 0, 0, 0, ?, ?, ?, 0, ?, ?, 'false', sysdate, ?)";
 		
 		Object[] args = new Object[] {info.getTag(), info.getTitle(), info.getTeacher(), info.getTime(), info.getType(), 
 				info.getPrice(), info.getPicture_name(), info.getPicture_realname(), info.getPicture_type(), 
-				info.getPicture_size(), info.getIntro(), info.getDetail()};
+				info.getPicture_size(), info.getIntro(), info.getDetail(), info.getOpen()};
 		
 		return jdbcTemplate.update(sql, args) > 0;
 	}
@@ -52,8 +52,8 @@ public class LectureDao {
 	}
 	
 	public int count(String type, String key) {
-		if (type == null || key == null) return count();
-		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true' and " + type + " like '%'||'"+ key +"'||'%'", Integer.class);
+		if (type == "" || key == null) return count();
+		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true' and lower (" + type + ") like '%'||'"+ key +"'||'%'", Integer.class);
 	}
 	
 	public List<LectureInfo> list(int start, int end) {
@@ -65,7 +65,7 @@ public class LectureDao {
 	}
 	
 	public List<LectureInfo> list(String type, String key, int start, int end) {
-		if (type == null || key == null) return list(start, end);
+		if (type == "" || key == null) return list(start, end);
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from lecture_info where state = '등록 가능' and accept = 'true' and lower (" + type + ") like '%'||?||'%' order by no desc)"

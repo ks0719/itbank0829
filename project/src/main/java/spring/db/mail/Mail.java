@@ -5,8 +5,16 @@ import java.sql.SQLException;
 
 public class Mail {
 	
+	private int no;
 	private String mail_writer;
 	private String mail_title;
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
 	private String mail_content;
 	private String mail_receiver;
 	private String mail_read;
@@ -22,6 +30,7 @@ public class Mail {
 	
 	public Mail(ResultSet rs) throws SQLException {
 		super();
+		setNo(rs.getInt("no"));
 		setMail_content(rs.getString("mail_content"));
 		setMail_position(rs.getString("mail_position"));
 		setMail_read(rs.getString("mail_read"));

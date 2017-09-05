@@ -34,7 +34,7 @@ text-align:center;
         
     }
 .page-wrap {
-    width: 700px;
+    width: 800px;
     margin: 20px auto;
 }
 .table-wrap {
@@ -44,7 +44,9 @@ text-align:center;
 	border-collapse: collapse;
 	width: 90%;
 	margin: 10px auto;
-	padding: 5px;
+}
+.study th, .study td {
+	padding: 10px;
 }
 .title {
 	width: 40%;

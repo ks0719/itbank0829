@@ -11,6 +11,41 @@
 			window.open('${pageContext.request.contextPath}/data/mail/mailDetail', '', 'width=500, height=500, menubar=no');
 		});
 	});
+	
+// 	$(document).ready(function(){
+// 		$("#checkAll").click(function(){
+// 			if($("#checkAll").prop("checked")){
+// 				$("input[name=chk]").prop("checked",true);
+// 			}else{
+// 				$("input[name=chk]").prop("checked",false);
+// 			}
+// 		});
+// 	});
+	
+	
+
+  	 window.onload = function(){
+               var all = document.querySelector("#all");
+                var unit = document.querySelectorAll(".unit");
+                
+                //전체 선택을 누르면 항목들을 체크/해제
+                all.addEventListener("click", function(){
+                	
+                    //unit의 체크를 할지 말지를 결정
+                    for(var i=0; i<unit.length; i++){
+                        unit[i].checked = this.checked;
+                    }
+                });
+                
+                //각각의 항목의 체크가 풀리면 전체 선택의 체크 해제
+                for(var i=0; i<unit.length; i++){
+                    unit[i].addEventListener("click", function(){
+                        if(!this.checked){
+                            all.checked = false;
+                        }
+                    });
+                }
+            };
 </script>
 
 <head>
@@ -34,14 +69,18 @@
                     <thead>
                    		 <tr>
                         	<td colspan="7">
-	                            <button>삭제하기</button>
-	                            <button>쪽지쓰기</button>
-	                            <button>보관하기</button>
+<!--                         		<form action="#" method="post"> -->
+<!-- 	                            	<button onClick="fn_delRow('chkObject');">삭제하기</button> -->
+	                            	<a href="${pageContext.request.contextPath}/data/mail?box=${box}">삭제하기</a>
+<!-- 	                            	<button>삭제하기</button> -->
+<!-- 	                            </form> -->
+	                            	<button>쪽지쓰기</button>
+	                            	<button>보관하기</button>
                         	</td>
                     	</tr> 
                     
 	                    <tr>
-	                        <th><input type="checkbox"></th>
+	                        <th><input id="all" type="checkbox" ></th>
 	                        <th>아이디</th>
 	                        <th>분류</th>
 	                        <th>제목</th>
@@ -52,9 +91,12 @@
                     </thead>
                     
                     <tbody>
-                    	<c:forEach var="list" items="${list }">
+                    	<c:forEach var="list" items="${list}">
                     		<tr>
-	                    		<td><input type="checkbox"></td>
+	                    		<td>
+	                    			<input type="checkbox"  name="checkOne" class="unit"  value="${list.no }">
+<%-- 	                    			<input type="hidden"  name="no"  value="${list.no }" > --%>
+	                    		</td>
 		                        <td>${list.mail_writer }</td>
 		                        <td>${list.mail_tag}</td>
 		                        <td>${list.mail_title }</td>
