@@ -15,14 +15,12 @@ public class Mail {
 	private String mail_read;
 	private String mail_position;
 	private String mail_reg;
-	private String mail_tag;
 	
 	public Mail(HttpServletRequest req) {
 		setMail_content(req.getParameter("mail_content"));
 		setMail_receiver(req.getParameter("mail_receiver"));
 		setMail_title(req.getParameter("mail_title"));
 		setMail_writer(req.getParameter("mail_writer"));
-		setMail_tag(req.getParameter("mail_tag"));
 	}
 	
 	public Mail(ResultSet rs) throws SQLException {
@@ -35,7 +33,6 @@ public class Mail {
 		setMail_reg(rs.getString("mail_reg"));
 		setMail_title(rs.getString("mail_title"));
 		setMail_writer(rs.getString("mail_writer"));
-		setMail_tag(rs.getString("mail_tag"));
 	}
 	
 	public int getNo() {
@@ -89,12 +86,6 @@ public class Mail {
 	}
 	public void setMail_reg(String mail_reg) {
 		this.mail_reg = mail_reg;
-	}
-	public String getMail_tag() {
-		return mail_tag;
-	}
-	public void setMail_tag(String mail_tag) {
-		this.mail_tag = mail_tag;
 	}
 	
 }

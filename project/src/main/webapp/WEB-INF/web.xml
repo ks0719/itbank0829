@@ -36,6 +36,30 @@
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+            <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+            <servlet-name>default</servlet-name>
+        <url-pattern>*.gif</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+            <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+            <servlet-name>default</servlet-name>
+        <url-pattern>*.PNG</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+            <servlet-name>default</servlet-name>
+        <url-pattern>*.GIF</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+            <servlet-name>default</servlet-name>
+        <url-pattern>*.JPG</url-pattern>
+    </servlet-mapping>
     
     <!-- spring에서 제공하는 인코딩 필터를 적용 -->
 	<filter>

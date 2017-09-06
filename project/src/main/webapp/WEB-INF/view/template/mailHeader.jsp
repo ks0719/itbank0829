@@ -27,6 +27,10 @@
 		});
 	});
 	
+	function isExist(nick){
+		console.log(nick);
+	}
+	
 	function mailDetail(no){
 		location.href = "${pageContext.request.contextPath}/data/mailDetail?box=${param.box}&no="+no;
 	}
