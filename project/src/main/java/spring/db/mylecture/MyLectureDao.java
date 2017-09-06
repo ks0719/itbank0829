@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import spring.db.lecture.LectureInfo;
+
 @Repository("myLectureDao")
 public class MyLectureDao {
 	public static final int MY_LECTURE_LENGTH = 10;
@@ -29,12 +31,13 @@ public class MyLectureDao {
 		
 		switch(box) {
 		case "all":
+			sql += " and state!='미결제'";
 			break;
 		case "comp":
 			sql += " and state='수료'";
 			break;
 		case "eval":
-			sql += " and eval='미평가'";
+			sql += " and eval='미평가' and state='수료'";
 			break;
 		case "wish":
 			sql += " and wish='wish'";
@@ -70,6 +73,24 @@ public class MyLectureDao {
 		
 		int data_length = jdbcTemplate.queryForObject(sql, new Object[] {id} ,Integer.class);
 		return (data_length-1)/MY_LECTURE_LENGTH+1;
+	}
+	
+	public int insert(String id, int no, LectureInfo lecture, String wish) {
+		String sql = "insert into mylecture values(?, ?, ?, ?, ?, ?, ?, ?, '미결제', ?, '미평가', ?)";
+		
+		Object[] args = {id, lecture.getNo(), lecture.getTag(), lecture.getTitle(), lecture.getTeacher(), lecture.getTime(), 
+				lecture.getType(), lecture.getPrice(), lecture.getOpen(), wish};
+		
+		return jdbcTemplate.update(sql, args);
+	}
+	
+	public int wish(String id, int no, LectureInfo lecture) {
+		String sql = "select * from mylecture where id = ? and no = ? or wish = ''";
+		
+		int result = jdbcTemplate.update(sql, new Object[] {id, no});
+		
+		if (result == 0) return insert(id, no, lecture, "wish");
+		else return 0;
 	}
 	
 }

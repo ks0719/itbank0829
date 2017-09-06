@@ -8,7 +8,6 @@
 	<context:property-placeholder location="/WEB-INF/*.properties"/>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-		
 		<property name="driverClassName" value="${database.driver}"/>
 		<property name="url" value="${database.url}"/>
 		<property name="username" value="${database.username}"/>

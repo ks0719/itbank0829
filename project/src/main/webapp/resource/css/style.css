@@ -34,17 +34,20 @@ text-align:center;
         
     }
 .page-wrap {
-    width: 700px;
+    width: 800px;
     margin: 20px auto;
 }
 .table-wrap {
     overflow: auto;
 }
-.study {
+.tableUnit {
 	border-collapse: collapse;
-	width: 90%;
-	margin: 10px auto;
-	padding: 5px;
+	width: 100%;
+	margin: 20px auto;
+	text-align: center;
+}
+table th, td {
+	padding: 10px;
 }
 .title {
 	width: 40%;
@@ -60,8 +63,9 @@ form {
 	margin: 0px auto;
 }
 .paging-wrap {
-	width: 600px;
-   	margin: 0 auto;
+	display: inline-block;
+	min-width: 100px;
+	margin: 0px auto;
 }
 .paging-wrap .paging-unit {
     display: inline-block;
@@ -70,15 +74,30 @@ form {
     padding: 5px;
     border: 1px solid black;
     float: left;
+    margin: auto;
 }
 .paging-wrap .active {
     border: 1px solid red !important;
     background-color: lightyellow;
+    margin: auto;
 }
 .empty-row{
     display: block;
     width:100%;
     height:30px;
+}
+.text-left {
+	text-align: left;
+}
+.align-left {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.align-right{
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
 }
 .user-input {
     padding:10px;
@@ -95,23 +114,23 @@ form {
 .wrap{
     width:700px;
     margin: auto;
-    margin-top: 30px;
 }
 .left{
-     display: inline-block;
-     width:15%
+	display: inline-block;
+	width:15%
  }
  .right{
-     display: inline-block;
-     width: 70%;
+	display: inline-block;
+	width: 70%;
  }
  .row{
-     display: block;
-     width:100%;
-     height: 100%;
-     margin:20px 0px;
-     padding:20px;
-     font-size:20px;
+	display: block;
+	width:100%;
+	height:100%;
+	margin:auto;
+	padding:20px;
+	font-size:20px;
+	text-align: center;
  }
 .borN{
     border: none;
@@ -120,4 +139,7 @@ form {
 	width: 100%;
 	height: 200px;
     resize: none;
+}
+.head {
+	width: 15%;
 }

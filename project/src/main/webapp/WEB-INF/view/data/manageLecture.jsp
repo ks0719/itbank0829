@@ -4,9 +4,17 @@
 <html>
 <head>
 <title>수강 관리</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $(".detail").click(function(){
+        $("#changeable").load("${pageContext.request.contextPath}/lecture/class?no=32 .borN");
+    });
+});
+</script>
 </head>
 <body>
-
 	<table>
 		<tr>
 			<th rowspan="5">
@@ -17,7 +25,7 @@
                 <h3><a href="${pageContext.request.contextPath}/data/manageLecture?box=wish">찜한 강의</a></h3>
 			</th>
             <td style="vertical-align: top">
-                <table>
+                <table id="changeable">
                 	<thead>
 	                	<tr>
 	                        <th>분류</th>
@@ -28,27 +36,32 @@
 	                        <th>수강상태</th>
 	                        <th>수강날짜</th>
 	                        <th>결제금액</th>
+	                        <th>상세보기</th>
 	                    </tr>
                 	</thead>
                     
                     <tbody>
-	                    <c:forEach var="mylecture" items="${list}">
+	                    <c:forEach var="list" items="${list}">
 		                    <tr>
-		                        <td>${mylecture.tag}</td>
-		                        <td>${mylecture.teacher}</td>
-		                        <td>${mylecture.subject}</td>
-		                        <td>${mylecture.time}</td>
-		                        <td>${mylecture.type}</td>
-		                        <td>${mylecture.state}</td>
-		                        <td>${mylecture.reg}</td>
-		                        <td>${mylecture.price}</td>
+		                        <td>${list.tag}</td>
+		                        <td>${list.teacher}</td>
+		                        <td>${list.title}</td>
+		                        <td>${list.time}</td>
+		                        <td>${list.type}</td>
+		                        <td>${list.state}</td>
+		                        <td>${list.reg}</td>
+		                        <td>${list.price}</td>
+		                        <td>
+<%-- 		                        	<a href="${pageContext.request.contextPath}/lecture/class?no=${list.no}" class="detail" id="">상세보기</a> --%>
+		                        	<a href="" class="detail" id="${list.no}" onclick="return false;">상세보기</a>
+		                        </td>
 		                    </tr>
 	                    </c:forEach>
                     </tbody>
                     
                     <tfoot>
                     	<tr>
-                    		<td colspan="8">
+                    		<td colspan="9">
                     			<c:forEach begin="${start}" end="${end}" var="i">
                     				<c:choose>
                     					<c:when test="${param.page == i || page==i}">

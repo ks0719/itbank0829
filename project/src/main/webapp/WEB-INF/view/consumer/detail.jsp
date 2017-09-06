@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/template/header.jsp"%>
 	<h1>1:1 문의</h1>
-	<form>
+	<form >
 	아이디 <input type="text" value="${dto.id }" readonly><br>
 	문의유형 <input type="text" value="${dto.type }" readonly>
 	<br>
