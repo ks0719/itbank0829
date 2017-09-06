@@ -47,17 +47,45 @@
             }
         }).open();
     }
-    
-     //아이디중복확인
-     
-    
+	
+
 </script>
+<script>
+
+//아이디 중복확인
+$(document).ready(function() {
+	  console.log("실행댐");
+     var input = $("#ids");
+     console.log("실행댐");
+     $("#idcheck").on("click",function () {
+         
+           console.log(input.val());
+        $.ajax({
+           url:"/member/idcheck",
+           type:"post",
+           data:{id:input.val()},
+           dataType:"text",
+           success:function(){
+              console.log("정상실행댐");
+              $("#check").html("<lable>사용가능한 아이디입니다</label>");
+           },
+           error:function(){
+              console.log("비정상실행댐");
+              $("#check").html("<lable>이미 존재하는 아이디 입니다</label>");
+           }
+        });
+     });
+  });
+</script>
+
 </head>
 <body>
 	<h1>회원 가입</h1>
 	<form action="" method="post" >
-		<input type="text" name="id" placeholder="ID입력"  id="id" required>
-		<input type="button"  value="중복확인" id="check">
+		<input type="text" name="id" placeholder="ID입력"  id="ids" required>
+		<input type="button"  id="idcheck" value="중복확인"  >
+		<br><br>
+		<label id = "check"></label>
 		<br><br>
 		<input type="password" name="pw" placeholder="PW입력" required>
 		<br><br>

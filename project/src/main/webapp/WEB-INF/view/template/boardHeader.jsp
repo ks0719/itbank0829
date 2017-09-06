@@ -16,6 +16,11 @@
 				location.href = "class?no=" + no + "&page=" + page;
 			}
 		});
+		$("#board-select option").each(function(){
+			if($(this).val()=="${unit.head}"){
+				$(this).attr("selected","selected");
+			}
+		});
 	});
 	  $(function(){
 	      //전역변수

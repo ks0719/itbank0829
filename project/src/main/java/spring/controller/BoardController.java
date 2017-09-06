@@ -1,9 +1,15 @@
 package spring.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.board.Board;
 import spring.db.board.BoardDao;
@@ -39,14 +47,14 @@ public class BoardController {
 		if (pageNo <= 0 ) pageNo = 1;
 
 		int listCount = boardDao.count(path, type, key);
-		log.debug(String.valueOf(listCount));
+//		log.debug(String.valueOf(listCount));
 		
 		int boardSize = 10;
 		int start = boardSize * pageNo - 9;
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
 		
-		log.debug(start + ", " + end);
+//		log.debug(start + ", " + end);
 		List<Board> list = boardDao.list(path, type, key, start, end);
 		
 		int blockSize = 10;
@@ -72,8 +80,15 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/{path}/write", method=RequestMethod.POST)
-	public String write(@PathVariable String path, HttpServletRequest request, Model m) {
-		int no = boardDao.write(path, new Board(request));
+	public String write(@PathVariable String path, MultipartHttpServletRequest mRequest, Model m) throws IllegalStateException, IOException {
+		MultipartFile file = mRequest.getFile("file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+
+		String[] extension = file.getContentType().split("/");
+		int no = boardDao.write(path, new Board(mRequest));
+		String filename = no + "." + extension[extension.length - 1];
+		File target = new File(savePath, filename);
+		file.transferTo(target);		
 		
 		return "redirect:/board/" + path + "/detail?no=" + no;
 	}
@@ -92,7 +107,6 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		log.debug(String.valueOf(noI));
 		Board board = boardDao.detail(noI);
 		
 		m.addAttribute("unit", board);
@@ -101,8 +115,15 @@ public class BoardController {
 	}
 
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
-	public String edit(@PathVariable String path, HttpServletRequest request, int no, Model m) {
-		boardDao.edit(no, new Board(request));
+	public String edit(@PathVariable String path, MultipartHttpServletRequest mRequest, int no, Model m) throws IllegalStateException, IOException {
+		MultipartFile file = mRequest.getFile("file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+
+		String[] extension = file.getContentType().split("/");
+		boardDao.edit(no, new Board(mRequest));
+		String filename = no + "." + extension[extension.length - 1];
+		File target = new File(savePath, filename);
+		file.transferTo(target);		
 		
 		return "redirect:/board/" + path + "/detail?no=" + no;
 	}
@@ -136,6 +157,40 @@ public class BoardController {
 		boardDao.delete(noI);
 		
 		return "redirect:/board/" + path;
+	}
+	
+	@Autowired
+	private ServletContext context;
+	
+	@RequestMapping("/{path}/download/{no}")
+	public String download(@PathVariable String path, @PathVariable String no, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int noI;
+		try {
+			noI = Integer.parseInt(no);
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		String savePath = context.getRealPath("/resource/file");
+		
+		Board board = boardDao.detail(noI);
+		
+		File target = new File(savePath, board.getFilename());
+		byte[] data = FileUtils.readFileToByteArray(target);
+
+		String originname = new String(board.getOriginfile().getBytes("UTF-8"), "ISO-8859-1");
+		
+		response.setContentType("application/octet-stream");//전송할 유형
+		response.setContentLength(data.length);//전송할 크기
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.setHeader("Content-Disposition", 
+											"attachment; fileName=\""+ originname +"\";");
+		
+		OutputStream out = response.getOutputStream();
+		out.write(data);
+		out.close();
+
+		return "redirect:/board/" + path + "/detail?no=" + no;
 	}
 	
 }
