@@ -26,8 +26,7 @@ public class MailDao {
 		case "garbage":
 			sql+=" where mail_position=? or mail_receiver=? and mail_position=? order by mail_reg desc, no desc";
 			return jdbcTemplate.query(sql, new Object[] {mail_receiver,mail_receiver,box},mapper);
-			
-			//팀원이랑 상의
+			//회원 테이블에 넣을 예정
 		case "spam":
 			//보낸 사람이 나일때
 		case "sent":
@@ -60,10 +59,16 @@ public class MailDao {
 		
 	}
 	
-	public Mail select(String id, int no) {
-		String sql = "select * from mail where mail_receiver=? and no=?";
+	public Mail select(String id, int no, String location) {
+		String sql;
+		if(location.equals("sent")) {
+			sql = "select * from mail where mail_writer=? and no=?";
+		}else {
+			sql = "select * from mail where mail_receiver=? and no=?";
+		}
+		
 		List<Mail> list = jdbcTemplate.query(sql, new Object[] {id, no}, mapper);
-		if(list==null) return null;
+		if(list.size()<1) return null;
 		return jdbcTemplate.query(sql, new Object[] {id, no}, mapper).get(0);
 	}
 	
