@@ -47,14 +47,14 @@ public class BoardController {
 		if (pageNo <= 0 ) pageNo = 1;
 
 		int listCount = boardDao.count(path, type, key);
-		log.debug(String.valueOf(listCount));
+//		log.debug(String.valueOf(listCount));
 		
 		int boardSize = 10;
 		int start = boardSize * pageNo - 9;
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
 		
-		log.debug(start + ", " + end);
+//		log.debug(start + ", " + end);
 		List<Board> list = boardDao.list(path, type, key, start, end);
 		
 		int blockSize = 10;

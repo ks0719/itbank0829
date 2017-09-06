@@ -7,12 +7,12 @@
 <div class="page-wrap">
 	<div class="table-wrap">
 		<form action="write" method="post" enctype="multipart/form-data">
-			<table border="1" class="study" rules=rows>
+			<table border="1" class="tableUnit" rules=rows>
 				<tr>
 					<td class="head">
 						말머리
 					</td>
-					<td>
+					<td class="text-left">
 						<select name="head" class="user-input">
 							<option value="">말머리</option>
 							<option value="Java">Java</option>
@@ -29,7 +29,7 @@
 					<td class="head">
 						제목
 					</td>
-					<td>
+					<td class="text-left">
 						<input type="text" class="user-input" name="title" required placeholder="제목">
 					</td>
 				</tr>
@@ -37,7 +37,7 @@
 					<td class="head">
 						작성자
 					</td>
-					<td>
+					<td class="text-left">
 						<input type="text" class="user-input" name="writer" value="${id}" required>
 					</td>
 				</tr>
@@ -50,7 +50,7 @@
 					<td class="head">
 						첨부파일
 					</td>
-					<td>
+					<td class="text-left">
 						<input type="file" name="file">
 					</td>
 				</tr>

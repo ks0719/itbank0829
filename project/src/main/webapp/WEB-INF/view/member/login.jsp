@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>로그인</h1>
-	<form action=""	method="post">
+	<form action="loginCheck"method="post">
 		<input name="email" placeholder="이메일" required>
 		<br><br>
 		<input type="password" name="pw" placeholder="비밀번호" required>
