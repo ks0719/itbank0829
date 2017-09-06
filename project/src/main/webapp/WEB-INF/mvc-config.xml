@@ -8,11 +8,12 @@
 
     <mvc:annotation-driven />
     <context:component-scan base-package="spring.controller"/>
-
+	<mvc:resources location="/resource" mapping="/resuorce/**"></mvc:resources>
 	<mvc:resources location="/resource/css/" mapping="/css/**"/>
 	<mvc:resources location="/resource/img/" mapping="/img/**"/>
 	<mvc:resources location="/resource/editor/" mapping="/editor/**"/>
 	<mvc:resources location="/resource/js" mapping="/js/**"/>
+	<mvc:resources location="/resource/photo_upload" mapping="photo_upload/**"/>
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	        <!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
 	        <property name="prefix" value="/WEB-INF/view/"/>
@@ -24,7 +25,7 @@
 	<!-- Multipart/form-data 요청을 처리할 bean을 등록 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="UTF-8"/>
-		<property name="maxUploadSize" value="10000000"/>
+		<property name="maxUploadSize" value="100000000"/>
 <!-- 		<property name="maxInMemorySize" value="바이트"/> -->
 	</bean>
 
