@@ -47,8 +47,12 @@ public class BoardDao {
 		String sql = "select board_seq.nextval from dual";
 		int no = jdbcTemplate.queryForObject(sql, Integer.class);
 		
-		sql = "insert into board values(?, ?, ?, ?, ?, ?, null, 0, 0, 0, sysdate)";
-		jdbcTemplate.update(sql, new Object[] {no, board.getWriter(), path, board.getHead(), board.getTitle(), board.getDetail()});
+		String[] extension = board.getFiletype().split("/");
+		String filename = no + "." + extension[extension.length - 1];
+		
+		sql = "insert into board values(?, ?, ?, ?, ?, ?, null, 0, 0, 0, sysdate, ?, ?, ?, ?)";
+		jdbcTemplate.update(sql, new Object[] {no, board.getWriter(), path, board.getHead(), board.getTitle(), board.getDetail(), 
+				filename, board.getOriginfile(), board.getFiletype(), board.getFilesize()});
 		
 		return no;
 	}
@@ -62,9 +66,13 @@ public class BoardDao {
 	}
 
 	public void edit(int no, Board board) {
-		String sql = "update board set head = ?, title = ?, detail = ? where no = ?";
+		String sql = "update board set head = ?, title = ?, detail = ?, filename = ?, originfile = ?, filetype = ?, filesize = ? where no = ?";
 		
-		jdbcTemplate.update(sql, board.getHead(), board.getTitle(), board.getDetail(), no);
+		String[] extension = board.getFiletype().split("/");
+		String filename = no + "." + extension[extension.length - 1];
+		
+		jdbcTemplate.update(sql, board.getHead(), board.getTitle(), board.getDetail(), filename, board.getOriginfile(), 
+				board.getFiletype(), board.getFilesize(), no);
 	}
 
 	public void delete(int noI) {
