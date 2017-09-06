@@ -12,7 +12,7 @@
 				<td class="head">
 					말머리
 				</td>
-				<td>
+				<td class="text-left">
 					${unit.head}
 				</td>
 			</tr>
@@ -20,7 +20,7 @@
 				<td class="head">
 					제목
 				</td>
-				<td>
+				<td class="text-left">
 					${unit.title}
 				</td>
 			</tr>
@@ -28,7 +28,7 @@
 				<td class="head">
 					작성자
 				</td>
-				<td>
+				<td class="text-left">
 					${unit.writer}
 				</td>
 			</tr>
@@ -41,7 +41,7 @@
 				<td>
 					첨부파일
 				</td>
-				<td>
+				<td class="text-left">
 					${unit.originfile}
 					<a href="download/${unit.no}">
 						<img src="<c:url value="/img/download.png"/>" width="20" height="20">
