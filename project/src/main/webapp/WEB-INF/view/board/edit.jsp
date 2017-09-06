@@ -7,7 +7,7 @@
 <h1>수정</h1>
 <div class="page-wrap">
 	<div class="table-wrap">
-		<form action="edit" method="post">
+		<form action="edit" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="no" value="${no}">
 			<table border="1" class="study" rules=rows>
 				<tr>
@@ -46,6 +46,15 @@
 				<tr>
 					<td colspan="2">
 						<textarea rows="20" cols="80" name="detail" class="user-input" required>${unit.detail}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="head">
+						첨부파일
+					</td>
+					<td>
+						${unit.originfile}
+						<input type="file" name="file" >
 					</td>
 				</tr>
 			</table>

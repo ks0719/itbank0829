@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ include file="/WEB-INF/view/template/boardHeader.jsp" %>
 
@@ -34,6 +35,17 @@
 			<tr>
 				<td colspan="2">
 					<textarea rows="20" cols="80">${unit.detail}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					첨부파일
+				</td>
+				<td>
+					${unit.originfile}
+					<a href="download/${unit.no}">
+						<img src="<c:url value="/img/download.png"/>" width="20" height="20">
+					</a>
 				</td>
 			</tr>
 		</table>

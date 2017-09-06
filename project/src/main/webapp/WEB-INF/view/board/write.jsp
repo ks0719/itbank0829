@@ -6,7 +6,7 @@
 <h1>글쓰기</h1>
 <div class="page-wrap">
 	<div class="table-wrap">
-		<form action="write" method="post">
+		<form action="write" method="post" enctype="multipart/form-data">
 			<table border="1" class="study" rules=rows>
 				<tr>
 					<td class="head">
@@ -44,6 +44,14 @@
 				<tr>
 					<td colspan="2">
 						<textarea rows="20" cols="80" name="detail" required></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="head">
+						첨부파일
+					</td>
+					<td>
+						<input type="file" name="file">
 					</td>
 				</tr>
 			</table>
