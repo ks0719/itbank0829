@@ -28,8 +28,7 @@
 	});
 	
 	function mailDetail(no){
-		//페이지 이동해야함
-		location.href = "${pageContext.request.contextPath}/data/mailDetail?no="+no;
+		location.href = "${pageContext.request.contextPath}/data/mailDetail?box=${param.box}&no="+no;
 	}
 	
 	function del(){
