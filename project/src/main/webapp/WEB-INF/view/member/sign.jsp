@@ -49,8 +49,6 @@
     }
 	
 
-</script>
-<script>
 
 //아이디 중복확인
 $(document).ready(function() {
