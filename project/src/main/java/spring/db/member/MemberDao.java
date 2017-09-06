@@ -41,8 +41,8 @@ public class MemberDao {
 
 	  public boolean idcheck(String id) {
 	      
-	      String sql = "select*from member where id=?";
-	      boolean result = jdbcTemplate.query(sql, new Object[] {id}, mapper).isEmpty();
+	      String sql = "select count(*) from member where id=?";
+	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {id},Integer.class)>0;
 	      
 	      return result;
 	   }

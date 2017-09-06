@@ -51,14 +51,9 @@ public class MemberController {
 	
 	@RequestMapping(value="/member/idcheck", method = RequestMethod.POST)
 	   public String idcheck(@RequestParam String id) throws Exception {
-		System.out.println(id);
 		boolean result = memberDao.idcheck(id);
-	      
-	      if(result) {
-	         return "member/success";
-	      }else {
-	         throw new Exception("중복된 아이디가 있습니다.");
-	      }      
+	      if(!result)  return "member/success";
+	      else throw new Exception();
 	   }
 	
 	
