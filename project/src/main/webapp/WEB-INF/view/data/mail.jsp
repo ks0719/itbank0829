@@ -18,7 +18,7 @@
             	<c:if test="${param.box!='protect'}">
              		<button onclick="moving('protect'); document.protect.submit();">보관하기</button>
             	</c:if>
-            	<button>쪽지쓰기</button>
+            	<button onclick="location.href='mail/send'">쪽지쓰기</button>
         	</td>
     	</tr> 
     

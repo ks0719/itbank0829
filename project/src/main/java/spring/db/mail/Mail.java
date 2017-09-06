@@ -3,6 +3,8 @@ package spring.db.mail;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class Mail {
 	
 	private int no;
@@ -15,15 +17,12 @@ public class Mail {
 	private String mail_reg;
 	private String mail_tag;
 	
-	public int getNo() {
-		return no;
-	}
-
-	public void setNo(int no) {
-		this.no = no;
-	}
-	public Mail() {
-		super();
+	public Mail(HttpServletRequest req) {
+		setMail_content(req.getParameter("mail_content"));
+		setMail_receiver(req.getParameter("mail_receiver"));
+		setMail_title(req.getParameter("mail_title"));
+		setMail_writer(req.getParameter("mail_writer"));
+		setMail_tag(req.getParameter("mail_tag"));
 	}
 	
 	public Mail(ResultSet rs) throws SQLException {
@@ -39,6 +38,16 @@ public class Mail {
 		setMail_tag(rs.getString("mail_tag"));
 	}
 	
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+	public Mail() {
+		super();
+	}
 	public String getMail_writer() {
 		return mail_writer;
 	}
