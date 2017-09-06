@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import spring.db.member.Member;
 import spring.db.member.MemberDao;
@@ -34,38 +37,35 @@ public class MemberController {
 		return "member/sign";
 	}
 	
-
 	@RequestMapping(value="/member/sign", method=RequestMethod.POST)
 	public String signPost(HttpServletRequest request) throws SQLException {
-//		System.out.println(request.getParameter("id"));
-//		System.out.println(request.getParameter("pw"));
-//		System.out.println(request.getParameter("name"));
-//		System.out.println(request.getParameter("nickname"));
-//		System.out.println(request.getParameter("phone"));
-//		System.out.println(request.getParameter("post"));
-//		System.out.println(request.getParameter("addr1"));
-//		System.out.println(request.getParameter("addr2"));
-//		System.out.println(request.getParameter("sort"));
-//		System.out.println(request.getParameter("mileage"));
-//		System.out.println(request.getParameter("lev"));
-//		System.out.println(request.getParameter("reg"));
-
+	
+//		String id=request.getParameter("id");
+//		System.out.println(id);
+		
 		Member m=new Member(request);
 		memberDao.insert(m);
+		
 		return "redirect:/";
 	}
 	
-	@ResponseBody
-	@RequestMapping
-	public Map<String,String>checkId(String id){
-		Map<String, String>resultMap=new HashMap<String, String>();
-		
-		return resultMap;
-	}
+	@RequestMapping(value="/member/idcheck", method = RequestMethod.POST)
+	   public String idcheck(@RequestParam String id) throws Exception {
+		System.out.println(id);
+		boolean result = memberDao.idcheck(id);
+	      
+	      if(result) {
+	         return "member/success";
+	      }else {
+	         throw new Exception("중복된 아이디가 있습니다.");
+	      }      
+	   }
+	
 	
 	@RequestMapping("/member/login")
 	public String login() {
 		
 		return "member/login";
 	}
+
 }

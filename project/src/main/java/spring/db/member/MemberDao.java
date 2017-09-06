@@ -2,6 +2,9 @@ package spring.db.member;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,15 +33,17 @@ public class MemberDao {
 		jdbcTemplate.update(sql,args);
 	}
 	
-	public List<Member> list(String id){
+	public List<Member> list(String id, String password){
 		
-		String sql="select*from member where id=? order by reg desc";
-		return jdbcTemplate.query(sql, new Object[] {id},mapper);
+		String sql="select*from member where id=? and pw=? order by reg desc";
+		return jdbcTemplate.query(sql, new Object[] {id, password},mapper);
 	}
 
-	public int checkId(String id) {
-		
-		
-		return checkId(id);
-	}
+	  public boolean idcheck(String id) {
+	      
+	      String sql = "select*from member where id=?";
+	      boolean result = jdbcTemplate.query(sql, new Object[] {id}, mapper).isEmpty();
+	      
+	      return result;
+	   }
 }
