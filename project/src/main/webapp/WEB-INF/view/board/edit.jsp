@@ -9,7 +9,7 @@
 	<div class="table-wrap">
 		<form action="edit" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="no" value="${no}">
-			<table border="1" class="study" rules=rows>
+			<table border="1" class="tableUnit" rules=rows>
 				<tr>
 					<td class="head">
 						말머리

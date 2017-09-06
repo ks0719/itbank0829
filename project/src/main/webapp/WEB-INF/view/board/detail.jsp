@@ -7,7 +7,7 @@
 <h1>상세보기</h1>
 <div class="page-wrap">
 	<div class="table-wrap">
-		<table border="1" class="study" rules=rows>
+		<table border="1" class="tableUnit" rules=rows>
 			<tr>
 				<td class="head">
 					말머리

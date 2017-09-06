@@ -7,7 +7,7 @@
 <div class="page-wrap">
 	<div class="table-wrap">
 		<form action="write" method="post" enctype="multipart/form-data">
-			<table border="1" class="study" rules=rows>
+			<table border="1" class="tableUnit" rules=rows>
 				<tr>
 					<td class="head">
 						말머리
