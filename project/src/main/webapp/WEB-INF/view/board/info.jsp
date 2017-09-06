@@ -20,10 +20,13 @@
 					작성자
 				</th>
 				<th>
+					등록일
+				</th>
+				<th>
 					조회수
 				</th>
 				<th>
-					등록일
+					추천수
 				</th>
 			</tr>
 			<c:forEach var="info" items="${list}">
@@ -38,10 +41,13 @@
 					${info.writer}
 				</td>
 				<td>
+					${info.auto}
+				</td>
+				<td>
 					${info.read}
 				</td>
 				<td>
-					${info.auto}
+					${info.best}
 				</td>
 			</tr>
 			</c:forEach>

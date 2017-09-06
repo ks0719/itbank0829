@@ -75,10 +75,22 @@ public class BoardDao {
 				board.getFiletype(), board.getFilesize(), no);
 	}
 
-	public void delete(int noI) {
+	public void delete(int no) {
 		String sql = "delete board where no = ?";
 		
-		jdbcTemplate.update(sql, noI);
+		jdbcTemplate.update(sql, no);
+	}
+	
+	public void readUp(int no) {
+		String sql = "update board set read = read + 1 where no = ?";
+		
+		jdbcTemplate.update(sql, no);
+	}
+
+	public void best(int no) {
+		String sql = "update board set best = best + 1 where no = ?";
+		
+		jdbcTemplate.update(sql, no);
 	}
 
 }
