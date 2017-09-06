@@ -47,17 +47,14 @@
             }
         }).open();
     }
-    
-     //아이디중복확인
-     
-    
+
 </script>
 </head>
 <body>
 	<h1>회원 가입</h1>
 	<form action="" method="post" >
 		<input type="text" name="id" placeholder="ID입력"  id="id" required>
-		<input type="button"  value="중복확인" id="check">
+		<input type="button"  id="check" value="중복확인"  >
 		<br><br>
 		<input type="password" name="pw" placeholder="PW입력" required>
 		<br><br>

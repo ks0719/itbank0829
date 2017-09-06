@@ -22,7 +22,7 @@ public class MemberDao {
 	
 	public void insert(Member member) {
 		
-		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate)";
+		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'')";
 		
 		Object[]args=new Object[] {member.getId(),member.getPw(),member.getName(),member.getNickname(),member.getPhone(),
 				member.getPost(),member.getAddr1(),member.getAddr2(),member.getSort()};
@@ -33,6 +33,12 @@ public class MemberDao {
 	public List<Member> list(String id){
 		
 		String sql="select*from member where id=? order by reg desc";
-		return jdbcTemplate.query(sql, mapper);
+		return jdbcTemplate.query(sql, new Object[] {id},mapper);
+	}
+
+	public int checkId(String id) {
+		
+		
+		return checkId(id);
 	}
 }
