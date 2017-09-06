@@ -85,12 +85,22 @@ public class MailDao {
 		}
 		String location=(isSpam)?"spam":"index";
 		
-		sql = "insert into mail values(?,?,?,?,sysdate,?,?,?, mail_seq.nextval)";
+		sql = "insert into mail values(?,?,?,sysdate,?,?,?, mail_seq.nextval)";
 		int res=jdbcTemplate.update(sql, new Object[] {
-				mail.getMail_writer(), mail.getMail_tag(), mail.getMail_title(), mail.getMail_content(), 
+				mail.getMail_writer(), mail.getMail_title(), mail.getMail_content(), 
 				mail.getMail_read(), mail.getMail_receiver(), location
 		});
-		
 		return res>0;
 	}
+	
+	public boolean read(int no) {
+		String sql = "update mail set MAIL_READ='읽음' where no=?";
+		return jdbcTemplate.update(sql, new Object[] {no})>0;
+	}
+	
+//	public boolean isExist(String target) {
+//		String sql = "select count(*) from member where nick=?";
+//		return jdbcTemplate.queryForObject(sql, new Object[] {}, Integer.class)>0;
+//	}
+	
 }
