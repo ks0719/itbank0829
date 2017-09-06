@@ -31,9 +31,14 @@
 					<input type="hidden" name="no" value="${mail.no}">
 					<input type="hidden" name="box" value="${box}">
 				</form>
+				<form action="mail/send?box=${param.box}" method="get" name="send" id="send">
+					<input type="hidden" name="nick" value="${mail.getMail_writer()}">
+				</form>
+				<!-- 신고 구현해야함 -->
 				신고
-				답장
-				<button onclick="del(); document.delete.submit();">삭제하기</button>
+				<button type="button" onclick="document.send.submit();">답장</button>
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${param.box}'">목록으로</button>
+				<button type="button" onclick="del(); document.delete.submit();">삭제하기</button>
 			</td>
 		</tr>
 	</tfoot>

@@ -137,8 +137,8 @@ public class DataController {
 		if(mail==null) throw new Exception("404");
 		
 		m.addAttribute("mail", mail);
-		m.addAttribute("box", box);
 		
+		mailDao.read(no);
 		return "data/mailDetail";
 	}
 	
@@ -156,7 +156,9 @@ public class DataController {
 	}
 	
 	@RequestMapping(value="data/mail/send", method=RequestMethod.GET)
-	public String sendGet() {
+	public String sendGet(Model m, HttpServletRequest req) {
+		System.out.println(req.getParameter("nick"));
+		m.addAttribute("nick", req.getParameter("nick"));
 		return "data/send";
 	}
 	

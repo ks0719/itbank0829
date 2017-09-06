@@ -38,7 +38,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td class="head">
 					첨부파일
 				</td>
 				<td class="text-left">
@@ -48,8 +48,42 @@
 					</a>
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2">
+					댓글
+				</td>
+			</tr>
+			<c:forEach var="reply" items="${list}">
+			<tr>
+				<td class="head">
+					${reply.writer}
+				</td>
+				<td class="text-left">
+					${reply.detail}
+					<br>
+					<a href="#">추천</a> ${reply.best}
+				</td>
+			</tr>
+			<tr>
+				<td class="head">
+					${reply.writer}
+				</td>
+				<td class="text-left">
+					${reply.detail}
+					<br>
+					<a href="#">추천</a> ${reply.best}
+				</td>
+			</tr>
+			</c:forEach>
 		</table>
+		<div class="row">
+			<form action="#">
+				<input type="text" placeholder="댓글 입력">
+				<input type="submit" value="등록">
+			</form>
+		</div>
 		<div class="align-right">
+			<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${unit.no}';">
 			<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${unit.no}';">
 			<input type="button" value="삭제하기" class="input-btn" onclick="location.href='delete?no=${unit.no}';">
 			<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${path}';">

@@ -6,7 +6,7 @@
 <table>
 	<thead>
 		<tr>
-			<td colspan="7">
+			<td colspan="6">
         		<form action="" method="post" name="garbage" id="garbage"></form>
         		<form action="" method="post" name="protect" id="protect"></form>
         		<c:if test="${param.box=='garbage'}">
@@ -18,14 +18,13 @@
             	<c:if test="${param.box!='protect'}">
              		<button onclick="moving('protect'); document.protect.submit();">보관하기</button>
             	</c:if>
-            	<button onclick="location.href='mail/send'">쪽지쓰기</button>
+            	<button onclick="location.href='mail/send?box=${param.box}'">쪽지쓰기</button>
         	</td>
     	</tr> 
     
 	<tr>
 		<th><input id="checkAll" type="checkbox" ></th>
 		<th>아이디</th>
-		<th>분류</th>
 		<th>제목</th>
 		<th>내용</th>
 		<th>보낸날짜</th>
@@ -37,7 +36,6 @@
 			<tr>
 				<td><input type="checkbox" name="chk" value="${list.no}"></td>
 				<td onclick="mailDetail(${list.no});">${list.mail_writer }</td>
-				<td onclick="mailDetail(${list.no});">${list.mail_tag}</td>
 				<td onclick="mailDetail(${list.no});">${list.mail_title }</td>
 				<td onclick="mailDetail(${list.no});">${list.mail_content }</td>
 				<td onclick="mailDetail(${list.no});">${list.mail_reg }</td>

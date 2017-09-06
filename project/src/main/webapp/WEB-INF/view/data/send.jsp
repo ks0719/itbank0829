@@ -8,17 +8,9 @@
 		 	<tr>
 		 		<td>받는사람</td>
 		 		<td>
-		 			<input type="text" name="mail_receiver" placeholder="받는사람" required>
-		 			<button>받는 사람이 존재하는 사람인지 확인하는 버튼</button>
-		 		</td>
-		 	</tr>
-		 	<tr>
-		 		<td>분류</td>
-		 		<td>
-		 			<select name="mail_tag">
-		 				<option value="">없음</option>
-		 				<option value="질문">질문</option>
-		 			</select>
+		 			<input type="text" id="mail_receiver" name="mail_receiver" value="${nick}" placeholder="받는사람" required>
+		 			<!-- 여기 버튼 구현 해야함 -->
+		 			<button type="button" onclick="isExist($('#mail_receiver').val());">받는 사람이 존재하는 사람인지 확인하는 버튼</button>
 		 		</td>
 		 	</tr>
 		 	<tr>
@@ -33,7 +25,7 @@
 		<tfoot>
 			<tr>
 				<td colspan="2">
-					취소
+					<button type="button" onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${param.box}'">목록으로</button>
 					<input type="submit" value="전송">
 				</td>
 			</tr>
