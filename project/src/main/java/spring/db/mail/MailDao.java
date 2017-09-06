@@ -18,26 +18,22 @@ public class MailDao {
 		return new Mail(rs);
 	};
 
-	public List<Mail> list(String mail_receiver, String box){
+	public List<Mail> list(String nick, String box){
 		String sql="select * from mail";
 		switch(box) {
-			//무관
 		case "protect":
 		case "garbage":
-			sql+=" where mail_position=? or mail_receiver=? and mail_position=? order by mail_reg desc, no desc";
-			return jdbcTemplate.query(sql, new Object[] {mail_receiver,mail_receiver,box},mapper);
-			//회원 테이블에 넣을 예정
 		case "spam":
-			//보낸 사람이 나일때
+			sql+=" where mail_receiver=? and mail_position=? order by mail_reg desc, no desc";
+			return jdbcTemplate.query(sql, new Object[] {nick,box},mapper);
 		case "sent":
 			sql+=" where mail_writer=? order by mail_reg desc, no desc";
-			return jdbcTemplate.query(sql, new Object[] {mail_receiver},mapper);
+			return jdbcTemplate.query(sql, new Object[] {nick},mapper);
 			//받는 사람이 나일때  or box가 없을때
 		default:
 			sql+=" where mail_receiver=? and mail_position='index' order by mail_reg desc, no desc";
-			return jdbcTemplate.query(sql, new Object[] {mail_receiver},mapper);
+			return jdbcTemplate.query(sql, new Object[] {nick},mapper);
 		}
-//		"select * from mail where mail_writer=? order by mail_reg desc"
 	}
 	
 	public boolean protect(String mail_receiver, int no) {
@@ -73,10 +69,28 @@ public class MailDao {
 	}
 	
 	public boolean insert(Mail mail) {
-		String sql = "insert into mail values(?,?,?,?,sysdate,?,?,'index', mail_seq.nextval)";
+		//mail_receiver, mail_writer을 차단했는지 확인해야됨
+		//[1] 일단 회원 테이블에서 mail_receiver이 차단한 사람들의 명단을 가져오자
+		String sql = "select spam from member where nick=?";
+		String spam_string = jdbcTemplate.queryForObject(sql,new Object[] {mail.getMail_receiver()}, String.class);
+		boolean isSpam = false;
+		if(spam_string!=null) {
+			String[] spams = spam_string.split("-");
+			for(String spam:spams) {
+				if(spam.equals(mail.getMail_writer())) {
+					isSpam=true;
+					break;
+				}
+			}
+		}
+		String location=(isSpam)?"spam":"index";
+		
+		sql = "insert into mail values(?,?,?,?,sysdate,?,?,?, mail_seq.nextval)";
 		int res=jdbcTemplate.update(sql, new Object[] {
-				mail.getMail_writer(), mail.getMail_tag(), mail.getMail_title(), mail.getMail_content(), mail.getMail_read(), mail.getMail_receiver()
+				mail.getMail_writer(), mail.getMail_tag(), mail.getMail_title(), mail.getMail_content(), 
+				mail.getMail_read(), mail.getMail_receiver(), location
 		});
+		
 		return res>0;
 	}
 }
