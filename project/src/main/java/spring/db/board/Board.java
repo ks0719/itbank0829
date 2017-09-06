@@ -7,6 +7,9 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 public class Board {
 	private int no;
 	private String writer;
@@ -19,19 +22,24 @@ public class Board {
 	private int reply;
 	private int best;
 	private String reg;
+	private String filename;
+	private String originfile;
+	private String filetype;
+	private long filesize;
 	
-	public Board(HttpServletRequest request) {
-//		setNo(Integer.parseInt(request.getParameter("no")));
-		setWriter(request.getParameter("writer"));
-		setPath(request.getParameter("path"));
-		setHead(request.getParameter("head"));
-		setTitle(request.getParameter("title"));
-		setDetail(request.getParameter("detail"));
-		setNotice(request.getParameter("notice"));
-//		setRead(Integer.parseInt(request.getParameter("read")));
-//		setReply(Integer.parseInt(request.getParameter("reply")));
-//		setBest(Integer.parseInt(request.getParameter("best")));
-		setReg(request.getParameter("reg"));
+	public Board(MultipartHttpServletRequest mRequest) {
+		setWriter(mRequest.getParameter("writer"));
+		setPath(mRequest.getParameter("path"));
+		setHead(mRequest.getParameter("head"));
+		setTitle(mRequest.getParameter("title"));
+		setDetail(mRequest.getParameter("detail"));
+		setNotice(mRequest.getParameter("notice"));
+		setReg(mRequest.getParameter("reg"));
+
+		MultipartFile file = mRequest.getFile("file");
+		setOriginfile(file.getOriginalFilename());
+		setFiletype(file.getContentType());
+		setFilesize(file == null ? 0 : file.getSize());
 	}
 	public Board(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
@@ -45,6 +53,10 @@ public class Board {
 		setReply(rs.getInt("reply"));
 		setBest(rs.getInt("best"));
 		setReg(rs.getString("reg"));
+		setFilename(rs.getString("filename"));
+		setOriginfile(rs.getString("originfile"));
+		setFiletype(rs.getString("filetype"));
+		setFilesize(rs.getInt("filesize"));
 	}
 	public int getNo() {
 		return no;
@@ -124,6 +136,30 @@ public class Board {
 			return getTime();
 		else
 			return getDate();
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public String getOriginfile() {
+		return originfile;
+	}
+	public void setOriginfile(String originfile) {
+		this.originfile = originfile;
+	}
+	public String getFiletype() {
+		return filetype;
+	}
+	public void setFiletype(String filetype) {
+		this.filetype = filetype;
+	}
+	public long getFilesize() {
+		return filesize;
+	}
+	public void setFilesize(long filesize) {
+		this.filesize = filesize;
 	}
 
 }
