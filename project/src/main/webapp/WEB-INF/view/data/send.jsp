@@ -9,6 +9,7 @@
 		 		<td>받는사람</td>
 		 		<td>
 		 			<input type="text" id="mail_receiver" name="mail_receiver" value="${nick}" placeholder="받는사람" required>
+		 			<!-- 여기 버튼 구현 해야함 -->
 		 			<button type="button" onclick="isExist($('#mail_receiver').val());">받는 사람이 존재하는 사람인지 확인하는 버튼</button>
 		 		</td>
 		 	</tr>
