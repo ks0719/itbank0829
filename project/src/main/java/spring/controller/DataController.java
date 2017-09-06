@@ -134,11 +134,10 @@ public class DataController {
 			throw new Exception("404");
 		}
 		
-		//여기 에러남 수정 해야함 => if문 써서 box가 sent일때 아닐때 나누기
-		Mail mail = mailDao.select(id, no);
-		if(mail==null) throw new Exception("404");
-		
 		String box = req.getParameter("box");
+		
+		Mail mail = mailDao.select(id, no, box);
+		if(mail==null) throw new Exception("404");
 		
 		m.addAttribute("mail", mail);
 		m.addAttribute("box", box);
