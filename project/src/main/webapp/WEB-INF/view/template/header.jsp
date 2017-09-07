@@ -169,7 +169,7 @@
 						url:"pcheck",
 						type:"post",
 						data:{phone:$("#phone").val()},
-						dataType:"number",
+						dataType:"text",
 						success:function(){
 							alert("사용 가능한 전화번호 입니다.");
 							$("#phone").attr("readonly","readonly");

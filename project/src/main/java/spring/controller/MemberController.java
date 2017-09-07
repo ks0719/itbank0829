@@ -42,22 +42,21 @@ public class MemberController {
 	@RequestMapping(value="/member/idcheck", method = RequestMethod.POST)
 	public String idcheck(@RequestParam String id) throws Exception {
 		boolean result = memberDao.check("id",id);
-		if(!result)  return "member/sign";
+		if(!result) return "member/sign";
 		else return null;
 	}
 	
 	@RequestMapping(value="/member/nicknamecheck", method = RequestMethod.POST)
-	   public String nickname(@RequestParam String nick) throws Exception {
+	public String nickname(@RequestParam String nick) throws Exception {
 		boolean result = memberDao.check("nick",nick);
-	      if(!result)  return "member/sign";
-	      else return null;
-	   }
+		if(!result) return "member/sign";
+		else return null;
+	}
 	
 	@RequestMapping(value="/member/pcheck", method = RequestMethod.POST)
 	public String pcheck(@RequestParam String phone) throws Exception {
 		boolean result = memberDao.check("phone", phone);
-		System.out.println(result);
-		if(!result)  return "member/sign";
+		if(!result) return "member/sign";
 		else return null;
 	}
 	
