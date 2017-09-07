@@ -44,12 +44,6 @@
 	      });
 	  });
 	  
-	  
-	  
-	  
-	  
-	  
-	  
 	  //회원가입 페이지 에서 사용하는 스크립트
 	  function daumAddressSearch() {
         new daum.Postcode({
@@ -82,7 +76,7 @@
                     // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
                 }
-
+				
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.querySelector("input[name=post]").value = data.zonecode; //5자리 새우편번호 사용
                 document.querySelector("input[name=addr1]").value = fullAddr;
@@ -110,7 +104,7 @@
 						success:function(){
 							alert("사용 가능한 아이디 입니다.");
 							$("#sub").removeAttr("disabled");
-							$("#ids").attr("disabled","disabled");
+							$("#ids").attr("readonly","readonly");
 							$("#idcheck").val("취소");
 						},
 						error:function(){
@@ -121,7 +115,7 @@
 			}else{
 				$("#sub").attr("disabled","disabled");
 				$("#idcheck").val("중복확인");
-				$("#ids").removeAttr("disabled");
+				$("#ids").removeAttr("readonly");
 			}
 		});
 	});
@@ -129,7 +123,7 @@
 	//아이디 체크
 	function idCheck(){
 	    var regex = /^[\w]{8,20}$/;
-	    var target = document.querySelector("input[name=ids]");
+	    var target = document.querySelector("input[name=id]");
 	    if(regex.test(target.value)){
 	        target.style.border = "1px solid blue";
 	    }else{
