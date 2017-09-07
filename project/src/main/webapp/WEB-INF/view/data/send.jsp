@@ -8,9 +8,16 @@
 		 	<tr>
 		 		<td>받는사람</td>
 		 		<td>
-		 			<input type="text" id="mail_receiver" name="mail_receiver" value="${nick}" placeholder="받는사람" required>
-		 			<!-- 여기 버튼 구현 해야함 -->
-		 			<button type="button" onclick="isExist($('#mail_receiver').val());">받는 사람이 존재하는 사람인지 확인하는 버튼</button>
+		 			<c:choose>
+		 				<c:when test="${nick==''||nick==null}">
+		 					<input type="text" id="mail_receiver" name="mail_receiver" placeholder="받는사람" required>
+		 					<input type="button" id="check" value="확인" onclick="isExist($('#mail_receiver').val());">
+		 				</c:when>
+		 				<c:otherwise>
+		 					<input type="text" id="mail_receiver" name="mail_receiver" value="${nick}" disabled placeholder="받는사람" required>
+		 					<input type="button" id="check" value="취소" onclick="isExist($('#mail_receiver').val());">
+		 				</c:otherwise>
+		 			</c:choose>
 		 		</td>
 		 	</tr>
 		 	<tr>
@@ -26,7 +33,14 @@
 			<tr>
 				<td colspan="2">
 					<button type="button" onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${param.box}'">목록으로</button>
-					<input type="submit" value="전송">
+					<c:choose>
+		 				<c:when test="${nick==''||nick==null}">
+		 					<input id="send" disabled type="submit" value="전송">
+		 				</c:when>
+		 				<c:otherwise>
+		 					<input id="send" type="submit" value="전송">
+		 				</c:otherwise>
+		 			</c:choose>
 				</td>
 			</tr>
 		</tfoot>

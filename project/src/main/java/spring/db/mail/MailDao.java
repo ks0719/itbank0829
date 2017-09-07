@@ -98,9 +98,9 @@ public class MailDao {
 		return jdbcTemplate.update(sql, new Object[] {no})>0;
 	}
 	
-//	public boolean isExist(String target) {
-//		String sql = "select count(*) from member where nick=?";
-//		return jdbcTemplate.queryForObject(sql, new Object[] {}, Integer.class)>0;
-//	}
+	public boolean isExist(String nick) {
+		String sql = "select count(*) from member where nick=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class)>0;
+	}
 	
 }

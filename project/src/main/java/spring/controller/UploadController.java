@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,64 +20,48 @@ public class UploadController {
 	private Logger log=LoggerFactory.getLogger(getClass());
 	//단일파일업로드
 	@RequestMapping("/photoUpload")
-	 public String file_uploader(HttpServletRequest request, HttpServletResponse response, Editor editor){
-		 String return1=request.getParameter("callback");
-		 String return2="?callback_func=" + request.getParameter("callback_func");
-		 String return3="";
-		 String name = "";
-		 try {
-			if(editor.getFiledata() != null && editor.getFiledata().getOriginalFilename() != null && !editor.getFiledata().getOriginalFilename().equals("")) {
-	             // 기존 상단 코드를 막고 하단코드를 이용
-	            name = editor.getFiledata().getOriginalFilename().substring(editor.getFiledata().getOriginalFilename().lastIndexOf(File.separator)+1);
-				String filename_ext = name.substring(name.lastIndexOf(".")+1);
-				filename_ext = filename_ext.toLowerCase();
-			   	String[] allow_file = {"jpg","png","bmp","gif"};
-			   	int cnt = 0;
-			   	for(int i=0; i<allow_file.length; i++) {
-			   		if(filename_ext.equals(allow_file[i])){
-			   			cnt++;
-			   		}
-			   	}
-			   	if(cnt == 0) {
-			   		return3 = "&errstr="+name;
-			   	} else {
-			   		//파일 기본경로
-		    		String dftFilePath = request.getSession().getServletContext().getRealPath("/");
-		    		log.debug("기본경로 = "+dftFilePath);
-		    		//파일 기본경로 _ 상세경로
-		    		String filePath = dftFilePath + "resource"+ File.separator + "photo_upload"+File.separator;
-		    		log.debug("상세경로 = "+filePath);
-		    		File file = new File(filePath);
-		    		if(!file.exists()) {
-		    			file.mkdirs();
-		    		}
-		    		String realFileNm = "";
-		    		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-					String today= formatter.format(new java.util.Date());
-					realFileNm = today+UUID.randomUUID().toString() + name.substring(name.lastIndexOf("."));
-					String rlFileNm = filePath + realFileNm;
-					///////////////// 서버에 파일쓰기 /////////////////
-					editor.getFiledata().transferTo(new File(rlFileNm));
-					///////////////// 서버에 파일쓰기 /////////////////
-		    		return3 += "&bNewLine=true";
-		    		return3 += "&sFileName="+ name;
-		    		return3 += "&sFileURL=/resource/photo_upload/"+realFileNm;
-			   	}
-			}else {
-				  return3 += "&errstr=error";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		 return "redirect:"+return1+return2+return3;
-}
+	public String photoUpload(HttpServletRequest request, PhotoVo vo){
+	    String callback = vo.getCallback();
+	    String callback_func = vo.getCallback_func();
+	    String file_result = "";
+	    try {
+	        if(vo.getFiledata() != null && vo.getFiledata().getOriginalFilename() != null && !vo.getFiledata().getOriginalFilename().equals("")){
+	            //파일이 존재하면
+	            String original_name = vo.getFiledata().getOriginalFilename();
+	            String ext = original_name.substring(original_name.lastIndexOf(".")+1);
+	            //파일 기본경로
+	           // String defaultPath = request.getSession().getServletContext().getRealPath("/");
+	           // System.out.println("파일 기본경로 = "+defaultPath);
+	            //파일 기본경로 _ 상세경로
+	            String path = "C:/Users/IT202-04/git/itbank0829/project/src/main/webapp/resource/photo_upload/";              
+	            File file = new File(path);
+	            //System.out.println("path:"+path);
+	            //디렉토리 존재하지 않을경우 디렉토리 생성
+	            if(!file.exists()) {
+	                file.mkdirs();
+	            }
+	            //서버에 업로드 할 파일명(한글문제로 인해 원본파일은 올리지 않는것이 좋음)
+	            String realname = UUID.randomUUID().toString() + "." + ext;
+	        ///////////////// 서버에 파일쓰기 ///////////////// 
+	            vo.getFiledata().transferTo(new File(path+realname));
+	            file_result += "&bNewLine=true&sFileName="+original_name+"&sFileURL=http://localhost:8080/project/resource/photo_upload/"+realname;
+	           // System.out.println("file="+file_result);
+	        } else {
+	            file_result += "&errstr=error";
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return "redirect:" + callback + "?callback_func="+callback_func+file_result;
+	}
+
+
 
 
 
 	 
 	
 	@RequestMapping("/MultiPhotoUpload")
-//	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response){
 		@ResponseBody
 		  public String multiplePhotoUpload(HttpServletRequest request) {
 
