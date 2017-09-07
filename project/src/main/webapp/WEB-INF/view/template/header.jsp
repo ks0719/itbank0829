@@ -182,8 +182,34 @@
 	  		target.style.border="2px solid red";
   		}
   	}
-	  
+<<<<<<< HEAD
 
+  //완료버튼 이벤트
+	$(document).ready(function() {
+		$("#sub").on("click",function () {
+			var idregex=/^[a-zA-Z0-9]{8,20}$/;
+			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+			var nickregex=/^[가-힣]{1,6}$/;
+			var phoneregex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
+		 	var idtarget= document.querySelector("input[name=id]");
+		 	var pwtarget=document.querySelector("input[name=pw]");
+		 	var nicktarget=document.querySelector("input[name=nickname]");
+		 	var phonetarget=document.querySelector("input[name=phone]");
+		 	
+		 	if(!idregex.test(idtarget.value)){
+		 		alert("ID는 영문,숫자 조합 8~20자");
+		 	}else if(!pwregex.test(pwtarget.value)){
+		 		alert("비밀번호 조건이 맞지 않습니다.");
+		 	}else if(!nickregex.test(nicktarget.value)){
+		 		alert("닉네임 조건이 맞지 않습니다.");
+		 	}else if(!phoneregex.test(phonetarget.value)){
+		 		alert("핸드폰 번호 조건이 맞지 않습니다.");
+		 	}else{
+		 		
+		 	}
+		});
+	});
+	  
 </script>
 
 <head>

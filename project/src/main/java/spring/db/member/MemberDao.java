@@ -46,4 +46,12 @@ public class MemberDao {
 	      
 	      return result;
 	   }
+	  
+	  public boolean nickcheck(String nickname) {
+	      
+	      String sql = "select count(*) from member where nick=?";
+	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {nickname},Integer.class)>0;
+	      
+	      return result;
+	   }
 }
