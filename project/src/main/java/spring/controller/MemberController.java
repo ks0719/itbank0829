@@ -56,6 +56,13 @@ public class MemberController {
 	      else return null;
 	   }
 	
+	@RequestMapping(value="/member/nicknamecheck", method = RequestMethod.POST)
+	   public String nickname(@RequestParam String nickname) throws Exception {
+		boolean result = memberDao.nickcheck(nickname);
+	      if(!result)  return "member/sign";
+	      else return null;
+	   }
+	
 	
 	@RequestMapping("/member/login")
 	public String login() {

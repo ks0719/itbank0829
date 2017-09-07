@@ -69,7 +69,7 @@ $(document).ready(function() {
 		           success:function(){
 		              alert("사용 가능한 아이디 입니다.");
 		              $("#sub").removeAttr("disabled");
-		              $("#ids").attr("disabled","disabled");
+		              $("#ids").attr("readonly","readonly");
 		              $("#idcheck").val("취소");
 		           },
 		           error:function(){
@@ -77,29 +77,52 @@ $(document).ready(function() {
 		           }
 		        });
     		 }
-    	 }else{
+    	 }
+    	 else{
     		 $("#sub").attr("disabled","disabled");
              $("#idcheck").val("중복확인");
-             $("#ids").removeAttr("disabled");
+             $("#ids").removeAttr("readonly");
     	 }
      });
   });
-  
-  		//아이디 체크
+</script>
+
+<script>
+
+//닉네임 중복확인
+ $(document).ready(function() {
+         $.ajax({
+            url:"nicknamecheck",
+            type:"post",
+            data:{nickname:$("#nickname").val()},
+            dataType:"text",
+            success:function(){
+               $("#nickLabel").html("<h5><lable>사용가능한 닉네임 입니다.</label></h5>");
+            },
+            error:function(){
+               $("#nickLabel").html("<h5><lable>이미 존재하는 닉네임 입니다</label></h5>");
+            }
+         });
+   });
+</script>
+
+<script>
+  	//아이디 체크
 		function idCheck(){
-		    var regex = /^[\w]{8,20}$/;
-		    var target = document.querySelector("input[name=ids]");
-		    if(regex.test(target.value)){
-		        target.style.border = "1px solid blue";
-		    }else{
-		        target.style.border = "1px solid red";
-		    }
-		}
+  			var regex=/^[a-zA-Z0-9]{8,20}$/;
+  			var target=document.querySeletor("input[name=id]");
+  			console.log(target);
+//   			if(regex.test(target.value)){
+//   				target.style.border="1px solid blue";
+//   			}else{
+//   				target.style.border="1px solid red";
+//   			}
+  	}	
 
   	//비밀번호 체크
             function pwCheck(){
                var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-               var target = document.querySelector("input[name=pw]");
+               var target = document.querySelector("#pw");
                if(regex.test(target.value)){
                     target.style.border = "1px solid blue";
                }else{
@@ -109,7 +132,7 @@ $(document).ready(function() {
   	
   	//비밀번호 재확인
             function pw2Check(){
-               var pw = document.querySelector("input[name=pw]")
+               var pw = document.querySelector("#pw")
                var target = document.querySelector("#pw2");
                if(pw.value === target.value){
                     target.style.border = "1px solid blue";
@@ -123,7 +146,7 @@ $(document).ready(function() {
   	//닉네임 체크
             function nickCheck(){
                var regex = /^[가-힣]{1,6}$/;
-               var target = document.querySelector("input[name=nickname]");
+               var target = document.querySelector("#nickname");
                if(regex.test(target.value)){
                     target.style.border = "1px solid blue";
                }else{
@@ -132,56 +155,70 @@ $(document).ready(function() {
            }
   	
   	//핸드폰 번호 체크
-  	function phoneCheck(){
-  		var regex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
-  		var target=document.querySelector("input[name=phone]");
-  		if(regex.test(target.value)){
-  			target.style.border="2px solid blue";
-  		}else{
-	  		target.style.border="2px solid red";
-  		}
-  	}
-  	
-  	
-// 	//완료버튼 이벤트
-	
-// 	 $("#sub").on("click",function () {
-// 		 var idregex=/^[\w]{8,20}$/;
-// 		 var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-// 		 var nickregex = /^[가-힣]{1,6}$/;
-// 		 var phoneregex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
-// 		 var idtarget=("input[name=ids]");
-// 		 var pwtarget=("input[name=pw]");
-// 		 var nicktarget=("input[name=nick]");
-// 		 var phonetarget=("input[name=phone]");
-		 
-// 		 if(idregex.test(idtarget.value)&&pwregex.test(pwtarget.value)&&nickregex.test(nicktarget.value)&&phoneregex.test(phonetarget.value)){
-// 			 $("#sub").removeAttr("disabled");
-// 			 alert("회원가입 성공하였습니다.");
-			 
-// 		 }else{
-// 			 alert()
-// 			 $("#sub").attr("disabled","disabled");
-// 		 }
-// 	 });
+	  	function phoneCheck(){
+	  		var regex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
+	  		var target=document.querySelector("#phone");
+	  		if(regex.test(target.value)){
+	  			target.style.border="1px solid blue";
+	  		}else{
+		  		target.style.border="1px solid red";
+	  		}
+	  	}
 </script>
+<script>
 
+	//완료버튼 이벤트
+	$(document).ready(function() {
+		$("#sub").on("click",function () {
+			var idregex=/^[a-zA-Z0-9]{8,20}$/;
+			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+			var nickregex=/^[가-힣]{1,6}$/;
+			var phoneregex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
+		 	var idtarget= document.querySelector("input[name=ids]");
+		 	var pwtarget=document.querySelector("input[name=pw]");
+		 	var nicktarget=document.querySelector("input[name=nickname]");
+		 	var phonetarget=document.querySelector("input[name=phone]");
+		 	
+		 	if(!idregex.test(idtarget.value)){
+		 		var target=document.querySeletor("#ids");
+	  			if(regex.test(target.value)){
+	  				target.style.border="1px solid blue";
+		 			alert("ID는 영문,숫자 조합 8~20자");
+	  			}
+		 	}else if(!pwregex.test(pwtarget.value)){
+		 		alert("비밀번호 조건이 맞지 않습니다.");
+		 	}else if(!nickregex.test(nicktarget.value)){
+		 		alert("닉네임 조건이 맞지 않습니다.");
+		 	}else if(!phoneregex.test(phonetarget.value)){
+		 		alert("핸드폰 번호 조건이 맞지 않습니다.");
+		 	}else{
+		 		
+		 	}
+		});
+	});
+</script>
 </head>
 <body>
 	<h1>회원 가입</h1>
-	<form action="" method="post" >
-		<input type="text" name="id" placeholder="ID입력"  id="ids"  onkeyup="idCheck();" required>
+	<form action="" method="post"  onsubmit="return false;">
+	<input type="hidden" id="Checkid" value="false"/>
+	<input type="hidden" id="Checkpw" value="false"/>
+	<input type="hidden" id="Checknick" value="false"/>
+	<input type="hidden" id="Checkphone" value="false"/>
+	
+		<input type="text" name="id" placeholder="ID입력"  onkeyup="idCheck();"required>
 		<input type="button"  id="idcheck" value="중복확인"  >
 		<br><br>
-		<input type="password" name="pw" placeholder="PW입력" onkeyup="pwCheck();" required>
+		<input type="password" id="pw" name="pw" placeholder="PW입력" onkeyup="pwCheck();" required>
 		<br><br>
-		<input type="password" name="pw2" id="pw2"placeholder="PW재입력" onkeyup="pw2Check();"required>
+		<input type="password" id="pw2" name="pw2" placeholder="PW재입력" onkeyup="pw2Check();"required>
 		<br><br>
 		<input type="text" name="name" placeholder="이름입력" required>
 		<br><br>
-		<input type="text" name="nickname" placeholder="닉네임입력" onkeyup="nickCheck();" required>
+		<input type="text" id="nickname" name="nickname" placeholder="닉네임입력" onkeyup="nickCheck();"required>
+		<label id="nickLabel"></label>
 		<br><br>
-		<input type="tel" name="phone" id="phone"placeholder="번호입력(-없이)" onkeyup="phoneCheck();"required>
+		<input type="number" name="phone" id="phone"placeholder="번호입력(-없이)" onkeyup="phoneCheck();"maxlength="11" required>
 		<br><br>
 		<input type="text" name="post" placeholder="우편번호" readonly>
 		<input type="button" value="우편번호찾기" onclick="daumAddressSearch();">
