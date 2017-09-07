@@ -55,99 +55,38 @@
 $(document).ready(function() {
      var input = $("#ids");
      $("#idcheck").on("click",function () {
-    	 
-    	 if($("#idcheck").val()=="중복확인"){
-	        $.ajax({
-	           url:"idcheck",
-	           type:"post",
-	           data:{id:input.val()},
-	           dataType:"text",
-	           success:function(){
-	              alert("사용 가능한 아이디 입니다.");
-	              $("#sub").removeAttr("disabled");
-	              $("#ids").attr("disabled","disabled");
-	              $("#idcheck").val("취소");
-	           },
-	           error:function(){
-	              alert("중복된 아이디가 있습니다.");
-	           }
-	        });
-    	 }else{
-    		 $("#sub").attr("disabled","disabled");
-             $("#idcheck").val("중복확인");
-             $("#ids").removeAttr("disabled");
-    	 }
+        $.ajax({
+           url:"idcheck",
+           type:"post",
+           data:{id:input.val()},
+           dataType:"text",
+           success:function(){
+              alert("사용 가능한 아이디 입니다.");
+           },
+           error:function(){
+              alert("중복된 아이디가 있습니다.");
+           }
+        });
      });
   });
-  
-	//완료버튼 이벤트
-	
-// 	 $("#idcheck").on("click",function () {
-// 		 if($))
-// 	 });
-  	//비밀번호 체크
-            function pwCheck(){
-               var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-               var target = document.querySelector("input[name=pw]");
-               if(regex.test(target.value)){
-                    target.style.border = "1px solid blue";
-               }else{
-                   target.style.border = "1px solid red";
-               }
-           }
-  	
-  	//비밀번호 재확인
-            function pw2Check(){
-               var pw = document.querySelector("input[name=pw]")
-               var target = document.querySelector("#pw2");
-               if(pw.value === target.value){
-                    target.style.border = "1px solid blue";
-                    
-               }else{
-                   target.style.border = "1px solid red";
-                   
-               }
-           }
-  	
-  	//닉네임 체크
-            function nickCheck(){
-               var regex = /^[가-힣]{1,6}$/;
-               var target = document.querySelector("input[name=nickname]");
-               if(!regex.test(target.value)){
-                    target.style.border = "1px solid blue";
-               }else{
-                   target.style.border = "1px solid red";
-               }
-           }
-  	
-  	//핸드폰 번호 체크
-  	function phoneCheck(){
-  		var regex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
-  		var target=document.querySelector("input[name=phone]");
-  		if(regex.test(target.value)){
-  			target.style.border="2px solid blue";
-  		}else{
-	  		target.style.border="2px solid red";
-  		}
-  	}
 </script>
 
 </head>
 <body>
 	<h1>회원 가입</h1>
 	<form action="" method="post" >
-		<input type="text" name="id" placeholder="ID입력"  id="ids"  onkeyup="idCheck();" required>
+		<input type="text" name="id" placeholder="ID입력"  id="ids" required>
 		<input type="button"  id="idcheck" value="중복확인"  >
 		<br><br>
-		<input type="password" name="pw" placeholder="PW입력" onkeyup="pwCheck();" required>
+		<label id = "check"></label>
 		<br><br>
-		<input type="password" name="pw2" id="pw2"placeholder="PW재입력" onkeyup="pw2Check();"required>
+		<input type="password" name="pw" placeholder="PW입력" required>
 		<br><br>
 		<input type="text" name="name" placeholder="이름입력" required>
 		<br><br>
-		<input type="text" name="nickname" placeholder="닉네임입력" onkeyup="nickCheck();" required>
+		<input type="text" name="nickname" placeholder="닉네임입력" required>
 		<br><br>
-		<input type="tel" name="phone" id="phone"placeholder="번호입력(-없이)" onkeyup="phoneCheck();"required>
+		<input type="tel" name="phone" placeholder="번호입력(-없이)" required>
 		<br><br>
 		<input type="text" name="post" placeholder="우편번호" readonly>
 		<input type="button" value="우편번호찾기" onclick="daumAddressSearch();">
@@ -158,7 +97,7 @@ $(document).ready(function() {
 		<br><br>
 		<input type="text" name="sort" placeholder="사용가능한 언어입력" required>
 		<br><br>
-		<input id="sub"  disabled type="submit" value="완료" >
+		<input id="sub" type="submit" value="완료" >
 	</form>
 </body>
 </html>
