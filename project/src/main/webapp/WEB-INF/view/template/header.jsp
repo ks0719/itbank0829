@@ -127,23 +127,11 @@
 			}
 			
 		}
-	
-
-  	//비밀번호 체크
-	function pwCheck(){
-	    var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	    var target = document.querySelector("input[name=pw]");
-	    if(regex.test(target.value)){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
   	
   	//비밀번호 재확인
 	function pw2Check(){
 	    var pw = document.querySelector("input[name=pw]")
-	    var target = document.querySelector("#pw2");
+	    var target = document.querySelector("input[name=pw2]");
 	    if(pw.value === target.value){
 			target.style.border = "1px solid blue";
 	    }else{
@@ -158,7 +146,7 @@
   			var nicktarget = document.querySelector("#nick");
   			
   			if(!nickregex.test(nicktarget.value)){
-		 		alert("올바른 전화번호를 입력해주세요.");
+		 		alert("닉네임은 완성된 한글 2~6자 입력해주세요.");
 		 	}else{
 				 $.ajax({
 						url:"nickcheck",
@@ -214,16 +202,12 @@
   //완료버튼 이벤트
 	$(document).ready(function() {
 		$("#sub").on("click",function () {
-			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-			
-		 	var pwtarget=document.querySelector("input[name=pw]");
-		 	
+			var pw2regex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+			var pw2target=
 		 	 if(!pwregex.test(pwtarget.value)){
 		 		alert("비밀번호 조건이 맞지 않습니다.");
-		 	}else if(!phoneregex.test(phonetarget.value)){
-		 		alert("핸드폰 번호 조건이 맞지 않습니다.");
 		 	}else{
-		 		
+		 		$("#sign")
 		 	}
 		});
 	});
