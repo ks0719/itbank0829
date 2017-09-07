@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
@@ -173,4 +174,12 @@ public class DataController {
 		
 		return "redirect:/data/mail";
 	}
+	
+	@RequestMapping(value="/data/mail/nickcheck", method = RequestMethod.POST)
+   public String idcheck(@RequestParam String nick) throws Exception {
+		boolean result = mailDao.isExist(nick);
+		
+		if(result) return "data/send";
+		else return null;
+   }
 }
