@@ -50,6 +50,24 @@
 	      });
 	  });
 	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 	  //회원가입 페이지 에서 사용하는 스크립트
 	  function daumAddressSearch() {
         new daum.Postcode({
@@ -127,29 +145,6 @@
 			}
 			
 		}
-	
-
-  	//비밀번호 체크
-	function pwCheck(){
-	    var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	    var target = document.querySelector("input[name=pw]");
-	    if(regex.test(target.value)){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
-  	
-  	//비밀번호 재확인
-	function pw2Check(){
-	    var pw = document.querySelector("input[name=pw]")
-	    var target = document.querySelector("#pw2");
-	    if(pw.value === target.value){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
   	
   	//닉네임 체크
 	function nickCheck(){
@@ -158,7 +153,7 @@
   			var nicktarget = document.querySelector("#nick");
   			
   			if(!nickregex.test(nicktarget.value)){
-		 		alert("올바른 전화번호를 입력해주세요.");
+		 		alert("닉네임은 완성된 한글 2~6글자");
 		 	}else{
 				 $.ajax({
 						url:"nickcheck",
@@ -215,16 +210,24 @@
 	$(document).ready(function() {
 		$("#sub").on("click",function () {
 			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-			
 		 	var pwtarget=document.querySelector("input[name=pw]");
 		 	
-		 	 if(!pwregex.test(pwtarget.value)){
-		 		alert("비밀번호 조건이 맞지 않습니다.");
-		 	}else if(!phoneregex.test(phonetarget.value)){
-		 		alert("핸드폰 번호 조건이 맞지 않습니다.");
+		 	var target = document.querySelector("input[name=pw2]");
+		 	
+		 	if($("#id").attr("readonly")!='readonly'){
+		 		alert("아이디 중복 확인을 해주세요");
+		 	}else if(!pwregex.test(pwtarget.value)){
+		 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+		 	}else if(pwtarget.value!=target.value){
+		 		alert("비밀번호가 틀렸습니다");
+		 	}else if($("#nick").attr("readonly")!='readonly'){
+		 		alert("닉네임 중복 확인을 해주세요");
+		 	}else if($("#phone").attr("readonly")!='readonly'){
+		 		alert("전화번호 중복 확인을 해주세요");
 		 	}else{
-		 		
+		 		//이제 폼으로 전송해주면 됨
 		 	}
+		 	
 		});
 	});
 	  
