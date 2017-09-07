@@ -51,24 +51,124 @@
 	
 
 
-//아이디 중복확인
-$(document).ready(function() {
-     var input = $("#ids");
-     $("#idcheck").on("click",function () {
-        $.ajax({
-           url:"idcheck",
-           type:"post",
-           data:{id:input.val()},
-           dataType:"text",
-           success:function(){
-              alert("사용 가능한 아이디 입니다.");
-           },
-           error:function(){
-              alert("중복된 아이디가 있습니다.");
+	//아이디 중복확인
+	$(document).ready(function() {
+		var input = $("#ids");
+		$("#idcheck").on("click",function () {
+			$.ajax({
+				url:"idcheck",
+				type:"post",
+				data:{id:input.val()},
+				dataType:"text",
+				success:function(){
+					alert("사용 가능한 아이디 입니다.");
+				},
+				error:function(){
+					alert("중복된 아이디가 있습니다.");
+				}
+			});
+			
+			if($("#idcheck").val()=="중복확인"){
+				if($("#ids").val()==""){
+					alert("아이디를 입력하세요");
+				}
+				else{
+					$.ajax({
+						url:"idcheck",
+						type:"post",
+						data:{id:input.val()},
+						dataType:"text",
+						success:function(){
+							alert("사용 가능한 아이디 입니다.");
+							$("#sub").removeAttr("disabled");
+							$("#ids").attr("disabled","disabled");
+							$("#idcheck").val("취소");
+						},
+						error:function(){
+							alert("중복된 아이디가 있습니다.");
+						}
+					});
+				}
+			}else{
+				$("#sub").attr("disabled","disabled");
+				$("#idcheck").val("중복확인");
+				$("#ids").removeAttr("disabled");
+			}
+		});
+	});
+  
+  		//아이디 체크
+		function idCheck(){
+		    var regex = /^[\w]{8,20}$/;
+		    var target = document.querySelector("input[name=ids]");
+		    if(regex.test(target.value)){
+		        target.style.border = "1px solid blue";
+		    }else{
+		        target.style.border = "1px solid red";
+		    }
+		}
+
+  	//비밀번호 체크
+            function pwCheck(){
+               var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+               var target = document.querySelector("input[name=pw]");
+               if(regex.test(target.value)){
+                    target.style.border = "1px solid blue";
+               }else{
+                   target.style.border = "1px solid red";
+               }
            }
-        });
-     });
-  });
+  	
+  	//비밀번호 재확인
+            function pw2Check(){
+               var pw = document.querySelector("input[name=pw]")
+               var target = document.querySelector("#pw2");
+               if(pw.value === target.value){
+                    target.style.border = "1px solid blue";
+                    
+               }else{
+                   target.style.border = "1px solid red";
+                   
+               }
+           }
+  	
+  	//닉네임 체크
+            function nickCheck(){
+               var regex = /^[가-힣]{1,6}$/;
+               var target = document.querySelector("input[name=nickname]");
+               if(!regex.test(target.value)){
+                    target.style.border = "1px solid blue";
+               }else{
+                   target.style.border = "1px solid red";
+               }
+           }
+  	
+  	//핸드폰 번호 체크
+  	function phoneCheck(){
+  		var regex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
+  		var target=document.querySelector("input[name=phone]");
+  		if(regex.test(target.value)){
+  			target.style.border="2px solid blue";
+  		}else{
+	  		target.style.border="2px solid red";
+  		}
+  	}
+  	
+  	
+// 	//완료버튼 이벤트
+	
+// 	 $("#sub").on("click",function () {
+// 		 var idregex=/^[\w]{8,20}$/;
+// 		 var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+// 		 var nickregex = /^[가-힣]{1,6}$/;
+// 		 var phoneregex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
+// 		 var idtarget=("input[name=ids]");
+// 		 var pwtarget=("input[name=pw]");
+// 		 var nicktarget=("input[name=nick]");
+// 		 var phonetarget=("input[name=phone]");
+		 
+// 		 if(idregex.test(idtarget.value))
+// 	 });
 </script>
 
 </head>
