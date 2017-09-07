@@ -4,6 +4,7 @@
 <html>
 <head>
 <title>회원가입</title>
+ <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
     function daumAddressSearch() {
@@ -49,29 +50,21 @@
     }
 	
 
-</script>
-<script>
 
 //아이디 중복확인
 $(document).ready(function() {
-	  console.log("실행댐");
      var input = $("#ids");
-     console.log("실행댐");
      $("#idcheck").on("click",function () {
-         
-           console.log(input.val());
         $.ajax({
-           url:"/member/idcheck",
+           url:"idcheck",
            type:"post",
            data:{id:input.val()},
            dataType:"text",
            success:function(){
-              console.log("정상실행댐");
-              $("#check").html("<lable>사용가능한 아이디입니다</label>");
+              alert("사용 가능한 아이디 입니다.");
            },
            error:function(){
-              console.log("비정상실행댐");
-              $("#check").html("<lable>이미 존재하는 아이디 입니다</label>");
+              alert("중복된 아이디가 있습니다.");
            }
         });
      });
@@ -104,7 +97,7 @@ $(document).ready(function() {
 		<br><br>
 		<input type="text" name="sort" placeholder="사용가능한 언어입력" required>
 		<br><br>
-		<input type="submit" value="완료">
+		<input id="sub" type="submit" value="완료" >
 	</form>
 </body>
 </html>

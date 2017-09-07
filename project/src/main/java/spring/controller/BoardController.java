@@ -24,6 +24,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.board.Board;
 import spring.db.board.BoardDao;
+import spring.db.board.Reply;
+import spring.db.board.ReplyDao;
 
 @Controller
 @RequestMapping("/board")
@@ -32,6 +34,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardDao boardDao;
+	
+	@Autowired
+	private ReplyDao replyDao;
 	
 	@RequestMapping("/{path}")
 	public String board(@PathVariable String path, HttpServletRequest request, Model m) {	
@@ -108,10 +113,27 @@ public class BoardController {
 		}
 		
 		Board board = boardDao.detail(noI);
+		boardDao.readUp(noI);
+		List<Reply> list = replyDao.list(noI);
 		
 		m.addAttribute("unit", board);
+		m.addAttribute("list", list);
 		
 		return "board/detail";
+	}
+	
+	@RequestMapping("/{path}/best")
+	public String best(@PathVariable String path, String no) throws Exception {
+		int noI;
+		try {
+			noI = Integer.parseInt(no);
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		boardDao.best(noI);
+		
+		return "redirect:/board/" + path + "/detail?no=" + no;
 	}
 
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
