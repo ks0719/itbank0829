@@ -41,17 +41,25 @@ public class MemberController {
 	
 	@RequestMapping(value="/member/idcheck", method = RequestMethod.POST)
 	public String idcheck(@RequestParam String id) throws Exception {
-		boolean result = memberDao.idcheck(id);
+		boolean result = memberDao.check("id",id);
 		if(!result)  return "member/sign";
 		else return null;
 	}
 	
 	@RequestMapping(value="/member/nicknamecheck", method = RequestMethod.POST)
-	   public String nickname(@RequestParam String nickname) throws Exception {
-		boolean result = memberDao.nickcheck(nickname);
+	   public String nickname(@RequestParam String nick) throws Exception {
+		boolean result = memberDao.check("nick",nick);
 	      if(!result)  return "member/sign";
 	      else return null;
 	   }
+	
+	@RequestMapping(value="/member/pcheck", method = RequestMethod.POST)
+	public String pcheck(@RequestParam String phone) throws Exception {
+		boolean result = memberDao.check("phone", phone);
+		System.out.println(result);
+		if(!result)  return "member/sign";
+		else return null;
+	}
 	
 	
 	@RequestMapping("/member/login")

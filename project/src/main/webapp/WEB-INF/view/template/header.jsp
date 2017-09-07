@@ -94,24 +94,27 @@
     }
 
 	//아이디 중복확인
-	$(document).ready(function() {
-		var input = $("#ids");
-		$("#idcheck").on("click",function () {
+	function idCheck() {
 			if($("#idcheck").val()=="중복확인"){
-				if($("#ids").val()==""){
+				if($("#id").val()==""){
 					alert("아이디를 입력하세요");
 				}
 				else{
 					$.ajax({
 						url:"idcheck",
 						type:"post",
-						data:{id:input.val()},
+						data:{id:$("#id").val()},
 						dataType:"text",
 						success:function(){
-							alert("사용 가능한 아이디 입니다.");
-							$("#sub").removeAttr("disabled");
-							$("#ids").attr("readonly","readonly");
-							$("#idcheck").val("취소");
+							var idregex=/^[a-zA-Z0-9]{8,20}$/;
+						 	var idtarget= document.querySelector("input[name=id]");
+							if(!idregex.test(idtarget.value)){
+						 		alert("ID는 영문,숫자 조합 8~20자");
+						 	}else{
+								alert("사용 가능한 아이디 입니다.");
+								$("#id").attr("readonly","readonly");
+								$("#idcheck").val("취소");
+						 	}
 						},
 						error:function(){
 							alert("중복된 아이디가 있습니다.");
@@ -119,25 +122,12 @@
 					});
 				}
 			}else{
-				$("#sub").attr("disabled","disabled");
 				$("#idcheck").val("중복확인");
-				$("#ids").removeAttr("readonly");
+				$("#id").removeAttr("readonly");
 			}
 			
-		});  
-
-	});
-  
-	//아이디 체크
-	function idCheck(){
-	    var regex = /^[\w]{8,20}$/;
-	    var target = document.querySelector("input[name=id]");
-	    if(regex.test(target.value)){
-	        target.style.border = "1px solid blue";
-	    }else{
-	        target.style.border = "1px solid red";
-	    }
-	}
+		}
+	
 
   	//비밀번호 체크
 	function pwCheck(){
@@ -163,42 +153,49 @@
   	
   	//닉네임 체크
 	function nickCheck(){
-	    var regex = /^[가-힣]{1,6}$/;
-	    var target = document.querySelector("input[name=nickname]");
-	    if(regex.test(target.value)){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
+  		
 	}
   	
   	//핸드폰 번호 체크
   	function phoneCheck(){
-  		var regex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
-  		var target=document.querySelector("input[name=phone]");
-  		if(regex.test(target.value)){
-  			target.style.border="2px solid blue";
-  		}else{
-	  		target.style.border="2px solid red";
-  		}
+  		if($("#pcheck").val()=="중복확인"){
+  			
+  			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
+			var phonetarget=document.querySelector("input[name=phone]");
+			 if(!phoneregex.test(phonetarget.value)){
+		 		alert("올바른 전화번호를 입력해주세요.");
+			 }else{
+				 $.ajax({
+						url:"pcheck",
+						type:"post",
+						data:{phone:$("#phone").val()},
+						dataType:"number",
+						success:function(){
+							alert("사용 가능한 전화번호 입니다.");
+							$("#phone").attr("readonly","readonly");
+							$("#pcheck").val("취소");
+						},
+						error:function(){
+							alert("이미 등록된 전화번호 입니다.");
+						}
+					});
+  			}
+		}else{
+			$("#pcheck").val("중복확인");
+			$("#phone").removeAttr("readonly");
+		}
   	}
-<<<<<<< HEAD
 
   //완료버튼 이벤트
 	$(document).ready(function() {
 		$("#sub").on("click",function () {
-			var idregex=/^[a-zA-Z0-9]{8,20}$/;
 			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
 			var nickregex=/^[가-힣]{1,6}$/;
-			var phoneregex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
-		 	var idtarget= document.querySelector("input[name=id]");
+			
 		 	var pwtarget=document.querySelector("input[name=pw]");
 		 	var nicktarget=document.querySelector("input[name=nickname]");
-		 	var phonetarget=document.querySelector("input[name=phone]");
 		 	
-		 	if(!idregex.test(idtarget.value)){
-		 		alert("ID는 영문,숫자 조합 8~20자");
-		 	}else if(!pwregex.test(pwtarget.value)){
+		 	 if(!pwregex.test(pwtarget.value)){
 		 		alert("비밀번호 조건이 맞지 않습니다.");
 		 	}else if(!nickregex.test(nicktarget.value)){
 		 		alert("닉네임 조건이 맞지 않습니다.");

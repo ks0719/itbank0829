@@ -39,18 +39,20 @@ public class MemberDao {
 		return jdbcTemplate.query(sql, new Object[] {id, password},mapper);
 	}
 
-	  public boolean idcheck(String id) {
-	      
-	      String sql = "select count(*) from member where id=?";
-	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {id},Integer.class)>0;
-	      
-	      return result;
-	   }
 	  
 	  public boolean nickcheck(String nickname) {
 	      
 	      String sql = "select count(*) from member where nick=?";
 	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {nickname},Integer.class)>0;
+	      
+	      return result;
+	   }
+	  
+  public boolean check(String column, String data) {
+	      
+	      String sql = "select count(*) from member where "+column+"=?";
+	      
+	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
 	      
 	      return result;
 	   }

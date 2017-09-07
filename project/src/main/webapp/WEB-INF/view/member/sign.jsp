@@ -3,8 +3,8 @@
 <%@ include file="/WEB-INF/view/template/header.jsp" %>    
 <h1>회원 가입</h1>
 <form action="" method="post" >
-	<input type="text" name="id" placeholder="ID입력" onclick="idCheck();" required>
-	<input type="button"  id="idcheck" value="중복확인"  >
+	<input type="text" name="id" id="id" placeholder="ID입력"  required>
+	<input type="button"  id="idcheck" value="중복확인" onclick="idCheck();">
 	<br><br>
 	<input type="password" name="pw" placeholder="PW입력" required>
 	<br><br>
@@ -12,7 +12,8 @@
 	<br><br>
 	<input type="text" name="nickname" placeholder="닉네임입력" required>
 	<br><br>
-	<input type="tel" name="phone" placeholder="번호입력(-없이)" required>
+	<input type="number" id="phone"name="phone" placeholder="번호입력(-없이)" required>
+	<input type="button"  id="pcheck" value="중복확인" onclick="phoneCheck();">
 	<br><br>
 	<input type="text" name="post" placeholder="우편번호" readonly>
 	<input type="button" value="우편번호찾기" onclick="daumAddressSearch();">
@@ -23,6 +24,6 @@
 	<br><br>
 	<input type="text" name="sort" placeholder="사용가능한 언어입력" required>
 	<br><br>
-	<input id="sub" type="submit" value="완료" disabled>
+	<input id="sub" type="submit" value="완료" >
 </form>
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>
