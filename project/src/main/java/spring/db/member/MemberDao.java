@@ -2,16 +2,10 @@ package spring.db.member;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Repository("memberDao")
 public class MemberDao {
@@ -39,21 +33,9 @@ public class MemberDao {
 		return jdbcTemplate.query(sql, new Object[] {id, password},mapper);
 	}
 
-	  
-	  public boolean nickcheck(String nickname) {
-	      
-	      String sql = "select count(*) from member where nick=?";
-	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {nickname},Integer.class)>0;
-	      
-	      return result;
-	   }
-	  
-  public boolean check(String column, String data) {
-	      
-	      String sql = "select count(*) from member where "+column+"=?";
-	      
-	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
-	      
-	      return result;
-	   }
+	public boolean check(String column, String data) {
+	
+		String sql = "select count(*) from member where "+column+"=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
+	}
 }
