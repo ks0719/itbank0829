@@ -4,17 +4,5 @@
 			</td>
 		</tr>
 	</table>
-</div>
-                        </td>
-                    </tr>
-                </table>
-              	  홈페이지 정보
-            </td>
-		</tr>
-	</table>
-	
-	</body>
-</html>
-    
-    
-    
+
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>

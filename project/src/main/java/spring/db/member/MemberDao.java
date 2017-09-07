@@ -54,4 +54,9 @@ public class MemberDao {
 		  return result;
 		 
 	  }
+	public boolean check(String column, String data) {
+	
+		String sql = "select count(*) from member where "+column+"=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
+	}
 }
