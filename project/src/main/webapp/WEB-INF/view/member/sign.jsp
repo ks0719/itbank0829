@@ -10,7 +10,8 @@
 	<br><br>
 	<input type="text" name="name" placeholder="이름입력" required>
 	<br><br>
-	<input type="text" name="nickname" placeholder="닉네임입력" required>
+	<input type="text" id="nick" name="nick" placeholder="닉네임입력" required>
+	<input type="button"  id="nickcheck" value="중복확인" onclick="nickCheck();">
 	<br><br>
 	<input type="number" id="phone"name="phone" placeholder="번호입력(-없이)" required>
 	<input type="button"  id="pcheck" value="중복확인" onclick="phoneCheck();">

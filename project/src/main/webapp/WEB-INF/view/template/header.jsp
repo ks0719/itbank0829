@@ -153,7 +153,32 @@
   	
   	//닉네임 체크
 	function nickCheck(){
-  		
+		if($("#nickcheck").val()=="중복확인"){
+  			var nickregex=/^[가-힣]{2,6}$/;
+  			var nicktarget=doucment.querySelector()
+  			
+  			if(!nickregex.test(nicktarget.value)){
+		 		alert("닉네임 조건이 맞지 않습니다.");
+		 	}else{
+				 $.ajax({
+						url:"nickcheck",
+						type:"post",
+						data:{nick:$("#nick").val()},
+						dataType:"text",
+						success:function(){
+							alert("사용 가능한 닉네임 입니다.");
+							$("#nick").attr("readonly","readonly");
+							$("#nickcheck").val("취소");
+						},
+						error:function(){
+							alert("이미 등록된 닉네임 입니다.");
+						}
+					});
+  			}
+		}else{
+			$("#nickcheck").val("중복확인");
+			$("#nick").removeAttr("readonly");
+		}
 	}
   	
   	//핸드폰 번호 체크
@@ -169,7 +194,7 @@
 						url:"pcheck",
 						type:"post",
 						data:{phone:$("#phone").val()},
-						dataType:"number",
+						dataType:"text",
 						success:function(){
 							alert("사용 가능한 전화번호 입니다.");
 							$("#phone").attr("readonly","readonly");
@@ -190,15 +215,11 @@
 	$(document).ready(function() {
 		$("#sub").on("click",function () {
 			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-			var nickregex=/^[가-힣]{1,6}$/;
 			
 		 	var pwtarget=document.querySelector("input[name=pw]");
-		 	var nicktarget=document.querySelector("input[name=nickname]");
 		 	
 		 	 if(!pwregex.test(pwtarget.value)){
 		 		alert("비밀번호 조건이 맞지 않습니다.");
-		 	}else if(!nickregex.test(nicktarget.value)){
-		 		alert("닉네임 조건이 맞지 않습니다.");
 		 	}else if(!phoneregex.test(phonetarget.value)){
 		 		alert("핸드폰 번호 조건이 맞지 않습니다.");
 		 	}else{
