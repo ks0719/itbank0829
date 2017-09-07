@@ -155,10 +155,10 @@
 	function nickCheck(){
 		if($("#nickcheck").val()=="중복확인"){
   			var nickregex=/^[가-힣]{2,6}$/;
-  			var nicktarget=doucment.querySelector()
+  			var nicktarget = document.querySelector("#nick");
   			
   			if(!nickregex.test(nicktarget.value)){
-		 		alert("닉네임 조건이 맞지 않습니다.");
+		 		alert("올바른 전화번호를 입력해주세요.");
 		 	}else{
 				 $.ajax({
 						url:"nickcheck",
