@@ -143,8 +143,8 @@ form {
 .head {
 	width: 15%;
 }
-<!-- 레이어 팝업 -->
-  .setDiv {
+<!--레이어 팝업 -->
+ .setDiv {
             padding-top: 100px;
             text-align: center;
         }
@@ -159,6 +159,8 @@ form {
         .window {
             display: none;
             background-color: #ffffff;
-            height: 200px;
+            width: 200px;
+            height: 250px;
             z-index:99999;
         }
+

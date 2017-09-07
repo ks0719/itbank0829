@@ -2,16 +2,10 @@ package spring.db.member;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Repository("memberDao")
 public class MemberDao {
@@ -54,4 +48,10 @@ public class MemberDao {
 	      
 	      return result;
 	   }
+	  public boolean logincheck(String id,String pw) {
+		  String sql="select count(*) from member where id=? and pw=?";
+		  boolean result= jdbcTemplate.queryForObject(sql, new Object[] {id,pw},Integer.class)>0;
+		  return result;
+		 
+	  }
 }

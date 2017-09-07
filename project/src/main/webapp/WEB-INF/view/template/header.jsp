@@ -1,11 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
+function wrapWindowByMask(){
+    // 화면의 높이와 너비를 변수로 만듭니다.
+    var maskHeight = $(document).height();
+    var maskWidth = $(window).width();
+
+    // 마스크의 높이와 너비를 화면의 높이와 너비 변수로 설정합니다.
+    $('.mask').css({'width':maskWidth,'height':maskHeight});
+
+    // fade 애니메이션 : 1초 동안 검게 됐다가 80%의 불투명으로 변합니다.
+    $('.mask').fadeIn(1000);
+    $('.mask').fadeTo("slow",0.8);
+
+    // 레이어 팝업을 가운데로 띄우기 위해 화면의 높이와 너비의 가운데 값과 스크롤 값을 더하여 변수로 만듭니다.
+    var left = ( $(window).scrollLeft() + ( $(window).width() - $('.window').width()) / 2 );
+    var top = ( $(window).scrollTop() + ( $(window).height() - $('.window').height()) / 2 );
+
+    // css 스타일을 변경합니다.
+    $('.window').css({'left':left,'top':top, 'position':'absolute'});
+
+    // 레이어 팝업을 띄웁니다.
+    $('.window').show();
+}
+
+$(document).ready(function(){
+    // showMask를 클릭시 작동하며 검은 마스크 배경과 레이어 팝업을 띄웁니다.
+    $('.showMask').click(function(e){
+        // preventDefault는 href의 링크 기본 행동을 막는 기능입니다.
+        e.preventDefault();
+        wrapWindowByMask();
+    });
+
+    // 닫기(close)를 눌렀을 때 작동합니다.
+    $('.window .close').click(function (e) {
+        e.preventDefault();
+        $('.mask, .window').hide();
+    });
+
+    // 뒤 검은 마스크를 클릭시에도 모두 제거하도록 처리합니다.
+    $('.mask').click(function () {
+        $(this).hide();
+        $('.window').hide();
+    });
+});
+
+
 	$(document).ready(function() {
 		$(".clickToinfo").on("click", function() {
 			var no = $(this).data('no');
@@ -49,7 +96,7 @@
 	          $("#insertBoardFrm").submit();
 	      });
 	  });
-	  
+
 	  //회원가입 페이지 에서 사용하는 스크립트
 	  function daumAddressSearch() {
         new daum.Postcode({
@@ -82,7 +129,7 @@
                     // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
                 }
-				
+
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.querySelector("input[name=post]").value = data.zonecode; //5자리 새우편번호 사용
                 document.querySelector("input[name=addr1]").value = fullAddr;
@@ -92,7 +139,6 @@
             }
         }).open();
     }
-
 	//아이디 중복확인
 	$(document).ready(function() {
 		var input = $("#ids");
@@ -110,7 +156,7 @@
 						success:function(){
 							alert("사용 가능한 아이디 입니다.");
 							$("#sub").removeAttr("disabled");
-							$("#ids").attr("readonly","readonly");
+							$("#ids").attr("disabled","disabled");
 							$("#idcheck").val("취소");
 						},
 						error:function(){
@@ -121,17 +167,16 @@
 			}else{
 				$("#sub").attr("disabled","disabled");
 				$("#idcheck").val("중복확인");
-				$("#ids").removeAttr("readonly");
+				$("#ids").removeAttr("disabled");
 			}
 			
-		});  
-
+		});
 	});
   
 	//아이디 체크
 	function idCheck(){
 	    var regex = /^[\w]{8,20}$/;
-	    var target = document.querySelector("input[name=id]");
+	    var target = document.querySelector("input[name=ids]");
 	    if(regex.test(target.value)){
 	        target.style.border = "1px solid blue";
 	    }else{
@@ -171,7 +216,7 @@
 			target.style.border = "1px solid red";
 	    }
 	}
-  	
+	
   	//핸드폰 번호 체크
   	function phoneCheck(){
   		var regex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
@@ -182,49 +227,38 @@
 	  		target.style.border="2px solid red";
   		}
   	}
-<<<<<<< HEAD
-
-  //완료버튼 이벤트
-	$(document).ready(function() {
-		$("#sub").on("click",function () {
-			var idregex=/^[a-zA-Z0-9]{8,20}$/;
-			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-			var nickregex=/^[가-힣]{1,6}$/;
-			var phoneregex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
-		 	var idtarget= document.querySelector("input[name=id]");
-		 	var pwtarget=document.querySelector("input[name=pw]");
-		 	var nicktarget=document.querySelector("input[name=nickname]");
-		 	var phonetarget=document.querySelector("input[name=phone]");
-		 	
-		 	if(!idregex.test(idtarget.value)){
-		 		alert("ID는 영문,숫자 조합 8~20자");
-		 	}else if(!pwregex.test(pwtarget.value)){
-		 		alert("비밀번호 조건이 맞지 않습니다.");
-		 	}else if(!nickregex.test(nicktarget.value)){
-		 		alert("닉네임 조건이 맞지 않습니다.");
-		 	}else if(!phoneregex.test(phonetarget.value)){
-		 		alert("핸드폰 번호 조건이 맞지 않습니다.");
-		 	}else{
-		 		
-		 	}
-		});
-	});
 	  
+  
 </script>
-
 <head>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 	<meta charset="utf-8">
 	<title>Welcome</title>
 </head> 
 <body>
+<div class="setDiv">
+ 
+    <div class="mask"></div>
+    <div class="window">
+    <h5>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</h5>
+    <div id="null"></div>
+    <form action="${pageContext.request.contextPath }/member/login" method="post">
+    	아이디<input type="text" name="id" required><br>
+    	비밀번호<input type="password" name="pw" required><br>
+    	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
+        <input type="submit" id="login_btn" value="로그인하기"/><br>
+        <input type="button" href="#" value="회원가입하기">
+       </form>
+    </div>
+</div>
 
 	<table>
 		<tr>
 			<th rowspan="5">
                 <div>
                     <h3>회원정보 넣을 곳</h3>
-                    <h3><a href="#" id="openMask">로그인</a></h3>
+                    
+                    <h3><a href="#" class="showMask">로그인</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
                     <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
