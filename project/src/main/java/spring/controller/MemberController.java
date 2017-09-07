@@ -72,9 +72,9 @@ public class MemberController {
 		String pw=request.getParameter("pw");
 		//log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
-		//url=url.substring(42);
-		//url=url.replace(".jsp", "");
-		//log.debug("url="+url);
+		
+		url=url.replaceAll("http://localhost:8080/project/WEB-INF/view", "").replaceAll(".jsp", "");
+		log.debug("url="+url);
 		boolean state=memberDao.logincheck(id, pw);
 		//log.debug("state="+state);
 		if(state) {
@@ -83,7 +83,7 @@ public class MemberController {
 			cookie.setComment("로그인시 얻어지는 나의 아이디입니다. 원래는 닉네임 아니었나?");
 			cookie.setMaxAge(60*60*24);
 			response.addCookie(cookie);
-		return url;
+		return "redirect:"+url;
 		}
 		else {
 			return "member/fail";
