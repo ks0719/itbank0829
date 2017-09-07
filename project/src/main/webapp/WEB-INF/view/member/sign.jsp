@@ -24,6 +24,6 @@
 	<br><br>
 	<input type="text" name="sort" placeholder="사용가능한 언어입력" required>
 	<br><br>
-	<input id="sub" type="submit" value="완료" >
+	<input id="sub" type="submit" value="완료">
 </form>
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>
