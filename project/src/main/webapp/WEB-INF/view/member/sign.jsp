@@ -57,21 +57,26 @@ $(document).ready(function() {
      $("#idcheck").on("click",function () {
     	 
     	 if($("#idcheck").val()=="중복확인"){
-	        $.ajax({
-	           url:"idcheck",
-	           type:"post",
-	           data:{id:input.val()},
-	           dataType:"text",
-	           success:function(){
-	              alert("사용 가능한 아이디 입니다.");
-	              $("#sub").removeAttr("disabled");
-	              $("#ids").attr("disabled","disabled");
-	              $("#idcheck").val("취소");
-	           },
-	           error:function(){
-	              alert("중복된 아이디가 있습니다.");
-	           }
-	        });
+    		 if($("#ids").val()==""){
+    			 alert("아이디를 입력하세요");
+    		 }
+    		 else{
+		        $.ajax({
+		           url:"idcheck",
+		           type:"post",
+		           data:{id:input.val()},
+		           dataType:"text",
+		           success:function(){
+		              alert("사용 가능한 아이디 입니다.");
+		              $("#sub").removeAttr("disabled");
+		              $("#ids").attr("disabled","disabled");
+		              $("#idcheck").val("취소");
+		           },
+		           error:function(){
+		              alert("중복된 아이디가 있습니다.");
+		           }
+		        });
+    		 }
     	 }else{
     		 $("#sub").attr("disabled","disabled");
              $("#idcheck").val("중복확인");
@@ -80,11 +85,17 @@ $(document).ready(function() {
      });
   });
   
-	//완료버튼 이벤트
-	
-// 	 $("#idcheck").on("click",function () {
-// 		 if($))
-// 	 });
+  		//아이디 체크
+		function idCheck(){
+		    var regex = /^[\w]{8,20}$/;
+		    var target = document.querySelector("input[name=ids]");
+		    if(regex.test(target.value)){
+		        target.style.border = "1px solid blue";
+		    }else{
+		        target.style.border = "1px solid red";
+		    }
+		}
+
   	//비밀번호 체크
             function pwCheck(){
                var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
@@ -130,6 +141,22 @@ $(document).ready(function() {
 	  		target.style.border="2px solid red";
   		}
   	}
+  	
+  	
+// 	//완료버튼 이벤트
+	
+// 	 $("#sub").on("click",function () {
+// 		 var idregex=/^[\w]{8,20}$/;
+// 		 var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+// 		 var nickregex = /^[가-힣]{1,6}$/;
+// 		 var phoneregex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
+// 		 var idtarget=("input[name=ids]");
+// 		 var pwtarget=("input[name=pw]");
+// 		 var nicktarget=("input[name=nick]");
+// 		 var phonetarget=("input[name=phone]");
+		 
+// 		 if(idregex.test(idtarget.value))
+// 	 });
 </script>
 
 </head>
