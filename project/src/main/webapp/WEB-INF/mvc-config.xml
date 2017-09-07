@@ -8,6 +8,11 @@
 
     <mvc:annotation-driven />
     <context:component-scan base-package="spring.controller"/>
+    <!-- 왠지 모르지만 밑에거 쓰니까 이미지가 다 뜬다 설명은 아래와 같이 써있다 -->
+    <!-- 처리할 수 없는 요청은 컨테이너(톰캣)에게 위임하는 설정 -->
+	 <!-- 정적인 요소들(html, js, css, gif)을 넘김 -->
+    <mvc:default-servlet-handler/>
+    
 	<mvc:resources location="/resource" mapping="/resuorce/**"></mvc:resources>
 	<mvc:resources location="/resource/css/" mapping="/css/**"/>
 	<mvc:resources location="/resource/img/" mapping="/img/**"/>
