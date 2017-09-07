@@ -52,8 +52,8 @@ public class MemberController {
 	@RequestMapping(value="/member/idcheck", method = RequestMethod.POST)
 	   public String idcheck(@RequestParam String id) throws Exception {
 		boolean result = memberDao.idcheck(id);
-	      if(!result)  return "member/success";
-	      else throw new Exception();
+	      if(!result)  return "member/sign";
+	      else return null;
 	   }
 	
 	
