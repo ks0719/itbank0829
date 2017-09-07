@@ -48,6 +48,7 @@
 	          //폼 submit
 	          $("#insertBoardFrm").submit();
 	      });
+	  });
 	  
 	  
 	  
