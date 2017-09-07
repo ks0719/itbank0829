@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +21,9 @@ public class MemberController {
 	private MemberDao memberDao;
 	
 	@RequestMapping(value="/member/sign",method=RequestMethod.GET)
-	public String signGet() {
-		
+	public String signGet(Model m) {
+		m.addAttribute("loginCheck", false);
+		m.addAttribute("pwCheck", false);
 		return "member/sign";
 	}
 	
