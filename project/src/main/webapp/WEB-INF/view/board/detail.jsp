@@ -7,87 +7,82 @@
 <h1>상세보기</h1>
 <div class="page-wrap">
 	<div class="table-wrap">
-		<table border="1" class="tableUnit" rules=rows>
-			<tr>
-				<td class="head">
-					말머리
-				</td>
-				<td class="text-left">
-					${unit.head}
-				</td>
-			</tr>
-			<tr>
-				<td class="head">
-					제목
-				</td>
-				<td class="text-left">
-					${unit.title}
-				</td>
-			</tr>
-			<tr>
-				<td class="head">
-					작성자
-				</td>
-				<td class="text-left">
-					${unit.writer}
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<textarea rows="20" cols="80">${unit.detail}</textarea>
-				</td>
-			</tr>
-			<tr>
-				<td class="head">
-					첨부파일
-				</td>
-				<td class="text-left">
-					${unit.originfile}
-					<a href="download/${unit.no}">
-						<img src="<c:url value="/img/download.png"/>" width="20" height="20">
-					</a>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					댓글
-				</td>
-			</tr>
-			<c:forEach var="reply" items="${list}">
-			<tr>
-				<td class="head">
-					${reply.writer}
-				</td>
-				<td class="text-left">
-					${reply.detail}
-					<br>
-					<a href="#">추천</a> ${reply.best}
-				</td>
-			</tr>
-			<tr>
-				<td class="head">
-					${reply.writer}
-				</td>
-				<td class="text-left">
-					${reply.detail}
-					<br>
-					<a href="#">추천</a> ${reply.best}
-				</td>
-			</tr>
-			</c:forEach>
-		</table>
-		<div class="row">
-			<form action="#">
-				<input type="text" placeholder="댓글 입력">
-				<input type="submit" value="등록">
-			</form>
-		</div>
-		<div class="align-right">
-			<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${unit.no}';">
-			<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${unit.no}';">
-			<input type="button" value="삭제하기" class="input-btn" onclick="location.href='delete?no=${unit.no}';">
-			<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${path}';">
-		</div>
+		<c:forEach var="board" items="${boardList}">
+			<table border="1" class="tableUnit" rules=rows>
+				<tr>
+					<td class="head">
+						말머리
+					</td>
+					<td class="text-left">
+						${board.head}
+					</td>
+				</tr>
+				<tr>
+					<td class="head">
+						제목
+					</td>
+					<td class="text-left">
+						${board.title}
+					</td>
+				</tr>
+				<tr>
+					<td class="head">
+						작성자
+					</td>
+					<td class="text-left">
+						${board.writer}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<textarea rows="20" cols="80">${board.detail}</textarea>
+					</td>
+				</tr>
+				<c:if test="${board.originfile ne null}">
+				<tr>
+					<td class="head">
+						첨부파일
+					</td>
+					<td class="text-left">
+						${board.originfile}
+							<a href="download/${board.no}">
+								<img src="<c:url value="/img/download.png"/>" width="20" height="20">
+							</a>
+					</td>
+				</tr>
+				</c:if>
+			</table>
+			<div>
+				<form action="#" class="board-comment">
+					<input type="hidden" name="topcontext" value="${no}">
+					<input type="hidden" name="context" value="${board.no}">
+					<input type="hidden" name="writer" value="테스트유저1">
+					<input type="text" name="detail" class="user-input" placeholder="댓글 입력">
+					<input type="submit" class="input-btn" value="등록">
+				</form>
+				<table class="comment">
+					<c:forEach var="comment" items="${list}">
+						<c:if test="${comment.context eq board.no}">
+						<tr>
+							<td>
+								${comment.detail}-${comment.writer} ${comment.reg}
+								<a href="#">추천</a> ${comment.best}
+								<br>
+							</td>
+						</tr>
+						</c:if>
+					</c:forEach>
+				</table>
+			</div>
+			<div class="align-right">
+				<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
+				<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${no}';">
+				<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}';">
+				<input type="button" value="삭제하기" class="input-btn" onclick="location.href='delete?no=${board.no}';">
+				<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${path}';">
+			</div>
+			<div class="empty-row"></div>
+		</c:forEach>
 	</div>
 </div>
 	

@@ -7,6 +7,7 @@
 <div class="page-wrap">
 	<div class="table-wrap">
 		<form action="write" method="post" enctype="multipart/form-data">
+			<input type="hidden" value="${context}" name="context">
 			<table border="1" class="tableUnit" rules=rows>
 				<tr>
 					<td class="head">

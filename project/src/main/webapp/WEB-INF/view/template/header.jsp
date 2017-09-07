@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
@@ -15,6 +16,22 @@
 			} else {
 				location.href = "class?no=" + no + "&page=" + page;
 			}
+		});
+		$("#board-select option").each(function(){
+			if($(this).val()=="${unit.head}"){
+				$(this).attr("selected","selected");
+			}
+		});
+		$(".board-comment").on("submit", function() {
+			event.preventDefault();
+        	
+        	$.ajax({
+        		url: "comment",
+        		data: $(this).serialize(),
+        		success: function(res, context) {
+        			$(".comment${context}").append(res);
+        		}
+        	});
 		});
 	});
 	  $(function(){
