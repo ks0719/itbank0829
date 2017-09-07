@@ -1,29 +1,18 @@
 package spring.controller;
 
-import java.nio.file.attribute.UserPrincipalLookupService;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import spring.db.member.Member;
 import spring.db.member.MemberDao;
-import spring.db.mylecture.MyLectureDao;
 
 @Controller
 public class MemberController {
@@ -32,8 +21,9 @@ public class MemberController {
 	private MemberDao memberDao;
 	
 	@RequestMapping(value="/member/sign",method=RequestMethod.GET)
-	public String signGet() {
-		
+	public String signGet(Model m) {
+		m.addAttribute("loginCheck", false);
+		m.addAttribute("pwCheck", false);
 		return "member/sign";
 	}
 	
@@ -50,11 +40,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/member/idcheck", method = RequestMethod.POST)
-	   public String idcheck(@RequestParam String id) throws Exception {
+	public String idcheck(@RequestParam String id) throws Exception {
 		boolean result = memberDao.idcheck(id);
-	      if(!result)  return "member/sign";
-	      else return null;
-	   }
+		if(!result)  return "member/sign";
+		else return null;
+	}
 	
 	@RequestMapping(value="/member/nicknamecheck", method = RequestMethod.POST)
 	   public String nickname(@RequestParam String nickname) throws Exception {
