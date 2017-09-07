@@ -127,7 +127,9 @@
 				$("#idcheck").val("중복확인");
 				$("#ids").removeAttr("disabled");
 			}
-		});
+			
+		});  
+
 	});
   
 	//아이디 체크
@@ -193,7 +195,6 @@
 	  
 	  
 	  
-	  
 </script>
 <head>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
@@ -201,13 +202,13 @@
 	<title>Welcome</title>
 </head> 
 <body>
-	
+
 	<table>
 		<tr>
 			<th rowspan="5">
                 <div>
                     <h3>회원정보 넣을 곳</h3>
-                    <h3><a href="${pageContext.request.contextPath}/member/login">로그인</a></h3>
+                    <h3><a href="#" id="openMask">로그인</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
                     <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
