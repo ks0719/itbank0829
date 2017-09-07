@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
@@ -22,6 +23,17 @@
 			if($(this).val()=="${unit.head}"){
 				$(this).attr("selected","selected");
 			}
+		});
+		$(".board-comment").on("submit", function() {
+			event.preventDefault();
+        	
+        	$.ajax({
+        		url: "comment",
+        		data: $(this).serialize(),
+        		success: function(res, context) {
+        			$(".comment${context}").append(res);
+        		}
+        	});
 		});
 	});
 	  $(function(){

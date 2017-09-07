@@ -17,17 +17,17 @@ public class BoardDao {
 	};
 
 	private int count(String path) {
-		return jdbcTemplate.queryForObject("select count(*) from board where path = '" + path + "'", Integer.class);
+		return jdbcTemplate.queryForObject("select count(*) from board where path = '" + path + "' and seq = 1", Integer.class);
 	}
 
 	public int count(String path, String type, String key) {
 		if (type == "" || key == null) return count(path);
-		return jdbcTemplate.queryForObject("select count(*) from board where path = '" + path + "' and lower (" + type + ") like '%'||'"+ key +"'||'%'", Integer.class);
+		return jdbcTemplate.queryForObject("select count(*) from board where path = '" + path + "' and lower (" + type + ") like '%'||'"+ key +"'||'%' and seq = 1", Integer.class);
 	}
 
 	private List<Board> list(String path, int start, int end) {
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from board where path = ? order by no desc)"
+				+ "select * from board where path = ? and seq = 1 order by no desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {path, start, end}, mapper);
@@ -37,32 +37,39 @@ public class BoardDao {
 		if (type == "" || key == null) return list(path, start, end);
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from board where path = ? and lower (" + type + ") like '%'||?||'%' order by no desc)"
+				+ "select * from board where path = ? and lower (" + type + ") like '%'||?||'%' and seq = 1 order by no desc)"
 						+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {path, key, start, end}, mapper);
 	}
 
-	public int write(String path, Board board) {
+	public int write(String path, Board board, int context) {
 		String sql = "select board_seq.nextval from dual";
 		int no = jdbcTemplate.queryForObject(sql, Integer.class);
+		
+		int seq = 0;
+		System.out.println("소속 : " + board.getContext());
+		if (context > 0) {
+			sql = "select max(seq) from board where no = ?";
+			seq = jdbcTemplate.queryForObject(sql, new Object[] {context}, Integer.class);
+		}
 		
 		String[] extension = board.getFiletype().split("/");
 		String filename = no + "." + extension[extension.length - 1];
 		
-		sql = "insert into board values(?, ?, ?, ?, ?, ?, null, 0, 0, 0, sysdate, ?, ?, ?, ?)";
+		sql = "insert into board values(?, ?, ?, ?, ?, ?, ?, ?, ?, null, 0, 0, 0, sysdate, ?, ?, ?, ?)";
 		jdbcTemplate.update(sql, new Object[] {no, board.getWriter(), path, board.getHead(), board.getTitle(), board.getDetail(), 
-				filename, board.getOriginfile(), board.getFiletype(), board.getFilesize()});
+				context > 0 ? context : no, seq + 1, context > 0 ? 1 : no, filename, board.getOriginfile(), board.getFiletype(), board.getFilesize()});
 		
 		return no;
 	}
 
-	public Board detail(int no) {
-		String sql = "select * from board where no = ?";
+	public List<Board> detail(int no) {
+		String sql = "select * from board where context = ? order by seq, best desc";
 		
 		List<Board> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
 		
-		return list.get(0);
+		return list;
 	}
 
 	public void edit(int no, Board board) {
@@ -91,6 +98,14 @@ public class BoardDao {
 		String sql = "update board set best = best + 1 where no = ?";
 		
 		jdbcTemplate.update(sql, no);
+	}
+
+	public Board detailOne(int no) {
+		String sql = "select * from board where no = ?";
+		
+		List<Board> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
+		
+		return list.get(0);
 	}
 
 }
