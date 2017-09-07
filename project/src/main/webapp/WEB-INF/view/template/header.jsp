@@ -4,8 +4,50 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-<script>
-	  
+<script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".clickToinfo").on("click", function() {
+			var no = $(this).data('no');
+			var page = $(this).data('page');
+			var type = $(this).data('type');
+			var key = $(this).data('key');
+			if (type != "" && key != "") {
+				location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+			} else {
+				location.href = "class?no=" + no + "&page=" + page;
+			}
+		});
+		$("#board-select option").each(function(){
+			if($(this).val()=="${unit.head}"){
+				$(this).attr("selected","selected");
+			}
+		});
+	});
+	  $(function(){
+	      //전역변수
+	      var obj = [];              
+	      //스마트에디터 프레임생성
+	      nhn.husky.EZCreator.createInIFrame({
+	          oAppRef: obj,
+	          elPlaceHolder: "editor",
+	          sSkinURI: "${pageContext.request.contextPath}/editor/SmartEditor2Skin.html",
+	          htParams : {
+	              // 툴바 사용 여부
+	              bUseToolbar : true,            
+	              // 입력창 크기 조절바 사용 여부
+	              bUseVerticalResizer : true,    
+	              // 모드 탭(Editor | HTML | TEXT) 사용 여부
+	              bUseModeChanger : true,
+	          }
+	      });
+	      //전송버튼
+	      $("#submit").click(function(){
+	          //id가 smarteditor인 textarea에 에디터에서 대입
+	          obj.getById["editor"].exec("UPDATE_CONTENTS_FIELD", []);
+	          //폼 submit
+	          $("#insertBoardFrm").submit();
+	      });
 	  
 	  
 	  
