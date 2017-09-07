@@ -121,7 +121,9 @@
 				$("#idcheck").val("중복확인");
 				$("#id").removeAttr("readonly");
 			}
-		});
+			
+		});  
+
 	});
   
 	//아이디 체크
@@ -178,22 +180,49 @@
 	  		target.style.border="2px solid red";
   		}
   	}
-	  
+<<<<<<< HEAD
+
+  //완료버튼 이벤트
+	$(document).ready(function() {
+		$("#sub").on("click",function () {
+			var idregex=/^[a-zA-Z0-9]{8,20}$/;
+			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+			var nickregex=/^[가-힣]{1,6}$/;
+			var phoneregex=/^[010]{3}[0-9]{4}[0-9]{4}$/; 
+		 	var idtarget= document.querySelector("input[name=id]");
+		 	var pwtarget=document.querySelector("input[name=pw]");
+		 	var nicktarget=document.querySelector("input[name=nickname]");
+		 	var phonetarget=document.querySelector("input[name=phone]");
+		 	
+		 	if(!idregex.test(idtarget.value)){
+		 		alert("ID는 영문,숫자 조합 8~20자");
+		 	}else if(!pwregex.test(pwtarget.value)){
+		 		alert("비밀번호 조건이 맞지 않습니다.");
+		 	}else if(!nickregex.test(nicktarget.value)){
+		 		alert("닉네임 조건이 맞지 않습니다.");
+		 	}else if(!phoneregex.test(phonetarget.value)){
+		 		alert("핸드폰 번호 조건이 맞지 않습니다.");
+		 	}else{
+		 		
+		 	}
+		});
+	});
 	  
 </script>
+
 <head>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 	<meta charset="utf-8">
 	<title>Welcome</title>
 </head> 
 <body>
-	
+
 	<table>
 		<tr>
 			<th rowspan="5">
                 <div>
                     <h3>회원정보 넣을 곳</h3>
-                    <h3><a href="${pageContext.request.contextPath}/member/login">로그인</a></h3>
+                    <h3><a href="#" id="openMask">로그인</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
                     <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
