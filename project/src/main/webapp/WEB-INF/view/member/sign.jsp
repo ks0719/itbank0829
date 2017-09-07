@@ -6,7 +6,9 @@
 	<input type="text" name="id" id="id" placeholder="ID입력"  required>
 	<input type="button"  id="idcheck" value="중복확인" onclick="idCheck();">
 	<br><br>
-	<input type="password" name="pw" placeholder="PW입력" required>
+	<input type="password" name="pw" placeholder="pw입력" required>
+	<br><br>
+	<input type="password" name="pw2" placeholder="PW재입력" onkeyup="pw2Check();" required>
 	<br><br>
 	<input type="text" name="name" placeholder="이름입력" required>
 	<br><br>

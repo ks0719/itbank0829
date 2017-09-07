@@ -141,7 +141,8 @@ form {
     resize: none;
 }
 .head {
-	width: 15%;
+	width: 10%;
+	text-align: left;
 }
 <!-- 레이어 팝업 -->
   .setDiv {

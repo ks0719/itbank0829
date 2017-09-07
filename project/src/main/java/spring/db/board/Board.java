@@ -17,6 +17,9 @@ public class Board {
 	private String head;
 	private String title;
 	private String detail;
+	private int context;
+	private int seq;
+	private int depth;
 	private String notice;
 	private int read;
 	private int reply;
@@ -48,6 +51,9 @@ public class Board {
 		setHead(rs.getString("head"));
 		setTitle(rs.getString("title"));
 		setDetail(rs.getString("detail"));
+		setContext(rs.getInt("context"));
+		setSeq(rs.getInt("seq"));
+		setDepth(rs.getInt("depth"));
 		setNotice(rs.getString("notice"));
 		setRead(rs.getInt("read"));
 		setReply(rs.getInt("reply"));
@@ -93,6 +99,24 @@ public class Board {
 	}
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+	public int getContext() {
+		return context;
+	}
+	public void setContext(int context) {
+		this.context = context;
+	}
+	public int getSeq() {
+		return seq;
+	}
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+	public int getDepth() {
+		return depth;
+	}
+	public void setDepth(int depth) {
+		this.depth = depth;
 	}
 	public String getNotice() {
 		return notice;

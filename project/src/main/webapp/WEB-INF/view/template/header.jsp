@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
@@ -22,6 +23,17 @@
 			if($(this).val()=="${unit.head}"){
 				$(this).attr("selected","selected");
 			}
+		});
+		$(".board-comment").on("submit", function() {
+			event.preventDefault();
+        	
+        	$.ajax({
+        		url: "comment",
+        		data: $(this).serialize(),
+        		success: function(res, context) {
+        			$(".comment${context}").append(res);
+        		}
+        	});
 		});
 	});
 	  $(function(){
@@ -49,6 +61,24 @@
 	          $("#insertBoardFrm").submit();
 	      });
 	  });
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 	  
 	  //회원가입 페이지 에서 사용하는 스크립트
 	  function daumAddressSearch() {
@@ -128,17 +158,6 @@
 			
 		}
   	
-  	//비밀번호 재확인
-	function pw2Check(){
-	    var pw = document.querySelector("input[name=pw]")
-	    var target = document.querySelector("input[name=pw2]");
-	    if(pw.value === target.value){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
-  	
   	//닉네임 체크
 	function nickCheck(){
 		if($("#nickcheck").val()=="중복확인"){
@@ -146,7 +165,7 @@
   			var nicktarget = document.querySelector("#nick");
   			
   			if(!nickregex.test(nicktarget.value)){
-		 		alert("닉네임은 완성된 한글 2~6자 입력해주세요.");
+		 		alert("닉네임은 완성된 한글 2~6글자");
 		 	}else{
 				 $.ajax({
 						url:"nickcheck",
@@ -202,13 +221,25 @@
   //완료버튼 이벤트
 	$(document).ready(function() {
 		$("#sub").on("click",function () {
-			var pw2regex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-			var pw2target=
-		 	 if(!pwregex.test(pwtarget.value)){
-		 		alert("비밀번호 조건이 맞지 않습니다.");
+			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+		 	var pwtarget=document.querySelector("input[name=pw]");
+		 	
+		 	var target = document.querySelector("input[name=pw2]");
+		 	
+		 	if($("#id").attr("readonly")!='readonly'){
+		 		alert("아이디 중복 확인을 해주세요");
+		 	}else if(!pwregex.test(pwtarget.value)){
+		 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+		 	}else if(pwtarget.value!=target.value){
+		 		alert("비밀번호가 틀렸습니다");
+		 	}else if($("#nick").attr("readonly")!='readonly'){
+		 		alert("닉네임 중복 확인을 해주세요");
+		 	}else if($("#phone").attr("readonly")!='readonly'){
+		 		alert("전화번호 중복 확인을 해주세요");
 		 	}else{
-		 		$("#sign")
+		 		//이제 폼으로 전송해주면 됨
 		 	}
+		 	
 		});
 	});
 	  
