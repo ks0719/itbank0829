@@ -9,7 +9,7 @@
 		 		<td>받는사람</td>
 		 		<td>
 		 			<c:choose>
-		 				<c:when test="${nick==''}">
+		 				<c:when test="${nick==''||nick==null}">
 		 					<input type="text" id="mail_receiver" name="mail_receiver" placeholder="받는사람" required>
 		 					<input type="button" id="check" value="확인" onclick="isExist($('#mail_receiver').val());">
 		 				</c:when>
@@ -34,7 +34,7 @@
 				<td colspan="2">
 					<button type="button" onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${param.box}'">목록으로</button>
 					<c:choose>
-		 				<c:when test="${nick==''}">
+		 				<c:when test="${nick==''||nick==null}">
 		 					<input id="send" disabled type="submit" value="전송">
 		 				</c:when>
 		 				<c:otherwise>

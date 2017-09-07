@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/view/template/header.jsp" %>    
 <h1>회원 가입</h1>
 <form action="" method="post" >
-	<input type="text" name="id" placeholder="ID입력" onclick="idCheck();" required>
+	<input type="text" name="id" id="id" placeholder="ID입력" onclick="idCheck();" required>
 	<input type="button"  id="idcheck" value="중복확인"  >
 	<br><br>
 	<input type="password" name="pw" placeholder="PW입력" required>
@@ -23,6 +23,6 @@
 	<br><br>
 	<input type="text" name="sort" placeholder="사용가능한 언어입력" required>
 	<br><br>
-	<input id="sub" type="submit" value="완료" disabled>
+	<input id="sub" type="submit" value="완료">
 </form>
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>

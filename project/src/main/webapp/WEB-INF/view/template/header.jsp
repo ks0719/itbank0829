@@ -95,10 +95,10 @@
 
 	//아이디 중복확인
 	$(document).ready(function() {
-		var input = $("#ids");
+		var input = $("#id");
 		$("#idcheck").on("click",function () {
 			if($("#idcheck").val()=="중복확인"){
-				if($("#ids").val()==""){
+				if($("#id").val()==""){
 					alert("아이디를 입력하세요");
 				}
 				else{
@@ -109,8 +109,7 @@
 						dataType:"text",
 						success:function(){
 							alert("사용 가능한 아이디 입니다.");
-							$("#sub").removeAttr("disabled");
-							$("#ids").attr("readonly","readonly");
+							$("#id").attr("readonly","readonly");
 							$("#idcheck").val("취소");
 						},
 						error:function(){
@@ -119,9 +118,8 @@
 					});
 				}
 			}else{
-				$("#sub").attr("disabled","disabled");
 				$("#idcheck").val("중복확인");
-				$("#ids").removeAttr("readonly");
+				$("#id").removeAttr("readonly");
 			}
 		});
 	});
