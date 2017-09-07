@@ -136,7 +136,7 @@
             function nickCheck(){
                var regex = /^[가-힣]{1,6}$/;
                var target = document.querySelector("input[name=nickname]");
-               if(!regex.test(target.value)){
+               if(regex.test(target.value)){
                     target.style.border = "1px solid blue";
                }else{
                    target.style.border = "1px solid red";
@@ -167,7 +167,14 @@
 // 		 var nicktarget=("input[name=nick]");
 // 		 var phonetarget=("input[name=phone]");
 		 
-// 		 if(idregex.test(idtarget.value))
+// 		 if(idregex.test(idtarget.value)&&pwregex.test(pwtarget.value)&&nickregex.test(nicktarget.value)&&phoneregex.test(phonetarget.value)){
+// 			 $("#sub").removeAttr("disabled");
+// 			 alert("회원가입 성공하였습니다.");
+			 
+// 		 }else{
+// 			 alert()
+// 			 $("#sub").attr("disabled","disabled");
+// 		 }
 // 	 });
 </script>
 
@@ -197,7 +204,11 @@
 		<br><br>
 		<input type="text" name="sort" placeholder="사용가능한 언어입력" required>
 		<br><br>
+<<<<<<< HEAD
 		<input id="sub" type="submit" value="완료" >
+=======
+		<input id="sub"  type="submit" value="완료" disabled>
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 	</form>
 </body>
 </html>
