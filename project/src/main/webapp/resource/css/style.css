@@ -143,4 +143,22 @@ form {
 .head {
 	width: 15%;
 }
-
+<!-- 레이어 팝업 -->
+  .setDiv {
+            padding-top: 100px;
+            text-align: center;
+        }
+        .mask {
+            position:absolute;
+            left:0;
+            top:0;
+            z-index:9999;
+            background-color:#000;
+            display:none;
+        }
+        .window {
+            display: none;
+            background-color: #ffffff;
+            height: 200px;
+            z-index:99999;
+        }
