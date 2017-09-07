@@ -48,8 +48,6 @@
             }
         }).open();
     }
-	
-
 
 	//아이디 중복확인
 	$(document).ready(function() {
@@ -184,8 +182,6 @@
 	<form action="" method="post" >
 		<input type="text" name="id" placeholder="ID입력"  id="ids" required>
 		<input type="button"  id="idcheck" value="중복확인"  >
-		<br><br>
-		<label id = "check"></label>
 		<br><br>
 		<input type="password" name="pw" placeholder="PW입력" required>
 		<br><br>
