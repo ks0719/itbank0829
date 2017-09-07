@@ -30,10 +30,10 @@ public class UploadController {
 	            String original_name = vo.getFiledata().getOriginalFilename();
 	            String ext = original_name.substring(original_name.lastIndexOf(".")+1);
 	            //파일 기본경로
-	            String defaultPath = request.getSession().getServletContext().getRealPath("/");
+	           // String defaultPath = request.getSession().getServletContext().getRealPath("/");
 	           // System.out.println("파일 기본경로 = "+defaultPath);
 	            //파일 기본경로 _ 상세경로
-	            String path = defaultPath + "resource" + File.separator + "photo_upload" + File.separator;              
+	            String path = "C:/Users/IT202-04/git/itbank0829/project/src/main/webapp/resource/photo_upload/";              
 	            File file = new File(path);
 	            //System.out.println("path:"+path);
 	            //디렉토리 존재하지 않을경우 디렉토리 생성
