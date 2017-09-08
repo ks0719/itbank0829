@@ -1,6 +1,7 @@
 package spring.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 
@@ -80,7 +81,7 @@ public class MemberController {
 		if(nick!=null) {
 			Cookie cookie=new Cookie("mynick", URLEncoder.encode(nick,"UTF-8"));
 			cookie.setPath("/");
-			cookie.setMaxAge(60*60*24);
+			cookie.setMaxAge(-1);
 			response.addCookie(cookie);
 		return "redirect:"+url;
 		}
@@ -89,8 +90,21 @@ public class MemberController {
 		}
 	}
 	
-//	@RequestMapping(value="/member/logout")
-//	public ModelAndView logout(HttpSession session) {
-//
-//	}
+	@RequestMapping(value="/member/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		Cookie[] c=request.getCookies();
+		if(c!=null) {
+			for(int i=0; i<c.length; i++) {
+				Cookie ck=c[i];
+				String cName=ck.getName();
+				String cValue=URLDecoder.decode(ck.getValue(), "UTF-8");
+				if(cName.equals("mynick")) {
+					ck.setPath("/");
+					ck.setMaxAge(0);
+					response.addCookie(ck);
+				}
+			}
+		}
+		return "redirect:/";
+	}
 }

@@ -72,6 +72,7 @@ public class MailDao {
 		//mail_receiver, mail_writer을 차단했는지 확인해야됨
 		//[1] 일단 회원 테이블에서 mail_receiver이 차단한 사람들의 명단을 가져오자
 		String sql = "select spam from member where nick=?";
+		System.out.println(mail.getMail_receiver());
 		String spam_string = jdbcTemplate.queryForObject(sql,new Object[] {mail.getMail_receiver()}, String.class);
 		boolean isSpam = false;
 		if(spam_string!=null) {

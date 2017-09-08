@@ -14,7 +14,7 @@
 		 					<input type="button" id="check" value="확인" onclick="isExist($('#mail_receiver').val());">
 		 				</c:when>
 		 				<c:otherwise>
-		 					<input type="text" id="mail_receiver" name="mail_receiver" value="${nick}" disabled placeholder="받는사람" required>
+		 					<input type="text" id="mail_receiver" name="mail_receiver" value="${nick}" readonly placeholder="받는사람" required>
 		 					<input type="button" id="check" value="취소" onclick="isExist($('#mail_receiver').val());">
 		 				</c:otherwise>
 		 			</c:choose>
