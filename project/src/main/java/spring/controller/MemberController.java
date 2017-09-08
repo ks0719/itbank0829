@@ -29,10 +29,6 @@ public class MemberController {
 	
 	@RequestMapping(value="/member/sign", method=RequestMethod.POST)
 	public String signPost(HttpServletRequest request) throws SQLException {
-	
-//		String id=request.getParameter("id");
-//		System.out.println(id);
-		
 		Member m=new Member(request);
 		memberDao.insert(m);
 		

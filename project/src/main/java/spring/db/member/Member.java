@@ -5,8 +5,6 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.HttpRequest;
-
 public class Member {
 
 	private int no;
@@ -50,7 +48,7 @@ public class Member {
 		setId(request.getParameter("id"));
 		setPw(request.getParameter("pw"));
 		setName(request.getParameter("name"));
-		setNickname(request.getParameter("nickname"));
+		setNickname(request.getParameter("nick"));
 //		setPhone(Integer.parseInt(request.getParameter("phone")));
 		setPhone(request.getParameter("phone"));
 		setSort(request.getParameter("sort"));

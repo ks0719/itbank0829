@@ -126,8 +126,13 @@
 	//아이디 중복확인
 	function idCheck() {
 			if($("#idcheck").val()=="중복확인"){
+				var idregex=/^[a-zA-Z0-9]{8,20}$/;
+			 	var idtarget= document.querySelector("input[name=id]");
+				
 				if($("#id").val()==""){
 					alert("아이디를 입력하세요");
+				}else if(!idregex.test(idtarget.value)){
+					alert("ID는 영문,숫자 조합 8~20자");
 				}
 				else{
 					$.ajax({
@@ -136,15 +141,9 @@
 						data:{id:$("#id").val()},
 						dataType:"text",
 						success:function(){
-							var idregex=/^[a-zA-Z0-9]{8,20}$/;
-						 	var idtarget= document.querySelector("input[name=id]");
-							if(!idregex.test(idtarget.value)){
-						 		alert("ID는 영문,숫자 조합 8~20자");
-						 	}else{
-								alert("사용 가능한 아이디 입니다.");
-								$("#id").attr("readonly","readonly");
-								$("#idcheck").val("취소");
-						 	}
+							alert("사용 가능한 아이디 입니다.");
+							$("#id").attr("readonly","readonly");
+							$("#idcheck").val("취소");
 						},
 						error:function(){
 							alert("중복된 아이디가 있습니다.");
@@ -164,7 +163,9 @@
   			var nickregex=/^[가-힣]{2,6}$/;
   			var nicktarget = document.querySelector("#nick");
   			
-  			if(!nickregex.test(nicktarget.value)){
+  			if($("#nick").val()==""){
+				alert("닉네임을 입력하세요");
+			}else if(!nickregex.test(nicktarget.value)){
 		 		alert("닉네임은 완성된 한글 2~6글자");
 		 	}else{
 				 $.ajax({
@@ -192,56 +193,85 @@
   	function phoneCheck(){
   		if($("#pcheck").val()=="중복확인"){
   			
-  			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
+			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
 			var phonetarget=document.querySelector("input[name=phone]");
-			 if(!phoneregex.test(phonetarget.value)){
-		 		alert("올바른 전화번호를 입력해주세요.");
-			 }else{
-				 $.ajax({
-						url:"pcheck",
-						type:"post",
-						data:{phone:$("#phone").val()},
-						dataType:"text",
-						success:function(){
-							alert("사용 가능한 전화번호 입니다.");
-							$("#phone").attr("readonly","readonly");
-							$("#pcheck").val("취소");
-						},
-						error:function(){
-							alert("이미 등록된 전화번호 입니다.");
-						}
-					});
+			
+			if($("#phone").val()==""){
+				alert("핸드폰 번호를 입력하세요");
+			}else if(!phoneregex.test(phonetarget.value)){
+				alert("올바른 핸드폰 번호를 입력해주세요.");
+			}else{
+				$.ajax({
+					url:"pcheck",
+					type:"post",
+					data:{phone:$("#phone").val()},
+					dataType:"text",
+					success:function(){
+						alert("사용 가능한 번호 입니다.");
+						$("#phone").attr("readonly","readonly");
+						$("#pcheck").val("취소");
+					},
+					error:function(){
+						alert("이미 등록된 번호 입니다.");
+					}
+				});
   			}
 		}else{
 			$("#pcheck").val("중복확인");
 			$("#phone").removeAttr("readonly");
 		}
   	}
+  	
+  	function submitOK() {
+  		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+	 	var pwtarget=document.querySelector("input[name=pw]");
+	 	
+	 	var target = document.querySelector("input[name=pw2]");
+	 	
+	 	if($("#id").attr("readonly")!='readonly'){
+	 		alert("아이디 중복 확인을 해주세요");
+	 	}else if(!pwregex.test(pwtarget.value)){
+	 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+	 	}else if(pwtarget.value!=target.value){
+	 		alert("비밀번호가 틀렸습니다");
+	 	}else if($("#nick").attr("readonly")!='readonly'){
+	 		alert("닉네임 중복 확인을 해주세요");
+	 	}else if($("#phone").attr("readonly")!='readonly'){
+	 		alert("전화번호 중복 확인을 해주세요");
+	 	}else if(document.querySelector("input[name=post]").value==''){
+	 		alert("주소를 입력해주세요");
+	 	}else return true;
+	 	
+	 	return false;
+	}
 
   //완료버튼 이벤트
-	$(document).ready(function() {
-		$("#sub").on("click",function () {
-			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-		 	var pwtarget=document.querySelector("input[name=pw]");
+// 	$(document).ready(function() {
+// 		$("#sub").on("click",function () {
+// 			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+// 		 	var pwtarget=document.querySelector("input[name=pw]");
 		 	
-		 	var target = document.querySelector("input[name=pw2]");
+// 		 	var target = document.querySelector("input[name=pw2]");
 		 	
-		 	if($("#id").attr("readonly")!='readonly'){
-		 		alert("아이디 중복 확인을 해주세요");
-		 	}else if(!pwregex.test(pwtarget.value)){
-		 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
-		 	}else if(pwtarget.value!=target.value){
-		 		alert("비밀번호가 틀렸습니다");
-		 	}else if($("#nick").attr("readonly")!='readonly'){
-		 		alert("닉네임 중복 확인을 해주세요");
-		 	}else if($("#phone").attr("readonly")!='readonly'){
-		 		alert("전화번호 중복 확인을 해주세요");
-		 	}else{
-		 		//이제 폼으로 전송해주면 됨
-		 	}
+// 		 	if($("#id").attr("readonly")!='readonly'){
+// 		 		alert("아이디 중복 확인을 해주세요");
+// 		 	}else if(!pwregex.test(pwtarget.value)){
+// 		 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+// 		 	}else if(pwtarget.value!=target.value){
+// 		 		alert("비밀번호가 틀렸습니다");
+// 		 	}else if($("#nick").attr("readonly")!='readonly'){
+// 		 		alert("닉네임 중복 확인을 해주세요");
+// 		 	}else if($("#phone").attr("readonly")!='readonly'){
+// 		 		alert("전화번호 중복 확인을 해주세요");
+// 		 	}else if(document.querySelector("input[name=post]").value==''){
+// 		 		alert("주소를 입력해주세요");
+// 		 	}else{
+// 		 		console.log();
+// 		 		$("#sign").submit();
+// 		 	}
 		 	
-		});
-	});
+// 		});
+// 	});
 	  
 </script>
 
