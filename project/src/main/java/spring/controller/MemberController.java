@@ -1,5 +1,6 @@
 package spring.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import spring.db.member.Member;
 import spring.db.member.MemberDao;
@@ -109,5 +111,18 @@ public class MemberController {
 			}
 		}
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/member/delmember")
+	public void deletemember(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String id = (String)request.getSession().getAttribute("id");
+		
+		MemberDao mdao=new MemberDao();
+		mdao.delmember(id);
+		request.getSession().removeAttribute("id");
+		request.removeAttribute("id");
+		response.sendRedirect("redirec:/");
+		
+		return;
 	}
 }

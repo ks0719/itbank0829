@@ -64,4 +64,11 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		String sql = "select count(*) from member where "+column+"=?";
 		return jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
 	}
+	
+	public boolean delmember(String id) {
+		String sql="delete member where id=?";
+		boolean result=jdbcTemplate.update(sql, new Object[] {id},Integer.class)>0;
+		
+		return result;
+	}
 }
