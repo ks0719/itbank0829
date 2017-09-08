@@ -28,7 +28,26 @@
 	});
 	
 	function isExist(nick){
-		console.log(nick);
+		if($("#check").val()=="확인"){
+			$.ajax({
+				url:"nickcheck",
+				type:"post",
+				data:{nick:nick},
+				dataType:"text",
+				success:function(){
+					$("#check").val("취소");
+					$("#mail_receiver").attr("readonly", "readonly");
+					$("#send").removeAttr("disabled");
+				},
+				error:function(){
+					alert("존재하지 않는 회원입니다");
+				}
+			});
+		}else{
+			$("#check").val("확인");
+			$("#mail_receiver").removeAttr("readonly");
+			$("#send").attr("disabled", "disabled");
+		}
 	}
 	
 	function mailDetail(no){

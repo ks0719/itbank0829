@@ -111,6 +111,9 @@ form {
     background-color: white;
     color: black;
 }
+.width-100 {
+	width: 100px;
+}
 .wrap{
     width:700px;
     margin: auto;
@@ -141,5 +144,30 @@ form {
     resize: none;
 }
 .head {
-	width: 15%;
+	width: 10%;
+	text-align: left;
 }
+.detail {
+	min-height: 200px;
+}
+<!-- 레이어 팝업 -->
+ .setDiv {
+            padding-top: 100px;
+            text-align: center;
+        }
+        .mask {
+            position:absolute;
+            left:0;
+            top:0;
+            z-index:9999;
+            background-color:#000;
+            display:none;
+        }
+        .window {
+            display: none;
+            background-color: #ffffff;
+            width: 200px;
+            height: 250px;
+            z-index:99999;
+        }
+

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,13 +18,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.board.Board;
 import spring.db.board.BoardDao;
-import spring.db.board.Reply;
-import spring.db.board.ReplyDao;
+import spring.db.board.Comment;
+import spring.db.board.CommentDao;
 
 @Controller
 @RequestMapping("/board")
@@ -36,7 +36,7 @@ public class BoardController {
 	private BoardDao boardDao;
 	
 	@Autowired
-	private ReplyDao replyDao;
+	private CommentDao commentDao;
 	
 	@RequestMapping("/{path}")
 	public String board(@PathVariable String path, HttpServletRequest request, Model m) {	
@@ -85,26 +85,36 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/{path}/write", method=RequestMethod.POST)
-	public String write(@PathVariable String path, MultipartHttpServletRequest mRequest, Model m) throws IllegalStateException, IOException {
+	public String write(@PathVariable String path, String context, MultipartHttpServletRequest mRequest, Model m) throws Exception {
+		int contextI;
+		try {
+			contextI = Integer.parseInt(context);
+		} catch(Exception e) {
+			contextI = 0;
+		}
+		
 		MultipartFile file = mRequest.getFile("file");
 		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
 
 		String[] extension = file.getContentType().split("/");
-		int no = boardDao.write(path, new Board(mRequest));
+		int no = boardDao.write(path, new Board(mRequest), contextI);
 		String filename = no + "." + extension[extension.length - 1];
 		File target = new File(savePath, filename);
 		file.transferTo(target);		
 		
+		if (contextI != 0) return "redirect:/board/" + path + "/detail?no=" + context;
 		return "redirect:/board/" + path + "/detail?no=" + no;
 	}
 	
 	@RequestMapping("/{path}/write")
-	public String write(@PathVariable String path, Model m) {
+	public String write(@PathVariable String path, String context, Model m) {
+		m.addAttribute("context", context);
+		
 		return "board/write";
 	}
 	
 	@RequestMapping("/{path}/detail")
-	public String write(@PathVariable String path, String no, Model m) throws Exception {
+	public String detail(@PathVariable String path, String no, Model m) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -112,18 +122,20 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		Board board = boardDao.detail(noI);
+		List<Board> board = boardDao.detail(noI);
+		log.debug("갯수 : " + board.size());
 		boardDao.readUp(noI);
-		List<Reply> list = replyDao.list(noI);
+		List<Comment> list = commentDao.list(noI);
 		
-		m.addAttribute("unit", board);
+		m.addAttribute("no", no);
+		m.addAttribute("boardList", board);
 		m.addAttribute("list", list);
 		
 		return "board/detail";
 	}
 	
 	@RequestMapping("/{path}/best")
-	public String best(@PathVariable String path, String no) throws Exception {
+	public String best(@PathVariable String path, String no, String context) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -132,12 +144,13 @@ public class BoardController {
 		}
 		
 		boardDao.best(noI);
-		
+
+		if (context != null) return "redirect:/board/" + path + "/detail?no=" + context;
 		return "redirect:/board/" + path + "/detail?no=" + no;
 	}
 
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
-	public String edit(@PathVariable String path, MultipartHttpServletRequest mRequest, int no, Model m) throws IllegalStateException, IOException {
+	public String edit(@PathVariable String path, String context, MultipartHttpServletRequest mRequest, int no, Model m) throws IllegalStateException, IOException {
 		MultipartFile file = mRequest.getFile("file");
 		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
 
@@ -146,7 +159,8 @@ public class BoardController {
 		String filename = no + "." + extension[extension.length - 1];
 		File target = new File(savePath, filename);
 		file.transferTo(target);		
-		
+
+		if (context != null) return "redirect:/board/" + path + "/detail?no=" + context;
 		return "redirect:/board/" + path + "/detail?no=" + no;
 	}
 	
@@ -159,7 +173,7 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		Board board = boardDao.detail(noI);
+		Board board = boardDao.detailOne(noI);
 		
 		m.addAttribute("no", no);
 		m.addAttribute("unit", board);
@@ -181,11 +195,8 @@ public class BoardController {
 		return "redirect:/board/" + path;
 	}
 	
-	@Autowired
-	private ServletContext context;
-	
-	@RequestMapping("/{path}/download/{no}")
-	public String download(@PathVariable String path, @PathVariable String no, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping("/{path}/download")
+	public String download(@PathVariable String path, String no, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -193,9 +204,9 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		String savePath = context.getRealPath("/resource/file");
+		String savePath = request.getServletContext().getRealPath("/file");
 		
-		Board board = boardDao.detail(noI);
+		Board board = boardDao.detailOne(noI);
 		
 		File target = new File(savePath, board.getFilename());
 		byte[] data = FileUtils.readFileToByteArray(target);
@@ -211,8 +222,41 @@ public class BoardController {
 		OutputStream out = response.getOutputStream();
 		out.write(data);
 		out.close();
-
+		
+		String boardContext = String.valueOf(board.getContext());
+		if (boardContext != null) return "redirect:/board/" + path + "/detail?no=" + boardContext;
 		return "redirect:/board/" + path + "/detail?no=" + no;
+	}
+	
+	@RequestMapping("/{path}/reply")
+	public String reply(@PathVariable String path, String no, Model m) throws Exception {
+		int noI;
+		try {
+			noI = Integer.parseInt(no);
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		m.addAttribute("context", no);
+		
+		return "redirect:/board/" + path + "/write";
+	}
+	
+	@RequestMapping("/{path}/comment")
+	public String comment(@PathVariable String path, HttpServletRequest request, Model m) {
+		Comment comment = commentDao.insert(new Comment(request));
+		m.addAttribute("comment", comment);
+		
+		return "board/comment";
+	}
+	
+	@RequestMapping("/{path}/commentBest")
+	@ResponseBody
+	public String commentBest(int commentNo) {
+		Comment comment = commentDao.best(commentNo);
+		int best = comment.getBest();
+		
+		return String.valueOf(best);
 	}
 	
 }

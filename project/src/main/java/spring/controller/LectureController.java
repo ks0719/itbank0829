@@ -1,7 +1,9 @@
 package spring.controller;
 
+import java.net.URLDecoder;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.JOptionPane;
 
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
@@ -18,6 +19,25 @@ import spring.db.mylecture.MyLectureDao;
 
 @Controller
 public class LectureController {
+	
+	private String getNick(HttpServletRequest req) throws Exception {
+		Cookie[] c=req.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode(ck.getValue(),"utf-8");
+//	            log.debug("쿠키값  :"+cValue);
+	            if(cName.equals("mynick")) {
+	            	return cValue;
+	            }
+	        }
+		}
+		return "";
+	}
+	
 	private Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -39,36 +59,37 @@ public class LectureController {
 	}
 	
 	@RequestMapping("/lecture/class")
-	public String lesson(String no, String page, String type, String key, String wish, Model m) throws Exception {
+	public String lesson(HttpServletRequest req, Model m) throws Exception {
 		int noI, pageNo;
 		boolean wishB;
-		String id = "테스트유저1";
 		try {
-			noI = Integer.parseInt(no);
+			noI = Integer.parseInt(req.getParameter("no"));
 		} catch(Exception e) {
 			throw new Exception("404");
 		}
 		try {
-			pageNo = Integer.parseInt(page);
+			pageNo = Integer.parseInt(req.getParameter("page"));
 		} catch(Exception e) {
 			pageNo = 1;
 		}
 		try {
-			wishB = Boolean.parseBoolean(wish);
+			wishB = Boolean.parseBoolean(req.getParameter("wish"));
 		} catch(Exception e) {
 			wishB = false;
 		}
 		
 		LectureInfo info = lectureDao.showOne(noI);
 		
+		String nick = getNick(req);
+		
 		if (wishB) {
-			int result = myLectureDao.wish(id, noI, info);
+			int result = myLectureDao.wish(nick, noI, info);
 			if (result == 1) JOptionPane.showMessageDialog(null, "찜하기가 완료되었습니다.");
 			else JOptionPane.showMessageDialog(null, "이미 찜이 되어있거나 할 수 없습니다.");
 		}
 		
-		String url = "?page=" + page;
-		if (type != null && key != null) url += "&type=" + type + "&key=" + key;
+		String url = "?page=" + pageNo;
+		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");
 		
 		m.addAttribute("info", info);
 		m.addAttribute("no", noI);

@@ -54,7 +54,7 @@
 		</table>
 	</div>
 	<div class="align-right">
-		<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write';">
+		<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write?seq=1&context=';">
 	</div>
 	<div class="row">
 		<div class="paging-wrap">
