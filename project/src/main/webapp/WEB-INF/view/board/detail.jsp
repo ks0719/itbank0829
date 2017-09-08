@@ -33,9 +33,9 @@
 						${board.writer}
 					</td>
 				</tr>
-				<tr>
+				<tr class="detail">
 					<td colspan="2">
-						<textarea rows="20" cols="80">${board.detail}</textarea>
+						${board.detail}
 					</td>
 				</tr>
 				<c:if test="${board.originfile ne null}">
@@ -53,26 +53,22 @@
 				</c:if>
 			</table>
 			<div>
-				<form action="#" class="board-comment">
+				<form action="#" class="board-comment" value="${board.no}">
 					<input type="hidden" name="topcontext" value="${no}">
 					<input type="hidden" name="context" value="${board.no}">
 					<input type="hidden" name="writer" value="테스트유저1">
 					<input type="text" name="detail" class="user-input" placeholder="댓글 입력">
 					<input type="submit" class="input-btn" value="등록">
 				</form>
-				<table class="comment">
-					<c:forEach var="comment" items="${list}">
-						<c:if test="${comment.context eq board.no}">
-						<tr>
-							<td>
-								${comment.detail}-${comment.writer} ${comment.reg}
-								<a href="#">추천</a> ${comment.best}
-								<br>
-							</td>
-						</tr>
-						</c:if>
-					</c:forEach>
-				</table>
+				<div id="comment${board.no}">
+				<c:forEach var="comment" items="${list}">
+					<c:if test="${comment.context eq board.no}">
+							${comment.detail}-${comment.writer} ${comment.reg}
+							<a href="#" class="comment-best" value="${comment.no}">추천</a> <span id="best${comment.no}">${comment.best}</span>
+							<br>
+					</c:if>
+				</c:forEach>
+				</div>
 			</div>
 			<div class="align-right">
 				<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">

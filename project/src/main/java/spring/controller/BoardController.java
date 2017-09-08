@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -242,12 +243,20 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/{path}/comment")
-	public String comment(@PathVariable String path, int context, HttpServletRequest request, Model m) {
-		Comment comment = commentDao.insert(new Comment(request, context));
+	public String comment(@PathVariable String path, HttpServletRequest request, Model m) {
+		Comment comment = commentDao.insert(new Comment(request));
 		m.addAttribute("comment", comment);
-		m.addAttribute("context", context);
 		
 		return "board/comment";
+	}
+	
+	@RequestMapping("/{path}/commentBest")
+	@ResponseBody
+	public String commentBest(int commentNo) {
+		Comment comment = commentDao.best(commentNo);
+		int best = comment.getBest();
+		
+		return String.valueOf(best);
 	}
 	
 }

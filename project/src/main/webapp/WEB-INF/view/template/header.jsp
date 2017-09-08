@@ -72,15 +72,31 @@ $(document).ready(function(){
 			}
 		});
 		$(".board-comment").on("submit", function() {
+			var commentNo = $(this).attr('value');
 			event.preventDefault();
         	
         	$.ajax({
         		url: "comment",
         		data: $(this).serialize(),
+        		async : false,
         		success: function(res, context) {
-        			$(".comment${context}").append(res);
+        			console.log("a comment : " + commentNo);
+        			$("#comment"+commentNo).append(res);
         		}
         	});
+		});
+		$(".comment-best").on("click", function() {
+			var commentNo = $(this).attr('value');
+			console.log("comment" + commentNo);
+			$.ajax({
+				url: "commentBest",
+				data: {"commentNo": commentNo},
+        		async : false,
+				success: function(res) {
+					console.log("commentNo: " + commentNo);
+					$("#best"+commentNo).text(res);
+				}
+			});
 		});
 	});
 	  $(function(){
@@ -380,7 +396,6 @@ $(document).ready(function(){
                     <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
                 </div>
 			</th>
-            
             
             <td style="vertical-align: top">
                 <table>

@@ -111,6 +111,9 @@ form {
     background-color: white;
     color: black;
 }
+.width-100 {
+	width: 100px;
+}
 .wrap{
     width:700px;
     margin: auto;
@@ -144,8 +147,16 @@ form {
 	width: 10%;
 	text-align: left;
 }
+<<<<<<< HEAD
+.detail {
+	min-height: 200px;
+}
+<!-- 레이어 팝업 -->
+  .setDiv {
+=======
 <!--레이어 팝업 -->
  .setDiv {
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
             padding-top: 100px;
             text-align: center;
         }

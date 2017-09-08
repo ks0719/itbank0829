@@ -27,11 +27,11 @@ public class Comment {
 		setBest(rs.getInt("best"));
 		setReg(rs.getString("reg"));
 	}
-	public Comment(HttpServletRequest request, int context) {
+	public Comment(HttpServletRequest request) {
 		setWriter(request.getParameter("writer"));
 		setDetail(request.getParameter("detail"));
 		setTopcontext(Integer.parseInt(request.getParameter("topcontext")));
-		setContext(context);
+		setContext(Integer.parseInt(request.getParameter("context")));
 	}
 	public int getNo() {
 		return no;
