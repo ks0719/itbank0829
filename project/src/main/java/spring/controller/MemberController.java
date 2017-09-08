@@ -1,6 +1,7 @@
 package spring.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 
@@ -70,8 +71,13 @@ public class MemberController {
 		String pw=request.getParameter("pw");
 		//log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
-		log.debug("url="+url);
+		//log.debug("url="+url);
+		String param = request.getParameter("param");	
+		param = param.replaceAll(", ", "&");
+		param = param.substring(1, param.length()-1);
+		log.debug(param);
 		url=url.replaceAll("http://localhost:8080/project/WEB-INF/view", "").replaceAll(".jsp", "");
+		url += "?"+param;
 		log.debug("url="+url);
 		String nick=memberDao.logincheck(id, pw);
 		//log.debug("state="+state);
@@ -86,5 +92,22 @@ public class MemberController {
 			return "member/fail";
 		}
 	}
-
+	
+	@RequestMapping(value="/member/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		Cookie[] c=request.getCookies();
+		if(c!=null) {
+			for(int i=0; i<c.length; i++) {
+				Cookie ck=c[i];
+				String cName=ck.getName();
+				String cValue=URLDecoder.decode(ck.getValue(), "UTF-8");
+				if(cName.equals("mynick")) {
+					ck.setPath("/");
+					ck.setMaxAge(0);
+					response.addCookie(ck);
+				}
+			}
+		}
+		return "redirect:/";
+	}
 }

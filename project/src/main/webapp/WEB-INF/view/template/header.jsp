@@ -345,6 +345,7 @@ $(document).ready(function(){
     	아이디<input type="text" name="id" required><br>
     	비밀번호<input type="password" name="pw" required><br>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
+    	<input type="hidden" value="${param}" name="param">
         <input type="submit" id="login_btn" value="로그인하기"/><br>
         <input type="button" href="#" value="회원가입하기">
        </form>
@@ -356,14 +357,17 @@ $(document).ready(function(){
 			<th rowspan="10">
                 <div>
                     <h3>회원정보 넣을 곳</h3>
-                    <c:set value="${cookie.mynick.value }" var="mynick"/>
+                    <c:set value="${cookie.mynick.value}" var="mynick"/>
    					<c:if test="${empty mynick }">
-                    <h3><a href="#" class="showMask">로그인</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
-                    <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
-					<h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;">내 수강정보</a></h3>
+	                    <h3><a href="#" class="showMask">로그인</a></h3>
+	                    <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
+                    </c:if>
+                    <c:if test="${not empty mynick }">
+	              		<h3><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h3>
                     </c:if>
                     <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
+                    <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
+					<h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;">내 수강정보</a></h3>
 					사진
 					닉네임
 					내 등급
