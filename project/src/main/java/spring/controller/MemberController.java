@@ -2,8 +2,12 @@ package spring.controller;
 
 import java.sql.SQLException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +20,7 @@ import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
+	private Logger log=LoggerFactory.getLogger(getClass());
 	
 	@Autowired
 	private MemberDao memberDao;
@@ -57,10 +62,28 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping("/member/login")
-	public String login() {
+	@RequestMapping(value="/member/login",method=RequestMethod.POST)
+	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) {
+		String id=request.getParameter("id");
+		String pw=request.getParameter("pw");
+		//log.debug("id="+id+",pw="+pw);
+		String url=request.getParameter("page");
 		
-		return "member/login";
+		url=url.replaceAll("http://localhost:8080/project/WEB-INF/view", "").replaceAll(".jsp", "");
+		log.debug("url="+url);
+		boolean state=memberDao.logincheck(id, pw);
+		//log.debug("state="+state);
+		if(state) {
+			Cookie cookie=new Cookie("myid", id);
+			cookie.setPath("/");
+			cookie.setComment("로그인시 얻어지는 나의 아이디입니다. 원래는 닉네임 아니었나?");
+			cookie.setMaxAge(60*60*24);
+			response.addCookie(cookie);
+		return "redirect:"+url;
+		}
+		else {
+			return "member/fail";
+		}
 	}
 
 }
