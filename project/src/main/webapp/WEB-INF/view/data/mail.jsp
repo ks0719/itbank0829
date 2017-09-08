@@ -24,7 +24,7 @@
     
 	<tr>
 		<th><input id="checkAll" type="checkbox" ></th>
-		<th>아이디</th>
+		<th>닉네임</th>
 		<th>제목</th>
 		<th>내용</th>
 		<th>보낸날짜</th>
