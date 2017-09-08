@@ -1,11 +1,16 @@
 package spring.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,18 +20,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
+import spring.db.myinfo.MyDao;
+import spring.db.myinfo.MyDto;
 import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
 
 @Controller
 public class DataController {
+	
+	
+	private String getNick(HttpServletRequest req) throws Exception {
+		Cookie[] c=req.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
+//	            log.debug("쿠키값  :"+cValue);
+	            if(cName.equals("mynick")) {
+	            	return cValue;
+	            }
+	        }
+		}
+		throw new Exception("404");
+	}
+	
+	private Logger log=LoggerFactory.getLogger(getClass());
 	//테스트용 아이디(로그인 구현되면 따로 받아와야함)
-	private static final String nick = "회원(수신이)";
 	
 	public static final int MY_LECTURE_PAGE = 10;
 	
 	@Autowired
 	private MyLectureDao myLectureDao;
+	@Autowired
+	private MyDao myDao;
 	
 	@Autowired
 	private MailDao mailDao;
@@ -42,13 +71,30 @@ public class DataController {
 		return "data/exit";
 	}
 	@RequestMapping("/data/maininfo")
-	public String maininfo() {
-		
+	public String maininfo(HttpServletRequest request,Model model) throws UnsupportedEncodingException {
+		Cookie[] c=request.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
+	            log.debug("쿠키값  :"+cValue);
+	            if(ck.getName().equals("mynick")) {
+	            	MyDto dto=myDao.select(cValue);
+	            	model.addAttribute("dto", dto);
+	            	break;
+	            }
+	        }
+		}
 		return "data/maininfo";
 	}
 	
 	@RequestMapping(value="/data/mail", method=RequestMethod.GET)
-	public String mailGet(Model m, HttpServletRequest req) {
+	public String mailGet(Model m, HttpServletRequest req) throws Exception {
+		String nick = getNick(req);
+		
 		String box = (req.getParameter("box")==null)?"index":req.getParameter("box");
 		
 		List<Mail>list=mailDao.list(nick,box);
@@ -58,10 +104,12 @@ public class DataController {
 	}
 	
 	@RequestMapping(value="/data/mail", method=RequestMethod.POST)
-	public String mailPost(Model m, HttpServletRequest req) {
+	public String mailPost(Model m, HttpServletRequest req) throws Exception {
 		//delete,no[] 또는 protect,no[] 이렇게 들어옴
 		Map<String, String[]> map = req.getParameterMap();
 		Set<String> keys = map.keySet();
+		
+		String nick = getNick(req);
 		
 		for(String location:keys) {
 			for(String no : map.get(location)) {
@@ -69,7 +117,7 @@ public class DataController {
 					mailDao.update(nick, location, Integer.parseInt(no));
 				}else if(location.equals("garbage")) {
 					if(req.getParameter("box").equals("garbage")) {
-						mailDao.delete(nick, Integer.parseInt(no));
+						mailDao.delete(Integer.parseInt(no));
 					}else {
 						mailDao.update(nick, location, Integer.parseInt(no));
 					}
@@ -108,6 +156,8 @@ public class DataController {
 		
 		String box = (req.getParameter("box")==null)?"index":req.getParameter("box");
 		
+		String nick = getNick(req);
+		
 		List<MyLecture> list = myLectureDao.list(nick, box, page);
 		
 		int start = (page-1)/MY_LECTURE_PAGE*MY_LECTURE_PAGE+1;
@@ -134,6 +184,8 @@ public class DataController {
 		
 		String box = req.getParameter("box");
 		
+		String nick = getNick(req);
+		
 		Mail mail = mailDao.select(nick, no, box);
 		if(mail==null) throw new Exception("404");
 		
@@ -147,8 +199,10 @@ public class DataController {
 	public String mailDetailPost(Model m,HttpServletRequest req) throws Exception {
 		String box = req.getParameter("box");
 		
+		String nick = getNick(req);
+		
 		if(box.equals("garbage")) {
-			mailDao.delete(nick, Integer.parseInt(req.getParameter("no")));
+			mailDao.delete(Integer.parseInt(req.getParameter("no")));
 		}else {
 			mailDao.update(nick, "garbage", Integer.parseInt(req.getParameter("no")));
 		}
@@ -164,8 +218,10 @@ public class DataController {
 	}
 	
 	@RequestMapping(value="data/mail/send", method=RequestMethod.POST)
-	public String sendPost(HttpServletRequest req) {
+	public String sendPost(HttpServletRequest req) throws Exception {
 		//db 연결해서 mail 테이블에 정보 추가하기
+		String nick = getNick(req);
+		
 		Mail mail = new Mail(req);
 		mail.setMail_writer(nick);
 		mail.setMail_read("안읽음");

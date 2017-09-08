@@ -147,11 +147,16 @@ form {
 	width: 10%;
 	text-align: left;
 }
+<<<<<<< HEAD
 .detail {
 	min-height: 200px;
 }
 <!-- 레이어 팝업 -->
   .setDiv {
+=======
+<!--레이어 팝업 -->
+ .setDiv {
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
             padding-top: 100px;
             text-align: center;
         }
@@ -166,6 +171,8 @@ form {
         .window {
             display: none;
             background-color: #ffffff;
-            height: 200px;
+            width: 200px;
+            height: 250px;
             z-index:99999;
         }
+
