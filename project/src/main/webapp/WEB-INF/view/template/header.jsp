@@ -345,6 +345,7 @@ $(document).ready(function(){
     	아이디<input type="text" name="id" required><br>
     	비밀번호<input type="password" name="pw" required><br>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
+    	<input type="hidden" value="${param}" name="param">
         <input type="submit" id="login_btn" value="로그인하기"/><br>
         <input type="button" href="#" value="회원가입하기">
        </form>
@@ -356,8 +357,8 @@ $(document).ready(function(){
 			<th rowspan="10">
                 <div>
                     <h3>회원정보 넣을 곳</h3>
-                    <c:set value="${cookie.myid.value}" var="myid"/>
-   					<c:if test="${empty myid }">
+                    <c:set value="${cookie.mynick.value}" var="mynick"/>
+   					<c:if test="${empty mynick }">
                     <h3><a href="#" class="showMask">로그인</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
                     </c:if>

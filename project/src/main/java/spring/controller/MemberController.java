@@ -70,15 +70,21 @@ public class MemberController {
 		String pw=request.getParameter("pw");
 		//log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
+		String param = request.getParameter("param");
+		
+		param = param.replaceAll(", ", "&");
+		param = param.substring(1, param.length()-1);
+		log.debug(param);
 		
 		url=url.replaceAll("http://localhost:8080/project/WEB-INF/view", "").replaceAll(".jsp", "");
+		url += "?"+param;
 		log.debug("url="+url);
 		String nick=memberDao.logincheck(id, pw);
 		//log.debug("state="+state);
 		if(nick!=null) {
 			Cookie cookie=new Cookie("mynick", URLEncoder.encode(nick,"UTF-8"));
 			cookie.setPath("/");
-			cookie.setMaxAge(60*60*24);
+			cookie.setMaxAge(-1);
 			response.addCookie(cookie);
 		return "redirect:"+url;
 		}

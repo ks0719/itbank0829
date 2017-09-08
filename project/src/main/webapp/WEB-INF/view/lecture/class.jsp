@@ -28,8 +28,17 @@
         <a href="#">강사 정보</a>
         </div>
         <div class="right" align="right">
-        <a href="class${url}&no=${no}&wish=true">찜하기</a>
-        <a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
+        <c:choose>
+        	<c:when test="${empty cookie.mynick.value}">
+        		<a href="" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">찜하기</a>
+		        <a href="" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">신청하기</a>
+        	</c:when>
+        	<c:otherwise>
+		        <a href="class${url}&no=${no}&wish=true">찜하기</a>
+		        <a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
+        	</c:otherwise>
+        </c:choose>
+        
         <a href="study${url}">목록보기</a>
         </div>
 	</div>

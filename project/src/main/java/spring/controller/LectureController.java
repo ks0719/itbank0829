@@ -28,14 +28,14 @@ public class LectureController {
 	            // 저장된 쿠키 이름을 가져온다
 	            String cName = ck.getName();
 	            // 쿠키값을 가져온다
-	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
+	            String cValue =  URLDecoder.decode(ck.getValue(),"utf-8");
 //	            log.debug("쿠키값  :"+cValue);
 	            if(cName.equals("mynick")) {
 	            	return cValue;
 	            }
 	        }
 		}
-		throw new Exception("404");
+		return "";
 	}
 	
 	private Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
