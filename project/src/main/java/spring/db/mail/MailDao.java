@@ -42,17 +42,24 @@ public class MailDao {
 		return res>0;
 	}
 	
-	public boolean delete(String mail_receiver, int no) {
-		String sql="delete from mail where mail_receiver=? and no=?";
-		int res=jdbcTemplate.update(sql, new Object[] {mail_receiver, no});
-		return res>0;
+	public boolean delete(int no) {
+		String sql = "select deletable from mail where no=?";
+		String del = jdbcTemplate.queryForObject(sql,new Object[] {no} ,String.class);
+		if(del==null) {
+			sql = "update mail set deletable='삭제' where no=?";
+			int res=jdbcTemplate.update(sql, new Object[] {no});
+			return res>0;
+		}else {
+			sql="delete from mail where no=?";
+			int res=jdbcTemplate.update(sql, new Object[] {no});
+			return res>0;
+		}
 	}
 	
 	public boolean update(String mail_receiver, String location, int no) {
 		String sql = "update mail set mail_position=? where mail_receiver=? and no=?";
-		int res=jdbcTemplate.update(sql, new Object[] {location, mail_receiver, no});
+		int res=jdbcTemplate.update(sql, new Object[] {location, mail_receiver,no});
 		return res>0;
-		
 	}
 	
 	public Mail select(String id, int no, String location) {
@@ -85,7 +92,7 @@ public class MailDao {
 		}
 		String location=(isSpam)?"spam":"index";
 		
-		sql = "insert into mail values(?,?,?,sysdate,?,?,?, mail_seq.nextval)";
+		sql = "insert into mail values(?,?,?,sysdate,?,?,?, mail_seq.nextval,'')";
 		int res=jdbcTemplate.update(sql, new Object[] {
 				mail.getMail_writer(), mail.getMail_title(), mail.getMail_content(), 
 				mail.getMail_read(), mail.getMail_receiver(), location

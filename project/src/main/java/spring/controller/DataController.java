@@ -117,7 +117,7 @@ public class DataController {
 					mailDao.update(nick, location, Integer.parseInt(no));
 				}else if(location.equals("garbage")) {
 					if(req.getParameter("box").equals("garbage")) {
-						mailDao.delete(nick, Integer.parseInt(no));
+						mailDao.delete(Integer.parseInt(no));
 					}else {
 						mailDao.update(nick, location, Integer.parseInt(no));
 					}
@@ -202,7 +202,7 @@ public class DataController {
 		String nick = getNick(req);
 		
 		if(box.equals("garbage")) {
-			mailDao.delete(nick, Integer.parseInt(req.getParameter("no")));
+			mailDao.delete(Integer.parseInt(req.getParameter("no")));
 		}else {
 			mailDao.update(nick, "garbage", Integer.parseInt(req.getParameter("no")));
 		}
