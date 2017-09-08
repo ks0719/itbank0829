@@ -48,4 +48,12 @@ public class CommentDao {
 		return list.get(0);
 	}
 
+	public Comment best(int no) {
+		String sql = "update commentboard set best = best + 1 where no = ?";
+		
+		jdbcTemplate.update(sql, no);
+		
+		return detail(no);
+	}
+
 }

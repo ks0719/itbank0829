@@ -25,15 +25,31 @@
 			}
 		});
 		$(".board-comment").on("submit", function() {
+			var commentNo = $(this).attr('value');
 			event.preventDefault();
         	
         	$.ajax({
         		url: "comment",
         		data: $(this).serialize(),
+        		async : false,
         		success: function(res, context) {
-        			$(".comment${context}").append(res);
+        			console.log("a comment : " + commentNo);
+        			$("#comment"+commentNo).append(res);
         		}
         	});
+		});
+		$(".comment-best").on("click", function() {
+			var commentNo = $(this).attr('value');
+			console.log("comment" + commentNo);
+			$.ajax({
+				url: "commentBest",
+				data: {"commentNo": commentNo},
+        		async : false,
+				success: function(res) {
+					console.log("commentNo: " + commentNo);
+					$("#best"+commentNo).text(res);
+				}
+			});
 		});
 	});
 	  $(function(){
