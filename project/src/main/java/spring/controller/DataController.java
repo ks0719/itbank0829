@@ -28,7 +28,6 @@ import spring.db.mylecture.MyLectureDao;
 @Controller
 public class DataController {
 	
-	
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
 		if(c != null){
@@ -61,8 +60,29 @@ public class DataController {
 	private MailDao mailDao;
 	
 	@RequestMapping("/data/edit")
-	public String edit() {
-		
+	public String editget(HttpServletRequest request,Model model) throws UnsupportedEncodingException {
+		Cookie[] c=request.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
+	            log.debug("쿠키값  :"+cValue);
+	            if(ck.getName().equals("mynick")) {
+	            	MyDto dto=myDao.select(cValue);
+	            	model.addAttribute("dto", dto);
+	            	break;
+	            }
+	        }
+		}
+		return "data/edit";
+	}
+	@RequestMapping(value="/data/edit",method=RequestMethod.POST)
+	public String editpost(HttpServletRequest request) {
+		String nick=request.getParameter("nick");
+		//여기부터 하면 된다. edit.jsp
 		return "data/edit";
 	}
 	@RequestMapping("/data/exit")
