@@ -44,7 +44,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<textarea rows="20" cols="80" name="detail" class="user-input" required>${unit.detail}</textarea>
+						<textarea rows="30" cols="30" name="detail" required id="editor"></textarea>
 					</td>
 				</tr>
 				<tr>

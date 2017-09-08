@@ -7,7 +7,7 @@
 	<br>
 	제목<input type="text" value="${dto.title }" readonly><br>
 	내용<br>
-	<div style="border: 1px solid; width: 100%;">
+	<div style="border: 1px solid; width: 700px; height: 600px; overflow: auto;">
 	${dto.detail }
 	</div>
 <%@ include file="/WEB-INF/view/template/footer.jsp"%>

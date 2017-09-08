@@ -7,7 +7,7 @@
 <thead>
 <nav id="nav" >
 	<ul>
-		<li><a href="#" class="no-uline">내 정보 확인</a></li>     
+		<li><a href="${pageContext.request.contextPath}/data/edit" class="no-uline">내 정보 확인</a></li>     
         <li><a href="#" class="no-uline">비밀번호 변경</a></li>
 		<li><a href="#" class="no-uline">수강 내역</a></li>
 		<li><a href="#" class="no-uline">포인트 샾</a></li>
