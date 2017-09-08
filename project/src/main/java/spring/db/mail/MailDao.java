@@ -24,22 +24,16 @@ public class MailDao {
 		case "protect":
 		case "garbage":
 		case "spam":
-			sql+=" where mail_receiver=? and mail_position=? order by mail_reg desc, no desc";
+			sql+=" where mail_receiver=? and receiver_position=? order by mail_reg desc, no desc";
 			return jdbcTemplate.query(sql, new Object[] {nick,box},mapper);
 		case "sent":
-			sql+=" where mail_writer=? order by mail_reg desc, no desc";
-			return jdbcTemplate.query(sql, new Object[] {nick},mapper);
+			sql+=" where mail_writer=? and writer_position=? order by mail_reg desc, no desc";
+			return jdbcTemplate.query(sql, new Object[] {nick, box},mapper);
 			//받는 사람이 나일때  or box가 없을때
 		default:
-			sql+=" where mail_receiver=? and mail_position='index' order by mail_reg desc, no desc";
+			sql+=" where mail_receiver=? and receiver_position='index' order by mail_reg desc, no desc";
 			return jdbcTemplate.query(sql, new Object[] {nick},mapper);
 		}
-	}
-	
-	public boolean protect(String mail_receiver, int no) {
-		String sql = "update mail set mail_position='protect' where mail_receiver=? and no=?";
-		int res=jdbcTemplate.update(sql, new Object[] {mail_receiver, no});
-		return res>0;
 	}
 	
 	public boolean delete(int no) {
@@ -57,9 +51,19 @@ public class MailDao {
 	}
 	
 	public boolean update(String mail_receiver, String location, int no) {
-		String sql = "update mail set mail_position=? where mail_receiver=? and no=?";
-		int res=jdbcTemplate.update(sql, new Object[] {location, mail_receiver,no});
-		return res>0;
+		//먼저 지금 선택한 mail이 받은 메일인지 보낸 메일인지 확인해야함
+		String sql = "select mail_receiver from mail where no=?";
+		String receiver = jdbcTemplate.queryForObject(sql, new Object[] {no}, String.class);
+		
+		if(receiver.equals(mail_receiver)) {
+			//선택한 메일이 받은 메일일 때
+			sql = "update mail set receiver_position=? where mail_receiver=? and no=?";
+			return jdbcTemplate.update(sql, new Object[] {location, mail_receiver, no})>0;
+		}else {
+			//선택한 메일이 보낸 메일일 때
+			sql = "update mail set writer_position=? where mail_writer=? and no=?";
+			return jdbcTemplate.update(sql, new Object[] {location, mail_receiver, no})>0;
+		}
 	}
 	
 	public Mail select(String id, int no, String location) {
@@ -79,7 +83,6 @@ public class MailDao {
 		//mail_receiver, mail_writer을 차단했는지 확인해야됨
 		//[1] 일단 회원 테이블에서 mail_receiver이 차단한 사람들의 명단을 가져오자
 		String sql = "select spam from member where nick=?";
-		System.out.println(mail.getMail_receiver());
 		String spam_string = jdbcTemplate.queryForObject(sql,new Object[] {mail.getMail_receiver()}, String.class);
 		boolean isSpam = false;
 		if(spam_string!=null) {
@@ -91,12 +94,12 @@ public class MailDao {
 				}
 			}
 		}
-		String location=(isSpam)?"spam":"index";
+		String receiver_position=(isSpam)?"spam":"index";
 		
-		sql = "insert into mail values(?,?,?,sysdate,?,?,?, mail_seq.nextval,'')";
+		sql = "insert into mail values(?,?,?,sysdate,?,?,?, mail_seq.nextval,'sent')";
 		int res=jdbcTemplate.update(sql, new Object[] {
 				mail.getMail_writer(), mail.getMail_title(), mail.getMail_content(), 
-				mail.getMail_read(), mail.getMail_receiver(), location
+				mail.getMail_read(), mail.getMail_receiver(), receiver_position
 		});
 		return res>0;
 	}

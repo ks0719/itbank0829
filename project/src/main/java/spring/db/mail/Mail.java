@@ -13,9 +13,27 @@ public class Mail {
 	private String mail_content;
 	private String mail_receiver;
 	private String mail_read;
-	private String mail_position;
 	private String mail_reg;
 	
+	private String receiver_position;
+	private String writer_position;
+	
+	public String getReceiver_position() {
+		return receiver_position;
+	}
+
+	public void setReceiver_position(String receiver_position) {
+		this.receiver_position = receiver_position;
+	}
+
+	public String getWriter_position() {
+		return writer_position;
+	}
+
+	public void setWriter_position(String writer_position) {
+		this.writer_position = writer_position;
+	}
+
 	public Mail(HttpServletRequest req) {
 		setMail_content(req.getParameter("mail_content"));
 		setMail_receiver(req.getParameter("mail_receiver"));
@@ -27,12 +45,13 @@ public class Mail {
 		super();
 		setNo(rs.getInt("no"));
 		setMail_content(rs.getString("mail_content"));
-		setMail_position(rs.getString("mail_position"));
 		setMail_read(rs.getString("mail_read"));
 		setMail_receiver(rs.getString("mail_receiver"));
 		setMail_reg(rs.getString("mail_reg"));
 		setMail_title(rs.getString("mail_title"));
 		setMail_writer(rs.getString("mail_writer"));
+		setReceiver_position(rs.getString("receiver_position"));
+		setWriter_position(rs.getString("writer_position"));
 	}
 	
 	public int getNo() {
@@ -74,12 +93,6 @@ public class Mail {
 	}
 	public void setMail_read(String mail_read) {
 		this.mail_read = mail_read;
-	}
-	public String getMail_position() {
-		return mail_position;
-	}
-	public void setMail_position(String mail_position) {
-		this.mail_position = mail_position;
 	}
 	public String getMail_reg() {
 		return mail_reg;

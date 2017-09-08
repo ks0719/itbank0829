@@ -47,7 +47,6 @@ public class DataController {
 	}
 	
 	private Logger log=LoggerFactory.getLogger(getClass());
-	//테스트용 아이디(로그인 구현되면 따로 받아와야함)
 	
 	public static final int MY_LECTURE_PAGE = 10;
 	
