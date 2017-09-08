@@ -1,11 +1,16 @@
 package spring.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
+import spring.db.myinfo.MyDao;
+import spring.db.myinfo.MyDto;
 import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
 
 @Controller
 public class DataController {
+	private Logger log=LoggerFactory.getLogger(getClass());
 	//테스트용 아이디(로그인 구현되면 따로 받아와야함)
 	private static final String nick = "회원(수신이)";
 	
@@ -27,6 +35,8 @@ public class DataController {
 	
 	@Autowired
 	private MyLectureDao myLectureDao;
+	@Autowired
+	private MyDao myDao;
 	
 	@Autowired
 	private MailDao mailDao;
@@ -42,8 +52,23 @@ public class DataController {
 		return "data/exit";
 	}
 	@RequestMapping("/data/maininfo")
-	public String maininfo() {
-		
+	public String maininfo(HttpServletRequest request,Model model) throws UnsupportedEncodingException {
+		Cookie[] c=request.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
+	            log.debug("쿠키값  :"+cValue);
+	            if(ck.getName().equals("mynick")) {
+	            	MyDto dto=myDao.select(cValue);
+	            	model.addAttribute("dto", dto);
+	            	break;
+	            }
+	        }
+		}
 		return "data/maininfo";
 	}
 	

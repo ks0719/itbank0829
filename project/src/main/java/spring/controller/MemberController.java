@@ -1,5 +1,7 @@
 package spring.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 
 import javax.servlet.http.Cookie;
@@ -63,7 +65,7 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="/member/login",method=RequestMethod.POST)
-	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) {
+	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) throws UnsupportedEncodingException {
 		String id=request.getParameter("id");
 		String pw=request.getParameter("pw");
 		//log.debug("id="+id+",pw="+pw);
@@ -71,12 +73,11 @@ public class MemberController {
 		
 		url=url.replaceAll("http://localhost:8080/project/WEB-INF/view", "").replaceAll(".jsp", "");
 		log.debug("url="+url);
-		boolean state=memberDao.logincheck(id, pw);
+		String nick=memberDao.logincheck(id, pw);
 		//log.debug("state="+state);
-		if(state) {
-			Cookie cookie=new Cookie("myid", id);
+		if(nick!=null) {
+			Cookie cookie=new Cookie("mynick", URLEncoder.encode(nick,"UTF-8"));
 			cookie.setPath("/");
-			cookie.setComment("로그인시 얻어지는 나의 아이디입니다. 원래는 닉네임 아니었나?");
 			cookie.setMaxAge(60*60*24);
 			response.addCookie(cookie);
 		return "redirect:"+url;
