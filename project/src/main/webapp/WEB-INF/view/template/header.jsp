@@ -356,7 +356,7 @@ $(document).ready(function(){
 			<th rowspan="10">
                 <div>
                     <h3>회원정보 넣을 곳</h3>
-                    <c:set value="${cookie.myid.value }" var="myid"/>
+                    <c:set value="${cookie.myid.value}" var="myid"/>
    					<c:if test="${empty myid }">
                     <h3><a href="#" class="showMask">로그인</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
