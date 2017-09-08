@@ -356,14 +356,14 @@ $(document).ready(function(){
 			<th rowspan="10">
                 <div>
                     <h3>회원정보 넣을 곳</h3>
-                    <c:set value="${cookie.myid.value }" var="myid"/>
-   					<c:if test="${empty myid }">
+                    <c:set value="${cookie.mynick.value }" var="mynick"/>
+   					<c:if test="${empty mynick }">
                     <h3><a href="#" class="showMask">로그인</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
-                    </c:if>
-                    <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
                     <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
 					<h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;">내 수강정보</a></h3>
+                    </c:if>
+                    <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
 					사진
 					닉네임
 					내 등급
@@ -375,7 +375,6 @@ $(document).ready(function(){
                     <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
                 </div>
 			</th>
-            
             
             <td style="vertical-align: top">
                 <table>
