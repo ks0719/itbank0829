@@ -5,8 +5,6 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.HttpRequest;
-
 public class Member {
 
 	private int no;
