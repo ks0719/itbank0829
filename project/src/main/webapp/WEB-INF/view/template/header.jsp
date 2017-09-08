@@ -392,7 +392,7 @@ $(document).ready(function(){
                 <div>
                     <h3><a href="${pageContext.request.contextPath}/board/free">커뮤니티(자유게시판)</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/lecture/study?page=1">수업정보</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/lecture/teacher">강사정보</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/teacher/lecturer?page=1">강사정보</a></h3>
                     <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
                 </div>
 			</th>
