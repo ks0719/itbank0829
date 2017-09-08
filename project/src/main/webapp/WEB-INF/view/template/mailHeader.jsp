@@ -36,7 +36,7 @@
 				dataType:"text",
 				success:function(){
 					$("#check").val("취소");
-					$("#mail_receiver").attr("disabled", "disabled");
+					$("#mail_receiver").attr("readonly", "readonly");
 					$("#send").removeAttr("disabled");
 				},
 				error:function(){
@@ -45,7 +45,7 @@
 			});
 		}else{
 			$("#check").val("확인");
-			$("#mail_receiver").removeAttr("disabled");
+			$("#mail_receiver").removeAttr("readonly");
 			$("#send").attr("disabled", "disabled");
 		}
 	}

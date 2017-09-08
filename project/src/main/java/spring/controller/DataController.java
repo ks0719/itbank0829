@@ -29,7 +29,7 @@ import spring.db.mylecture.MyLectureDao;
 public class DataController {
 	
 	
-	private String getNick(HttpServletRequest req) throws UnsupportedEncodingException {
+	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
 		if(c != null){
 	        for(int i=0; i < c.length; i++){
@@ -39,12 +39,12 @@ public class DataController {
 	            // 쿠키값을 가져온다
 	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
 //	            log.debug("쿠키값  :"+cValue);
-	            if(ck.getName().equals("mynick")) {
+	            if(cName.equals("mynick")) {
 	            	return cValue;
 	            }
 	        }
 		}
-		return null;
+		throw new Exception("404");
 	}
 	
 	private Logger log=LoggerFactory.getLogger(getClass());
@@ -92,7 +92,7 @@ public class DataController {
 	}
 	
 	@RequestMapping(value="/data/mail", method=RequestMethod.GET)
-	public String mailGet(Model m, HttpServletRequest req) throws UnsupportedEncodingException {
+	public String mailGet(Model m, HttpServletRequest req) throws Exception {
 		String nick = getNick(req);
 		
 		String box = (req.getParameter("box")==null)?"index":req.getParameter("box");
@@ -104,7 +104,7 @@ public class DataController {
 	}
 	
 	@RequestMapping(value="/data/mail", method=RequestMethod.POST)
-	public String mailPost(Model m, HttpServletRequest req) throws UnsupportedEncodingException {
+	public String mailPost(Model m, HttpServletRequest req) throws Exception {
 		//delete,no[] 또는 protect,no[] 이렇게 들어옴
 		Map<String, String[]> map = req.getParameterMap();
 		Set<String> keys = map.keySet();
@@ -218,7 +218,7 @@ public class DataController {
 	}
 	
 	@RequestMapping(value="data/mail/send", method=RequestMethod.POST)
-	public String sendPost(HttpServletRequest req) throws UnsupportedEncodingException {
+	public String sendPost(HttpServletRequest req) throws Exception {
 		//db 연결해서 mail 테이블에 정보 추가하기
 		String nick = getNick(req);
 		
