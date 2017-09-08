@@ -2,6 +2,8 @@ package spring.db.member;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("memberDao")
 public class MemberDao {
-
+private Logger log=LoggerFactory.getLogger(getClass());
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -48,10 +50,11 @@ public class MemberDao {
 	      
 	      return result;
 	   }
-	  public boolean logincheck(String id,String pw) {
-		  String sql="select count(*) from member where id=? and pw=?";
-		  boolean result= jdbcTemplate.queryForObject(sql, new Object[] {id,pw},Integer.class)>0;
-		  return result;
+	  public String logincheck(String id,String pw) {
+		  String sql="select nick from member where id=? and pw=?";
+		  String nick= jdbcTemplate.queryForObject(sql,new Object[] {id,pw}, String.class);
+		 log.debug("nick="+nick);
+		  return nick;
 		 
 	  }
 	public boolean check(String column, String data) {
