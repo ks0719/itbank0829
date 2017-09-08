@@ -223,7 +223,6 @@
 		$("#sub").on("click",function () {
 			var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
 		 	var pwtarget=document.querySelector("input[name=pw]");
-		 	
 		 	var target = document.querySelector("input[name=pw2]");
 		 	
 		 	if($("#id").attr("readonly")!='readonly'){
@@ -236,12 +235,18 @@
 		 		alert("닉네임 중복 확인을 해주세요");
 		 	}else if($("#phone").attr("readonly")!='readonly'){
 		 		alert("전화번호 중복 확인을 해주세요");
-		 	}else{
+		 	}else if{
 		 		//이제 폼으로 전송해주면 됨
+		 		
+		 	}
+						 		
 		 	}
 		 	
 		});
 	});
+  
+
+
 	  
 </script>
 
