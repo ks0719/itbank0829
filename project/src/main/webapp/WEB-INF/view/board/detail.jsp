@@ -73,8 +73,8 @@
 			<div class="align-right">
 				<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
 				<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${no}';">
-				<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}';">
-				<input type="button" value="삭제하기" class="input-btn" onclick="location.href='delete?no=${board.no}';">
+				<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${no}';">
+				<input type="button" value="삭제하기" class="input-btn" onclick="location.href='delete?no=${board.no}&context=${no}';">
 				<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${path}';">
 			</div>
 			<div class="empty-row"></div>

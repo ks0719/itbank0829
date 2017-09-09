@@ -85,7 +85,7 @@ $(document).ready(function(){
         		}
         	});
 		});
-		$(".comment-best").on("click", function() {
+		$(document).on("click", ".comment-best", function() {
 			var commentNo = $(this).attr('value');
 			console.log("comment" + commentNo);
 			$.ajax({

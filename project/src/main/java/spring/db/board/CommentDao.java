@@ -56,4 +56,10 @@ public class CommentDao {
 		return detail(no);
 	}
 
+	public void delete(int context) {
+		String sql = "delete commentboard where context = ?";
+		
+		jdbcTemplate.update(sql, context);
+	}
+
 }
