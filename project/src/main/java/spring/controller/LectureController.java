@@ -60,8 +60,8 @@ public class LectureController {
 	
 	@RequestMapping("/lecture/class")
 	public String lesson(HttpServletRequest req, Model m) throws Exception {
+		log.debug("class 부름");
 		int noI, pageNo;
-		boolean wishB;
 		try {
 			noI = Integer.parseInt(req.getParameter("no"));
 		} catch(Exception e) {
@@ -72,21 +72,39 @@ public class LectureController {
 		} catch(Exception e) {
 			pageNo = 1;
 		}
-		try {
-			wishB = Boolean.parseBoolean(req.getParameter("wish"));
-		} catch(Exception e) {
-			wishB = false;
-		}
 		
 		LectureInfo info = lectureDao.showOne(noI);
 		
+		String url = "?page=" + pageNo;
+		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");
+		
+		m.addAttribute("info", info);
+		m.addAttribute("no", noI);
+		m.addAttribute("url", url);
+		
+		return "lecture/class";
+	}
+	
+	@RequestMapping("/lecture/wish")
+	public String wish(HttpServletRequest req, Model m) throws Exception {
+		int noI, pageNo;
+		try {
+			noI = Integer.parseInt(req.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		try {
+			pageNo = Integer.parseInt(req.getParameter("page"));
+		} catch(Exception e) {
+			pageNo = 1;
+		}
+		
+		LectureInfo info = lectureDao.showOne(noI);
 		String nick = getNick(req);
 		
-		if (wishB) {
-			int result = myLectureDao.wish(nick, noI, info);
-			if (result == 1) JOptionPane.showMessageDialog(null, "찜하기가 완료되었습니다.");
-			else JOptionPane.showMessageDialog(null, "이미 찜이 되어있거나 할 수 없습니다.");
-		}
+		int result = myLectureDao.wish(nick, noI, info);
+		if (result == 1) JOptionPane.showMessageDialog(null, "찜하기가 완료되었습니다.");
+		else JOptionPane.showMessageDialog(null, "이미 찜이 되어있거나 할 수 없습니다.");
 		
 		String url = "?page=" + pageNo;
 		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");

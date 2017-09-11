@@ -45,6 +45,14 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	      return result;
 	   }
 	  
+	  public boolean pwcheck(String pw) {
+	      
+	      String sql = "select count(*) from member where pw=?";
+	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {pw},Integer.class)>0;
+	      
+	      return result;
+	   }
+	  
 	  public boolean nickcheck(String nickname) {
 	      
 	      String sql = "select count(*) from member where nick=?";
@@ -65,10 +73,9 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		return jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
 	}
 	
-	public boolean delmember(String id) {
-		String sql="delete member where id=?";
-		boolean result=jdbcTemplate.update(sql, new Object[] {id},Integer.class)>0;
+	public void delete(String nick) {
+		String sql = "delete member where nick = ?";
 		
-		return result;
+		jdbcTemplate.update(sql, nick);
 	}
 }

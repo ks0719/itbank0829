@@ -9,12 +9,14 @@ import java.sql.SQLException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +27,25 @@ import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
+	
+	private String getNick(HttpServletRequest req) throws Exception {
+		Cookie[] c=req.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode(ck.getValue(),"utf-8");
+//	            log.debug("쿠키값  :"+cValue);
+	            if(cName.equals("mynick")) {
+	            	return cValue;
+	            }
+	        }
+		}
+		return "";
+	}
+	
 	private Logger log=LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -113,16 +134,25 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/member/delmember")
-	public void deletemember(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String id = (String)request.getSession().getAttribute("id");
+	@RequestMapping(value="/member/deletemember",method=RequestMethod.GET)
+	public String deleteGet() {
 		
-		MemberDao mdao=new MemberDao();
-		mdao.delmember(id);
-		request.getSession().removeAttribute("id");
-		request.removeAttribute("id");
-		response.sendRedirect("redirec:/");
+		return "member/deletemember";
+	}
+	
+	
+	
+	@RequestMapping(value="/member/deletemember", method = RequestMethod.POST)
+	public String deletePost(@RequestParam String pw, HttpServletRequest req) throws Exception {
+		String nick=getNick(req);
+		boolean result = memberDao.check("pw",pw);
 		
-		return;
+		if(!result) {
+			return "member/deletemember";
+		}else {
+			memberDao.delete(nick);
+			
+			return "redirect:/member/logout";
+		}
 	}
 }
