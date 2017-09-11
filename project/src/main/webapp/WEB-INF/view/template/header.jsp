@@ -84,17 +84,23 @@ $(document).ready(function(){
 				$(this).attr("selected","selected");
 			}
 		});
-		$(".board-comment").on("submit", function() {
-			var commentNo = $(this).attr('value');
+		
+		$(document).on("click", ".board-delete", function() {
+// 			var no = 
+// 			var context = 
+		});
+		
+		$(document).on("submit", ".board-comment", function() {
+			var contextNo = $(this).attr('value');
 			event.preventDefault();
         	
         	$.ajax({
         		url: "comment",
         		data: $(this).serialize(),
         		async : false,
-        		success: function(res, context) {
-        			console.log("a comment : " + commentNo);
-        			$("#comment"+commentNo).append(res);
+        		success: function(res) {
+        			console.log("a comment : " + contextNo);
+        			$("#comments"+contextNo).append(res);
         		}
         	});
 		});
@@ -111,9 +117,20 @@ $(document).ready(function(){
 				}
 			});
 		});
-	});
-	
-	$(document).ready(function(){
+		$(document).on("click", ".comment-delete", function() {
+			var commentNo = $(this).attr('value');
+
+			$.ajax({
+				url: "commentDelete",
+				data: {"commentNo": commentNo},
+        		async : false,
+				success: function(res) {
+					var result = confirm("정말 삭제하시겠습니까?");
+					if (result) $("#comment"+commentNo).remove();
+				}
+			});
+		});
+		
 		$(".lecturer-array").on("click", function() {
 			var standard = $(this).attr('value');
 			

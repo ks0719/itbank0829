@@ -43,7 +43,7 @@ public class BoardDao {
 		return jdbcTemplate.query(sql, new Object[] {path, key, start, end}, mapper);
 	}
 
-	public int write(String path, Board board, int context) {
+	public int write(String path, String nick, Board board, int context) {
 		String sql = "select board_seq.nextval from dual";
 		int no = jdbcTemplate.queryForObject(sql, Integer.class);
 		
@@ -58,7 +58,7 @@ public class BoardDao {
 		String filename = no + "." + extension[extension.length - 1];
 		
 		sql = "insert into board values(?, ?, ?, ?, ?, ?, ?, ?, ?, null, 0, 0, 0, sysdate, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, new Object[] {no, board.getWriter(), path, board.getHead(), board.getTitle(), board.getDetail(), 
+		jdbcTemplate.update(sql, new Object[] {no, nick, path, board.getHead(), board.getTitle(), board.getDetail(), 
 				context > 0 ? context : no, seq + 1, context > 0 ? 1 : no, filename, board.getOriginfile(), board.getFiletype(), board.getFilesize()});
 		
 		return no;
