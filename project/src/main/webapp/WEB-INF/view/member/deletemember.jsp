@@ -6,8 +6,8 @@
 <title>회원탈퇴</title>
 </head>
 <body>	
-<form action="" method="post">
-	<h1>비밀번호 확인</h1>
+<form action="" id="checkPw"method="post" onsubmit="return pwCheck();">
+	<h2>비밀번호 확인</h2>
 	<input type="password" name="pw" placeholder="PW입력">
 	<input type="submit" value="확인" >
 </form>

@@ -148,6 +148,7 @@ public class MemberController {
 		boolean result = memberDao.check("pw",pw);
 		
 		if(!result) {
+			
 			return "member/deletemember";
 		}else {
 			memberDao.delete(nick);

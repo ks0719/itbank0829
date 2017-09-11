@@ -141,6 +141,7 @@ $(document).ready(function(){
 	      });
 	  });
 	  
+
 	  
 	  
 	  
@@ -353,11 +354,20 @@ $(document).ready(function(){
 	 		alert("전화번호 중복 확인을 해주세요");
 	 	}else if(document.querySelector("input[name=post]").value==''){
 	 		alert("주소를 입력해주세요");
-	 	}else return true;
+	 	}else alert("회원가입이 완료되었습니다."); return true;
 	 	
 	 	return false;
 	}
-	  
+  	
+			
+//   	//회원탈퇴 비밀번호 체크
+//   	function pwCheck(){
+//   		var pwtarget=document.querySelector("input[name=pw"]);
+  		
+//   		if(pwtarget==""){
+//   			alert("비밀번호를 입력해주세요.");
+//   		}
+//   	}
 	  
 </script>
 
