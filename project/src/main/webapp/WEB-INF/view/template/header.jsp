@@ -87,7 +87,7 @@ $(document).ready(function(){
 		});
 		$(document).on("click", ".comment-best", function() {
 			var commentNo = $(this).attr('value');
-			console.log("comment" + commentNo);
+
 			$.ajax({
 				url: "commentBest",
 				data: {"commentNo": commentNo},
@@ -99,6 +99,21 @@ $(document).ready(function(){
 			});
 		});
 	});
+	
+	$(document).ready(function(){
+		$(".lecturer-array").on("click", function() {
+			var standard = $(this).attr('value');
+			
+			$.ajax({
+				url: "lecturerArray",
+				data: {"standard", standard},
+				success: function(res) {
+					$("").html(res);
+				}
+			});
+		});
+	});
+	
 	  $(function(){
 	      //전역변수
 	      var obj = [];              

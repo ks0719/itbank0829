@@ -7,19 +7,19 @@
 	<div class="table-wrap">
 		<table border="1" class="tableUnit" rules=rows>
 			<tr>
-				<th>
+				<th class="lecturer-array" value="no">
 					번호
 				</th>
-				<th>
+				<th class="lecturer-array" value="sort">
 					분류
 				</th>
 				<th>
 					강사명
-				</th>
+				</th class="lecturer-array" value="count">
 				<th>
 					강의횟수
 				</th>
-				<th>
+				<th class="lecturer-array" value="grade">
 					평점
 				</th>
 				<th>
