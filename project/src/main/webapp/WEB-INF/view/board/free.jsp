@@ -54,7 +54,16 @@
 		</table>
 	</div>
 	<div class="align-right">
-		<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write?seq=1&context=';">
+		<c:choose>
+	       	<c:when test="${empty cookie.mynick.value}">
+				<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write?seq=1&context=';">
+	       		<a href="class${url}&no=${no}&wish=true" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">찜하기</a>
+		        <a href="" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">신청하기</a>
+	       	</c:when>
+	       	<c:otherwise>
+				<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write?seq=1&context=';">
+	       	</c:otherwise>
+       </c:choose>
 	</div>
 	<div class="row">
 		<div class="paging-wrap">
