@@ -124,19 +124,19 @@ public class DataController {
 	
 	@RequestMapping(value="/data/mail", method=RequestMethod.POST)
 	public String mailPost(Model m, HttpServletRequest req) throws Exception {
-		//delete,no[] 또는 protect,no[] 이렇게 들어옴
+		//garbage,no[] 또는 protect,no[] 이렇게 들어옴
 		Map<String, String[]> map = req.getParameterMap();
-		Set<String> keys = map.keySet();
+		Set<String> params = map.keySet();
 		
 		String nick = getNick(req);
 		
-		for(String location:keys) {
+		for(String location:params) {
 			for(String no : map.get(location)) {
 				if(location.equals("protect")) {
 					mailDao.update(nick, location, Integer.parseInt(no));
 				}else if(location.equals("garbage")) {
 					if(req.getParameter("box").equals("garbage")) {
-						mailDao.delete(Integer.parseInt(no));
+						mailDao.delete(nick, Integer.parseInt(no));
 					}else {
 						mailDao.update(nick, location, Integer.parseInt(no));
 					}
@@ -210,7 +210,7 @@ public class DataController {
 		
 		m.addAttribute("mail", mail);
 		
-		mailDao.read(no);
+		mailDao.read(mail);
 		return "data/mailDetail";
 	}
 	
@@ -221,7 +221,7 @@ public class DataController {
 		String nick = getNick(req);
 		
 		if(box.equals("garbage")) {
-			mailDao.delete(Integer.parseInt(req.getParameter("no")));
+			mailDao.delete(nick, Integer.parseInt(req.getParameter("no")));
 		}else {
 			mailDao.update(nick, "garbage", Integer.parseInt(req.getParameter("no")));
 		}

@@ -56,6 +56,7 @@ $(document).ready(function(){
 
 	$(document).ready(function() {
 		$(".clickToinfo").on("click", function() {
+			console.log("수업정보로");
 			var no = $(this).data('no');
 			var page = $(this).data('page');
 			var type = $(this).data('type');
@@ -106,7 +107,7 @@ $(document).ready(function(){
 			
 			$.ajax({
 				url: "lecturerArray",
-				data: {"standard", standard},
+				data: {"standard": standard},
 				success: function(res) {
 					$("").html(res);
 				}

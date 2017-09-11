@@ -60,6 +60,7 @@ public class LectureController {
 	
 	@RequestMapping("/lecture/class")
 	public String lesson(HttpServletRequest req, Model m) throws Exception {
+		log.debug("class 부름");
 		int noI, pageNo;
 		try {
 			noI = Integer.parseInt(req.getParameter("no"));
@@ -85,7 +86,7 @@ public class LectureController {
 	}
 	
 	@RequestMapping("/lecture/wish")
-	public String wish(HttpServletRequest req) throws Exception {
+	public String wish(HttpServletRequest req, Model m) throws Exception {
 		int noI, pageNo;
 		try {
 			noI = Integer.parseInt(req.getParameter("no"));
@@ -104,6 +105,13 @@ public class LectureController {
 		int result = myLectureDao.wish(nick, noI, info);
 		if (result == 1) JOptionPane.showMessageDialog(null, "찜하기가 완료되었습니다.");
 		else JOptionPane.showMessageDialog(null, "이미 찜이 되어있거나 할 수 없습니다.");
+		
+		String url = "?page=" + pageNo;
+		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");
+		
+		m.addAttribute("info", info);
+		m.addAttribute("no", noI);
+		m.addAttribute("url", url);
 		
 		return "lecture/class";
 	}

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TeacherController {
 	private Logger log = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
+//	@Autowired
 //	private TeacherDao teacherDao;
 	
 	@RequestMapping("/lecturer")
