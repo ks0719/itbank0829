@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.CookieGenerator;
 
 import spring.db.member.Member;
 import spring.db.member.MemberDao;
@@ -102,10 +103,11 @@ public class MemberController {
 		log.debug("nick="+nick);
 		//log.debug("state="+state);
 		if(nick!=null) {
-			Cookie cookie=new Cookie("mynick", URLEncoder.encode(nick,"UTF-8"));
-			cookie.setPath("/");
-			cookie.setMaxAge(-1);
-			response.addCookie(cookie);
+			CookieGenerator cookie=new CookieGenerator();
+			cookie.setCookieName("mynick");
+			cookie.setCookiePath("/");
+			cookie.setCookieMaxAge(-1);
+			cookie.addCookie(response, URLEncoder.encode(nick, "utf-8"));
 		return "redirect:"+url;
 		}
 		else {
