@@ -3,8 +3,10 @@ package spring.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,6 +39,24 @@ public class BoardController {
 	
 	@Autowired
 	private CommentDao commentDao;
+	
+	private String getNick(HttpServletRequest req) throws Exception {
+		Cookie[] c=req.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode(ck.getValue(),"utf-8");
+//	            log.debug("쿠키값  :"+cValue);
+	            if(cName.equals("mynick")) {
+	            	return cValue;
+	            }
+	        }
+		}
+		return "";
+	}
 	
 	@RequestMapping("/{path}")
 	public String board(@PathVariable String path, HttpServletRequest request, Model m) {	
@@ -97,7 +117,9 @@ public class BoardController {
 		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
 
 		String[] extension = file.getContentType().split("/");
-		int no = boardDao.write(path, new Board(mRequest), contextI);
+		String nick = getNick(mRequest);
+		log.debug("write nick : " + nick);
+		int no = boardDao.write(path, nick, new Board(mRequest), contextI);
 		String filename = no + "." + extension[extension.length - 1];
 		File target = new File(savePath, filename);
 		if(!target.exists()) target.mkdirs();
@@ -248,8 +270,10 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/{path}/comment")
-	public String comment(@PathVariable String path, HttpServletRequest request, Model m) {
-		Comment comment = commentDao.insert(new Comment(request));
+	public String comment(@PathVariable String path, HttpServletRequest request, Model m) throws Exception {
+		String nick = getNick(request);
+		log.debug("comment nick : " + nick);
+		Comment comment = commentDao.insert(nick, new Comment(request));
 		m.addAttribute("comment", comment);
 		
 		return "board/comment";
@@ -262,6 +286,12 @@ public class BoardController {
 		int best = comment.getBest();
 		
 		return String.valueOf(best);
+	}
+	
+	@RequestMapping("/{path}/commentDelete")
+	@ResponseBody
+	public void commentDelete(int commentNo) {
+		commentDao.deleteOne(commentNo);
 	}
 	
 }
