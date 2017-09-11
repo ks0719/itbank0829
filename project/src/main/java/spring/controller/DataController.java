@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.CookieGenerator;
 
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
@@ -87,30 +88,13 @@ public class DataController {
 		Member mb=new Member(request);
 		String nick=getNick(request);
 		nick=mbdao.edit(mb, nick);
+		 CookieGenerator cookie=new CookieGenerator();
+		 
+		 cookie.setCookieName("mynick");
+		 cookie.setCookieMaxAge(0);
+		 cookie.addCookie(response, null);
 		
-		Cookie[] c=request.getCookies();
-		if(c != null){
-	        for(int i=0; i < c.length; i++){
-	            Cookie ck = c[i] ;
-	            // 저장된 쿠키 이름을 가져온다
-	            String cName = ck.getName();
-	            // 쿠키값을 가져온다
-	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
-	            log.debug("쿠키값  :"+cValue);
-	            if(ck.getName().equals("mynick")) {
-	            	Cookie cookie=new Cookie("mynick",URLEncoder(nick,"utf-8"));
-	            	response.addCookie(cookie);
-	            	break;
-	            	//다 안됨
-	            }
-	        }
-		}
-		
-		return "redirect:/data/edit";
-	}
-	private String URLEncoder(String nick, String string) {
-		// TODO Auto-generated method stub
-		return null;
+		return "redirect:/data/maininfo";
 	}
 	@RequestMapping("/data/exit")
 	public String exit() {
