@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
+import spring.db.member.Member;
+import spring.db.member.MemberDao;
 import spring.db.myinfo.MyDao;
 import spring.db.myinfo.MyDto;
 import spring.db.mylecture.MyLecture;
@@ -54,7 +57,8 @@ public class DataController {
 	private MyLectureDao myLectureDao;
 	@Autowired
 	private MyDao myDao;
-	
+	@Autowired
+	private MemberDao mbdao;
 	@Autowired
 	private MailDao mailDao;
 	
@@ -79,10 +83,34 @@ public class DataController {
 		return "data/edit";
 	}
 	@RequestMapping(value="/data/edit",method=RequestMethod.POST)
-	public String editpost(HttpServletRequest request) {
-		String nick=request.getParameter("nick");
-		//여기부터 하면 된다. edit.jsp
-		return "data/edit";
+	public String editpost(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Member mb=new Member(request);
+		String nick=getNick(request);
+		nick=mbdao.edit(mb, nick);
+		
+		Cookie[] c=request.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
+	            log.debug("쿠키값  :"+cValue);
+	            if(ck.getName().equals("mynick")) {
+	            	Cookie cookie=new Cookie("mynick",URLEncoder(nick,"utf-8"));
+	            	response.addCookie(cookie);
+	            	break;
+	            	//다 안됨
+	            }
+	        }
+		}
+		
+		return "redirect:/data/edit";
+	}
+	private String URLEncoder(String nick, String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	@RequestMapping("/data/exit")
 	public String exit() {
@@ -96,15 +124,18 @@ public class DataController {
 	        for(int i=0; i < c.length; i++){
 	            Cookie ck = c[i] ;
 	            // 저장된 쿠키 이름을 가져온다
+	            log.debug("쿠키값들 : "+ck.getName());
 	            String cName = ck.getName();
 	            // 쿠키값을 가져온다
 	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
-	            log.debug("쿠키값  :"+cValue);
+	            log.debug("쿠키값(maininfo)  :"+cValue);
 	            if(ck.getName().equals("mynick")) {
+	            	log.debug("쿠키값 찾음");
 	            	MyDto dto=myDao.select(cValue);
 	            	model.addAttribute("dto", dto);
 	            	break;
 	            }
+	            log.debug("쿠키값 못찾음");
 	        }
 		}
 		return "data/maininfo";
