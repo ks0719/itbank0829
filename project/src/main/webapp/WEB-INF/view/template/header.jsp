@@ -275,7 +275,7 @@ $(document).ready(function(){
   		if($("#pcheck").val()=="중복확인"){
   			
 			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
-			var phonetarget=document.querySelector("input[name=phone]");
+			var phonetarget=document.querySelector("#phone");
 			
 			if($("#phone").val()==""){
 				alert("핸드폰 번호를 입력하세요");
@@ -305,9 +305,9 @@ $(document).ready(function(){
   	
   	function submitOK() {
   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	 	var pwtarget=document.querySelector("input[name=pw]");
+	 	var pwtarget=document.querySelector("#pw");
+	 	var target = document.querySelector("#pw2");
 	 	
-	 	var target = document.querySelector("input[name=pw2]");
 	 	
 	 	if($("#id").attr("readonly")!='readonly'){
 	 		alert("아이디 중복 확인을 해주세요");
