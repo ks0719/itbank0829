@@ -21,14 +21,16 @@ public class MailDao {
 	public List<Mail> list(String nick, String box){
 		String sql="select * from mail";
 		switch(box) {
-		case "protect":
-		case "garbage":
 		case "spam":
 			sql+=" where mail_receiver=? and receiver_position=? order by mail_reg desc, no desc";
 			return jdbcTemplate.query(sql, new Object[] {nick,box},mapper);
 		case "sent":
 			sql+=" where mail_writer=? and writer_position=? order by mail_reg desc, no desc";
 			return jdbcTemplate.query(sql, new Object[] {nick, box},mapper);
+		case "protect":
+		case "garbage":
+			sql += " where mail_receiver=? and receiver_position=? or mail_writer=? and writer_position=?";
+			return jdbcTemplate.query(sql, new Object[] {nick, box, nick, box},mapper);
 			//받는 사람이 나일때  or box가 없을때
 		default:
 			sql+=" where mail_receiver=? and receiver_position='index' order by mail_reg desc, no desc";
@@ -36,17 +38,35 @@ public class MailDao {
 		}
 	}
 	
-	public boolean delete(int no) {
-		String sql = "select deletable from mail where no=?";
-		String del = jdbcTemplate.queryForObject(sql,new Object[] {no} ,String.class);
-		if(del==null) {
-			sql = "update mail set deletable='삭제' where no=?";
-			int res=jdbcTemplate.update(sql, new Object[] {no});
-			return res>0;
+	public boolean delete(String mail_receiver, int no) {
+		//먼저 지금 선택한 mail이 받은 메일인지 보낸 메일인지 확인해야함
+		String sql = "select mail_receiver from mail where no=?";
+		String receiver = jdbcTemplate.queryForObject(sql, new Object[] {no}, String.class);
+		
+		if(receiver.equals(mail_receiver)) {
+			//선택한 메일이 받은 메일일 때
+			//상대방이 삭제를 눌렀는지 안눌렀는지 알아야 함
+			sql = "select writer_position from mail where no=?";
+			String writer_position = jdbcTemplate.queryForObject(sql, new Object[] {no}, String.class);
+			if(writer_position.equals("delete")) {
+				sql = "delete mail where no=?";
+				return jdbcTemplate.update(sql, new Object[] {no})>0;
+			}else {
+				sql = "update mail set receiver_position='delete' where no=?";
+				return jdbcTemplate.update(sql, new Object[] {no})>0;
+			}
 		}else {
-			sql="delete from mail where no=?";
-			int res=jdbcTemplate.update(sql, new Object[] {no});
-			return res>0;
+			//선택한 메일이 보낸 메일일 때
+			//상대방이 삭제를 눌렀는지 안눌렀는지 알아야 함
+			sql = "select receiver_position from mail where no=?";
+			String receiver_position = jdbcTemplate.queryForObject(sql, new Object[] {no}, String.class);
+			if(receiver_position.equals("delete")) {
+				sql = "delete mail where no=?";
+				return jdbcTemplate.update(sql, new Object[] {no})>0;
+			}else {
+				sql = "update mail set writer_position='delete' where no=?";
+				return jdbcTemplate.update(sql, new Object[] {no})>0;
+			}
 		}
 	}
 	
@@ -104,9 +124,16 @@ public class MailDao {
 		return res>0;
 	}
 	
-	public boolean read(int no) {
-		String sql = "update mail set MAIL_READ='읽음' where no=?";
-		return jdbcTemplate.update(sql, new Object[] {no})>0;
+	public boolean read(Mail mail) {
+		String sql = "select mail_receiver from mail where no=?";
+		String receiver = jdbcTemplate.queryForObject(sql, new Object[] {mail.getNo()}, String.class);
+		System.out.println(receiver);
+		if(receiver.equals(mail.getMail_writer())) {
+			sql = "update mail set MAIL_READ='읽음' where no=?";
+			return jdbcTemplate.update(sql, new Object[] {mail.getNo()})>0;
+		}
+		
+		return false;
 	}
 	
 	public boolean isExist(String nick) {

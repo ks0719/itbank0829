@@ -148,7 +148,8 @@ form {
 	text-align: left;
 }
 .detail {
-	min-height: 200px;
+	height: 400px;
+	text-align: left;
 }
 <!-- 레이어 팝업 -->
  .setDiv {

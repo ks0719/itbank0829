@@ -56,6 +56,7 @@ $(document).ready(function(){
 
 	$(document).ready(function() {
 		$(".clickToinfo").on("click", function() {
+			console.log("수업정보로");
 			var no = $(this).data('no');
 			var page = $(this).data('page');
 			var type = $(this).data('type');
@@ -85,9 +86,9 @@ $(document).ready(function(){
         		}
         	});
 		});
-		$(".comment-best").on("click", function() {
+		$(document).on("click", ".comment-best", function() {
 			var commentNo = $(this).attr('value');
-			console.log("comment" + commentNo);
+
 			$.ajax({
 				url: "commentBest",
 				data: {"commentNo": commentNo},
@@ -99,6 +100,21 @@ $(document).ready(function(){
 			});
 		});
 	});
+	
+	$(document).ready(function(){
+		$(".lecturer-array").on("click", function() {
+			var standard = $(this).attr('value');
+			
+			$.ajax({
+				url: "lecturerArray",
+				data: {"standard": standard},
+				success: function(res) {
+					$("").html(res);
+				}
+			});
+		});
+	});
+	
 	  $(function(){
 	      //전역변수
 	      var obj = [];              

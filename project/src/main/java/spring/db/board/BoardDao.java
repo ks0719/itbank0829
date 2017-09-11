@@ -83,9 +83,9 @@ public class BoardDao {
 	}
 
 	public void delete(int no) {
-		String sql = "delete board where no = ?";
+		String sql = "delete board where no = ? or context = ?";
 		
-		jdbcTemplate.update(sql, no);
+		jdbcTemplate.update(sql, no, no);
 	}
 	
 	public void readUp(int no) {

@@ -9,6 +9,7 @@
 	<div class="table-wrap">
 		<form action="edit" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="no" value="${no}">
+			<input type="hidden" name="context" value="${context}">
 			<table border="1" class="tableUnit" rules=rows>
 				<tr>
 					<td class="head">
@@ -44,7 +45,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<textarea rows="30" cols="30" name="detail" required id="editor"></textarea>
+						<textarea name="detail" required id="editor">${unit.detail}</textarea>
 					</td>
 				</tr>
 				<tr>
