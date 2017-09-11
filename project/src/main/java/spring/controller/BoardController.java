@@ -100,6 +100,7 @@ public class BoardController {
 		int no = boardDao.write(path, new Board(mRequest), contextI);
 		String filename = no + "." + extension[extension.length - 1];
 		File target = new File(savePath, filename);
+		if(!target.exists()) target.mkdirs();
 		file.transferTo(target);		
 		
 		if (contextI != 0) return "redirect:/board/" + path + "/detail?no=" + context;
@@ -160,12 +161,11 @@ public class BoardController {
 		File target = new File(savePath, filename);
 		file.transferTo(target);		
 
-		if (context != null) return "redirect:/board/" + path + "/detail?no=" + context;
-		return "redirect:/board/" + path + "/detail?no=" + no;
+		return "redirect:/board/" + path + "/detail?no=" + context;
 	}
 	
 	@RequestMapping("/{path}/edit")
-	public String edit(@PathVariable String path, String no, Model m) throws Exception {
+	public String edit(@PathVariable String path, String no, String context, Model m) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -176,13 +176,14 @@ public class BoardController {
 		Board board = boardDao.detailOne(noI);
 		
 		m.addAttribute("no", no);
+		m.addAttribute("context", context);
 		m.addAttribute("unit", board);
 		
 		return "board/edit";
 	}
 	
 	@RequestMapping("/{path}/delete")
-	public String delete(@PathVariable String path, String no) throws Exception {
+	public String delete(@PathVariable String path, String no, String context) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -191,12 +192,16 @@ public class BoardController {
 		}
 		
 		boardDao.delete(noI);
+		commentDao.delete(noI);
 		
-		return "redirect:/board/" + path;
+		log.debug("no : " + no + ", context : " + context);
+		log.debug(String.valueOf(context.equals(no)));
+		if (context.equals(no)) return "redirect:/board/" + path;
+		return "redirect:/board/" + path + "/detail?no=" + context;
 	}
 	
-	@RequestMapping("/{path}/download")
-	public String download(@PathVariable String path, String no, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping("/{path}/download/{no}")
+	public String download(@PathVariable String path, @PathVariable String no, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -204,7 +209,7 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		String savePath = request.getServletContext().getRealPath("/file");
+		String savePath = request.getServletContext().getRealPath("/resource/file");
 		
 		Board board = boardDao.detailOne(noI);
 		

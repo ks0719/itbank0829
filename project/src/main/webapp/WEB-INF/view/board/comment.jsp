@@ -3,5 +3,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 	${comment.detail}-${comment.writer} ${comment.reg}
-	<a href="#">추천</a> ${comment.best}
+	<a href="#" class="comment-best" value="${comment.no}">추천</a> <span id="best${comment.no}">${comment.best}</span>
 	<br>
