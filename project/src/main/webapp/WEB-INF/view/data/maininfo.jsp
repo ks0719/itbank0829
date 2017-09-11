@@ -11,7 +11,7 @@
         <li><a href="#" class="no-uline">비밀번호 변경</a></li>
 		<li><a href="#" class="no-uline">수강 내역</a></li>
 		<li><a href="#" class="no-uline">포인트 샾</a></li>
-		<li><a href="${pageContext.request.contextPath}/member/delmember" class="no-uline">회원 탈퇴</a></li>
+		<li><a href="${pageContext.request.contextPath}/member/deletemember" class="no-uline">회원 탈퇴</a></li>
 		<li><a href="#" class="no-uline">강사 신청</a></li>
 		<li><a href="#" class="no-uline">내가 쓴글</a></li>
 	</ul>

@@ -170,6 +170,7 @@ $(document).ready(function(){
 	      });
 	  });
 	  
+
 	  
 	  
 	  
@@ -234,7 +235,7 @@ $(document).ready(function(){
 	function idCheck() {
 			if($("#idcheck").val()=="중복확인"){
 				var idregex=/^[a-zA-Z0-9]{8,20}$/;
-			 	var idtarget= document.querySelector("input[name=id]");
+			 	var idtarget= document.querySelector("#id");
 				
 				if($("#id").val()==""){
 					alert("아이디를 입력하세요");
@@ -259,45 +260,12 @@ $(document).ready(function(){
 				}
 			}else{
 				$("#idcheck").val("중복확인");
-				$("#ids").removeAttr("disabled");
 				$("#id").removeAttr("readonly");
 			}
-			
-  
-	//아이디 체크
-	function idCheck(){
-	    var regex = /^[\w]{8,20}$/;
-	    var target = document.querySelector("input[name=ids]");
-	    if(regex.test(target.value)){
-	        target.style.border = "1px solid blue";
-	    }else{
-	        target.style.border = "1px solid red";
-	    }
 	}
-		}
+  
 	
 
-  	//비밀번호 체크
-	function pwCheck(){
-	    var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	    var target = document.querySelector("input[name=pw]");
-	    if(regex.test(target.value)){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
-  	
-  	//비밀번호 재확인
-	function pw2Check(){
-	    var pw = document.querySelector("input[name=pw]")
-	    var target = document.querySelector("#pw2");
-	    if(pw.value === target.value){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
   	
   	//닉네임 체크
 	function nickCheck(){
@@ -336,7 +304,7 @@ $(document).ready(function(){
   		if($("#pcheck").val()=="중복확인"){
   			
 			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
-			var phonetarget=document.querySelector("input[name=phone]");
+			var phonetarget=document.querySelector("#phone");
 			
 			if($("#phone").val()==""){
 				alert("핸드폰 번호를 입력하세요");
@@ -366,9 +334,9 @@ $(document).ready(function(){
   	
   	function submitOK() {
   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	 	var pwtarget=document.querySelector("input[name=pw]");
+	 	var pwtarget=document.querySelector("#pw");
+	 	var target = document.querySelector("#pw2");
 	 	
-	 	var target = document.querySelector("input[name=pw2]");
 	 	
 	 	if($("#id").attr("readonly")!='readonly'){
 	 		alert("아이디 중복 확인을 해주세요");
@@ -382,11 +350,32 @@ $(document).ready(function(){
 	 		alert("전화번호 중복 확인을 해주세요");
 	 	}else if(document.querySelector("input[name=post]").value==''){
 	 		alert("주소를 입력해주세요");
-	 	}else return true;
+	 	}else alert("회원가입이 완료되었습니다."); return true;
 	 	
 	 	return false;
 	}
-	  
+  	
+  	//회원탈퇴 비밀번호 체크
+  	function pwCheck(){
+  		if($("#pwcheck").val()==""){
+  			alert("비밀번호를 입력해주세요!");
+  		}else{
+			 $.ajax({
+					url:"deletemember",
+					type:"post",
+					data:{pw:$("#pwcheck").val()},
+					dataType:"text",
+					success:function(){
+						alert("회원탈퇴가 완료되었습니다.");
+					},
+					error:function(){
+						alert("비밀번호가 일치하지 않습니다.");
+					}
+				});
+		}
+  }
+  	
+			
 	  
 </script>
 

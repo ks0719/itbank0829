@@ -1,6 +1,5 @@
 package spring.controller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -18,13 +17,32 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.CookieGenerator;
 
 import spring.db.member.Member;
 import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
+	
+	private String getNick(HttpServletRequest req) throws Exception {
+		Cookie[] c=req.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode(ck.getValue(),"utf-8");
+//	            log.debug("쿠키값  :"+cValue);
+	            if(cName.equals("mynick")) {
+	            	return cValue;
+	            }
+	        }
+		}
+		return "";
+	}
+	
 	private Logger log=LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -82,12 +100,14 @@ public class MemberController {
 		url += "?"+param;
 		log.debug("url="+url);
 		String nick=memberDao.logincheck(id, pw);
+		log.debug("nick="+nick);
 		//log.debug("state="+state);
 		if(nick!=null) {
-			Cookie cookie=new Cookie("mynick", URLEncoder.encode(nick,"UTF-8"));
-			cookie.setPath("/");
-			cookie.setMaxAge(-1);
-			response.addCookie(cookie);
+			CookieGenerator cookie=new CookieGenerator();
+			cookie.setCookieName("mynick");
+			cookie.setCookiePath("/");
+			cookie.setCookieMaxAge(-1);
+			cookie.addCookie(response, URLEncoder.encode(nick, "utf-8"));
 		return "redirect:"+url;
 		}
 		else {
@@ -113,16 +133,26 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/member/delmember")
-	public void deletemember(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String id = (String)request.getSession().getAttribute("id");
+	@RequestMapping(value="/member/deletemember",method=RequestMethod.GET)
+	public String deleteGet() {
 		
-		MemberDao mdao=new MemberDao();
-		mdao.delmember(id);
-		request.getSession().removeAttribute("id");
-		request.removeAttribute("id");
-		response.sendRedirect("redirec:/");
+		return "member/deletemember";
+	}
+	
+	
+	
+	@RequestMapping(value="/member/deletemember", method = RequestMethod.POST)
+	public String deletePost(@RequestParam String pw, HttpServletRequest req) throws Exception {
+		String nick=getNick(req);
+		boolean result = memberDao.check("pw",pw);
 		
-		return;
+		if(!result) {
+			
+			return "member/deletemember";
+		}else {
+			memberDao.delete(nick);
+			
+			return "redirect:/member/logout";
+		}
 	}
 }

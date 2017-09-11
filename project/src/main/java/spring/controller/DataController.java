@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +18,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.CookieGenerator;
 
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
+import spring.db.member.Member;
+import spring.db.member.MemberDao;
 import spring.db.myinfo.MyDao;
 import spring.db.myinfo.MyDto;
 import spring.db.mylecture.MyLecture;
@@ -54,7 +58,8 @@ public class DataController {
 	private MyLectureDao myLectureDao;
 	@Autowired
 	private MyDao myDao;
-	
+	@Autowired
+	private MemberDao mbdao;
 	@Autowired
 	private MailDao mailDao;
 	
@@ -79,10 +84,17 @@ public class DataController {
 		return "data/edit";
 	}
 	@RequestMapping(value="/data/edit",method=RequestMethod.POST)
-	public String editpost(HttpServletRequest request) {
-		String nick=request.getParameter("nick");
-		//여기부터 하면 된다. edit.jsp
-		return "data/edit";
+	public String editpost(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Member mb=new Member(request);
+		String nick=getNick(request);
+		nick=mbdao.edit(mb, nick);
+		 CookieGenerator cookie=new CookieGenerator();
+		 
+		 cookie.setCookieName("mynick");
+		 cookie.setCookieMaxAge(0);
+		 cookie.addCookie(response, null);
+		
+		return "redirect:/data/maininfo";
 	}
 	@RequestMapping("/data/exit")
 	public String exit() {
@@ -96,15 +108,18 @@ public class DataController {
 	        for(int i=0; i < c.length; i++){
 	            Cookie ck = c[i] ;
 	            // 저장된 쿠키 이름을 가져온다
+	            log.debug("쿠키값들 : "+ck.getName());
 	            String cName = ck.getName();
 	            // 쿠키값을 가져온다
 	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
-	            log.debug("쿠키값  :"+cValue);
+	            log.debug("쿠키값(maininfo)  :"+cValue);
 	            if(ck.getName().equals("mynick")) {
+	            	log.debug("쿠키값 찾음");
 	            	MyDto dto=myDao.select(cValue);
 	            	model.addAttribute("dto", dto);
 	            	break;
 	            }
+	            log.debug("쿠키값 못찾음");
 	        }
 		}
 		return "data/maininfo";
