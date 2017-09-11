@@ -2,8 +2,6 @@ package spring.db.member;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +75,10 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		String sql = "delete member where nick = ?";
 		
 		jdbcTemplate.update(sql, nick);
+	}
+	public String edit(Member mb,String nick) {
+		String sql="update member set nick=?,post=?,addr1=?,addr2=?,phone=? where nick=?";
+		jdbcTemplate.update(sql,new Object[] {mb.getNickname(),mb.getPost(),mb.getAddr1(),mb.getAddr2(),mb.getPhone(),nick});
+		return nick;
 	}
 }
