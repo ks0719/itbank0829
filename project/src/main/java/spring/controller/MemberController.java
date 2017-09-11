@@ -84,6 +84,8 @@ public class MemberController {
 		else return null;
 	}
 	
+
+	
 	
 	@RequestMapping(value="/member/login",method=RequestMethod.POST)
 	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) throws UnsupportedEncodingException {
@@ -139,6 +141,14 @@ public class MemberController {
 		return "member/deletemember";
 	}
 	
+//	@RequestMapping(value="/member/CheckPW", method=RequestMethod.POST)
+//	public String pwcheck(@RequestParam String pw, HttpServletRequest req) throws Exception {
+//		String Nick=getNick(req);
+//		
+//		boolean result=memberDao.check("pw", pw);
+//		if(!result) return "member/deletemember";
+//		else return null;
+//	}
 	
 	
 	@RequestMapping(value="/member/deletemember", method = RequestMethod.POST)
@@ -155,4 +165,5 @@ public class MemberController {
 			return "redirect:/member/logout";
 		}
 	}
+	
 }
