@@ -201,51 +201,39 @@ $(document).ready(function(){
             }
         }).open();
     }
+	  
 	//아이디 중복확인
 	function idCheck() {
-			if($("#idcheck").val()=="중복확인"){
-				var idregex=/^[a-zA-Z0-9]{8,20}$/;
-			 	var idtarget= document.querySelector("input[name=id]");
-				
-				if($("#id").val()==""){
-					alert("아이디를 입력하세요");
-				}else if(!idregex.test(idtarget.value)){
-					alert("ID는 영문,숫자 조합 8~20자");
-				}
-				else{
-					$.ajax({
-						url:"idcheck",
-						type:"post",
-						data:{id:$("#id").val()},
-						dataType:"text",
-						success:function(){
-							alert("사용 가능한 아이디 입니다.");
-							$("#id").attr("readonly","readonly");
-							$("#idcheck").val("취소");
-						},
-						error:function(){
-							alert("중복된 아이디가 있습니다.");
-						}
-					});
-				}
-			}else{
-				$("#idcheck").val("중복확인");
-				$("#ids").removeAttr("disabled");
-				$("#id").removeAttr("readonly");
-			}
+		if($("#idcheck").val()=="중복확인"){
+			var idregex=/^[a-zA-Z0-9]{8,20}$/;
+		 	var idtarget= document.querySelector("#id");
 			
-  
-	//아이디 체크
-	function idCheck(){
-	    var regex = /^[\w]{8,20}$/;
-	    var target = document.querySelector("input[name=ids]");
-	    if(regex.test(target.value)){
-	        target.style.border = "1px solid blue";
-	    }else{
-	        target.style.border = "1px solid red";
-	    }
-	}
+			if($("#id").val()==""){
+				alert("아이디를 입력하세요");
+			}else if(!idregex.test(idtarget.value)){
+				alert("ID는 영문,숫자 조합 8~20자");
+			}
+			else{
+				$.ajax({
+					url:"idcheck",
+					type:"post",
+					data:{id:$("#id").val()},
+					dataType:"text",
+					success:function(){
+						alert("사용 가능한 아이디 입니다.");
+						$("#id").attr("readonly","readonly");
+						$("#idcheck").val("취소");
+					},
+					error:function(){
+						alert("중복된 아이디가 있습니다.");
+					}
+				});
+			}
+		}else{
+			$("#idcheck").val("중복확인");
+			$("#id").removeAttr("readonly");
 		}
+	}
 	
 
   	//비밀번호 체크
@@ -337,9 +325,12 @@ $(document).ready(function(){
   	
   	function submitOK() {
   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	 	var pwtarget=document.querySelector("input[name=pw]");
+	 	var pwtarget=document.querySelector("#pw");
 	 	
 	 	var target = document.querySelector("input[name=pw2]");
+	 	
+	 	console.log(pwtarget.value);
+	 	console.log(target.value);
 	 	
 	 	if($("#id").attr("readonly")!='readonly'){
 	 		alert("아이디 중복 확인을 해주세요");
