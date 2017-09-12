@@ -79,7 +79,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	public String edit(Member mb,String nick) {
 		String sql="update member set nick=?,post=?,addr1=?,addr2=?,phone=? where nick=?";
 		jdbcTemplate.update(sql,new Object[] {mb.getNickname(),mb.getPost(),mb.getAddr1(),mb.getAddr2(),mb.getPhone(),nick});
-		return nick;
+		return mb.getNickname();
 	}
 	
 	public boolean checkpw(String nick, String pw) {
@@ -87,5 +87,16 @@ private Logger log=LoggerFactory.getLogger(getClass());
 //		String sql="select nick from member where pw=? and nick=?";
 //		return false;
 		return jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
+	}
+	public boolean changepw(String nick,String pw,String newpw) {
+		String sql="select * from member where nick=? and pw=?";
+		boolean result=jdbcTemplate.queryForObject(sql, new Object[] {nick,pw},Integer.class)>0;
+		if(result) {
+			sql="update member set pw=? where nick=? and pw=?";
+			jdbcTemplate.update(sql, new Object[] {newpw,nick,pw});
+			return true;
+		}
+		return false;
+		
 	}
 }
