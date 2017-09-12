@@ -60,10 +60,11 @@ $(document).ready(function(){
 			var page = $(this).data('page');
 			var type = $(this).data('type');
 			var key = $(this).data('key');
+			var url = $(this).data('url');
 			if (type != "" && key != "") {
-				location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+				location.href = url + "?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
 			} else {
-				location.href = "class?no=" + no + "&page=" + page;
+				location.href = url + "?no=" + no + "&page=" + page;
 			}
 		});
 		
@@ -231,40 +232,39 @@ $(document).ready(function(){
             }
         }).open();
     }
+	  
 	//아이디 중복확인
 	function idCheck() {
-			if($("#idcheck").val()=="중복확인"){
-				var idregex=/^[a-zA-Z0-9]{8,20}$/;
-			 	var idtarget= document.querySelector("#id");
-				
-				if($("#id").val()==""){
-					alert("아이디를 입력하세요");
-				}else if(!idregex.test(idtarget.value)){
-					alert("ID는 영문,숫자 조합 8~20자");
-				}
-				else{
-					$.ajax({
-						url:"idcheck",
-						type:"post",
-						data:{id:$("#id").val()},
-						dataType:"text",
-						success:function(){
-							alert("사용 가능한 아이디 입니다.");
-							$("#id").attr("readonly","readonly");
-							$("#idcheck").val("취소");
-						},
-						error:function(){
-							alert("중복된 아이디가 있습니다.");
-						}
-					});
-				}
-			}else{
-				$("#idcheck").val("중복확인");
-				$("#id").removeAttr("readonly");
+		if($("#idcheck").val()=="중복확인"){
+			var idregex=/^[a-zA-Z0-9]{8,20}$/;
+		 	var idtarget= document.querySelector("#id");
+			
+			if($("#id").val()==""){
+				alert("아이디를 입력하세요");
+			}else if(!idregex.test(idtarget.value)){
+				alert("ID는 영문,숫자 조합 8~20자");
 			}
+			else{
+				$.ajax({
+					url:"idcheck",
+					type:"post",
+					data:{id:$("#id").val()},
+					dataType:"text",
+					success:function(){
+						alert("사용 가능한 아이디 입니다.");
+						$("#id").attr("readonly","readonly");
+						$("#idcheck").val("취소");
+					},
+					error:function(){
+						alert("중복된 아이디가 있습니다.");
+					}
+				});
+			}
+		}else{
+			$("#idcheck").val("중복확인");
+			$("#id").removeAttr("readonly");
+		}
 	}
-  
-	
 
   	
   	//닉네임 체크
@@ -335,8 +335,11 @@ $(document).ready(function(){
   	function submitOK() {
   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
 	 	var pwtarget=document.querySelector("#pw");
+	 	
 	 	var target = document.querySelector("#pw2");
 	 	
+	 	console.log(pwtarget.value);
+	 	console.log(target.value);
 	 	
 	 	if($("#id").attr("readonly")!='readonly'){
 	 		alert("아이디 중복 확인을 해주세요");
@@ -358,22 +361,29 @@ $(document).ready(function(){
   	//회원탈퇴 비밀번호 체크
   	function pwCheck(){
   		
+  		var result=false;
+  		
   		if($("#pwcheck").val()==""){
   			alert("비밀번호를 입력해주세요!");
+  			result=false;
   		}else{
   			$.ajax({
-				url:"checkpw",
+				url:"deletemember",
+				async: false,
 				type:"post",
 				data:{pw:$("#pwcheck").val()},
 				dataType:"text",
 				success:function(){
 					alert("회원탈퇴가 완료되었습니다.");
+					result=true;
 				},
 				error:function(){
 					alert("비밀번호가 일치하지 않습니다.");
+					result=false;
 				}
 			});
   		}
+  		return result;
   	}
 	  
 </script>

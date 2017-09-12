@@ -4,9 +4,9 @@
 <h1>회원 가입</h1>
 <form action="" id="sign" method="post" onkeydown="if(event.keyCode==13) return false;" onsubmit="return submitOK();">
 	<input type="text" name="id" id="id" placeholder="ID입력"  required>
-	<input type="button"  id="idcheck" value="중복확인" onclick="idCheck();">
+	<input type="button" id="idcheck" value="중복확인" onclick="idCheck();">
 	<br><br>
-	<input type="password"  id="pw" name="pw" placeholder="pw입력" required>
+	<input type="password" name="pw" id="pw" placeholder="pw입력" required>
 	<br><br>
 	<input type="password" id="pw2" name="pw2" placeholder="PW재입력"  required>
 	<br><br>
