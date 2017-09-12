@@ -32,9 +32,10 @@ public class MemberController {
 	            Cookie ck = c[i] ;
 	            // 저장된 쿠키 이름을 가져온다
 	            String cName = ck.getName();
+	            
 	            // 쿠키값을 가져온다
 	            String cValue =  URLDecoder.decode(ck.getValue(),"utf-8");
-//	            log.debug("쿠키값  :"+cValue);
+	            log.debug("쿠키값  :"+cValue);
 	            if(cName.equals("mynick")) {
 	            	return cValue;
 	            }
@@ -42,6 +43,8 @@ public class MemberController {
 		}
 		return "";
 	}
+	
+
 	
 	private Logger log=LoggerFactory.getLogger(getClass());
 	
@@ -117,6 +120,7 @@ public class MemberController {
 		}
 	}
 	
+	
 	@RequestMapping(value="/member/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		Cookie[] c=request.getCookies();
@@ -135,21 +139,25 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/member/deletemember",method=RequestMethod.GET)
+	
+	@RequestMapping(value="/member/checkpw", method = RequestMethod.POST)
+	public String pwcheck(@RequestParam String pw, HttpServletRequest req) throws Exception {
+		String nick=getNick(req);
+		String pwCheck=req.getParameter("pw");
+		System.out.println("닉네임========="+nick);
+		System.out.println("입력한 비밀번호==="+pwCheck);
+		boolean result=memberDao.checkpw(nick, pwCheck);
+		
+		if(!result) return "member/deletemember";
+		else return "redirect:/";
+	}
+	
+	
+	@RequestMapping(value="member/deletemember", method=RequestMethod.GET)
 	public String deleteGet() {
 		
 		return "member/deletemember";
 	}
-	
-//	@RequestMapping(value="/member/CheckPW", method=RequestMethod.POST)
-//	public String pwcheck(@RequestParam String pw, HttpServletRequest req) throws Exception {
-//		String Nick=getNick(req);
-//		
-//		boolean result=memberDao.check("pw", pw);
-//		if(!result) return "member/deletemember";
-//		else return null;
-//	}
-	
 	
 	@RequestMapping(value="/member/deletemember", method = RequestMethod.POST)
 	public String deletePost(@RequestParam String pw, HttpServletRequest req) throws Exception {

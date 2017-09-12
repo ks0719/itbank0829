@@ -72,13 +72,20 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	}
 	
 	public void delete(String nick) {
-		String sql = "delete member where nick = ?";
 		
+		String sql = "delete member where nick = ?";
 		jdbcTemplate.update(sql, nick);
 	}
 	public String edit(Member mb,String nick) {
 		String sql="update member set nick=?,post=?,addr1=?,addr2=?,phone=? where nick=?";
 		jdbcTemplate.update(sql,new Object[] {mb.getNickname(),mb.getPost(),mb.getAddr1(),mb.getAddr2(),mb.getPhone(),nick});
 		return nick;
+	}
+	
+	public boolean checkpw(String nick, String pw) {
+		String sql="select*from member where nick=? and pw=?";
+//		String sql="select nick from member where pw=? and nick=?";
+//		return false;
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
 	}
 }
