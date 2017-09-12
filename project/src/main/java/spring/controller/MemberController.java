@@ -24,7 +24,7 @@ import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
-	
+	private static final String serveraddr="http://localhost:8080/project/WEB-INF/view";
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
 		if(c != null){
@@ -101,7 +101,7 @@ public class MemberController {
 		param = param.replaceAll(", ", "&");
 		param = param.substring(1, param.length()-1);
 		log.debug(param);
-		url=url.replaceAll("http://localhost:8080/project/WEB-INF/view", "").replaceAll(".jsp", "");
+		url=url.replaceAll(serveraddr, "").replaceAll(".jsp", "");
 		url += "?"+param;
 		log.debug("url="+url);
 		String nick=memberDao.logincheck(id, pw);
