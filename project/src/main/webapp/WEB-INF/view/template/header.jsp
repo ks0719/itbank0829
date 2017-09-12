@@ -231,6 +231,9 @@ $(document).ready(function(){
             }
         }).open();
     }
+	  
+	  
+	  
 	//아이디 중복확인
 	function idCheck() {
 			if($("#idcheck").val()=="중복확인"){
@@ -358,22 +361,29 @@ $(document).ready(function(){
   	//회원탈퇴 비밀번호 체크
   	function pwCheck(){
   		
+  		var result=false;
+  		
   		if($("#pwcheck").val()==""){
   			alert("비밀번호를 입력해주세요!");
+  			result=false;
   		}else{
   			$.ajax({
-				url:"checkpw",
+				url:"deletemember",
+				async: false,
 				type:"post",
 				data:{pw:$("#pwcheck").val()},
 				dataType:"text",
 				success:function(){
 					alert("회원탈퇴가 완료되었습니다.");
+					result=true;
 				},
 				error:function(){
 					alert("비밀번호가 일치하지 않습니다.");
+					result=false;
 				}
 			});
   		}
+  		return result;
   	}
 	  
 </script>
