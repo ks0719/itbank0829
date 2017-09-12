@@ -56,7 +56,6 @@ $(document).ready(function(){
 
 	$(document).ready(function() {
 		$(".clickToinfo").on("click", function() {
-			console.log("수업정보로");
 			var no = $(this).data('no');
 			var page = $(this).data('page');
 			var type = $(this).data('type');
@@ -67,22 +66,41 @@ $(document).ready(function(){
 				location.href = "class?no=" + no + "&page=" + page;
 			}
 		});
+		
+		$(".lectureWish").on("click", function() {
+			var no = $(this).attr('value');
+			
+			$.ajax({
+        		url: "wish",
+        		data: {"no" : no},
+        		success: function(res) {
+        	    	window.alert(res);
+        		}
+        	});
+		});
+		
 		$("#board-select option").each(function(){
 			if($(this).val()=="${unit.head}"){
 				$(this).attr("selected","selected");
 			}
 		});
-		$(".board-comment").on("submit", function() {
-			var commentNo = $(this).attr('value');
+		
+		$(document).on("click", ".board-delete", function() {
+// 			var no = 
+// 			var context = 
+		});
+		
+		$(document).on("submit", ".board-comment", function() {
+			var contextNo = $(this).attr('value');
 			event.preventDefault();
         	
         	$.ajax({
         		url: "comment",
         		data: $(this).serialize(),
         		async : false,
-        		success: function(res, context) {
-        			console.log("a comment : " + commentNo);
-        			$("#comment"+commentNo).append(res);
+        		success: function(res) {
+        			console.log("a comment : " + contextNo);
+        			$("#comments"+contextNo).append(res);
         		}
         	});
 		});
@@ -99,9 +117,20 @@ $(document).ready(function(){
 				}
 			});
 		});
-	});
-	
-	$(document).ready(function(){
+		$(document).on("click", ".comment-delete", function() {
+			var commentNo = $(this).attr('value');
+
+			$.ajax({
+				url: "commentDelete",
+				data: {"commentNo": commentNo},
+        		async : false,
+				success: function(res) {
+					var result = confirm("정말 삭제하시겠습니까?");
+					if (result) $("#comment"+commentNo).remove();
+				}
+			});
+		});
+		
 		$(".lecturer-array").on("click", function() {
 			var standard = $(this).attr('value');
 			
@@ -141,6 +170,7 @@ $(document).ready(function(){
 	      });
 	  });
 	  
+
 	  
 	  
 	  
@@ -234,29 +264,7 @@ $(document).ready(function(){
 			$("#id").removeAttr("readonly");
 		}
 	}
-	
 
-  	//비밀번호 체크
-	function pwCheck(){
-	    var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	    var target = document.querySelector("input[name=pw]");
-	    if(regex.test(target.value)){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
-  	
-  	//비밀번호 재확인
-	function pw2Check(){
-	    var pw = document.querySelector("input[name=pw]")
-	    var target = document.querySelector("#pw2");
-	    if(pw.value === target.value){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
   	
   	//닉네임 체크
 	function nickCheck(){
@@ -295,7 +303,7 @@ $(document).ready(function(){
   		if($("#pcheck").val()=="중복확인"){
   			
 			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
-			var phonetarget=document.querySelector("input[name=phone]");
+			var phonetarget=document.querySelector("#phone");
 			
 			if($("#phone").val()==""){
 				alert("핸드폰 번호를 입력하세요");
@@ -326,8 +334,11 @@ $(document).ready(function(){
   	function submitOK() {
   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
 	 	var pwtarget=document.querySelector("#pw");
+<<<<<<< HEAD
+=======
+	 	var target = document.querySelector("#pw2");
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 	 	
-	 	var target = document.querySelector("input[name=pw2]");
 	 	
 	 	console.log(pwtarget.value);
 	 	console.log(target.value);
@@ -344,11 +355,39 @@ $(document).ready(function(){
 	 		alert("전화번호 중복 확인을 해주세요");
 	 	}else if(document.querySelector("input[name=post]").value==''){
 	 		alert("주소를 입력해주세요");
-	 	}else return true;
+	 	}else alert("회원가입이 완료되었습니다."); return true;
 	 	
 	 	return false;
 	}
-	  
+  	
+//   	//회원탈퇴 비밀번호 체크
+//   	function pwCheck(){
+  		
+//   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+//   		var pwtarget=document.querySelector("#pwcheck");
+  		
+//   		if($("#pwcheck").val()==""){
+//   			alert("비밀번호를 입력해주세요!");
+//   		}else if(!pwregex.test(pwtarget.value)){
+//   			alert("비밀번호를 다시 확인해주세요.");
+//   		}
+//     }
+//   		else{
+//   			$.ajax({
+// 				url:"CheckPW",
+// 				type:"post",
+// 				data:{pw:$("#pwcheck").val()},
+// 				dataType:"text",
+// 				success:function(){
+// 					alert("회원탈퇴가 완료되었습니다.");
+// 				},
+// 				error:function(){
+// 					alert("비밀번호가 일치하지 않습니다.");
+// 				}
+// 			});
+//   		}
+
+			
 	  
 </script>
 

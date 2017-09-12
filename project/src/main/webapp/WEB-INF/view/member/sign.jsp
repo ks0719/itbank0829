@@ -8,7 +8,7 @@
 	<br><br>
 	<input type="password" name="pw" id="pw" placeholder="pw입력" required>
 	<br><br>
-	<input type="password" name="pw2" placeholder="PW재입력" required>
+	<input type="password" id="pw2" name="pw2" placeholder="PW재입력"  required>
 	<br><br>
 	<input type="text" name="name" placeholder="이름입력" required>
 	<br><br>

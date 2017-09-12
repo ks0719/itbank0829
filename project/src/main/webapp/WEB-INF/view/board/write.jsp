@@ -34,14 +34,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="head">
-						작성자
-					</td>
-					<td class="text-left">
-						<input type="text" class="user-input" name="writer" value="${id}" required>
-					</td>
-				</tr>
-				<tr>
 					<td colspan="2">
 						<textarea rows="30" cols="30" name="detail" required id="editor"></textarea>
 					</td>

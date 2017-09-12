@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
 import spring.db.mylecture.MyLectureDao;
 
 @Controller
+@RequestMapping("/lecture")
 public class LectureController {
 	
 	private String getNick(HttpServletRequest req) throws Exception {
@@ -46,21 +48,20 @@ public class LectureController {
 	@Autowired
 	private MyLectureDao myLectureDao;
 
-	@RequestMapping("/lecture/teacher")
+	@RequestMapping("/teacher")
 	public String teacher() {
 		
 		return "lecture/teacher";
 	}
 	
-	@RequestMapping("/lecture/assess")
+	@RequestMapping("/assess")
 	public String assess() {
 		
 		return "lecture/assess";
 	}
 	
-	@RequestMapping("/lecture/class")
+	@RequestMapping("/class")
 	public String lesson(HttpServletRequest req, Model m) throws Exception {
-		log.debug("class 부름");
 		int noI, pageNo;
 		try {
 			noI = Integer.parseInt(req.getParameter("no"));
@@ -85,35 +86,22 @@ public class LectureController {
 		return "lecture/class";
 	}
 	
-	@RequestMapping("/lecture/wish")
-	public String wish(HttpServletRequest req, Model m) throws Exception {
-		int noI, pageNo;
-		try {
-			noI = Integer.parseInt(req.getParameter("no"));
-		} catch(Exception e) {
-			throw new Exception("404");
-		}
-		try {
-			pageNo = Integer.parseInt(req.getParameter("page"));
-		} catch(Exception e) {
-			pageNo = 1;
-		}
-		
-		LectureInfo info = lectureDao.showOne(noI);
+	@RequestMapping(value="/wish", produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String wish(HttpServletRequest req, int no, Model m) throws Exception {
+		LectureInfo info = lectureDao.showOne(no);
 		String nick = getNick(req);
 		
-		int result = myLectureDao.wish(nick, noI, info);
-		if (result == 1) JOptionPane.showMessageDialog(null, "찜하기가 완료되었습니다.");
-		else JOptionPane.showMessageDialog(null, "이미 찜이 되어있거나 할 수 없습니다.");
+		int result = myLectureDao.wish(nick, no, info);
+		log.debug("result : " + result);
 		
-		String url = "?page=" + pageNo;
-		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");
+		String res = "";
+		if (result == 1) res = "찜하기가 완료되었습니다.";
+		else res = "이미 찜이 되어있거나 할 수 없습니다.";
 		
-		m.addAttribute("info", info);
-		m.addAttribute("no", noI);
-		m.addAttribute("url", url);
+		log.debug("res : " + res);
 		
-		return "lecture/class";
+		return res;
 	}
 	
 	@RequestMapping("/lecture/req")
@@ -122,7 +110,7 @@ public class LectureController {
 		return "lecture/req";
 	}
 	
-	@RequestMapping("/lecture/study")
+	@RequestMapping("/study")
 	public String study(HttpServletRequest request, Model m) {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
