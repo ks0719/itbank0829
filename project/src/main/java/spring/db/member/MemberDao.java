@@ -2,8 +2,6 @@ package spring.db.member;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +43,14 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	      return result;
 	   }
 	  
+	  public boolean pwcheck(String pw) {
+	      
+	      String sql = "select count(*) from member where pw=?";
+	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {pw},Integer.class)>0;
+	      
+	      return result;
+	   }
+	  
 	  public boolean nickcheck(String nickname) {
 	      
 	      String sql = "select count(*) from member where nick=?";
@@ -65,10 +71,41 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		return jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
 	}
 	
-	public boolean delmember(String id) {
-		String sql="delete member where id=?";
-		boolean result=jdbcTemplate.update(sql, new Object[] {id},Integer.class)>0;
+	public boolean delete(String nick, String pw) {
 		
-		return result;
+		String sql = "delete member where nick = ? and pw=?";
+		return jdbcTemplate.update(sql, new Object[] {nick,pw})>0;
 	}
+	public String edit(Member mb,String nick) {
+		String sql="update member set nick=?,post=?,addr1=?,addr2=?,phone=? where nick=?";
+		jdbcTemplate.update(sql,new Object[] {mb.getNickname(),mb.getPost(),mb.getAddr1(),mb.getAddr2(),mb.getPhone(),nick});
+		return mb.getNickname();
+	}
+	
+
+	public boolean checkpw(String nick, String pw) {
+		String sql="select*from member where nick=? and pw=?";
+//		String sql="select nick from member where pw=? and nick=?";
+//		return false;
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
+	}
+	public boolean changepw(String nick,String pw,String newpw) {
+		String sql="select * from member where nick=? and pw=?";
+		boolean result=jdbcTemplate.queryForObject(sql, new Object[] {nick,pw},Integer.class)>0;
+		if(result) {
+			sql="update member set pw=? where nick=? and pw=?";
+			jdbcTemplate.update(sql, new Object[] {newpw,nick,pw});
+			return true;
+		}
+		return false;
+		
+	}
+
+//	public boolean checkpw(String nick, String pw) {
+//		String sql="select*from member where nick=? and pw=?";
+////		String sql="select nick from member where pw=? and nick=?";
+////		return false;
+//		return jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
+//	}
+
 }

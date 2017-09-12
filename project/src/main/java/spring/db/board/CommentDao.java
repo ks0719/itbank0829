@@ -26,7 +26,7 @@ public class CommentDao {
 		return jdbcTemplate.query(sql, new Object[] {context}, mapper);
 	}
 	
-	public Comment insert(Comment comment) {
+	public Comment insert(String nick, Comment comment) {
 		int seq = 0;
 		String sql = "select max(seq) from commentboard where context = ?";
 		seq = jdbcTemplate.queryForObject(sql, new Object[] {comment.getContext()}, Integer.class) == null ? 0 : jdbcTemplate.queryForObject(sql, new Object[] {comment.getContext()}, Integer.class);
@@ -35,7 +35,7 @@ public class CommentDao {
 		
 		sql = "insert into commentboard values(?, ?, ?, ?, ?, ?, 0, 0, sysdate)";
 		
-		jdbcTemplate.update(sql, no, comment.getWriter(), comment.getDetail(), comment.getTopcontext(), comment.getContext(), seq + 1);
+		jdbcTemplate.update(sql, no, nick, comment.getDetail(), comment.getTopcontext(), comment.getContext(), seq + 1);
 		
 		return detail(no);
 	}
@@ -60,6 +60,12 @@ public class CommentDao {
 		String sql = "delete commentboard where context = ?";
 		
 		jdbcTemplate.update(sql, context);
+	}
+
+	public void deleteOne(int commentNo) {
+		String sql = "delete commentboard where no = ?";
+		
+		jdbcTemplate.update(sql, commentNo);
 	}
 
 }

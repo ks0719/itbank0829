@@ -60,34 +60,54 @@ $(document).ready(function(){
 			var page = $(this).data('page');
 			var type = $(this).data('type');
 			var key = $(this).data('key');
+			var url = $(this).data('url');
 			if (type != "" && key != "") {
-				location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+				location.href = url + "?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
 			} else {
-				location.href = "class?no=" + no + "&page=" + page;
+				location.href = url + "?no=" + no + "&page=" + page;
 			}
 		});
+		
+		$(".lectureWish").on("click", function() {
+			var no = $(this).attr('value');
+			
+			$.ajax({
+        		url: "wish",
+        		data: {"no" : no},
+        		success: function(res) {
+        	    	window.alert(res);
+        		}
+        	});
+		});
+		
 		$("#board-select option").each(function(){
 			if($(this).val()=="${unit.head}"){
 				$(this).attr("selected","selected");
 			}
 		});
-		$(".board-comment").on("submit", function() {
-			var commentNo = $(this).attr('value');
+		
+		$(document).on("click", ".board-delete", function() {
+// 			var no = 
+// 			var context = 
+		});
+		
+		$(document).on("submit", ".board-comment", function() {
+			var contextNo = $(this).attr('value');
 			event.preventDefault();
         	
         	$.ajax({
         		url: "comment",
         		data: $(this).serialize(),
         		async : false,
-        		success: function(res, context) {
-        			console.log("a comment : " + commentNo);
-        			$("#comment"+commentNo).append(res);
+        		success: function(res) {
+        			console.log("a comment : " + contextNo);
+        			$("#comments"+contextNo).append(res);
         		}
         	});
 		});
 		$(document).on("click", ".comment-best", function() {
 			var commentNo = $(this).attr('value');
-			console.log("comment" + commentNo);
+
 			$.ajax({
 				url: "commentBest",
 				data: {"commentNo": commentNo},
@@ -98,7 +118,33 @@ $(document).ready(function(){
 				}
 			});
 		});
+		$(document).on("click", ".comment-delete", function() {
+			var commentNo = $(this).attr('value');
+
+			$.ajax({
+				url: "commentDelete",
+				data: {"commentNo": commentNo},
+        		async : false,
+				success: function(res) {
+					var result = confirm("정말 삭제하시겠습니까?");
+					if (result) $("#comment"+commentNo).remove();
+				}
+			});
+		});
+		
+		$(".lecturer-array").on("click", function() {
+			var standard = $(this).attr('value');
+			
+			$.ajax({
+				url: "lecturerArray",
+				data: {"standard": standard},
+				success: function(res) {
+					$("").html(res);
+				}
+			});
+		});
 	});
+	
 	  $(function(){
 	      //전역변수
 	      var obj = [];              
@@ -125,6 +171,7 @@ $(document).ready(function(){
 	      });
 	  });
 	  
+
 	  
 	  
 	  
@@ -185,74 +232,40 @@ $(document).ready(function(){
             }
         }).open();
     }
+	  
 	//아이디 중복확인
 	function idCheck() {
-			if($("#idcheck").val()=="중복확인"){
-				var idregex=/^[a-zA-Z0-9]{8,20}$/;
-			 	var idtarget= document.querySelector("input[name=id]");
-				
-				if($("#id").val()==""){
-					alert("아이디를 입력하세요");
-				}else if(!idregex.test(idtarget.value)){
-					alert("ID는 영문,숫자 조합 8~20자");
-				}
-				else{
-					$.ajax({
-						url:"idcheck",
-						type:"post",
-						data:{id:$("#id").val()},
-						dataType:"text",
-						success:function(){
-							alert("사용 가능한 아이디 입니다.");
-							$("#id").attr("readonly","readonly");
-							$("#idcheck").val("취소");
-						},
-						error:function(){
-							alert("중복된 아이디가 있습니다.");
-						}
-					});
-				}
-			}else{
-				$("#idcheck").val("중복확인");
-				$("#ids").removeAttr("disabled");
-				$("#id").removeAttr("readonly");
-			}
+		if($("#idcheck").val()=="중복확인"){
+			var idregex=/^[a-zA-Z0-9]{8,20}$/;
+		 	var idtarget= document.querySelector("#id");
 			
-  
-	//아이디 체크
-	function idCheck(){
-	    var regex = /^[\w]{8,20}$/;
-	    var target = document.querySelector("input[name=ids]");
-	    if(regex.test(target.value)){
-	        target.style.border = "1px solid blue";
-	    }else{
-	        target.style.border = "1px solid red";
-	    }
-	}
+			if($("#id").val()==""){
+				alert("아이디를 입력하세요");
+			}else if(!idregex.test(idtarget.value)){
+				alert("ID는 영문,숫자 조합 8~20자");
+			}
+			else{
+				$.ajax({
+					url:"idcheck",
+					type:"post",
+					data:{id:$("#id").val()},
+					dataType:"text",
+					success:function(){
+						alert("사용 가능한 아이디 입니다.");
+						$("#id").attr("readonly","readonly");
+						$("#idcheck").val("취소");
+					},
+					error:function(){
+						alert("중복된 아이디가 있습니다.");
+					}
+				});
+			}
+		}else{
+			$("#idcheck").val("중복확인");
+			$("#id").removeAttr("readonly");
 		}
-	
+	}
 
-  	//비밀번호 체크
-	function pwCheck(){
-	    var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	    var target = document.querySelector("input[name=pw]");
-	    if(regex.test(target.value)){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
-  	
-  	//비밀번호 재확인
-	function pw2Check(){
-	    var pw = document.querySelector("input[name=pw]")
-	    var target = document.querySelector("#pw2");
-	    if(pw.value === target.value){
-			target.style.border = "1px solid blue";
-	    }else{
-			target.style.border = "1px solid red";
-	    }
-	}
   	
   	//닉네임 체크
 	function nickCheck(){
@@ -291,7 +304,7 @@ $(document).ready(function(){
   		if($("#pcheck").val()=="중복확인"){
   			
 			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
-			var phonetarget=document.querySelector("input[name=phone]");
+			var phonetarget=document.querySelector("#phone");
 			
 			if($("#phone").val()==""){
 				alert("핸드폰 번호를 입력하세요");
@@ -321,9 +334,12 @@ $(document).ready(function(){
   	
   	function submitOK() {
   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-	 	var pwtarget=document.querySelector("input[name=pw]");
+	 	var pwtarget=document.querySelector("#pw");
 	 	
-	 	var target = document.querySelector("input[name=pw2]");
+	 	var target = document.querySelector("#pw2");
+	 	
+	 	console.log(pwtarget.value);
+	 	console.log(target.value);
 	 	
 	 	if($("#id").attr("readonly")!='readonly'){
 	 		alert("아이디 중복 확인을 해주세요");
@@ -337,12 +353,61 @@ $(document).ready(function(){
 	 		alert("전화번호 중복 확인을 해주세요");
 	 	}else if(document.querySelector("input[name=post]").value==''){
 	 		alert("주소를 입력해주세요");
-	 	}else return true;
+	 	}else alert("회원가입이 완료되었습니다."); return true;
 	 	
 	 	return false;
 	}
+  	
+  	//회원탈퇴 비밀번호 체크
+  	function pwCheck(){
+  		
+  		var result=false;
+  		
+  		if($("#pwcheck").val()==""){
+  			alert("비밀번호를 입력해주세요!");
+  			result=false;
+  		}else{
+  			$.ajax({
+				url:"deletemember",
+				async: false,
+				type:"post",
+				data:{pw:$("#pwcheck").val()},
+				dataType:"text",
+				success:function(){
+					alert("회원탈퇴가 완료되었습니다.");
+					result=true;
+				},
+				error:function(){
+					alert("비밀번호가 일치하지 않습니다.");
+					result=false;
+				}
+			});
+  		}
+  		return result;
+  	}
 	  
-	  
+  	
+  	function loginCheck(){
+  		if($("#id").val()==""){
+  			alert("아이디를 입력하세요!");
+  		}else if($("#pw").val()==""){
+  			alert("비밀번호를 입력하세요!");
+   		}
+//   		else{
+//   			$.ajax({
+// 				url:"login",
+// 				type:"post",
+// 				data:{id:$("#id").val()},{pw:$("#pw").val()},
+// 				dataType:"text",
+// 				success:function(){
+// 					alert("회원탈퇴가 완료되었습니다.");
+// 				},
+// 				error:function(){
+// 					alert("비밀번호가 일치하지 않습니다.");
+// 				}
+// 			});
+//   		}
+  	}
 </script>
 
 <head>
@@ -358,13 +423,13 @@ $(document).ready(function(){
     <h5>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</h5>
     <div id="null"></div>
     <form action="${pageContext.request.contextPath }/member/login" method="post">
-    	아이디<input type="text" name="id" required><br>
-    	비밀번호<input type="password" name="pw" required><br>
+    	아이디<input type="text" name="id"  id="id" required><br>
+    	비밀번호<input type="password" name="pw" id="pw" required><br>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기"/><br>
+        <input type="submit" id="login_btn" value="로그인하기" onclick="loginCheck();" /><br>
         <input type="button" href="#" value="회원가입하기">
-       </form>
+    </form>
     </div>
 </div>
 
