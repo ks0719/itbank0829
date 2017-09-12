@@ -334,11 +334,8 @@ $(document).ready(function(){
   	function submitOK() {
   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
 	 	var pwtarget=document.querySelector("#pw");
-<<<<<<< HEAD
-=======
-	 	var target = document.querySelector("#pw2");
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 	 	
+	 	var target = document.querySelector("#pw2");
 	 	
 	 	console.log(pwtarget.value);
 	 	console.log(target.value);
