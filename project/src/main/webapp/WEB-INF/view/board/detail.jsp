@@ -84,7 +84,6 @@
 			<div class="align-right">
 				<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
 				<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${no}';">
-				<h1>${cookie.mynick.value}</h1>
 				<c:choose>
 					<c:when test="${cookie.mynick.value eq board.writer}">
 						<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${no}';">
