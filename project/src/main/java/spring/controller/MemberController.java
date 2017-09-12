@@ -140,17 +140,15 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping(value="/member/checkpw", method = RequestMethod.POST)
-	public String pwcheck(@RequestParam String pw, HttpServletRequest req) throws Exception {
-		String nick=getNick(req);
-		String pwCheck=req.getParameter("pw");
-		System.out.println("닉네임========="+nick);
-		System.out.println("입력한 비밀번호==="+pwCheck);
-		boolean result=memberDao.checkpw(nick, pwCheck);
-		
-		if(!result) return "member/deletemember";
-		else return "redirect:/";
-	}
+//	@RequestMapping(value="/member/checkpw", method = RequestMethod.POST)
+//	public String pwcheck(@RequestParam String pw, HttpServletRequest req) throws Exception {
+//		String nick=getNick(req);
+//		String pwCheck=req.getParameter("pw");
+//		boolean result=memberDao.checkpw(nick, pwCheck);
+//		
+//		if(!result) return "member/deletemember";
+//		else return "redirect:/";
+//	}
 	
 	
 	@RequestMapping(value="member/deletemember", method=RequestMethod.GET)
@@ -160,18 +158,16 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/member/deletemember", method = RequestMethod.POST)
-	public String deletePost(@RequestParam String pw, HttpServletRequest req) throws Exception {
+	public void deletePost( HttpServletRequest req) throws Exception {
 		String nick=getNick(req);
-		boolean result = memberDao.check("pw",pw);
-		
-		if(!result) {
-			
-			return "member/deletemember";
+		String pw=req.getParameter("pw");
+//		boolean result = memberDao.check("pw",pw);
+		boolean result=memberDao.delete(nick,pw);
+		if(result) {
+			System.out.println("비밀번호 맞음");
 		}else {
-			memberDao.delete(nick);
-			
-			return "redirect:/member/logout";
+			System.out.println("비밀번호 틀림");
+			throw new Exception();
 		}
 	}
-	
 }
