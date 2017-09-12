@@ -102,6 +102,7 @@ $(document).ready(function(){
         		success: function(res) {
         			console.log("a comment : " + contextNo);
         			$("#comments"+contextNo).append(res);
+        			$(".user-input").val('');
         		}
         	});
 		});

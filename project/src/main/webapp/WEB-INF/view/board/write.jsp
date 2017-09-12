@@ -30,12 +30,12 @@
 						제목
 					</td>
 					<td class="text-left">
-						<input type="text" class="user-input" name="title" required placeholder="제목">
+						<input type="text" class="user-input" name="title" required placeholder="제목" required>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<textarea rows="30" cols="30" name="detail" required id="editor"></textarea>
+						<textarea rows="30" cols="30" name="detail" required id="editor" required></textarea>
 					</td>
 				</tr>
 				<tr>

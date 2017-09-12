@@ -74,7 +74,7 @@
 	<form action="lecturer" class="wrap">
 		<input type="hidden" name="page" value="1">
 		<select name="type" title="검색 기준" class="user-input">
-			<option value="sort">분류</option>
+			<option value="sort">강사분류</option>
 			<option value="name">강사명</option>
 		</select>
 		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
