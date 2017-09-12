@@ -27,12 +27,12 @@
 				</th>
 			</tr>
 			<c:forEach var="teacher" items="${list}">
-			<tr>
+			<tr data-no="${teacher.no}" data-page="${page}" data-type="${type}" data-key="${key}" data-url="lecturerInfo" class="clickToinfo" style="cursor: pointer">
 				<td>
 					[${teacher.no}]
 				</td>
 				<td>
-					${teacher.tag}
+					${teacher.sort}
 				</td>
 				<td>
 					${teacher.name}
@@ -44,7 +44,7 @@
 					${teacher.grade}
 				</td>
 				<td>
-					${teacher.reg}
+					${teacher.auto}
 				</td>
 			</tr>
 			</c:forEach>
@@ -55,8 +55,6 @@
 			<c:if test="${startBlock > 1}">
 		        <div class="paging-unit"><a href="${url}&page=${startBlock - 1}">&lt;</a></div>
 			</c:if>
-			<h1>${startBlock}</h1>
-			<h1>${page}</h1>
 			<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
 				<c:choose>
 					<c:when test="${i eq page}">
@@ -73,10 +71,10 @@
 			</c:if>
 		</div>
 	</div>
-	<form action="study" class="wrap">
+	<form action="lecturer" class="wrap">
 		<input type="hidden" name="page" value="1">
 		<select name="type" title="검색 기준" class="user-input">
-			<option value="tag">분류</option>
+			<option value="sort">분류</option>
 			<option value="name">강사명</option>
 		</select>
 		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>

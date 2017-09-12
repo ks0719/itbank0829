@@ -60,10 +60,11 @@ $(document).ready(function(){
 			var page = $(this).data('page');
 			var type = $(this).data('type');
 			var key = $(this).data('key');
+			var url = $(this).data('url');
 			if (type != "" && key != "") {
-				location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+				location.href = url + "?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
 			} else {
-				location.href = "class?no=" + no + "&page=" + page;
+				location.href = url + "?no=" + no + "&page=" + page;
 			}
 		});
 		

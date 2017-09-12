@@ -1,5 +1,10 @@
 package spring.db.teacher;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Teacher {
 	private int no;
 	private String name;
@@ -11,6 +16,19 @@ public class Teacher {
 	private int count;
 	private int grade;
 	private String reg;
+	
+	public Teacher(ResultSet rs) throws SQLException {
+		setNo(rs.getInt("no"));
+		setName(rs.getString("name"));
+		setSort(rs.getString("sort"));
+		setCareer(rs.getString("career"));
+		setIntro(rs.getString("intro"));
+		setLecture(rs.getInt("lecture"));
+		setBest(rs.getInt("best"));
+		setCount(rs.getInt("count"));
+		setGrade(rs.getInt("grade"));
+		setReg(rs.getString("reg"));
+	}
 	
 	public int getNo() {
 		return no;
@@ -71,6 +89,19 @@ public class Teacher {
 	}
 	public void setReg(String reg) {
 		this.reg = reg;
+	}
+	public String getDate() {
+		return reg.substring(0, 10);
+	}
+	public String getTime() {
+		return reg.substring(11, 16);
+	}
+	public String getAuto() {
+		String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		if (today.equals(getDate()))
+			return getTime();
+		else
+			return getDate();
 	}
 
 }
