@@ -356,34 +356,26 @@ $(document).ready(function(){
 	 	return false;
 	}
   	
-//   	//회원탈퇴 비밀번호 체크
-//   	function pwCheck(){
+  	//회원탈퇴 비밀번호 체크
+  	function pwCheck(){
   		
-//   		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
-//   		var pwtarget=document.querySelector("#pwcheck");
-  		
-//   		if($("#pwcheck").val()==""){
-//   			alert("비밀번호를 입력해주세요!");
-//   		}else if(!pwregex.test(pwtarget.value)){
-//   			alert("비밀번호를 다시 확인해주세요.");
-//   		}
-//     }
-//   		else{
-//   			$.ajax({
-// 				url:"CheckPW",
-// 				type:"post",
-// 				data:{pw:$("#pwcheck").val()},
-// 				dataType:"text",
-// 				success:function(){
-// 					alert("회원탈퇴가 완료되었습니다.");
-// 				},
-// 				error:function(){
-// 					alert("비밀번호가 일치하지 않습니다.");
-// 				}
-// 			});
-//   		}
-
-			
+  		if($("#pwcheck").val()==""){
+  			alert("비밀번호를 입력해주세요!");
+  		}else{
+  			$.ajax({
+				url:"checkpw",
+				type:"post",
+				data:{pw:$("#pwcheck").val()},
+				dataType:"text",
+				success:function(){
+					alert("회원탈퇴가 완료되었습니다.");
+				},
+				error:function(){
+					alert("비밀번호가 일치하지 않습니다.");
+				}
+			});
+  		}
+  	}
 	  
 </script>
 
@@ -406,7 +398,7 @@ $(document).ready(function(){
     	<input type="hidden" value="${param}" name="param">
         <input type="submit" id="login_btn" value="로그인하기"/><br>
         <input type="button" href="#" value="회원가입하기">
-       </form>
+    </form>
     </div>
 </div>
 
