@@ -7,19 +7,19 @@
 	<div class="table-wrap">
 		<table border="1" class="tableUnit" rules=rows>
 			<tr>
-				<th class="lecturer-array" value="no">
+				<th class="lecturer-array" value="no" style="cursor: pointer">
 					번호
 				</th>
-				<th class="lecturer-array" value="sort">
+				<th class="lecturer-array" value="sort" style="cursor: pointer">
 					분류
 				</th>
 				<th>
 					강사명
 				</th>
-				<th class="lecturer-array" value="count">
+				<th class="lecturer-array" value="count" style="cursor: pointer">
 					강의횟수
 				</th>
-				<th class="lecturer-array" value="grade">
+				<th class="lecturer-array" value="grade" style="cursor: pointer">
 					평점
 				</th>
 				<th>

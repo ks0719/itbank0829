@@ -60,6 +60,8 @@ public class TeacherController {
 		
 		m.addAttribute("list", list);
 		m.addAttribute("page", pageNo);
+		m.addAttribute("start", start);
+		m.addAttribute("end", end);
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
 		m.addAttribute("url", url);
@@ -68,7 +70,7 @@ public class TeacherController {
 	}
 	
 	@RequestMapping("/lecturerArray")
-	public String lecturerArray(String standard, String page, String type, String key, Model m) throws Exception {
+	public String lecturerArray(String standard, String page, String type, String key, int start, int end, Model m) throws Exception {
 		log.debug("standard : " + standard);
 		String sub1, sub2;
 		if (standard.equals("sort")) {
@@ -87,9 +89,9 @@ public class TeacherController {
 			throw new Exception("404");
 		}
 		
-//		teacherDao.array(standard, sub1, sub2, type, key);
+		List<Teacher> list = teacherDao.list(standard, sub1, sub2, type, key, start, end);
 		
-//		m.addAttribute(arg0);
+		m.addAttribute("list", list);
 		
 		return "teacher/array";
 	}
