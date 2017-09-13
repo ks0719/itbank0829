@@ -4,10 +4,10 @@
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <div class="page-wrap">
-	<div class="table-wrap">
+	<div class="table-wrap lecturer">
 		<table border="1" class="tableUnit" rules=rows>
 			<tr>
-				<th class="lecturer-array" value="no" style="cursor: pointer">
+				<th class="lecturer-array" value="no" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					번호
 				</th>
 				<th class="lecturer-array" value="sort" style="cursor: pointer">

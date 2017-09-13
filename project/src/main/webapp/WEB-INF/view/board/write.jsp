@@ -35,7 +35,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<textarea rows="30" cols="30" name="detail" required id="editor"></textarea>
+						<textarea rows="30" cols="30" name="detail" id="editor" required></textarea>
 					</td>
 				</tr>
 				<tr>

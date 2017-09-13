@@ -62,7 +62,7 @@ $(document).ready(function(){
 	    	}
 		});
 		
-		$(".clickToinfo").on("click", function() {
+		$(document).on("click", ".clickToinfo", function() {
 			var no = $(this).data('no');
 			var page = $(this).data('page');
 			var type = $(this).data('type');
@@ -98,13 +98,9 @@ $(document).ready(function(){
 			var context = $(this).data('context');
 			var result = confirm("정말 삭제하시겠습니까?");
 			
-			$.ajax({
-				url: "delete",
-				data: {"no" : no, "context" : context, "result" : result},
-				success: function(res) {
-					location.href = res;
-				}
-			});
+			if (result) {
+				location.href="delete?no=" + no + "&context=" + context;
+			}
 		});
 		
 		$(document).on("submit", ".board-comment", function() {
@@ -147,14 +143,16 @@ $(document).ready(function(){
 			});
 		});
 		
-		$(".lecturer-array").on("click", function() {
+		$(document).on("click", ".lecturer-array", function() {
 			var standard = $(this).attr('value');
+			var type = $(this).data('type');
+			var key = $(this).data('key');
 			
 			$.ajax({
 				url: "lecturerArray",
-				data: {"standard": standard},
+				data: {"standard": standard, "type" : type, "key" : key},
 				success: function(res) {
-					$(".tableUnit").html(res);
+					
 				}
 			});
 		});

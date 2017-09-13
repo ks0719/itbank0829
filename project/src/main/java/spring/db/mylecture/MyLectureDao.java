@@ -84,12 +84,12 @@ public class MyLectureDao {
 		return jdbcTemplate.update(sql, args);
 	}
 	
-	public int wish(String nick, int no, LectureInfo lecture) {
-		String sql = "select * from mylecture where id = ? and no = ? or wish = ''";
+	public int wish(String nick, LectureInfo lecture) {
+		String sql = "select * from mylecture where id = ? and no = ? and wish = ''";
 		
-		int result = jdbcTemplate.update(sql, new Object[] {nick, no});
+		int result = jdbcTemplate.update(sql, new Object[] {nick, lecture.getNo()});
 		
-		if (result == 0) return insert(nick, no, lecture, "wish");
+		if (result == 0) return insert(nick, lecture.getNo(), lecture, "wish");
 		else return 0;
 	}
 	
