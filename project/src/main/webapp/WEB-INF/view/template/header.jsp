@@ -55,6 +55,13 @@ $(document).ready(function(){
 
 
 	$(document).ready(function() {
+		// 검색시 select option 유지
+		$("select option").each(function(){
+	    	if($(this).val()=="${type}"){
+				$(this).attr("selected","selected");
+	    	}
+		});
+		
 		$(".clickToinfo").on("click", function() {
 			var no = $(this).data('no');
 			var page = $(this).data('page');
@@ -87,8 +94,17 @@ $(document).ready(function(){
 		});
 		
 		$(document).on("click", ".board-delete", function() {
-// 			var no = 
-// 			var context = 
+			var no = $(this).data('no');
+			var context = $(this).data('context');
+			var result = confirm("정말 삭제하시겠습니까?");
+			
+			$.ajax({
+				url: "delete",
+				data: {"no" : no, "context" : context, "result" : result},
+				success: function(res) {
+					location.href = res;
+				}
+			});
 		});
 		
 		$(document).on("submit", ".board-comment", function() {
@@ -100,7 +116,6 @@ $(document).ready(function(){
         		data: $(this).serialize(),
         		async : false,
         		success: function(res) {
-        			console.log("a comment : " + contextNo);
         			$("#comments"+contextNo).append(res);
         		}
         	});
@@ -113,20 +128,19 @@ $(document).ready(function(){
 				data: {"commentNo": commentNo},
         		async : false,
 				success: function(res) {
-					console.log("commentNo: " + commentNo);
 					$("#best"+commentNo).text(res);
 				}
 			});
 		});
 		$(document).on("click", ".comment-delete", function() {
 			var commentNo = $(this).attr('value');
+			var result = confirm("정말 삭제하시겠습니까?");
 
 			$.ajax({
 				url: "commentDelete",
-				data: {"commentNo": commentNo},
+				data: {"commentNo": commentNo, "result" : result},
         		async : false,
 				success: function(res) {
-					var result = confirm("정말 삭제하시겠습니까?");
 					if (result) $("#comment"+commentNo).remove();
 				}
 			});
@@ -139,7 +153,7 @@ $(document).ready(function(){
 				url: "lecturerArray",
 				data: {"standard": standard},
 				success: function(res) {
-					$("").html(res);
+					$(".tableUnit").html(res);
 				}
 			});
 		});

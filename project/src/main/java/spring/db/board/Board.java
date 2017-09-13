@@ -40,9 +40,18 @@ public class Board {
 		setReg(mRequest.getParameter("reg"));
 
 		MultipartFile file = mRequest.getFile("file");
-		setOriginfile(file.getOriginalFilename());
-		setFiletype(file.getContentType());
-		setFilesize(file == null ? 0 : file.getSize());
+		if (file.getOriginalFilename() != "") {
+			setOriginfile(file.getOriginalFilename());
+			setFiletype(file.getContentType());
+			setFilesize(file == null ? 0 : file.getSize());
+		} else {
+			String originfile = mRequest.getParameter("originfile");
+			setOriginfile(originfile == null ? "" : originfile);
+			String filetype = mRequest.getParameter("filetype");
+			setFiletype(filetype == null ? "" : filetype);
+			String size = mRequest.getParameter("filesize");
+			setFilesize(Integer.parseInt(size == null ? "0" : size));
+		}
 	}
 	public Board(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));

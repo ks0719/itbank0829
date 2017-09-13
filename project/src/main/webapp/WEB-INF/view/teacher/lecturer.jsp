@@ -15,8 +15,8 @@
 				</th>
 				<th>
 					강사명
-				</th class="lecturer-array" value="count">
-				<th>
+				</th>
+				<th class="lecturer-array" value="count">
 					강의횟수
 				</th>
 				<th class="lecturer-array" value="grade">
