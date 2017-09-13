@@ -55,7 +55,14 @@ $(document).ready(function(){
 
 
 	$(document).ready(function() {
-		$(".clickToinfo").on("click", function() {
+		// 검색시 select option 유지
+		$("select option").each(function(){
+	    	if($(this).val()=="${type}"){
+				$(this).attr("selected","selected");
+	    	}
+		});
+		
+		$(document).on("click", ".clickToinfo", function() {
 			var no = $(this).data('no');
 			var page = $(this).data('page');
 			var type = $(this).data('type');
@@ -87,8 +94,13 @@ $(document).ready(function(){
 		});
 		
 		$(document).on("click", ".board-delete", function() {
-// 			var no = 
-// 			var context = 
+			var no = $(this).data('no');
+			var context = $(this).data('context');
+			var result = confirm("정말 삭제하시겠습니까?");
+			
+			if (result) {
+				location.href="delete?no=" + no + "&context=" + context;
+			}
 		});
 		
 		$(document).on("submit", ".board-comment", function() {
@@ -100,8 +112,8 @@ $(document).ready(function(){
         		data: $(this).serialize(),
         		async : false,
         		success: function(res) {
-        			console.log("a comment : " + contextNo);
         			$("#comments"+contextNo).append(res);
+        			$(".user-input").val('');
         		}
         	});
 		});
@@ -113,33 +125,34 @@ $(document).ready(function(){
 				data: {"commentNo": commentNo},
         		async : false,
 				success: function(res) {
-					console.log("commentNo: " + commentNo);
 					$("#best"+commentNo).text(res);
 				}
 			});
 		});
 		$(document).on("click", ".comment-delete", function() {
 			var commentNo = $(this).attr('value');
+			var result = confirm("정말 삭제하시겠습니까?");
 
 			$.ajax({
 				url: "commentDelete",
-				data: {"commentNo": commentNo},
+				data: {"commentNo": commentNo, "result" : result},
         		async : false,
 				success: function(res) {
-					var result = confirm("정말 삭제하시겠습니까?");
 					if (result) $("#comment"+commentNo).remove();
 				}
 			});
 		});
 		
-		$(".lecturer-array").on("click", function() {
+		$(document).on("click", ".lecturer-array", function() {
 			var standard = $(this).attr('value');
+			var type = $(this).data('type');
+			var key = $(this).data('key');
 			
 			$.ajax({
 				url: "lecturerArray",
-				data: {"standard": standard},
+				data: {"standard": standard, "type" : type, "key" : key},
 				success: function(res) {
-					$("").html(res);
+					
 				}
 			});
 		});

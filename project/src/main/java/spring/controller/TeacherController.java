@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.db.lecture.LectureInfo;
 import spring.db.teacher.Teacher;
@@ -60,6 +61,8 @@ public class TeacherController {
 		
 		m.addAttribute("list", list);
 		m.addAttribute("page", pageNo);
+		m.addAttribute("start", start);
+		m.addAttribute("end", end);
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
 		m.addAttribute("url", url);
@@ -68,28 +71,39 @@ public class TeacherController {
 	}
 	
 	@RequestMapping("/lecturerArray")
-	public String lecturerArray(String standard, String page, String type, String key, Model m) throws Exception {
+	public String lecturerArray(String standard, HttpServletRequest request, Model m) throws Exception {
 		log.debug("standard : " + standard);
-		String sub1, sub2;
+		String sub1 = "", sub2 = "";
 		if (standard.equals("sort")) {
+			log.debug("분류");
 			standard = "sort";
 			sub1 = "grade desc";
 			sub2 = "count desc";
 		} else if (standard.equals("count")) {
+			log.debug("횟수");
 			standard = "count desc";
 			sub1 = "grade desc";
 			sub2 = "sort";
 		} else if (standard.equals("grade")) {
 			standard = "grade desc";
+			log.debug("평점");
 			sub1 = "count desc";
 			sub2 = "sort";
 		} else {
 			throw new Exception("404");
 		}
 		
-//		teacherDao.array(standard, sub1, sub2, type, key);
+		String type = request.getParameter("type");
+		String key = request.getParameter("key");
+
+		int listCount = teacherDao.count(type, key);
+		if (listCount > 10) listCount = 10;
 		
-//		m.addAttribute(arg0);
+		List<Teacher> list = teacherDao.list(standard, sub1, sub2, type, key, 1, listCount);
+		
+		m.addAttribute("list", list);
+		m.addAttribute("type", type);
+		m.addAttribute("key", key);
 		
 		return "teacher/array";
 	}

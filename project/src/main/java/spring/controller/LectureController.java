@@ -92,7 +92,7 @@ public class LectureController {
 		LectureInfo info = lectureDao.showOne(no);
 		String nick = getNick(req);
 		
-		int result = myLectureDao.wish(nick, no, info);
+		int result = myLectureDao.wish(nick, info);
 		log.debug("result : " + result);
 		
 		String res = "";

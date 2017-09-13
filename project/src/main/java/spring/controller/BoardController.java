@@ -147,6 +147,7 @@ public class BoardController {
 		
 		List<Board> board = boardDao.detail(noI);
 		log.debug("갯수 : " + board.size());
+		if (board.size() == 0) throw new Exception("404");
 		boardDao.readUp(noI);
 		List<Comment> list = commentDao.list(noI);
 		
@@ -212,14 +213,19 @@ public class BoardController {
 		} catch(Exception e) {
 			throw new Exception("404");
 		}
+		log.debug("삭제");
 		
 		boardDao.delete(noI);
 		commentDao.delete(noI);
 		
 		log.debug("no : " + no + ", context : " + context);
 		log.debug(String.valueOf(context.equals(no)));
-		if (context.equals(no)) return "redirect:/board/" + path;
-		return "redirect:/board/" + path + "/detail?no=" + context;
+
+		if (no.equals(context)) {
+			return "redirect:/board/" + path;
+		} else {
+			return "redirect:/board/" + path + "/detail?no=" + context;
+		}
 	}
 	
 	@RequestMapping("/{path}/download/{no}")
@@ -290,8 +296,8 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/commentDelete")
 	@ResponseBody
-	public void commentDelete(int commentNo) {
-		commentDao.deleteOne(commentNo);
+	public void commentDelete(int commentNo, boolean result) {
+		if (result) commentDao.deleteOne(commentNo);
 	}
 	
 }

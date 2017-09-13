@@ -23,13 +23,15 @@ public class TeacherDao {
 	}
 
 	public int count(String type, String key) {
-		if (type == "" || key == null) return count();
+		if (type == null || type == "" || key == null) return count();
+		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		return jdbcTemplate.queryForObject("select count(*) from teacher where lower (" + type + ") like '%'||'"+ key +"'||'%'", Integer.class);
 	}
 	
 	public List<Teacher> list(String standard, String sub1, String sub2, String type, String key, int start, int end) {
 		if (sub1 == null || sub2 == null) return list(type, key, start, end);
-		if (type == "" || key == null) return list(standard, sub1, sub2, start, end);
+		if (type == null || type == "" || key == null) return list(standard, sub1, sub2, start, end);
+		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by ?, ?, ?)"
@@ -42,6 +44,9 @@ public class TeacherDao {
 
 	public List<Teacher> list(String standard, String sub1, String sub2, int start, int end) {
 		if (sub1 == null || sub2 == null) return list(start, end);
+		System.out.println("standard : " + standard);
+		System.out.println("sub1 : " + sub1);
+		System.out.println("sub2 : " + sub2);
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from teacher order by ?, ?, ?)"
 				+ " TMP) where rn between ? and ?";
@@ -52,7 +57,8 @@ public class TeacherDao {
 	}
 
 	public List<Teacher> list(String type, String key, int start, int end) {
-		if (type == "" || key == null) return list(start, end);
+		if (type == null || type == "" || key == null) return list(start, end);
+		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by no desc)"
 				+ " TMP) where rn between ? and ?";
