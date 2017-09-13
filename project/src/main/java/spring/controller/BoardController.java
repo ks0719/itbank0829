@@ -205,7 +205,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/{path}/delete")
-	public String delete(@PathVariable String path, String no, String context) throws Exception {
+	@ResponseBody
+	public String delete(@PathVariable String path, String no, String context, boolean result) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -213,8 +214,10 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		boardDao.delete(noI);
-		commentDao.delete(noI);
+		if (result) {
+			boardDao.delete(noI);
+			commentDao.delete(noI);
+		}
 		
 		log.debug("no : " + no + ", context : " + context);
 		log.debug(String.valueOf(context.equals(no)));
@@ -290,8 +293,8 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/commentDelete")
 	@ResponseBody
-	public void commentDelete(int commentNo) {
-		commentDao.deleteOne(commentNo);
+	public void commentDelete(int commentNo, boolean result) {
+		if (result) commentDao.deleteOne(commentNo);
 	}
 	
 }

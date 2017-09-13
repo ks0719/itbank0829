@@ -100,12 +100,12 @@ public class MemberController {
 		String param = request.getParameter("param");	
 		param = param.replaceAll(", ", "&");
 		param = param.substring(1, param.length()-1);
-		log.debug(param);
+//		log.debug(param);
 		url=url.replaceAll(serveraddr, "").replaceAll(".jsp", "");
 		url += "?"+param;
-		log.debug("url="+url);
+//		log.debug("url="+url);
 		String nick=memberDao.logincheck(id, pw);
-		log.debug("nick="+nick);
+//		log.debug("nick="+nick);
 		//log.debug("state="+state);
 		if(nick!=null) {
 			CookieGenerator cookie=new CookieGenerator();
@@ -140,17 +140,6 @@ public class MemberController {
 	}
 	
 	
-//	@RequestMapping(value="/member/checkpw", method = RequestMethod.POST)
-//	public String pwcheck(@RequestParam String pw, HttpServletRequest req) throws Exception {
-//		String nick=getNick(req);
-//		String pwCheck=req.getParameter("pw");
-//		boolean result=memberDao.checkpw(nick, pwCheck);
-//		
-//		if(!result) return "member/deletemember";
-//		else return "redirect:/";
-//	}
-	
-	
 	@RequestMapping(value="member/deletemember", method=RequestMethod.GET)
 	public String deleteGet() {
 		
@@ -161,12 +150,11 @@ public class MemberController {
 	public void deletePost( HttpServletRequest req) throws Exception {
 		String nick=getNick(req);
 		String pw=req.getParameter("pw");
-//		boolean result = memberDao.check("pw",pw);
 		boolean result=memberDao.delete(nick,pw);
 		if(result) {
-			System.out.println("비밀번호 맞음");
+//			System.out.println("비밀번호 맞음");
 		}else {
-			System.out.println("비밀번호 틀림");
+//			System.out.println("비밀번호 틀림");
 			throw new Exception();
 		}
 	}

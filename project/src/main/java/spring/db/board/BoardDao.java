@@ -22,6 +22,7 @@ public class BoardDao {
 
 	public int count(String path, String type, String key) {
 		if (type == "" || key == null) return count(path);
+		if (!(type.equals("head") || type.equals("title") || type.equals("writer"))) type = "head";
 		return jdbcTemplate.queryForObject("select count(*) from board where path = '" + path + "' and lower (" + type + ") like '%'||'"+ key +"'||'%' and seq = 1", Integer.class);
 	}
 
@@ -35,6 +36,7 @@ public class BoardDao {
 
 	public List<Board> list(String path, String type, String key, int start, int end) {
 		if (type == "" || key == null) return list(path, start, end);
+		if (!(type.equals("head") || type.equals("title") || type.equals("writer"))) type = "head";
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from board where path = ? and lower (" + type + ") like '%'||?||'%' and seq = 1 order by no desc)"

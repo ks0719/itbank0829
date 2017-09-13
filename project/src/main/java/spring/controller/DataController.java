@@ -2,6 +2,7 @@ package spring.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,7 +74,7 @@ public class DataController {
 	            String cName = ck.getName();
 	            // 쿠키값을 가져온다
 	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
-	            log.debug("쿠키값  :"+cValue);
+	            //log.debug("쿠키값  :"+cValue);
 	            if(ck.getName().equals("mynick")) {
 	            	MyDto dto=myDao.select(cValue);
 	            	model.addAttribute("dto", dto);
@@ -88,11 +89,14 @@ public class DataController {
 		Member mb=new Member(request);
 		String nick=getNick(request);
 		nick=mbdao.edit(mb, nick);
-		 CookieGenerator cookie=new CookieGenerator();
+		//log.debug("최종 닉네임 : "+nick);
+		CookieGenerator cookie=new CookieGenerator();
 		 
-		 cookie.setCookieName("mynick");
-		 cookie.setCookieMaxAge(0);
-		 cookie.addCookie(response, null);
+		cookie.setCookieName("mynick");
+		cookie.setCookiePath("/");
+		cookie.setCookieMaxAge(-1);
+		cookie.addCookie(response, URLEncoder.encode(nick, "utf-8"));
+		
 		
 		return "redirect:/data/maininfo";
 	}
@@ -108,18 +112,18 @@ public class DataController {
 	        for(int i=0; i < c.length; i++){
 	            Cookie ck = c[i] ;
 	            // 저장된 쿠키 이름을 가져온다
-	            log.debug("쿠키값들 : "+ck.getName());
+	           // log.debug("쿠키값들 : "+ck.getName());
 	            String cName = ck.getName();
 	            // 쿠키값을 가져온다
 	            String cValue =  URLDecoder.decode((ck.getValue()),"utf-8");
-	            log.debug("쿠키값(maininfo)  :"+cValue);
+	            //log.debug("쿠키값(maininfo)  :"+cValue);
 	            if(ck.getName().equals("mynick")) {
-	            	log.debug("쿠키값 찾음");
+	            	//log.debug("쿠키값 찾음");
 	            	MyDto dto=myDao.select(cValue);
 	            	model.addAttribute("dto", dto);
 	            	break;
 	            }
-	            log.debug("쿠키값 못찾음");
+	            //log.debug("쿠키값 못찾음");
 	        }
 		}
 		return "data/maininfo";
@@ -142,9 +146,7 @@ public class DataController {
 		//garbage,no[] 또는 protect,no[] 이렇게 들어옴
 		Map<String, String[]> map = req.getParameterMap();
 		Set<String> params = map.keySet();
-		
-		String nick = getNick(req);
-		
+		String nick = getNick(req);		
 		for(String location:params) {
 			for(String no : map.get(location)) {
 				if(location.equals("protect")) {
@@ -250,7 +252,6 @@ public class DataController {
 		m.addAttribute("nick", req.getParameter("nick"));
 		return "data/send";
 	}
-	
 	@RequestMapping(value="data/mail/send", method=RequestMethod.POST)
 	public String sendPost(HttpServletRequest req) throws Exception {
 		//db 연결해서 mail 테이블에 정보 추가하기
@@ -272,4 +273,21 @@ public class DataController {
 		if(result) return "data/send";
 		else return null;
    }
+	@RequestMapping("/data/changepw")
+	public String changepw() {
+		
+		return "data/changepw";
+	}
+	@RequestMapping(value="/data/changepw",method=RequestMethod.POST)
+	public String changepwpost(HttpServletRequest request) throws Exception {
+		String nick=getNick(request);
+		String pw=request.getParameter("pw");
+		String newpw=request.getParameter("newpw");
+		boolean state=mbdao.changepw(nick, pw, newpw);
+		if(state) {
+			return "redirect:/data/maininfo";
+		}
+		return "redirect:/data/fail";
+		
+	}
 }

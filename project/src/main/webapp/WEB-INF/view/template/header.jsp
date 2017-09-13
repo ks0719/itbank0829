@@ -55,6 +55,13 @@ $(document).ready(function(){
 
 
 	$(document).ready(function() {
+		// 검색시 select option 유지
+		$("select option").each(function(){
+	    	if($(this).val()=="${type}"){
+				$(this).attr("selected","selected");
+	    	}
+		});
+		
 		$(".clickToinfo").on("click", function() {
 			var no = $(this).data('no');
 			var page = $(this).data('page');
@@ -87,8 +94,17 @@ $(document).ready(function(){
 		});
 		
 		$(document).on("click", ".board-delete", function() {
-// 			var no = 
-// 			var context = 
+			var no = $(this).data('no');
+			var context = $(this).data('context');
+			var result = confirm("정말 삭제하시겠습니까?");
+			
+			$.ajax({
+				url: "delete",
+				data: {"no" : no, "context" : context, "result" : result},
+				success: function(res) {
+					location.href = res;
+				}
+			});
 		});
 		
 		$(document).on("submit", ".board-comment", function() {
@@ -100,7 +116,6 @@ $(document).ready(function(){
         		data: $(this).serialize(),
         		async : false,
         		success: function(res) {
-        			console.log("a comment : " + contextNo);
         			$("#comments"+contextNo).append(res);
         			$(".user-input").val('');
         		}
@@ -114,20 +129,19 @@ $(document).ready(function(){
 				data: {"commentNo": commentNo},
         		async : false,
 				success: function(res) {
-					console.log("commentNo: " + commentNo);
 					$("#best"+commentNo).text(res);
 				}
 			});
 		});
 		$(document).on("click", ".comment-delete", function() {
 			var commentNo = $(this).attr('value');
+			var result = confirm("정말 삭제하시겠습니까?");
 
 			$.ajax({
 				url: "commentDelete",
-				data: {"commentNo": commentNo},
+				data: {"commentNo": commentNo, "result" : result},
         		async : false,
 				success: function(res) {
-					var result = confirm("정말 삭제하시겠습니까?");
 					if (result) $("#comment"+commentNo).remove();
 				}
 			});
@@ -140,7 +154,7 @@ $(document).ready(function(){
 				url: "lecturerArray",
 				data: {"standard": standard},
 				success: function(res) {
-					$("").html(res);
+					$(".tableUnit").html(res);
 				}
 			});
 		});
@@ -387,6 +401,28 @@ $(document).ready(function(){
   		return result;
   	}
 	  
+  	
+  	function loginCheck(){
+  		if($("#id").val()==""){
+  			alert("아이디를 입력하세요!");
+  		}else if($("#pw").val()==""){
+  			alert("비밀번호를 입력하세요!");
+   		}
+//   		else{
+//   			$.ajax({
+// 				url:"login",
+// 				type:"post",
+// 				data:{id:$("#id").val()},{pw:$("#pw").val()},
+// 				dataType:"text",
+// 				success:function(){
+// 					alert("회원탈퇴가 완료되었습니다.");
+// 				},
+// 				error:function(){
+// 					alert("비밀번호가 일치하지 않습니다.");
+// 				}
+// 			});
+//   		}
+  	}
 </script>
 
 <head>
@@ -402,11 +438,11 @@ $(document).ready(function(){
     <h5>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</h5>
     <div id="null"></div>
     <form action="${pageContext.request.contextPath }/member/login" method="post">
-    	아이디<input type="text" name="id" required><br>
-    	비밀번호<input type="password" name="pw" required><br>
+    	아이디<input type="text" name="id"  id="id" required><br>
+    	비밀번호<input type="password" name="pw" id="pw" required><br>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기"/><br>
+        <input type="submit" id="login_btn" value="로그인하기" onclick="loginCheck();" /><br>
         <input type="button" href="#" value="회원가입하기">
     </form>
     </div>
