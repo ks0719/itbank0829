@@ -23,7 +23,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		
 		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'')";
 		
-		Object[]args=new Object[] {member.getId(),member.getPw(),member.getName(),member.getNickname(),member.getPhone(),
+		Object[]args=new Object[] {member.getId(),member.getPw(),member.getName(),member.getNick(),member.getPhone(),
 				member.getPost(),member.getAddr1(),member.getAddr2(),member.getSort()};
 		
 		jdbcTemplate.update(sql,args);
@@ -35,29 +35,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		return jdbcTemplate.query(sql, new Object[] {id, password},mapper);
 	}
 
-	  public boolean idcheck(String id) {
-	      
-	      String sql = "select count(*) from member where id=?";
-	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {id},Integer.class)>0;
-	      
-	      return result;
-	   }
 	  
-	  public boolean pwcheck(String pw) {
-	      
-	      String sql = "select count(*) from member where pw=?";
-	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {pw},Integer.class)>0;
-	      
-	      return result;
-	   }
-	  
-	  public boolean nickcheck(String nickname) {
-	      
-	      String sql = "select count(*) from member where nick=?";
-	      boolean result = jdbcTemplate.queryForObject(sql, new Object[] {nickname},Integer.class)>0;
-	      
-	      return result;
-	   }
 	  public String logincheck(String id,String pw) {
 		  String sql="select nick from member where id=? and pw=?";
 		  String nick= jdbcTemplate.queryForObject(sql,new Object[] {id,pw}, String.class);
@@ -78,17 +56,11 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	}
 	public String edit(Member mb,String nick) {
 		String sql="update member set nick=?,post=?,addr1=?,addr2=?,phone=? where nick=?";
-		jdbcTemplate.update(sql,new Object[] {mb.getNickname(),mb.getPost(),mb.getAddr1(),mb.getAddr2(),mb.getPhone(),nick});
-		return mb.getNickname();
+		jdbcTemplate.update(sql,new Object[] {mb.getNick(),mb.getPost(),mb.getAddr1(),mb.getAddr2(),mb.getPhone(),nick});
+		return mb.getNick();
 	}
 	
 
-	public boolean checkpw(String nick, String pw) {
-		String sql="select*from member where nick=? and pw=?";
-//		String sql="select nick from member where pw=? and nick=?";
-//		return false;
-		return jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
-	}
 	public boolean changepw(String nick,String pw,String newpw) {
 		String sql="select * from member where nick=? and pw=?";
 		boolean result=jdbcTemplate.queryForObject(sql, new Object[] {nick,pw},Integer.class)>0;
@@ -100,12 +72,10 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		return false;
 		
 	}
-
-//	public boolean checkpw(String nick, String pw) {
-//		String sql="select*from member where nick=? and pw=?";
-////		String sql="select nick from member where pw=? and nick=?";
-////		return false;
-//		return jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
-//	}
-
+	
+	public boolean checklogin(String id, String pw) {
+		
+		String sql="select * from member where id=? and pw=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {id,pw},Integer.class)>0;
+	}
 }
