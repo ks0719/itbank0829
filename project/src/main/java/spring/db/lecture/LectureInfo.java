@@ -207,5 +207,6 @@ public class LectureInfo {
 	public void setOpen(String open) {
 		this.open = open;
 	}
+
 	
 }

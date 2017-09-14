@@ -35,7 +35,14 @@
         	</c:when>
         	<c:otherwise>
 		        <a href="#" class="lectureWish" value="${no}">찜하기</a>
-		        <a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
+		        <c:choose>
+		        	<c:when test="${!paid}">
+		        		<a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
+		        	</c:when>
+		        	<c:otherwise>
+		        		<a href="" onclick="return false;">신청완료</a>
+		        	</c:otherwise>
+		        </c:choose>
         	</c:otherwise>
         </c:choose>
         

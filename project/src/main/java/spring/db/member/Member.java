@@ -29,7 +29,7 @@ public class Member {
 		setId(rs.getString("id"));
 		setPw(rs.getString("pw"));
 		setName(rs.getString("name"));
-		setNickname(rs.getString("nickname"));
+		setNickname(rs.getString("nick"));
 		setPhone(rs.getString("phone"));
 		setSort(rs.getString("sort"));
 		setPost(rs.getString("post"));
