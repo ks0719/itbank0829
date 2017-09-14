@@ -25,7 +25,7 @@
 		</table>
         
         <div class="left" align="left">
-        <a href="#">강사 정보</a>
+        	<a href="${pageContext.request.contextPath}/teacher/lecturerInfo?name=${info.teacher}">강사 정보</a>
         </div>
         <div class="right" align="right">
         <c:choose>
@@ -35,7 +35,14 @@
         	</c:when>
         	<c:otherwise>
 		        <a href="#" class="lectureWish" value="${no}">찜하기</a>
-		        <a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
+		        <c:choose>
+		        	<c:when test="${!paid}">
+		        		<a href="${pageContext.request.contextPath}/lecture/req?no=${no}">신청하기</a>
+		        	</c:when>
+		        	<c:otherwise>
+		        		<a href="" onclick="return false;">신청완료</a>
+		        	</c:otherwise>
+		        </c:choose>
         	</c:otherwise>
         </c:choose>
         
