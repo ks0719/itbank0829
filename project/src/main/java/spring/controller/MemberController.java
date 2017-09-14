@@ -24,7 +24,7 @@ import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
-	private static final String serveraddr="http://localhost:8080/project/WEB-INF/view";
+	private static final String serveraddr="http://localhost:9080/project/WEB-INF/view";
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
 		if(c != null){
@@ -107,7 +107,6 @@ public class MemberController {
 		//log.debug("state="+state);
 		
 		
-		
 		if(nick!=null) {
 			CookieGenerator cookie=new CookieGenerator();
 			cookie.setCookieName("mynick");
@@ -159,4 +158,5 @@ public class MemberController {
 			throw new Exception();
 		}
 	}
+	
 }
