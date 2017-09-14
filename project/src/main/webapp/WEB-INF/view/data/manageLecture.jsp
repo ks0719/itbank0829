@@ -4,14 +4,14 @@
 <html>
 <head>
 <title>수강 관리</title>
-
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
-    $(".detail").click(function(){
-        $("#changeable").load("${pageContext.request.contextPath}/lecture/class?no=32 .borN");
-    });
-});
+
+function change(no){
+	$("#changeable").load("${pageContext.request.contextPath}/lecture/class?no="+no+" .borN");
+}
+
 </script>
 </head>
 <body>
@@ -34,7 +34,7 @@ $(document).ready(function(){
 	                        <th>강의시간</th>
 	                        <th>수강형태</th>
 	                        <th>수강상태</th>
-	                        <th>수강날짜</th>
+	                        <th>수업날짜</th>
 	                        <th>결제금액</th>
 	                        <th>상세보기</th>
 	                    </tr>
@@ -49,11 +49,11 @@ $(document).ready(function(){
 		                        <td>${list.time}</td>
 		                        <td>${list.type}</td>
 		                        <td>${list.state}</td>
-		                        <td>${list.reg}</td>
+		                        <td>${list.period}</td>
 		                        <td>${list.price}</td>
 		                        <td>
 <%-- 		                        	<a href="${pageContext.request.contextPath}/lecture/class?no=${list.no}" class="detail" id="">상세보기</a> --%>
-		                        	<a href="" class="detail" id="${list.no}" onclick="return false;">상세보기</a>
+		                        	<a href="" class="detail" onclick="change(${list.no}); return false;">상세보기</a>
 		                        </td>
 		                    </tr>
 	                    </c:forEach>

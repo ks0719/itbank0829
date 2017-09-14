@@ -97,4 +97,19 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		String sql="select * from member where id=? and pw=?";
 		return jdbcTemplate.queryForObject(sql, new Object[] {id,pw},Integer.class)>0;
 	}
+	public int mypoint(String nick) {
+		String sql="select MILEAGE from member where nick=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick},Integer.class);
+		
+	}
+	public Member list(String nick){
+		RowMapper<Member> mapper=(rs,index)->{
+			return new Member(rs);
+		};
+		String sql="select * from member where nick=?";
+		List<Member> list=null;
+		list=jdbcTemplate.query(sql, new Object[] {nick},mapper);
+		return list.get(0);
+		
+	}
 }

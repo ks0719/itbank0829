@@ -4,6 +4,7 @@
 
 <form target="" method="post">
 	<input type="hidden" name="no" value="${lecture.no}">
+	<input type="hidden" name="page" value="${page}">
 	과목명 <br><input type="text" value="${lecture.title}" readonly><br>
 	강사명<br><input type="text" value="${lecture.teacher}" readonly><br>
 	보유 포인트 <input type="number" value="${mileage}" readonly><br>

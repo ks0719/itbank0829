@@ -11,9 +11,16 @@
 
 <h1>강사신청</h1>
 
-<form action="" method="post">
-	
-</form>
+<div>
+	<form action="apply" method="post">
+		사진 : <input type="file" name="file">
+		<br>
+		닉네임 : ${nick}
+		<br>
+		<textarea placeholder="경력소개"></textarea>
+		<textarea placeholder="자기소개"></textarea>
+	</form>
+</div>
 
 </body>
 </html>
