@@ -403,11 +403,10 @@ $(document).ready(function(){
   	}
 	  
   	
-  	function loginCheck(){
+  	function logincheck(){
   		var result=false;
   		var id=document.querySelector("#loginid");
   		var pw=document.querySelector("#loginpw");
-//   		var list={id:"id", pw:"pw"};
   		if($("#loginid").val()==""){
   			alert("아이디를 입력하세요!");
   			result=false;
@@ -415,26 +414,22 @@ $(document).ready(function(){
   			alert("비밀번호를 입력하세요!");
   			result=false;
    		}
-//   		else{
-//   			$.ajax({
-//   				async: false,
-// 				url:"login",
-// 				type:"post",
-// // 				data: {id:$("#loginid").val()},
-// 				data:({id:$("#loginid").val(), pw:$("#loginpw").val()}),
-// // 				data:list,
-// 				dataType:"text",
-// 				success:function(){
-// 					alert("로그인 성공했습니다.");
-// 					result=true;
-// 				},
-// 				error:function(){
-// 					alert("아이디, 비밀번호가 맞지 않습니다.");
-// 					result=false;
-// 				}
-// 			});
-//   		}
-//   			return result;
+  		else{
+  			$.ajax({
+  				async: false,
+				data:({id:$("#loginid").val(), pw:$("#loginpw").val()}),
+				dataType:"text",
+				success:function(){
+					alert("로그인 성공했습니다.");
+					result=true;
+				},
+				error:function(){
+					alert("아이디 또는 비밀번호가 맞지 않습니다.");
+					result=false;
+				}
+			});
+  		}
+  			return result;
   	}
   	
   	function changepw() {
@@ -464,7 +459,7 @@ $(document).ready(function(){
     	비밀번호<input type="password" name="pw" id="loginpw" required><br>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기" onclick="return loginCheck();"/><br>
+        <input type="submit" id="login_btn" value="로그인하기" onclick="return logincheck();"/><br>
         <input type="button" href="#" value="회원가입하기">
     </form>
     </div>
