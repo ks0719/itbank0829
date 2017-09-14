@@ -232,7 +232,7 @@ public class DataController {
 		
 		List<MyLecture> list = myLectureDao.list(nick, box, page);
 		
-		int start = (page-1)/MY_LECTURE_PAGE*MY_LECTURE_PAGE+1;
+		int start = (page-1)/MY_LECTURE_PAGE+1;
 		int end = start + MY_LECTURE_PAGE-1;
 		
 		int maxPage = myLectureDao.maxPage(nick, box);
