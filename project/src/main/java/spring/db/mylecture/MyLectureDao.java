@@ -79,7 +79,7 @@ public class MyLectureDao {
 		String sql = "insert into mylecture values(?, ?, ?, ?, ?, ?, ?, ?, '미결제', ?, '미평가', ?)";
 		
 		Object[] args = {id, lecture.getNo(), lecture.getTag(), lecture.getTitle(), lecture.getTeacher(), lecture.getTime(), 
-				lecture.getType(), lecture.getPrice(), lecture.getOpen(), wish};
+				lecture.getType(), lecture.getPrice(), lecture.getPeriod(), wish};
 		
 		return jdbcTemplate.update(sql, args);
 	}

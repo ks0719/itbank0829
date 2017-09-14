@@ -63,6 +63,7 @@ $(document).ready(function(){
 		});
 		
 		$(document).on("click", ".clickToinfo", function() {
+			console.log("클릭");
 			var no = $(this).data('no');
 			var page = $(this).data('page');
 			var type = $(this).data('type');
@@ -144,6 +145,7 @@ $(document).ready(function(){
 		});
 		
 		$(document).on("click", ".lecturer-array", function() {
+			console.log("array 클릭");
 			var page = $(this).data('page');
 			var standard = $(this).attr('value');
 			var type = $(this).data('type');
@@ -155,6 +157,8 @@ $(document).ready(function(){
 				location.href="lecturer?page=" + page + "&standard=" + standard + "&type=" + type + "&key=" + key;
 			}
 		});
+		
+		
 	});
 	
 	  $(function(){
@@ -424,7 +428,7 @@ $(document).ready(function(){
 // 				}
 // 			});
 //   		}
-  	}
+//   	}
   	function changepw() {
   	  if(chpw.newpw.value != chpw.repw.value ) {
   	    alert("새 비밀번호가 일치하지 않습니다.");

@@ -35,7 +35,7 @@
 					${info.kin_grade}/${info.price_grade}/${info.kind_grade}
 				</td>
 				<td>
-					${info.open}
+					${info.period}
 				</td>
 				<td class="teacher">
 					${info.teacher}
