@@ -90,8 +90,8 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		return jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
 	}
 	public boolean changepw(String nick,String pw,String newpw) {
-		String sql="select * from member where nick=? and pw=?";
-		boolean result=jdbcTemplate.queryForObject(sql, new Object[] {nick,pw},Integer.class)>0;
+		String sql="select count(*) from member where nick=? and pw=?";
+		boolean result= jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
 		if(result) {
 			sql="update member set pw=? where nick=? and pw=?";
 			jdbcTemplate.update(sql, new Object[] {newpw,nick,pw});

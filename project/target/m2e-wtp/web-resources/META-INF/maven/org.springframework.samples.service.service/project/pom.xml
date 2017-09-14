@@ -28,7 +28,6 @@
   			<url>http://maven.jahia.org/maven2</url>
   		</repository>
   	</repositories>
-  
     <properties>
     	<maven.compiler.source>1.8</maven.compiler.source>
     	<maven.compiler.target>1.8</maven.compiler.target>
@@ -165,7 +164,7 @@
   <artifactId>commons-io</artifactId>
   <version>2.5</version>
 </dependency>
-
+<!-- 아임포트(결제플러그인) -->
 				
 	</dependencies>	
 	
