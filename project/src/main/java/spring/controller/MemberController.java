@@ -87,27 +87,12 @@ public class MemberController {
 		else return null;
 	}
 	
-//	@RequestMapping(value="/member/checklogin", method = RequestMethod.POST)
-//	public String idcheck(HttpServletRequest request) throws Exception {
-//		
-//		String id=request.getParameter("id");
-//		String pw=request.getParameter("pw");
-//		System.out.println("1 id="+id);
-//		System.out.println("1 pw="+pw);
-//		boolean result=memberDao.checklogin(id, pw);
-//		System.out.println("2 id="+id);
-//		System.out.println("2 pw="+pw);
-//		if(!result) return "member/fail";
-//		else return "redirect:/";
-//	}
-	
-	
 	
 	@RequestMapping(value="/member/login",method=RequestMethod.POST)
 	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) throws UnsupportedEncodingException {
 		String id=request.getParameter("id");
 		String pw=request.getParameter("pw");
-		log.debug("id="+id+",pw="+pw);
+//		log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
 		//log.debug("url="+url);
 		String param = request.getParameter("param");	
@@ -120,6 +105,8 @@ public class MemberController {
 		String nick=memberDao.logincheck(id, pw);
 //		log.debug("nick="+nick);
 		//log.debug("state="+state);
+		
+		
 		
 		if(nick!=null) {
 			CookieGenerator cookie=new CookieGenerator();

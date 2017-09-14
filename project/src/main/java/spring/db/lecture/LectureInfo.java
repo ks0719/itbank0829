@@ -207,5 +207,6 @@ public class LectureInfo {
 	public void setPeriod(String period) {
 		this.period = period;
 	}
+
 	
 }
