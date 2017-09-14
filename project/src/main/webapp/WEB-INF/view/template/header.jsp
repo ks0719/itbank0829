@@ -63,16 +63,28 @@ $(document).ready(function(){
 		});
 		
 		$(document).on("click", ".clickToinfo", function() {
-			console.log("클릭");
 			var no = $(this).data('no');
 			var page = $(this).data('page');
 			var type = $(this).data('type');
 			var key = $(this).data('key');
-			var url = $(this).data('url');
+
 			if (type != "" && key != "") {
-				location.href = url + "?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+				location.href = "class?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
 			} else {
-				location.href = url + "?no=" + no + "&page=" + page;
+				location.href = "class?no=" + no + "&page=" + page;
+			}
+		});
+		
+		$(document).on("click", ".toLecturerInfo", function() {
+			var name = $(this).data('name');
+			var page = $(this).data('page');
+			var type = $(this).data('type');
+			var key = $(this).data('key');
+
+			if (type != "" && key != "") {
+				location.href =  "lecturerInfo?name=" + name + "&page=" + page + "&type=" + type + "&key=" + key;
+			} else {
+				location.href = "lecturerInfo?name=" + name + "&page=" + page;
 			}
 		});
 		
@@ -145,7 +157,6 @@ $(document).ready(function(){
 		});
 		
 		$(document).on("click", ".lecturer-array", function() {
-			console.log("array 클릭");
 			var page = $(this).data('page');
 			var standard = $(this).attr('value');
 			var type = $(this).data('type');
@@ -157,8 +168,6 @@ $(document).ready(function(){
 				location.href="lecturer?page=" + page + "&standard=" + standard + "&type=" + type + "&key=" + key;
 			}
 		});
-		
-		
 	});
 	
 	  $(function(){

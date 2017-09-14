@@ -78,13 +78,21 @@ public class TeacherDao {
 		return jdbcTemplate.query(sql, args, mapper);
 	}
 
-	public Teacher showOne(int no) throws Exception {
-		String sql = "select * from teacher where no = ?";
+	public Teacher showOne(String nick) throws Exception {
+		String sql = "select * from teacher where name = ?";
 		
-		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
+		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {nick}, mapper);
 		
 		if (list.isEmpty()) throw new Exception("404");
 		return list.get(0);
+	}
+
+	public int getNo(String teacher) {
+		String sql = "select no from teacher where name = ?";
+		
+		int teacherno = jdbcTemplate.queryForObject(sql, new Object[] {teacher}, Integer.class);
+		
+		return teacherno;
 	}
 
 }

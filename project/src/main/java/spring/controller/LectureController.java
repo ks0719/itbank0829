@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
 import spring.db.mylecture.MyLectureDao;
+import spring.db.teacher.TeacherDao;
 
 @Controller
 @RequestMapping("/lecture")
