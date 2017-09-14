@@ -144,17 +144,16 @@ $(document).ready(function(){
 		});
 		
 		$(document).on("click", ".lecturer-array", function() {
+			var page = $(this).data('page');
 			var standard = $(this).attr('value');
 			var type = $(this).data('type');
 			var key = $(this).data('key');
 			
-			$.ajax({
-				url: "lecturerArray",
-				data: {"standard": standard, "type" : type, "key" : key},
-				success: function(res) {
-					
-				}
-			});
+			if (type == "" || key == "") {
+				location.href="lecturer?page=" + page + "&standard=" + standard;
+			} else {
+				location.href="lecturer?page=" + page + "&standard=" + standard + "&type=" + type + "&key=" + key;
+			}
 		});
 	});
 	
