@@ -23,38 +23,41 @@ public class TeacherDao {
 	}
 
 	public int count(String type, String key) {
-		if (type == "" || key == null) return count();
+		if (type == null || type == "" || key == null) return count();
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		return jdbcTemplate.queryForObject("select count(*) from teacher where lower (" + type + ") like '%'||'"+ key +"'||'%'", Integer.class);
 	}
 	
 	public List<Teacher> list(String standard, String sub1, String sub2, String type, String key, int start, int end) {
-		if (sub1 == null || sub2 == null) return list(type, key, start, end);
-		if (type == "" || key == null) return list(standard, sub1, sub2, start, end);
+		if (sub1 == "" || sub2 == "") return list(type, key, start, end);
+		if (type == null || type == "" || key == null) return list(standard, sub1, sub2, start, end);
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by ?, ?, ?)"
+				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by " + standard + ", " + sub1 + ", " + sub2 + ")"
 				+ " TMP) where rn between ? and ?";
 		
-		Object[] args = {key, standard, sub1, sub2, start, end};
+		Object[] args = {key, start, end};
 		
 		return jdbcTemplate.query(sql, args, mapper);
 	}
 
 	public List<Teacher> list(String standard, String sub1, String sub2, int start, int end) {
-		if (sub1 == null || sub2 == null) return list(start, end);
+		if (sub1 == "" || sub2 == "") return list(start, end);
+		System.out.println("standard : " + standard);
+		System.out.println("sub1 : " + sub1);
+		System.out.println("sub2 : " + sub2);
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher order by ?, ?, ?)"
+				+ "select * from teacher order by " + standard + ", " + sub1 + ", " + sub2 + ")"
 				+ " TMP) where rn between ? and ?";
 		
-		Object[] args = {standard, sub1, sub2, start, end};
+		Object[] args = {start, end};
 
 		return jdbcTemplate.query(sql, args, mapper);
 	}
 
 	public List<Teacher> list(String type, String key, int start, int end) {
-		if (type == "" || key == null) return list(start, end);
+		if (type == null || type == "" || key == null) return list(start, end);
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by no desc)"

@@ -147,6 +147,7 @@ public class BoardController {
 		
 		List<Board> board = boardDao.detail(noI);
 		log.debug("갯수 : " + board.size());
+		if (board.size() == 0) throw new Exception("404");
 		boardDao.readUp(noI);
 		List<Comment> list = commentDao.list(noI);
 		
@@ -205,24 +206,26 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/{path}/delete")
-	@ResponseBody
-	public String delete(@PathVariable String path, String no, String context, boolean result) throws Exception {
+	public String delete(@PathVariable String path, String no, String context) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
 		} catch(Exception e) {
 			throw new Exception("404");
 		}
+		log.debug("삭제");
 		
-		if (result) {
-			boardDao.delete(noI);
-			commentDao.delete(noI);
-		}
+		boardDao.delete(noI);
+		commentDao.delete(noI);
 		
 		log.debug("no : " + no + ", context : " + context);
 		log.debug(String.valueOf(context.equals(no)));
-		if (context.equals(no)) return "redirect:/board/" + path;
-		return "redirect:/board/" + path + "/detail?no=" + context;
+
+		if (no.equals(context)) {
+			return "redirect:/board/" + path;
+		} else {
+			return "redirect:/board/" + path + "/detail?no=" + context;
+		}
 	}
 	
 	@RequestMapping("/{path}/download/{no}")

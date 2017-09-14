@@ -62,7 +62,7 @@ $(document).ready(function(){
 	    	}
 		});
 		
-		$(".clickToinfo").on("click", function() {
+		$(document).on("click", ".clickToinfo", function() {
 			var no = $(this).data('no');
 			var page = $(this).data('page');
 			var type = $(this).data('type');
@@ -98,13 +98,9 @@ $(document).ready(function(){
 			var context = $(this).data('context');
 			var result = confirm("정말 삭제하시겠습니까?");
 			
-			$.ajax({
-				url: "delete",
-				data: {"no" : no, "context" : context, "result" : result},
-				success: function(res) {
-					location.href = res;
-				}
-			});
+			if (result) {
+				location.href="delete?no=" + no + "&context=" + context;
+			}
 		});
 		
 		$(document).on("submit", ".board-comment", function() {
@@ -147,16 +143,17 @@ $(document).ready(function(){
 			});
 		});
 		
-		$(".lecturer-array").on("click", function() {
+		$(document).on("click", ".lecturer-array", function() {
+			var page = $(this).data('page');
 			var standard = $(this).attr('value');
+			var type = $(this).data('type');
+			var key = $(this).data('key');
 			
-			$.ajax({
-				url: "lecturerArray",
-				data: {"standard": standard},
-				success: function(res) {
-					$(".tableUnit").html(res);
-				}
-			});
+			if (type == "" || key == "") {
+				location.href="lecturer?page=" + page + "&standard=" + standard;
+			} else {
+				location.href="lecturer?page=" + page + "&standard=" + standard + "&type=" + type + "&key=" + key;
+			}
 		});
 	});
 	
@@ -402,23 +399,28 @@ $(document).ready(function(){
   	}
 	  
   	
-  	function loginCheck(){
-  		if($("#id").val()==""){
-  			alert("아이디를 입력하세요!");
-  		}else if($("#pw").val()==""){
-  			alert("비밀번호를 입력하세요!");
-   		}
+//   	function loginCheck(){
+//   		var id=document.querySelector("#loginid");
+//   		var pw=document.querySelector("#loginpw");
+  		
+//   		if($("#id").val()==""){
+//   			alert("아이디를 입력하세요!");
+//   		}else if($("#pw").val()==""){
+//   			alert("비밀번호를 입력하세요!");
+//    		}
 //   		else{
 //   			$.ajax({
+//   				async: false,
 // 				url:"login",
 // 				type:"post",
-// 				data:{id:$("#id").val()},{pw:$("#pw").val()},
+// // 				data: ({id:$("#id").val(), pw:$("#pw").val()}),
+// 				data:({id:id,pw:pw}),
 // 				dataType:"text",
 // 				success:function(){
-// 					alert("회원탈퇴가 완료되었습니다.");
+// 					alert("로그인 성공했습니다.");
 // 				},
 // 				error:function(){
-// 					alert("비밀번호가 일치하지 않습니다.");
+// 					alert("아이디, 비밀번호가 맞지 않습니다.");
 // 				}
 // 			});
 //   		}
@@ -445,12 +447,12 @@ $(document).ready(function(){
     <div class="window">
     <h5>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</h5>
     <div id="null"></div>
-    <form action="${pageContext.request.contextPath }/member/login" method="post">
-    	아이디<input type="text" name="id"  id="id" required><br>
-    	비밀번호<input type="password" name="pw" id="pw" required><br>
+    <form action="${pageContext.request.contextPath }/member/login" method="post" >
+    	아이디<input type="text" name="id"  id="loginid" required><br>
+    	비밀번호<input type="password" name="pw" id="loginpw" required><br>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기" onclick="loginCheck();" /><br>
+        <input type="submit" id="login_btn" value="로그인하기" /><br>
         <input type="button" href="#" value="회원가입하기">
     </form>
     </div>
