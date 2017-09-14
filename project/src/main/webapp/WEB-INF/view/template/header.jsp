@@ -155,6 +155,12 @@ $(document).ready(function(){
 				location.href="lecturer?page=" + page + "&standard=" + standard + "&type=" + type + "&key=" + key;
 			}
 		});
+		
+		$("#now-lecture").on("click", function() {
+			var key = $(this).data('key');
+			
+			window.open("");
+		});
 	});
 	
 	  $(function(){
