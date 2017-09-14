@@ -33,7 +33,8 @@ public class UploadController {
 	           // String defaultPath = request.getSession().getServletContext().getRealPath("/");
 	           // System.out.println("파일 기본경로 = "+defaultPath);
 	            //파일 기본경로 _ 상세경로
-	            String path = "C:/Users/IT202-04/git/itbank0829/project/src/main/webapp/resource/photo_upload/";              
+	            //String path = "C:/Users/IT202-04/git/itbank0829/project/src/main/webapp/resource/photo_upload/";   
+	            String path = "D:/SW-1/5.Spring/sts-work/maven.1505120132372/project/src/main/webapp/resource/photo_upload/";   
 	            File file = new File(path);
 	            //System.out.println("path:"+path);
 	            //디렉토리 존재하지 않을경우 디렉토리 생성
@@ -71,7 +72,8 @@ public class UploadController {
 		      // 파일명을 받는다 - 일반 원본파일명
 		      String oldName = request.getHeader("file-name");
 		      // 파일 기본경로 _ 상세경로
-		      String filePath = "C:/Users/IT202-04/git/itbank0829/project/src/main/webapp/resource/photo_upload/";
+//		      String filePath = "C:/Users/IT202-04/git/itbank0829/project/src/main/webapp/resource/photo_upload/";
+		      String filePath = "D:/SW-1/5.Spring/sts-work/maven.1505120132372/project/src/main/webapp/resource/photo_upload/";   
 		      String saveName = sb.append(new SimpleDateFormat("yyyyMMddHHmmss")
 		                          .format(System.currentTimeMillis()))
 		                          .append(UUID.randomUUID().toString())
