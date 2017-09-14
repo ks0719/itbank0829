@@ -135,13 +135,26 @@ public class MyLectureDao {
 		}
 	}
 	
-	public boolean wish(String nick, LectureInfo lecture) {
+	public String wish(String nick, LectureInfo lecture) {
 		String sql = "select * from mylecture where id = ? and no = ?";
 		List<MyLecture> mylectures = jdbcTemplate.query(sql, new Object[] {nick, lecture.getNo()}, mapper);
 		//찜하기가 완료됐거나 결제된 강의 일 경우
-		if(mylectures.size()>0) return false;
+		if(mylectures.size()>0) return "이미 찜했거나 수강중인 강의 입니다.";
 		//등록이 안되있는 강의일 경우
-		else return insert(nick,lecture, "wish");
+		else {
+			SimpleDateFormat formatter = new SimpleDateFormat ("yy.MM.dd", Locale.KOREA );
+			String date = formatter.format(new Date());
+			String period = lecture.getPeriod();
+			String s = period.substring(0, period.indexOf("~"));
+			if(s.compareTo(date)<0) {
+				//[1] 날짜가 등록할 수 없는 강의일경우 
+				return "이미 시작되거나 종료된 강의 입니다.";
+			}else {
+				//[2] 그 외의 경우
+				if(insert(nick,lecture, "wish")) return "찜하기가 완료되었습니다.";
+				return null;
+			}
+		}
 	}
 
 	public MyLecture select(int no, String nick) {

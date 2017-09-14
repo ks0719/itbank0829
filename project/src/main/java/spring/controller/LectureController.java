@@ -76,6 +76,7 @@ public class LectureController {
 		} catch(Exception e) {
 			pageNo = 1;
 		}
+		System.out.println(noI);
 		
 		LectureInfo info = lectureDao.showOne(noI);
 		
@@ -109,16 +110,7 @@ public class LectureController {
 		LectureInfo info = lectureDao.showOne(no);
 		String nick = getNick(req);
 		
-		boolean result = myLectureDao.wish(nick, info);
-		log.debug("result : " + result);
-		
-		String res = "";
-		if (result) res = "찜하기가 완료되었습니다.";
-		else res = "이미 찜이 되어있거나 수강중인 강의 입니다.";
-		
-		log.debug("res : " + res);
-		
-		return res;
+		return myLectureDao.wish(nick, info);
 	}
 	
 	@Autowired

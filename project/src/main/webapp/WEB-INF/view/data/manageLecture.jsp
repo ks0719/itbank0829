@@ -4,14 +4,14 @@
 <html>
 <head>
 <title>수강 관리</title>
-
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
-    $(".detail").click(function(){
-        $("#changeable").load("${pageContext.request.contextPath}/lecture/class?no=32 .borN");
-    });
-});
+
+function change(no){
+	$("#changeable").load("${pageContext.request.contextPath}/lecture/class?no="+no+" .borN");
+}
+
 </script>
 </head>
 <body>
@@ -53,7 +53,7 @@ $(document).ready(function(){
 		                        <td>${list.price}</td>
 		                        <td>
 <%-- 		                        	<a href="${pageContext.request.contextPath}/lecture/class?no=${list.no}" class="detail" id="">상세보기</a> --%>
-		                        	<a href="" class="detail" id="${list.no}" onclick="return false;">상세보기</a>
+		                        	<a href="" class="detail" onclick="change(${list.no}); return false;">상세보기</a>
 		                        </td>
 		                    </tr>
 	                    </c:forEach>
