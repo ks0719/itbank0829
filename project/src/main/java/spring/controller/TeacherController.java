@@ -42,6 +42,15 @@ public class TeacherController {
 		return "";
 	}
 	
+	@RequestMapping("/apply")
+	public String apply(HttpServletRequest request, Model m) throws Exception {
+		String nick = getNick(request);
+		
+		m.addAttribute("nick", nick);
+		
+		return "teacher/apply";
+	}
+	
 	@RequestMapping("/lecturer")
 	public String lecturer(String page, String standard, HttpServletRequest request, Model m) throws Exception {
 		String type = request.getParameter("type");
