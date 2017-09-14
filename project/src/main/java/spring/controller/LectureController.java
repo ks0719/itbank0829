@@ -76,7 +76,6 @@ public class LectureController {
 		} catch(Exception e) {
 			pageNo = 1;
 		}
-		System.out.println(noI);
 		
 		LectureInfo info = lectureDao.showOne(noI);
 		
