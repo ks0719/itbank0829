@@ -92,13 +92,17 @@ public class MemberController {
 	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) throws UnsupportedEncodingException {
 		String id=request.getParameter("id");
 		String pw=request.getParameter("pw");
-//		log.debug("id="+id+",pw="+pw);
+		log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
-		//log.debug("url="+url);
-		String param = request.getParameter("param");	
+		log.debug("url="+url);
+		String param = request.getParameter("param");
+		log.debug("param="+param);
+		if(param!=null) {
 		param = param.replaceAll(", ", "&");
 		param = param.substring(1, param.length()-1);
+		}
 //		log.debug(param);
+		
 		url=url.replaceAll(serveraddr, "").replaceAll(".jsp", "");
 		url += "?"+param;
 //		log.debug("url="+url);

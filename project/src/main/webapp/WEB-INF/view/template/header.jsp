@@ -425,8 +425,10 @@ $(document).ready(function(){
    		}
   		else{
   			$.ajax({
+  				url:"login",
+  				type:"post",
   				async: false,
-				data:({id:$("#loginid").val(), pw:$("#loginpw").val()}),
+				data:({id:$("#loginid").val(), pw:$("#loginpw").val(),page:"${pageContext.request.requestURL}",param:"${param}"}),
 				dataType:"text",
 				success:function(){
 					alert("로그인 성공했습니다.");
@@ -442,6 +444,13 @@ $(document).ready(function(){
   	}
   	
   	function changepw() {
+//   		var pw=null;
+//   		$.ajax({
+//   			url:"mypw",
+//   			async:false,
+//   			type:"get"
+//   			data:
+//   		});
   	  if(chpw.newpw.value != chpw.repw.value ) {
   	    alert("새 비밀번호가 일치하지 않습니다.");
   	   chpw.newpw.focus();
