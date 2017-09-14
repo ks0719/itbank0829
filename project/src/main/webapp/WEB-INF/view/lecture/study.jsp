@@ -35,7 +35,7 @@
 					${info.kin_grade}/${info.price_grade}/${info.kind_grade}
 				</td>
 				<td>
-					${info.open}
+					${info.period}
 				</td>
 				<td class="teacher">
 					${info.teacher}
@@ -68,8 +68,7 @@
 	</div>
 	<form action="study" class="wrap">
 		<input type="hidden" name="page" value="1">
-		<select name="type" class="user-input">
-			<option value="">분류 선택</option>
+		<select name="type" title="분류 선택" class="user-input">
 			<option value="tag">수업태그</option>
 			<option value="title">제목</option>
 			<option value="teacher">강사명</option>

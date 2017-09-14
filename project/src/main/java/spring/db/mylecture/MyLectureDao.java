@@ -81,7 +81,7 @@ public class MyLectureDao {
 			String sql = "insert into mylecture values(?, ?, ?, ?, ?, ?, ?, ?, '미결제', ?, '미평가', ?)";
 			
 			Object[] args = {nick, lecture.getNo(), lecture.getTag(), lecture.getTitle(), lecture.getTeacher(), lecture.getTime(), 
-					lecture.getType(), lecture.getPrice(), lecture.getOpen(), wish};
+					lecture.getType(), lecture.getPrice(), lecture.getPeriod(), wish};
 			
 			return jdbcTemplate.update(sql, args)>0;
 		}else {
@@ -97,7 +97,6 @@ public class MyLectureDao {
 	public boolean wish(String nick, LectureInfo lecture) {
 		String sql = "select * from mylecture where id = ? and no = ?";
 		List<MyLecture> mylectures = jdbcTemplate.query(sql, new Object[] {nick, lecture.getNo()}, mapper);
-		
 		//찜하기가 완료됐거나 결제된 강의 일 경우
 		if(mylectures.size()>0) return false;
 		//등록이 안되있는 강의일 경우

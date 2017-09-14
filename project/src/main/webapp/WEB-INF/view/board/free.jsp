@@ -87,8 +87,7 @@
 	</div>
 	<form action="${path}" class="wrap">
 		<input type="hidden" name="page" value="1">
-		<select name="type" class="user-input">
-			<option value="">분류 선택</option>
+		<select name="type" title="분류선택" class="user-input">
 			<option value="head">말머리</option>
 			<option value="title">제목</option>
 			<option value="writer">작성자</option>

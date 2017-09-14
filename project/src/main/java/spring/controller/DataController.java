@@ -179,6 +179,11 @@ public class DataController {
 		
 		return "data/point";
 	}
+	@RequestMapping(value="/data/point",method=RequestMethod.POST)
+	public String pointpost() {
+		
+		return "data/pay";
+	}
 	@RequestMapping("/data/manageLecture")
 	public String manageLecture(Model m, HttpServletRequest req) throws Exception {
 		//page 넘버 설정
@@ -279,15 +284,25 @@ public class DataController {
 		return "data/changepw";
 	}
 	@RequestMapping(value="/data/changepw",method=RequestMethod.POST)
-	public String changepwpost(HttpServletRequest request) throws Exception {
+	public String changepwpost(HttpServletRequest request,Model model) throws Exception {
 		String nick=getNick(request);
+		//log.debug("nick="+nick);
 		String pw=request.getParameter("pw");
+		//log.debug("pw="+pw);
 		String newpw=request.getParameter("newpw");
+		//log.debug("newpw="+newpw);
 		boolean state=mbdao.changepw(nick, pw, newpw);
 		if(state) {
-			return "redirect:/data/maininfo";
+			model.addAttribute("msg", "비밀번호가 정상적으로 변경되었습니다."); 
+			model.addAttribute("url", "/data/maininfo"); 
+			return "data/redirect";
 		}
 		return "redirect:/data/fail";
 		
+	}
+	@RequestMapping("/data/redirect")
+	public String redirect() {
+		
+		return "data/redirect";
 	}
 }

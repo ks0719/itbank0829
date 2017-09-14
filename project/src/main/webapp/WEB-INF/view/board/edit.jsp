@@ -10,6 +10,10 @@
 		<form action="edit" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="no" value="${no}">
 			<input type="hidden" name="context" value="${context}">
+			<input type="hidden" name="filename" value="${unit.filename}">
+			<input type="hidden" name="originfile" value="${unit.originfile}">
+			<input type="hidden" name="filetype" value="${unit.filetype}">
+			<input type="hidden" name="filesize" value="${unit.filesize}">
 			<table border="1" class="tableUnit" rules=rows>
 				<tr>
 					<td class="head">

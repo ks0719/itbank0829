@@ -14,7 +14,7 @@ public class Teacher {
 	private int lecture;
 	private int best;
 	private int count;
-	private int grade;
+	private double grade;
 	private String reg;
 	
 	public Teacher(ResultSet rs) throws SQLException {
@@ -26,7 +26,7 @@ public class Teacher {
 		setLecture(rs.getInt("lecture"));
 		setBest(rs.getInt("best"));
 		setCount(rs.getInt("count"));
-		setGrade(rs.getInt("grade"));
+		setGrade(rs.getDouble("grade"));
 		setReg(rs.getString("reg"));
 	}
 	
@@ -78,10 +78,10 @@ public class Teacher {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public int getGrade() {
+	public double getGrade() {
 		return grade;
 	}
-	public void setGrade(int grade) {
+	public void setGrade(double grade) {
 		this.grade = grade;
 	}
 	public String getReg() {

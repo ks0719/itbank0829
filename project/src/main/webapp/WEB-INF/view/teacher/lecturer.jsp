@@ -4,22 +4,22 @@
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <div class="page-wrap">
-	<div class="table-wrap">
+	<div class="table-wrap lecturer">
 		<table border="1" class="tableUnit" rules=rows>
 			<tr>
-				<th class="lecturer-array" value="no">
+				<th class="lecturer-array" value="no" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					번호
 				</th>
-				<th class="lecturer-array" value="sort">
+				<th class="lecturer-array" value="sort" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					분류
 				</th>
 				<th>
 					강사명
-				</th class="lecturer-array" value="count">
-				<th>
+				</th>
+				<th class="lecturer-array" value="count" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					강의횟수
 				</th>
-				<th class="lecturer-array" value="grade">
+				<th class="lecturer-array" value="grade" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					평점
 				</th>
 				<th>
@@ -61,7 +61,7 @@
 						<div class="paging-unit active">${i}</div>
 					</c:when>
 					<c:otherwise>
-		       			<div class="paging-unit"><a href="${url}&page=${i}">${i}</a></div>
+		       			<div class="paging-unit"><a href="${url}page=${i}">${i}</a></div>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -74,7 +74,7 @@
 	<form action="lecturer" class="wrap">
 		<input type="hidden" name="page" value="1">
 		<select name="type" title="검색 기준" class="user-input">
-			<option value="sort">분류</option>
+			<option value="sort">강사분류</option>
 			<option value="name">강사명</option>
 		</select>
 		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>

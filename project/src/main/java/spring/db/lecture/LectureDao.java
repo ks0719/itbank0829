@@ -21,7 +21,7 @@ public class LectureDao {
 		
 		Object[] args = new Object[] {info.getTag(), info.getTitle(), info.getTeacher(), info.getTime(), info.getType(), 
 				info.getPrice(), info.getPicture_name(), info.getPicture_realname(), info.getPicture_type(), 
-				info.getPicture_size(), info.getIntro(), info.getDetail(), info.getOpen()};
+				info.getPicture_size(), info.getIntro(), info.getDetail(), info.getPeriod()};
 		
 		return jdbcTemplate.update(sql, args) > 0;
 	}

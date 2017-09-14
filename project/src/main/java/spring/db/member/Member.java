@@ -11,7 +11,7 @@ public class Member {
 	private String id;
 	private String pw;
 	private String name;
-	private String nickname;
+	private String nick;
 	private String phone;
 	private String sort;
 	private String post;
@@ -29,7 +29,7 @@ public class Member {
 		setId(rs.getString("id"));
 		setPw(rs.getString("pw"));
 		setName(rs.getString("name"));
-		setNickname(rs.getString("nick"));
+		setNick(rs.getString("nick"));
 		setPhone(rs.getString("phone"));
 		setSort(rs.getString("sort"));
 		setPost(rs.getString("post"));
@@ -48,7 +48,7 @@ public class Member {
 		setId(request.getParameter("id"));
 		setPw(request.getParameter("pw"));
 		setName(request.getParameter("name"));
-		setNickname(request.getParameter("nick"));
+		setNick(request.getParameter("nick"));
 //		setPhone(Integer.parseInt(request.getParameter("phone")));
 		setPhone(request.getParameter("phone"));
 		setSort(request.getParameter("sort"));
@@ -69,14 +69,14 @@ public class Member {
 		}
 		setReg(request.getParameter("reg"));
 	}
-	public Member(int no, String id, String pw, String name, String nickname, String phone, String sort, String post,
+	public Member(int no, String id, String pw, String name, String nick, String phone, String sort, String post,
 			String addr1, String addr2, int mileage, int lev, String reg) {
 		super();
 		this.no = no;
 		this.id = id;
 		this.pw = pw;
 		this.name = name;
-		this.nickname = nickname;
+		this.nick = nick;
 		this.phone = phone;
 		this.sort = sort;
 		this.post = post;
@@ -110,11 +110,11 @@ public class Member {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getNickname() {
-		return nickname;
+	public String getNick() {
+		return nick;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 	public String getPhone() {
 		return phone;
