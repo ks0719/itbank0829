@@ -1,6 +1,10 @@
 package spring.db.mylecture;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,9 +20,45 @@ public class MyLectureDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	RowMapper<MyLecture> mapper = (rs, index)->{
+	private RowMapper<MyLecture> mapper = (rs, index)->{
 		return new MyLecture(rs);
 	};
+	
+	private List<MyLecture> defaultLecture(String id, int pageno){
+		SimpleDateFormat formatter = new SimpleDateFormat ("yy.MM.dd", Locale.KOREA );
+		String date = formatter.format(new Date());
+		
+		int start, end;
+		if(pageno==0) {
+			start=1;
+			end = Integer.MAX_VALUE;
+		}else {
+			start = (pageno-1)*MY_LECTURE_LENGTH+1;
+			end = start+MY_LECTURE_LENGTH-1;
+		}
+		
+		List<MyLecture> returnList = new ArrayList<>();
+		
+		String sql = "select * from ("
+				+ "select rownum rn, TMP.* from("
+				+ "select * from mylecture "
+				+ "where id=? and state='결제 완료'"
+				+ " order by period desc,state,time desc"	
+				+ ")TMP) "
+				+ "where rn between ? and ?";
+		
+		List<MyLecture> needSort = jdbcTemplate.query(sql,new Object[]{id, start, end},mapper);
+		
+		for(MyLecture lecture:needSort) {
+			String period = lecture.getPeriod();
+			String s = period.substring(0, period.indexOf("~"));
+			String e = period.substring(period.indexOf("~")+1);
+			if(s.compareTo(date)<0&&e.compareTo(date)>0) {
+				returnList.add(lecture);
+			}
+		}
+		return returnList;
+	}
 	
 	public List<MyLecture> list(String id, String box, int pageno) throws Exception {
 		int start = (pageno-1)*MY_LECTURE_LENGTH+1;
@@ -43,10 +83,10 @@ public class MyLectureDao {
 			sql += " and wish='wish'";
 			break;
 		default:
-			sql += " and state='진행중'";
+			return defaultLecture(id, pageno);
 		}
 				
-		sql += 	" order by reg desc,state,time desc"	
+		sql += 	" order by period desc,state,time desc"	
 				+ ")TMP) "
 			+ "where rn between ? and ?";
 		
@@ -57,6 +97,7 @@ public class MyLectureDao {
 		String sql = "select count(*) from mylecture where id=?";
 		switch (box) {
 		case "all":
+			sql += " and state!='미결제'";
 			break;
 		case "comp":
 			sql += " and state='수료'";
@@ -68,7 +109,7 @@ public class MyLectureDao {
 			sql += " and wish='wish'";
 			break;
 		default:
-			sql += " and state='진행중'";
+			return (defaultLecture(id, 0).size()-1)/MY_LECTURE_LENGTH+1;
 		}
 		
 		int data_length = jdbcTemplate.queryForObject(sql, new Object[] {id} ,Integer.class);
