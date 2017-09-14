@@ -11,7 +11,6 @@ public class Teacher {
 	private String sort;
 	private String career;
 	private String intro;
-	private int lecture;
 	private int best;
 	private int count;
 	private double grade;
@@ -23,7 +22,6 @@ public class Teacher {
 		setSort(rs.getString("sort"));
 		setCareer(rs.getString("career"));
 		setIntro(rs.getString("intro"));
-		setLecture(rs.getInt("lecture"));
 		setBest(rs.getInt("best"));
 		setCount(rs.getInt("count"));
 		setGrade(rs.getDouble("grade"));
@@ -59,12 +57,6 @@ public class Teacher {
 	}
 	public void setIntro(String intro) {
 		this.intro = intro;
-	}
-	public int getLecture() {
-		return lecture;
-	}
-	public void setLecture(int lecture) {
-		this.lecture = lecture;
 	}
 	public int getBest() {
 		return best;

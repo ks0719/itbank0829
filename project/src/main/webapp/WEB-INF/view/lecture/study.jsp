@@ -10,7 +10,7 @@
 				<th>
 					수업태그
 				</th>
-				<th class="title">
+				<th>
 					제목
 				</th>
 				<th>
@@ -19,8 +19,8 @@
 				<th>
 					개강일
 				</th>
-				<th class="teacher">
-					강사정보
+				<th>
+					강사명
 				</th>
 			</tr>
 			<c:forEach var="info" items="${list}">
