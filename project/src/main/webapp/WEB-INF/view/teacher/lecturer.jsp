@@ -27,9 +27,9 @@
 				</th>
 			</tr>
 			<c:forEach var="teacher" items="${list}">
-			<tr data-no="${teacher.no}" data-page="${page}" data-type="${type}" data-key="${key}" data-url="lecturerInfo" class="clickToinfo" style="cursor: pointer">
+			<tr data-name="${teacher.name}" data-page="${page}" data-type="${type}" data-key="${key}" class="toLecturerInfo" style="cursor: pointer">
 				<td>
-					[${teacher.no}]
+					${teacher.no}
 				</td>
 				<td>
 					${teacher.sort}

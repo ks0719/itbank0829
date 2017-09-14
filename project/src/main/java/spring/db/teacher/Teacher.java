@@ -5,17 +5,23 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 public class Teacher {
 	private int no;
 	private String name;
 	private String sort;
 	private String career;
 	private String intro;
-	private int lecture;
 	private int best;
 	private int count;
 	private double grade;
 	private String reg;
+	private String picture_name;
+	private String picture_realname;
+	private String picture_type;
+	private long picture_size;
 	
 	public Teacher(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
@@ -23,11 +29,35 @@ public class Teacher {
 		setSort(rs.getString("sort"));
 		setCareer(rs.getString("career"));
 		setIntro(rs.getString("intro"));
-		setLecture(rs.getInt("lecture"));
 		setBest(rs.getInt("best"));
 		setCount(rs.getInt("count"));
 		setGrade(rs.getDouble("grade"));
 		setReg(rs.getString("reg"));
+		setPicture_name(rs.getString("picture_name"));
+		setPicture_realname(rs.getString("picture_realname"));
+		setPicture_type(rs.getString("picture_type"));
+		setPicture_size(rs.getInt("picture_size"));
+	}
+	
+	public Teacher(MultipartHttpServletRequest mRequest) {
+		setName(mRequest.getParameter("name"));
+		setSort(mRequest.getParameter("sort"));
+		setCareer(mRequest.getParameter("career"));
+		setIntro(mRequest.getParameter("intro"));
+		
+		MultipartFile file = mRequest.getFile("file");
+		if (file.getOriginalFilename() != "") {
+			setPicture_realname(file.getOriginalFilename());
+			setPicture_type(file.getContentType());
+			setPicture_size(file == null ? 0 : file.getSize());
+		} else {
+			String originfile = mRequest.getParameter("originfile");
+			setPicture_realname(originfile == null ? "" : originfile);
+			String filetype = mRequest.getParameter("filetype");
+			setPicture_type(filetype == null ? "" : filetype);
+			String size = mRequest.getParameter("filesize");
+			setPicture_size(Integer.parseInt(size == null ? "0" : size));
+		}
 	}
 	
 	public int getNo() {
@@ -59,12 +89,6 @@ public class Teacher {
 	}
 	public void setIntro(String intro) {
 		this.intro = intro;
-	}
-	public int getLecture() {
-		return lecture;
-	}
-	public void setLecture(int lecture) {
-		this.lecture = lecture;
 	}
 	public int getBest() {
 		return best;
@@ -102,6 +126,38 @@ public class Teacher {
 			return getTime();
 		else
 			return getDate();
+	}
+
+	public String getPicture_name() {
+		return picture_name;
+	}
+
+	public void setPicture_name(String picture_name) {
+		this.picture_name = picture_name;
+	}
+
+	public String getPicture_realname() {
+		return picture_realname;
+	}
+
+	public void setPicture_realname(String picture_realname) {
+		this.picture_realname = picture_realname;
+	}
+
+	public String getPicture_type() {
+		return picture_type;
+	}
+
+	public void setPicture_type(String picture_type) {
+		this.picture_type = picture_type;
+	}
+
+	public long getPicture_size() {
+		return picture_size;
+	}
+
+	public void setPicture_size(long l) {
+		this.picture_size = l;
 	}
 
 }

@@ -25,7 +25,7 @@
 		</table>
         
         <div class="left" align="left">
-        <a href="#">강사 정보</a>
+        	<a href="${pageContext.request.contextPath}/teacher/lecturerInfo?name=${info.teacher}">강사 정보</a>
         </div>
         <div class="right" align="right">
         <c:choose>

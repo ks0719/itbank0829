@@ -1,7 +1,9 @@
 package spring.controller;
 
+import java.net.URLDecoder;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -10,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import spring.db.lecture.LectureInfo;
 import spring.db.teacher.Teacher;
 import spring.db.teacher.TeacherDao;
 
@@ -23,6 +23,33 @@ public class TeacherController {
 	
 	@Autowired
 	private TeacherDao teacherDao;
+	
+	private String getNick(HttpServletRequest req) throws Exception {
+		Cookie[] c=req.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode(ck.getValue(),"utf-8");
+//	            log.debug("쿠키값  :"+cValue);
+	            if(cName.equals("mynick")) {
+	            	return cValue;
+	            }
+	        }
+		}
+		return "";
+	}
+	
+	@RequestMapping("/apply")
+	public String apply(HttpServletRequest request, Model m) throws Exception {
+		String nick = getNick(request);
+		
+		m.addAttribute("nick", nick);
+		
+		return "teacher/apply";
+	}
 	
 	@RequestMapping("/lecturer")
 	public String lecturer(String page, String standard, HttpServletRequest request, Model m) throws Exception {
@@ -108,25 +135,21 @@ public class TeacherController {
 	
 	@RequestMapping("/lecturerInfo")
 	public String lecturerInfo(HttpServletRequest req, Model m) throws Exception {
-		int noI, pageNo;
-		try {
-			noI = Integer.parseInt(req.getParameter("no"));
-		} catch(Exception e) {
-			throw new Exception("404");
-		}
+		String name = req.getParameter("name");
+		int pageNo;
 		try {
 			pageNo = Integer.parseInt(req.getParameter("page"));
 		} catch(Exception e) {
 			pageNo = 1;
 		}
 		
-		Teacher info = teacherDao.showOne(noI);
+		Teacher info = teacherDao.showOne(name);
 		
 		String url = "?page=" + pageNo;
 		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");
 		
 		m.addAttribute("info", info);
-		m.addAttribute("no", noI);
+		m.addAttribute("name", name);
 		m.addAttribute("url", url);
 		
 		return "teacher/lecturerInfo";

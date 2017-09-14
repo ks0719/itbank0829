@@ -175,13 +175,44 @@ public class DataController {
 		return "data/pay";
 	}
 	@RequestMapping("/data/point")
-	public String point() {
-		
+	public String point(HttpServletRequest request,Model model) throws Exception {
+		String nick=getNick(request);
+		int point=mbdao.mypoint(nick);
+		model.addAttribute("point", point);
 		return "data/point";
 	}
 	@RequestMapping(value="/data/point",method=RequestMethod.POST)
-	public String pointpost() {
-		
+	public String pointpost(HttpServletRequest request,Model model) throws Exception {
+		String nick=getNick(request);
+		int select=Integer.parseInt(request.getParameter("point"));
+		String point =null;
+		int money = 0;
+		switch (select) {
+		case 1:
+			point="1,000";
+			money=10000;
+			break;
+		case 2:
+			point="3,000";
+			money=30000;
+			break;
+		case 3:
+			point="5,000";
+			money=50000;
+			break;
+		case 4:
+			point="7,000";
+			money=70000;
+			break;
+		case 5:
+			point="10,000";
+			money=100000;
+			
+		}
+		Member list=mbdao.list(nick);
+		model.addAttribute("list", list);
+		model.addAttribute("point", point);
+		model.addAttribute("money", money);
 		return "data/pay";
 	}
 	@RequestMapping("/data/manageLecture")
