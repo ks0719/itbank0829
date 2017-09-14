@@ -444,13 +444,13 @@ $(document).ready(function(){
   	}
   	
   	function changepw() {
-//   		var pw=null;
+  		var pw=null;
 //   		$.ajax({
 //   			url:"mypw",
 //   			async:false,
 //   			type:"get"
-//   			data:
-//   		});
+//   			data:(pw:$("#pw")
+//   		});여기는 집가서 하든 내일 하든 
   	  if(chpw.newpw.value != chpw.repw.value ) {
   	    alert("새 비밀번호가 일치하지 않습니다.");
   	   chpw.newpw.focus();
