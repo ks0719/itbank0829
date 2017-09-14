@@ -5,17 +5,20 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.JOptionPane;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
+import spring.db.member.Member;
+import spring.db.member.MemberDao;
+import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
 
 @Controller
@@ -83,6 +86,20 @@ public class LectureController {
 		m.addAttribute("no", noI);
 		m.addAttribute("url", url);
 		
+		//회원이 등록한 강의인지 아닌지 확인 해야함
+		String nick = getNick(req);
+		
+		MyLecture lecture = myLectureDao.select(noI,nick);
+		boolean paid;
+		try {
+			if(lecture.getState().equals("결제 완료")) paid = true;
+			else paid=false;
+		}catch(Exception e) {
+			paid = false;
+		}
+		
+		m.addAttribute("paid", paid);
+		
 		return "lecture/class";
 	}
 	
@@ -92,22 +109,59 @@ public class LectureController {
 		LectureInfo info = lectureDao.showOne(no);
 		String nick = getNick(req);
 		
-		int result = myLectureDao.wish(nick, info);
+		boolean result = myLectureDao.wish(nick, info);
 		log.debug("result : " + result);
 		
 		String res = "";
-		if (result == 1) res = "찜하기가 완료되었습니다.";
-		else res = "이미 찜이 되어있거나 할 수 없습니다.";
+		if (result) res = "찜하기가 완료되었습니다.";
+		else res = "이미 찜이 되어있거나 수강중인 강의 입니다.";
 		
 		log.debug("res : " + res);
 		
 		return res;
 	}
 	
-	@RequestMapping("/lecture/req")
-	public String req() {
+	@Autowired
+	private MemberDao memberDao;
+	
+	@RequestMapping(value="/req",method=RequestMethod.GET)
+	public String reqGet(HttpServletRequest req, Model m) throws Exception {
+		//강의번호(no)를 받아서 db에 접속한 뒤 정보를 빼와야함
+		int no;
+		try{
+			no = Integer.parseInt(req.getParameter("no"));
+		}catch(Exception e) {
+			throw new Exception("404");
+		}
+		LectureInfo lecture = lectureDao.showOne(no);
+		m.addAttribute("lecture", lecture);
+		
+		//현재 로그인한 회원의 보유 포인트를 가져와야함
+		String nick = getNick(req);
+		Member member = memberDao.select(nick);
+		
+		m.addAttribute("mileage",member.getMileage());
 		
 		return "lecture/req";
+	}
+	
+	@RequestMapping(value="/req",method=RequestMethod.POST)
+	public String reqPost(HttpServletRequest req) throws Exception {
+		//[1] 회원 닉네임을 가져온다
+		String nick = getNick(req);
+		
+		//[2] 강의 번호를 가져와 db에서 강의 정보를 꺼내온다
+		int no = Integer.parseInt(req.getParameter("no"));
+		LectureInfo lecture = lectureDao.showOne(no);
+		
+		boolean result = myLectureDao.insert(nick, lecture, "");
+		if(!result) throw new Exception("LectureController-reqPost에서 오류");
+		
+		//[3] 회원 마일리지를 차감한다
+		boolean result2= memberDao.update("mileage", req.getParameter("mileage"));
+		if(!result2) throw new Exception("LectureController-reqPost에서 오류");
+		
+		return "redirect:/lecture/class?no="+no;
 	}
 	
 	@RequestMapping("/study")

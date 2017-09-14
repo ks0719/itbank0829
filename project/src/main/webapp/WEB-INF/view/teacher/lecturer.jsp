@@ -7,19 +7,19 @@
 	<div class="table-wrap lecturer">
 		<table border="1" class="tableUnit" rules=rows>
 			<tr>
-				<th class="lecturer-array" value="no" data-type="${type}" data-key="${key}" style="cursor: pointer">
+				<th class="lecturer-array" value="no" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					번호
 				</th>
-				<th class="lecturer-array" value="sort" style="cursor: pointer">
+				<th class="lecturer-array" value="sort" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					분류
 				</th>
 				<th>
 					강사명
 				</th>
-				<th class="lecturer-array" value="count" style="cursor: pointer">
+				<th class="lecturer-array" value="count" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					강의횟수
 				</th>
-				<th class="lecturer-array" value="grade" style="cursor: pointer">
+				<th class="lecturer-array" value="grade" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					평점
 				</th>
 				<th>
@@ -61,7 +61,7 @@
 						<div class="paging-unit active">${i}</div>
 					</c:when>
 					<c:otherwise>
-		       			<div class="paging-unit"><a href="${url}&page=${i}">${i}</a></div>
+		       			<div class="paging-unit"><a href="${url}page=${i}">${i}</a></div>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>

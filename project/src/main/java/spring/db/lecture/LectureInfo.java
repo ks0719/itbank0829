@@ -23,7 +23,7 @@ public class LectureInfo {
 	private String detail;
 	private String accept;
 	private String reg;
-	private String open;
+	private String period;
 	
 	public LectureInfo(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
@@ -45,7 +45,7 @@ public class LectureInfo {
 		setDetail(rs.getString("detail"));
 		setAccept(rs.getString("accept"));
 		setReg(rs.getString("reg"));
-		setOpen(rs.getString("open"));
+		setPeriod(rs.getString("period"));
 	}
 
 	public int getNo() {
@@ -200,12 +200,13 @@ public class LectureInfo {
 		this.reg = reg;
 	}
 
-	public String getOpen() {
-		return open;
+	public String getPeriod() {
+		return period;
 	}
 
-	public void setOpen(String open) {
-		this.open = open;
+	public void setPeriod(String period) {
+		this.period = period;
 	}
+
 	
 }
