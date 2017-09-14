@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
-<form action="${pageContext.request.contextPath }/data/changepw" method="post">
+<form name="chpw" action="${pageContext.request.contextPath }/data/changepw" method="post" onsubmit="return changepw()">
 현재 비밀번호 입력<input type="password" name="pw" required><br>
 새 비밀번호 입력<input type="password"  name="newpw" required><br>
 새 비밀번호 재입력<input type="password"  name="repw" required><br>

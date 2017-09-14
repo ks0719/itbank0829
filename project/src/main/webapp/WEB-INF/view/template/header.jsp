@@ -430,7 +430,15 @@ $(document).ready(function(){
 // 				}
 // 			});
 //   		}
-//   	}
+  	}
+  	function changepw() {
+  	  if(chpw.newpw.value != chpw.repw.value ) {
+  	    alert("새 비밀번호가 일치하지 않습니다.");
+  	   chpw.newpw.focus();
+  	    return false;
+  	  }
+  	  else return true;
+  	}
 </script>
 
 <head>
