@@ -7,9 +7,6 @@
 	<div class="table-wrap lecturer">
 		<table border="1" class="tableUnit" rules=rows>
 			<tr>
-				<th class="lecturer-array" value="no" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-					번호
-				</th>
 				<th class="lecturer-array" value="sort" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
 					분류
 				</th>
@@ -28,9 +25,6 @@
 			</tr>
 			<c:forEach var="teacher" items="${list}">
 			<tr data-name="${teacher.name}" data-page="${page}" data-type="${type}" data-key="${key}" class="toLecturerInfo" style="cursor: pointer">
-				<td>
-					${teacher.no}
-				</td>
 				<td>
 					${teacher.sort}
 				</td>

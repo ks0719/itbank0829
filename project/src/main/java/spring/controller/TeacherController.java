@@ -117,7 +117,7 @@ public class TeacherController {
 				sub2 = "sort";
 				break;
 			default :
-				standard = "no";
+				standard = "reg";
 			}
 		}
 		log.debug("st : " + standard);

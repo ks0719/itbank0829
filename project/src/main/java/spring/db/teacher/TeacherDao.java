@@ -60,7 +60,7 @@ public class TeacherDao {
 		if (type == null || type == "" || key == null) return list(start, end);
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by no desc)"
+				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {key, start, end};
@@ -70,7 +70,7 @@ public class TeacherDao {
 
 	public List<Teacher> list(int start, int end) {
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher order by no desc)"
+				+ "select * from teacher order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {start, end};
@@ -85,14 +85,6 @@ public class TeacherDao {
 		
 		if (list.isEmpty()) throw new Exception("404");
 		return list.get(0);
-	}
-
-	public int getNo(String teacher) {
-		String sql = "select no from teacher where name = ?";
-		
-		int teacherno = jdbcTemplate.queryForObject(sql, new Object[] {teacher}, Integer.class);
-		
-		return teacherno;
 	}
 
 	public boolean apply(Teacher teacher) {
