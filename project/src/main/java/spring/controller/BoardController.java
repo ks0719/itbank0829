@@ -118,12 +118,11 @@ public class BoardController {
 
 		String[] extension = file.getContentType().split("/");
 		String nick = getNick(mRequest);
-		log.debug("write nick : " + nick);
 		int no = boardDao.write(path, nick, new Board(mRequest), contextI);
 		String filename = no + "." + extension[extension.length - 1];
 		File target = new File(savePath, filename);
 		if(!target.exists()) target.mkdirs();
-		file.transferTo(target);		
+		file.transferTo(target);
 		
 		if (contextI != 0) return "redirect:/board/" + path + "/detail?no=" + context;
 		return "redirect:/board/" + path + "/detail?no=" + no;

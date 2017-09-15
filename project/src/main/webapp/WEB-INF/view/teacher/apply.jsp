@@ -12,8 +12,8 @@
 <h1>강사신청</h1>
 
 <div>
-	<form action="apply" method="post">
-		<input type="hidden" name="nick" value="${nick}">
+	<form action="apply" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="name" value="${nick}">
 		닉네임 : ${nick}
 		<br><br>
 		사진 : <input type="file" name="file" onchange="previewImage(this,'upload_photo')">
@@ -22,9 +22,19 @@
 			<img width="167px;" id="prev_upload_photo" src="http://www.placehold.it/150x150"/>
 		</div>
 		<br><br>
-		<textarea rows="10" cols="80" name="career" placeholder="경력소개"></textarea>
+		주언어 : 
+		<select name="sort" title="언어 선택">
+			<option value="C언어">C언어</option>
+			<option value="C++">C++</option>
+			<option value="JAVA">JAVA</option>
+			<option value="JSP">JSP</option>
+			<option value="Javascript">Javascript</option>
+			<option value="Python">Python</option>
+		</select>
 		<br><br>
-		<textarea rows="20" cols="80" name="intro" placeholder="자기소개"></textarea>
+		<textarea rows="10" cols="80" name="career" placeholder="경력소개" required></textarea>
+		<br><br>
+		<textarea rows="20" cols="80" name="intro" placeholder="자기소개" required></textarea>
 		<br><br>
 		<div class="align-right">
 			<input type="submit" value="신청하기">

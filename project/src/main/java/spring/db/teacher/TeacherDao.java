@@ -95,9 +95,22 @@ public class TeacherDao {
 		return teacherno;
 	}
 
-	public void apply(String nick, Teacher teacher) {
-		String sql = "insert into teacher values()";
+	public boolean apply(Teacher teacher) {
+		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait')";
 		
+		String[] extension = teacher.getPicture_type().split("/");
+		String filename = teacher.getName() + "." + extension[extension.length - 1];
+		
+		Object[] args = {teacher.getName(), teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size()};
+		
+		return jdbcTemplate.update(sql, args) > 0;
+	}
+
+	public boolean applycheck(String nick) {
+		String sql = "select count(*) from teacher where name = ?";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class) > 0;
 	}
 
 }

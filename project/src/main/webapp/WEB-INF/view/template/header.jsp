@@ -167,6 +167,24 @@ $(document).ready(function(){
 				location.href="lecturer?page=" + page + "&standard=" + standard + "&type=" + type + "&key=" + key;
 			}
 		});
+		
+		$("#lecturer-apply").on("click", function() {
+			var nick = $(this).attr('value');
+			console.log(nick);
+			
+			$.ajax({
+				url: "${pageContext.request.contextPath}/teacher/applycheck",
+				data: {"nick": nick},
+				success: function(res) {
+					console.log(res);
+					if (res == "true") {
+						alert("이미 신청하셨습니다.");
+					} else {
+						location.href = "${pageContext.request.contextPath}/teacher/apply";
+					}
+				}
+			});
+		});
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
