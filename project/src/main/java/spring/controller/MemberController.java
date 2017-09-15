@@ -51,6 +51,8 @@ public class MemberController {
 	@Autowired
 	private MemberDao memberDao;
 	
+	
+	
 	@RequestMapping(value="/member/sign",method=RequestMethod.GET)
 	public String signGet(Model m) {
 		m.addAttribute("loginCheck", false);
@@ -60,6 +62,7 @@ public class MemberController {
 	
 	@RequestMapping(value="/member/sign", method=RequestMethod.POST)
 	public String signPost(HttpServletRequest request) throws SQLException {
+		
 		Member m=new Member(request);
 		memberDao.insert(m);
 		
