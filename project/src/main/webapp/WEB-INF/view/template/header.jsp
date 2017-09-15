@@ -167,7 +167,90 @@ $(document).ready(function(){
 				location.href="lecturer?page=" + page + "&standard=" + standard + "&type=" + type + "&key=" + key;
 			}
 		});
+		
+		$("#lecturer-apply").on("click", function() {
+			var nick = $(this).attr('value');
+			console.log(nick);
+			
+			$.ajax({
+				url: "${pageContext.request.contextPath}/teacher/applycheck",
+				data: {"nick": nick},
+				success: function(res) {
+					console.log(res);
+					if (res == "true") {
+						alert("이미 신청하셨습니다.");
+					} else {
+						location.href = "${pageContext.request.contextPath}/teacher/apply";
+					}
+				}
+			});
+		});
 	});
+	
+	// 이미지 업로드시 이미지 미리보기
+	function previewImage(targetObj, previewId) {
+	    var preview = document.getElementById(previewId);   
+	    var ua = window.navigator.userAgent;
+
+	    if(ua.indexOf("MSIE") > -1){// ie일때
+	        targetObj.select();
+
+	        try {
+	            var prevImg = document.getElementById("prev_" + previewId); 
+	            // 미리보기태그삭제
+	            if (prevImg) {
+	                preview.removeChild(prevImg);
+	            }
+	         
+	         var src = document.selection.createRange().text;  
+	            var img = document.getElementById(previewId);  
+
+	            img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')"; 
+	            // 이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
+	        } catch (e) {
+	        	var info = document.createElement("<p>");
+	            info.innerHTML = "not supported preview";
+	            preview.insertBefore(info, null);
+	        }
+	    } else { // ie가 아닐때
+	        var files = targetObj.files;
+	        for (var i = 0; i < files.length; i++){
+	            var file = files[i];
+	            var imageType = /image.*/;
+	            if (!file.type.match(imageType)) continue;
+	            
+	            var prevImg = document.getElementById("prev_" + previewId); 
+	           // 미리보기태그삭제
+	            if (prevImg) {
+	                preview.removeChild(prevImg);
+	            }
+	            
+	            var img = document.createElement("img");
+	            // 크롬은 div에 이미지가 뿌려지지 않는다. 그래서 자식Element(IMG)를 만든다.
+	            img.id = "prev_" + previewId;
+	            img.classList.add("obj");
+	            img.file = file;
+	            img.style.width = '150px'; //div 사이즈와 맞게 IMG 태그 속성 변경
+	            img.style.height = '150px';
+	            preview.appendChild(img);
+	            
+	            if(window.FileReader){ // FireFox, Chrome, Opera 
+	                var reader = new FileReader();
+	                reader.onloadend = (function(aImg) {
+	                    return function(e) {
+	                        aImg.src = e.target.result;
+	                    };
+	                })(img);
+	                reader.readAsDataURL(file);
+	            } else { // safari
+	            	var info = document.createElement("<p>");
+	                info.innerHTML = "not supported preview";
+	                preview.insertBefore(info, null);
+	            }
+	            
+	        }
+	    }
+	}
 	
 	  $(function(){
 	      //전역변수
@@ -426,7 +509,7 @@ $(document).ready(function(){
    		}
   		else{
   			$.ajax({
-  				url:"member/login",
+  				url:"/project/member/login",
   				type:"post",
   				async: false,
 				data:({id:$("#loginid").val(), pw:$("#loginpw").val(),page:"${pageContext.request.requestURL}",param:"${param}"}),
@@ -446,12 +529,6 @@ $(document).ready(function(){
   	
   	function changepw() {
   		var pw=null;
-  		$.ajax({
-  			url:"mypw",
-  			async:false,
-  			type:"get"
-  			
-  		});
   	  if(chpw.newpw.value != chpw.repw.value ) {
   	    alert("새 비밀번호가 일치하지 않습니다.");
   	   chpw.newpw.focus();

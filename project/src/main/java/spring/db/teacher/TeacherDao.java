@@ -60,7 +60,7 @@ public class TeacherDao {
 		if (type == null || type == "" || key == null) return list(start, end);
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by no desc)"
+				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {key, start, end};
@@ -70,7 +70,7 @@ public class TeacherDao {
 
 	public List<Teacher> list(int start, int end) {
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher order by no desc)"
+				+ "select * from teacher order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {start, end};
@@ -87,12 +87,22 @@ public class TeacherDao {
 		return list.get(0);
 	}
 
-	public int getNo(String teacher) {
-		String sql = "select no from teacher where name = ?";
+	public boolean apply(Teacher teacher) {
+		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait')";
 		
-		int teacherno = jdbcTemplate.queryForObject(sql, new Object[] {teacher}, Integer.class);
+		String[] extension = teacher.getPicture_type().split("/");
+		String filename = teacher.getName() + "." + extension[extension.length - 1];
 		
-		return teacherno;
+		Object[] args = {teacher.getName(), teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size()};
+		
+		return jdbcTemplate.update(sql, args) > 0;
+	}
+
+	public boolean applycheck(String nick) {
+		String sql = "select count(*) from teacher where name = ?";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class) > 0;
 	}
 
 }
