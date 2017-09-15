@@ -13,9 +13,17 @@ public class MyLecture {
 	private String type;
 	private int price;
 	private String state;
-	private String reg;
 	private String eval;
 	private String wish;
+	
+	private String period;
+	
+	public String getPeriod() {
+		return period;
+	}
+	public void setPeriod(String period) {
+		this.period = period;
+	}
 	public String getId() {
 		return id;
 	}
@@ -70,12 +78,6 @@ public class MyLecture {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public String getReg() {
-		return reg;
-	}
-	public void setReg(String reg) {
-		this.reg = reg;
-	}
 	public String getEval() {
 		return eval;
 	}
@@ -96,7 +98,7 @@ public class MyLecture {
 		setId(rs.getString("id"));
 		setNo(rs.getInt("no"));
 		setPrice(rs.getInt("price"));
-		setReg(rs.getString("reg"));
+		setPeriod(rs.getString("period"));
 		setState(rs.getString("state"));
 		setTag(rs.getString("tag"));
 		setTeacher(rs.getString("teacher"));

@@ -92,8 +92,8 @@ public class LectureController {
 		MyLecture lecture = myLectureDao.select(noI,nick);
 		boolean paid;
 		try {
-			if(lecture.getState().equals("결제 완료")) paid = true;
-			else paid=false;
+			String state = lecture.getState();
+			paid = (state.equals("결제 완료")||state.equals("수료"))?true:false;
 		}catch(Exception e) {
 			paid = false;
 		}
@@ -109,16 +109,7 @@ public class LectureController {
 		LectureInfo info = lectureDao.showOne(no);
 		String nick = getNick(req);
 		
-		boolean result = myLectureDao.wish(nick, info);
-		log.debug("result : " + result);
-		
-		String res = "";
-		if (result) res = "찜하기가 완료되었습니다.";
-		else res = "이미 찜이 되어있거나 수강중인 강의 입니다.";
-		
-		log.debug("res : " + res);
-		
-		return res;
+		return myLectureDao.wish(nick, info);
 	}
 	
 	@Autowired
@@ -161,7 +152,7 @@ public class LectureController {
 		boolean result2= memberDao.update("mileage", req.getParameter("mileage"));
 		if(!result2) throw new Exception("LectureController-reqPost에서 오류");
 		
-		return "redirect:/lecture/class?no="+no;
+		return "redirect:/lecture/class?no="+no+"&page="+req.getParameter("page");
 	}
 	
 	@RequestMapping("/study")
@@ -180,7 +171,7 @@ public class LectureController {
 		log.debug(String.valueOf(listCount));
 		
 		int boardSize = 10;
-		int start = boardSize * pageNo - 9;
+		int start = boardSize * (pageNo-1) +1;
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
 		
