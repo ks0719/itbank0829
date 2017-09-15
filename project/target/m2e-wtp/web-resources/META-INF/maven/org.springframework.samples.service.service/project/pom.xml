@@ -165,7 +165,26 @@
   <version>2.5</version>
 </dependency>
 <!-- 아임포트(결제플러그인) -->
-				
+
+
+<!-- 비밀번호 암호화 -->
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-web</artifactId>
+	    <version>4.2.1.RELEASE</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-core</artifactId>
+	    <version>4.2.1.RELEASE</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-config</artifactId>
+	    <version>4.2.1.RELEASE</version>
+	</dependency>
+
+
 	</dependencies>	
 	
 </project>

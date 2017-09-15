@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +53,8 @@ public class MemberController {
 	@Autowired
 	private MemberDao memberDao;
 	
+	
+	
 	@RequestMapping(value="/member/sign",method=RequestMethod.GET)
 	public String signGet(Model m) {
 		m.addAttribute("loginCheck", false);
@@ -60,6 +64,7 @@ public class MemberController {
 	
 	@RequestMapping(value="/member/sign", method=RequestMethod.POST)
 	public String signPost(HttpServletRequest request) throws SQLException {
+		
 		Member m=new Member(request);
 		memberDao.insert(m);
 		
