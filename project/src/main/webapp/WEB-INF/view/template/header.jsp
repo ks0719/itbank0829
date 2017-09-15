@@ -507,7 +507,7 @@ $(document).ready(function(){
    		}
   		else{
   			$.ajax({
-  				url:"member/login",
+  				url:"/project/member/login",
   				type:"post",
   				async: false,
 				data:({id:$("#loginid").val(), pw:$("#loginpw").val(),page:"${pageContext.request.requestURL}",param:"${param}"}),
@@ -527,12 +527,6 @@ $(document).ready(function(){
   	
   	function changepw() {
   		var pw=null;
-  		$.ajax({
-  			url:"mypw",
-  			async:false,
-  			type:"get"
-  			
-  		});
   	  if(chpw.newpw.value != chpw.repw.value ) {
   	    alert("새 비밀번호가 일치하지 않습니다.");
   	   chpw.newpw.focus();
