@@ -25,7 +25,7 @@ public class TeacherDao {
 	public int count(String type, String key) {
 		if (type == null || type == "" || key == null) return count();
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
-		return jdbcTemplate.queryForObject("select count(*) from teacher where lower (" + type + ") like '%'||'"+ key +"'||'%'", Integer.class);
+		return jdbcTemplate.queryForObject("select count(*) from teacher where lower (" + type + ") like '%'||'"+ key +"'||'%' and status='active'", Integer.class);
 	}
 	
 	public List<Teacher> list(String standard, String sub1, String sub2, String type, String key, int start, int end) {
@@ -34,7 +34,7 @@ public class TeacherDao {
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by " + standard + ", " + sub1 + ", " + sub2 + ")"
+				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' and status='active' order by " + standard + ", " + sub1 + ", " + sub2 + ")"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {key, start, end};
@@ -48,7 +48,7 @@ public class TeacherDao {
 		System.out.println("sub1 : " + sub1);
 		System.out.println("sub2 : " + sub2);
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher order by " + standard + ", " + sub1 + ", " + sub2 + ")"
+				+ "select * from teacher where status='active' order by " + standard + ", " + sub1 + ", " + sub2 + ")"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {start, end};
@@ -60,7 +60,7 @@ public class TeacherDao {
 		if (type == null || type == "" || key == null) return list(start, end);
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by reg desc)"
+				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' and status='active' order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {key, start, end};
@@ -70,7 +70,7 @@ public class TeacherDao {
 
 	public List<Teacher> list(int start, int end) {
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher order by reg desc)"
+				+ "select * from teacher where status='active' order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {start, end};
@@ -79,7 +79,7 @@ public class TeacherDao {
 	}
 
 	public Teacher showOne(String nick) throws Exception {
-		String sql = "select * from teacher where name = ?";
+		String sql = "select * from teacher where name = ? and status='active'";
 		
 		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {nick}, mapper);
 		
