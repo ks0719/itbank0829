@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -425,7 +424,7 @@ $(document).ready(function(){
    		}
   		else{
   			$.ajax({
-  				url:"login",
+  				url:"member/login",
   				type:"post",
   				async: false,
 				data:({id:$("#loginid").val(), pw:$("#loginpw").val(),page:"${pageContext.request.requestURL}",param:"${param}"}),
@@ -445,12 +444,12 @@ $(document).ready(function(){
   	
   	function changepw() {
   		var pw=null;
-//   		$.ajax({
-//   			url:"mypw",
-//   			async:false,
-//   			type:"get"
-//   			data:(pw:$("#pw")
-//   		});여기는 집가서 하든 내일 하든 
+  		$.ajax({
+  			url:"mypw",
+  			async:false,
+  			type:"get"
+  			
+  		});
   	  if(chpw.newpw.value != chpw.repw.value ) {
   	    alert("새 비밀번호가 일치하지 않습니다.");
   	   chpw.newpw.focus();
