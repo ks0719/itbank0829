@@ -178,7 +178,7 @@ $(document).ready(function(){
 				success: function(res) {
 					console.log(res);
 					if (res == "true") {
-						alert("이미 신청하셨습니다.");
+						alert("이미 신청하셨거나 강사입니다.");
 					} else {
 						location.href = "${pageContext.request.contextPath}/teacher/apply";
 					}
