@@ -1,5 +1,6 @@
 package spring.controller;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.teacher.Teacher;
@@ -45,10 +48,18 @@ public class TeacherController {
 	}
 	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
-	public String apply(String nick, MultipartHttpServletRequest mRequest) {
-		teacherDao.apply(nick, new Teacher(mRequest));
+	public String apply(MultipartHttpServletRequest mRequest) throws Exception {
+		MultipartFile file = mRequest.getFile("file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+
+		String[] extension = file.getContentType().split("/");
+		boolean result = teacherDao.apply(new Teacher(mRequest));
+		String filename = getNick(mRequest) + "." + extension[extension.length - 1];
+		File target = new File(savePath, filename);
+		if(!target.exists()) target.mkdirs();
+		file.transferTo(target);
 		
-		return null;
+		return "data/maininfo";
 	}
 	
 	@RequestMapping("/apply")
@@ -58,6 +69,16 @@ public class TeacherController {
 		m.addAttribute("nick", nick);
 		
 		return "teacher/apply";
+	}
+	
+	@RequestMapping("/applycheck")
+	@ResponseBody
+	public String applycheck(HttpServletRequest request, Model m) throws Exception {
+		String nick = getNick(request);
+		
+		boolean result = teacherDao.applycheck(nick);
+		
+		return String.valueOf(result);
 	}
 	
 	@RequestMapping("/lecturer")
@@ -96,7 +117,7 @@ public class TeacherController {
 				sub2 = "sort";
 				break;
 			default :
-				standard = "no";
+				standard = "reg";
 			}
 		}
 		log.debug("st : " + standard);

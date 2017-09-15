@@ -9,9 +9,14 @@
 		- Location of the XML file that defines the root application context.
 		- Applied by ContextLoaderListener.
 	-->
+	
+	
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/application-config.xml</param-value>
+        <param-value>
+        	classpath:spring/application-config.xml
+        	classpath:spring/security-config.xml
+        </param-value>
     </context-param>
 
     <listener>

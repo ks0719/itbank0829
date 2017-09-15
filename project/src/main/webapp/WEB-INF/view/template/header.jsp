@@ -167,6 +167,24 @@ $(document).ready(function(){
 				location.href="lecturer?page=" + page + "&standard=" + standard + "&type=" + type + "&key=" + key;
 			}
 		});
+		
+		$("#lecturer-apply").on("click", function() {
+			var nick = $(this).attr('value');
+			console.log(nick);
+			
+			$.ajax({
+				url: "${pageContext.request.contextPath}/teacher/applycheck",
+				data: {"nick": nick},
+				success: function(res) {
+					console.log(res);
+					if (res == "true") {
+						alert("이미 신청하셨거나 강사입니다.");
+					} else {
+						location.href = "${pageContext.request.contextPath}/teacher/apply";
+					}
+				}
+			});
+		});
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -442,9 +460,11 @@ $(document).ready(function(){
 	 		alert("전화번호 중복 확인을 해주세요");
 	 	}else if(document.querySelector("input[name=post]").value==''){
 	 		alert("주소를 입력해주세요");
-	 	}else alert("회원가입이 완료되었습니다."); return true;
-	 	
-	 	return false;
+	 	}else{
+	 		alert("회원가입이 완료되었습니다.");
+	 		return true;
+	 	}
+	 		return false;
 	}
   	
   	//회원탈퇴 비밀번호 체크
