@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.teacher.Teacher;
 import spring.db.teacher.TeacherDao;
@@ -40,6 +42,13 @@ public class TeacherController {
 	        }
 		}
 		return "";
+	}
+	
+	@RequestMapping(value="/apply", method=RequestMethod.POST)
+	public String apply(String nick, MultipartHttpServletRequest mRequest) {
+		teacherDao.apply(nick, new Teacher(mRequest));
+		
+		return null;
 	}
 	
 	@RequestMapping("/apply")

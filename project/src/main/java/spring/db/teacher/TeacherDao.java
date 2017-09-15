@@ -95,4 +95,9 @@ public class TeacherDao {
 		return teacherno;
 	}
 
+	public void apply(String nick, Teacher teacher) {
+		String sql = "insert into teacher values()";
+		
+	}
+
 }

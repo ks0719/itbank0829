@@ -59,7 +59,7 @@ public class Teacher {
 			setPicture_size(Integer.parseInt(size == null ? "0" : size));
 		}
 	}
-	
+
 	public int getNo() {
 		return no;
 	}
