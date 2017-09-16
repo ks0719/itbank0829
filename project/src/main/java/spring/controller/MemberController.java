@@ -70,7 +70,6 @@ public class MemberController {
 		
 		Member m=new Member(request);
 		String rawPassword=m.getPw();
-//		String encodepw=new BCryptPasswordEncoder().encode(rawPassword);
 		String encodepw=passwordEncoder.encode(rawPassword);
 		m.setPw(encodepw);
 		memberDao.insert(m);
@@ -105,12 +104,12 @@ public class MemberController {
 		
 		String id=request.getParameter("id");
 		String pw=request.getParameter("pw");
-		
-		log.debug("id="+id+",pw="+pw);
+		String nick = null;
+		//log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
-		log.debug("url="+url);
+		//log.debug("url="+url);
 		String param = request.getParameter("param");
-		log.debug("param="+param);
+		//log.debug("param="+param);
 		if(param!=null) {
 		param = param.replaceAll(", ", "&");
 		param = param.substring(1, param.length()-1);
@@ -120,13 +119,11 @@ public class MemberController {
 		url=url.replaceAll(serveraddr, "").replaceAll(".jsp", "");
 		url += "?"+param;
 //		log.debug("url="+url);
-		
-//		String encodepw=BCryptPasswordEncoder().encode(pw);
-//		String encodepw=passwordEncoder.encode(pw);
-//		System.out.println(encodepw);
-//		System.out.println("BCrypt 비교: " + passwordEncoding.matches(password, passwordEncoding.encode(password)));
-		String nick=memberDao.logincheck(id, pw);
-//		log.debug("nick="+nick);
+		String encodepw=memberDao.mypw(id);
+		//log.debug("일치하냐? : "+passwordEncoder.matches(pw, encodepw));
+		if(passwordEncoder.matches(pw, encodepw))
+		nick=memberDao.logincheck(id, encodepw);
+		//log.debug("nick="+nick);
 		//log.debug("state="+state);
 		
 		if(nick!=null) {

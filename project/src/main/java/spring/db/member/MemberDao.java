@@ -43,6 +43,11 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		  return nick;
 		 
 	  }
+	  public String mypw(String id) {
+		  String sql="select pw from member where id=?";
+		  String pw=jdbcTemplate.queryForObject(sql, new Object[] {id},String.class);
+		  return pw;
+	  }
 	public boolean check(String column, String data) {
 	
 		String sql = "select count(*) from member where "+column+"=?";
