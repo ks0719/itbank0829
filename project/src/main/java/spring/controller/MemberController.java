@@ -119,12 +119,14 @@ public class MemberController {
 		
 		url=url.replaceAll(serveraddr, "").replaceAll(".jsp", "");
 		url += "?"+param;
-//		log.debug("url="+url);
+//		log.debug("url="+url);6
 		
 //		String encodepw=BCryptPasswordEncoder().encode(pw);
 //		String encodepw=passwordEncoder.encode(pw);
+//		log.debug("비번======"+encodepw);
 //		System.out.println(encodepw);
-//		System.out.println("BCrypt 비교: " + passwordEncoding.matches(password, passwordEncoding.encode(password)));
+//		Member m=new Member();
+//		System.out.println("BCrypt 비교: " + passwordEncoder.matches(pw,m.getPw()));
 		String nick=memberDao.logincheck(id, pw);
 //		log.debug("nick="+nick);
 		//log.debug("state="+state);
