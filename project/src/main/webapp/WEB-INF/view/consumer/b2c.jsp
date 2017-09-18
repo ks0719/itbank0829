@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/view/template/header.jsp"%>
 	<h1>1:1 문의</h1>
 	<form action="${pageContext.request.contextPath}/consumer/b2c" method="post" id="insertBoardFrm" enctype="multipart/form-data">
-	아이디 <input type="text" name="id" required><br>
+	닉네임 <input type="text" name="id" value="${nick }" readonly><br>
 	문의유형 <select name="type" required>
 	<option value="환불">환불</option>
 	<option value="강의">강의</option>

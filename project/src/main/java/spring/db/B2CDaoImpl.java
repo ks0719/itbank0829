@@ -46,4 +46,26 @@ public B2CDto detail(int no) {
 	List<B2CDto> list= jdbcTemplate.query(sql,new Object[] {no}, mapper);
 	return list.get(0);
 }
+@Override
+public void rinsert(RB2CDto rdto) {
+	String sql="insert into rb2c values(?,?,?,sysdate)";
+	jdbcTemplate.update(sql, new Object[] {rdto.getNo(),rdto.getNick(),rdto.getDetail()});
+	sql="update b2c set state='답변완료' where no=?";
+	jdbcTemplate.update(sql, new Object[] {rdto.getNo()});
+}
+@Override
+public RB2CDto rdetail(int no) {
+	RowMapper<RB2CDto> mapper=(rs,index)->{
+		RB2CDto dto=new RB2CDto(rs);
+		return dto;
+		
+		};
+	String sql="select * from rb2c where no=?";
+	List<RB2CDto> list= jdbcTemplate.query(sql,new Object[] {no}, mapper);
+	if(list.size()==0) {
+		return null;
+	}
+	return list.get(0);
+}
+
 }

@@ -56,17 +56,12 @@ public class UploadController {
 	    return "redirect:" + callback + "?callback_func="+callback_func+file_result;
 	}
 
-
-
-
-
-	 
-	
 	@RequestMapping("/MultiPhotoUpload")
 		@ResponseBody
 		  public String multiplePhotoUpload(HttpServletRequest request) {
 
 		    // 파일정보
+			StringBuffer img=new StringBuffer();
 		    StringBuffer sb = new StringBuffer();
 		    try {
 		      // 파일명을 받는다 - 일반 원본파일명
