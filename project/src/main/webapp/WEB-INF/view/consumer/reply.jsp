@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/template/header.jsp"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	<h1>1:1 문의</h1>
+<h1>1:1 문의</h1>
 	<div class="page-wrap">
 	<div class="table-wrap">
 			<table border="1" class="tableUnit" rules=rows>
@@ -36,27 +35,15 @@
 					</td>
 				</tr>
 			</table>
-			<c:if test="${empty rdto }">
-			<button onclick="location.href='${pageContext.request.contextPath}/consumer/reply?no=${param.no }'">버튼</button>
-			</c:if>
-			<c:if test="${!empty rdto }">
-			<table border="1" class="tableUnit" rules=rows>
-				<tr>
-					<td class="head">
-						작성자
-					</td>
-					<td class="text-left">
-						${rdto.nick}
-					</td>
-				</tr>
-				<tr style="text-align: left">
-					<td colspan="2">
-						${rdto.detail}
-					</td>
-				</tr>
-			</table>
-			</c:if>
-			
+			<br>
+			<hr>
+	<form action="${pageContext.request.contextPath}/consumer/reply" method="post" id="insertBoardFrm">
+	닉네임 <input type="text" name="id" value="${nick }" readonly><br>
+	내용<br>
+	<textarea rows="30" cols="80" name="detail" required id="editor"></textarea>
+	<input type="hidden" value="${param.no }" name="no">
+	<input type="submit" id="submit" value="등록하기">
+	</form>
 	</div>
 </div>
 <%@ include file="/WEB-INF/view/template/footer.jsp"%>
