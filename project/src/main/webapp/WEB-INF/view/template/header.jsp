@@ -58,7 +58,8 @@ $(document).ready(function(){
 		$("select option").each(function(){
 	    	if($(this).val()=="${type}"){
 				$(this).attr("selected","selected");
-	    	}
+	    	} else if ($(this).val()=="${profile.sort}")
+				$(this).attr("selected","selected");
 		});
 		
 		$(document).on("click", ".clickToinfo", function() {
