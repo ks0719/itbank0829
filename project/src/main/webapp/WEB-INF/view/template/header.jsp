@@ -6,6 +6,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
 function wrapWindowByMask(){
@@ -537,14 +538,35 @@ $(document).ready(function(){
   	  else return true;
   	}
 //   	}
+//움직이는 레이어 팝업
+$(function() {
+		$( "#draggable" ).draggable();
+	});
+
 </script>
 
 <head>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 	<meta charset="utf-8">
 	<title>Welcome</title>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body>
+<div id="draggable" class="ui-widget-content" style="top:80%;
+    left:80%;
+    height: 130px;
+    width: 300px;
+    border: 0px;
+    cursor: pointer;
+    position: absolute;
+    z-index: 2147483647;
+    overflow: visible;
+    
+    background-color: transparent;
+    visibility: visible;
+    border: 1px solid;">
+	  <p>마우스로 움직이는 팝업레이어</p>
+	</div>
 <div class="setDiv">
  
     <div class="mask"></div>
