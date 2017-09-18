@@ -21,7 +21,7 @@ public class Teacher {
 	private int count;
 	private double grade;
 	private String reg;
-	private String status;
+	private String state;
 	
 	public Teacher(ResultSet rs) throws SQLException {
 		setName(rs.getString("name"));
@@ -36,7 +36,7 @@ public class Teacher {
 		setCount(rs.getInt("count"));
 		setGrade(rs.getDouble("grade"));
 		setReg(rs.getString("reg"));
-		setStatus(rs.getString("status"));
+		setState(rs.getString("state"));
 	}
 	
 	public Teacher(MultipartHttpServletRequest mRequest) {
@@ -51,12 +51,12 @@ public class Teacher {
 			setPicture_type(file.getContentType());
 			setPicture_size(file == null ? 0 : file.getSize());
 		} else {
-			String originfile = mRequest.getParameter("originfile");
-			setPicture_realname(originfile == null ? "" : originfile);
-			String filetype = mRequest.getParameter("filetype");
-			setPicture_type(filetype == null ? "" : filetype);
-			String size = mRequest.getParameter("filesize");
-			setPicture_size(Integer.parseInt(size == null ? "0" : size));
+			String picture_realname = mRequest.getParameter("picture_realname");
+			setPicture_realname(picture_realname == null ? "" : picture_realname);
+			String picture_type = mRequest.getParameter("picture_type");
+			setPicture_type(picture_type == null ? "" : picture_type);
+			String picture_size = mRequest.getParameter("picture_size");
+			setPicture_size(Integer.parseInt(picture_size == null ? "0" : picture_size));
 		}
 	}
 
@@ -145,11 +145,11 @@ public class Teacher {
 		else
 			return getDate();
 	}
-	public String getStatus() {
-		return status;
+	public String getState() {
+		return state;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setState(String state) {
+		this.state = state;
 	}
 
 }
