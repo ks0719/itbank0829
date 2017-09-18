@@ -58,8 +58,11 @@ $(document).ready(function(){
 		$("select option").each(function(){
 	    	if($(this).val()=="${type}"){
 				$(this).attr("selected","selected");
-	    	} else if ($(this).val()=="${profile.sort}")
+	    	} else if ($(this).val()=="${profile.sort}") {
 				$(this).attr("selected","selected");
+	    	} else if ($(this).val()=="${mylecture.tag}") {
+				$(this).attr("selected","selected");
+	    	}
 		});
 		
 		$(document).on("click", ".clickToinfo", function() {
@@ -186,6 +189,19 @@ $(document).ready(function(){
 				}
 			});
 		});
+		
+		$(document).on("click", ".toMyLecture", function() {
+			var no = $(this).data('no');
+			var page = $(this).data('page');
+			var type = $(this).data('type');
+			var key = $(this).data('key');
+
+			if (type != "" && key != "") {
+				location.href = "myLecture?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+			} else {
+				location.href = "myLecture?no=" + no + "&page=" + page;
+			}
+		});
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -193,7 +209,7 @@ $(document).ready(function(){
 	    var preview = document.getElementById(previewId);   
 	    var ua = window.navigator.userAgent;
 
-	    if(ua.indexOf("MSIE") > -1){// ie일때
+	    if(ua.indexOf("MSIE") > -1){ // ie일때
 	        targetObj.select();
 
 	        try {
@@ -221,7 +237,7 @@ $(document).ready(function(){
 	            if (!file.type.match(imageType)) continue;
 	            
 	            var prevImg = document.getElementById("prev_" + previewId); 
-	           // 미리보기태그삭제
+	           	// 미리보기태그삭제
 	            if (prevImg) {
 	                preview.removeChild(prevImg);
 	            }
@@ -231,7 +247,7 @@ $(document).ready(function(){
 	            img.id = "prev_" + previewId;
 	            img.classList.add("obj");
 	            img.file = file;
-	            img.style.width = '150px'; //div 사이즈와 맞게 IMG 태그 속성 변경
+	            img.style.width = '150px'; // div 사이즈와 맞게 IMG 태그 속성 변경
 	            img.style.height = '150px';
 	            preview.appendChild(img);
 	            

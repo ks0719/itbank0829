@@ -57,12 +57,6 @@ public class LectureDao {
 		return list.get(0);
 	}
 	
-	public List<LectureInfo> teacherList(String nick) throws Exception {
-		String sql = "select * from lecture_info where teacher = ?";
-		
-		return jdbcTemplate.query(sql, new Object[] {nick}, mapper);
-	}
-	
 	public int count() {
 		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true'", Integer.class);
 	}
@@ -88,6 +82,12 @@ public class LectureDao {
 						+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);
+	}
+	
+	public List<LectureInfo> teacherList(String nick) throws Exception {
+		String sql = "select * from lecture_info where teacher = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {nick}, mapper);
 	}
 
 }

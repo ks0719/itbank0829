@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
 import spring.db.member.MemberDao;
+import spring.db.mylecture.MyLectureDao;
 import spring.db.teacher.Teacher;
 import spring.db.teacher.TeacherDao;
 
@@ -35,6 +36,9 @@ public class TeacherController {
 	
 	@Autowired
 	private LectureDao lectureDao;
+	
+	@Autowired
+	private MyLectureDao mylectureDao;
 	
 	@Autowired
 	private MemberDao memberDao;
@@ -245,7 +249,7 @@ public class TeacherController {
 		return "teacher/teacherMain";
 	}
 	
-	@RequestMapping("/lectures")
+	@RequestMapping("/myLectures")
 	public String lectures(HttpServletRequest req, Model m) throws Exception {
 		List<LectureInfo> list = lectureDao.teacherList(getNick(req));
 		
@@ -254,8 +258,17 @@ public class TeacherController {
 		return "teacher/lectures";
 	}
 	
+	@RequestMapping("/myLecture")
+	public String myLecture(Model m) {
+		
+		
+		return "teacher/myLecture";
+	}
+	
 	@RequestMapping("/students")
 	public String students() {
+//		List<>
+		
 		return "teacher/students";
 	}
 	
