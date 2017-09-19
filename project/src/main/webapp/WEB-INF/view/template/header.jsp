@@ -635,6 +635,9 @@ $(function() {
     </div>
 </div>
 
+<c:set var="nick" value="${cookie.mynick.value}"/>
+<%String mynick = URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"); %>
+
 <div class="wrapper">
 	<!-- 헤더 시작 -->
 	<header class="main-header">
@@ -655,9 +658,8 @@ $(function() {
 		<section class="sidebar">
 			<!-- 유저 정보 시작 -->
 			<div class="user-panel">
-				<c:set var="mynick" value="${cookie.mynick.value}"/>
 				<c:choose>
-					<c:when test="${empty mynick}">
+					<c:when test="${empty nick}">
 					<div class="pull-right info">
 						<a href="#" class="showMask"><i class="fa fa-sign-in"></i><span>로그인</span></a>
 						<a href="${pageContext.request.contextPath}/member/sign"><i class="fa fa-user-plus"></i><span>회원가입</span></a>
@@ -671,7 +673,7 @@ $(function() {
 						<div class="pull-left info">
 							<a href="${pageContext.request.contextPath}/data/maininfo">
 								<i class="fa fa-user-circle-o"></i>
-								<span><%=URLDecoder.decode((String)pageContext.getAttribute("mynick"), "UTF-8")%></span>
+								<span>${param.mynick}</span>
 							</a>
 							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
 								<i class="fa fa-envelope"></i>
