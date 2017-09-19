@@ -548,9 +548,13 @@ $(document).ready(function(){
   	
   	function changepw() {
   		var pw=null;
+  		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
   	  if(chpw.newpw.value != chpw.repw.value ) {
-  	    alert("새 비밀번호가 일치하지 않습니다.");
+  		  if(!phoneregex.test(chpw.newpw.value)){
+  	    alert("비밀번호가 조건에 맞지 않습니다.");
+  	    return false;
   	   chpw.newpw.focus();
+  		  }
   	    return false;
   	  }
   	  else return true;
