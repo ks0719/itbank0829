@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ include file="/WEB-INF/view/template/boardHeader.jsp" %>
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <h1>글쓰기</h1>
 <div class="page-wrap">
@@ -55,4 +55,4 @@
 	</div>
 </div>
 	
-<%@ include file="/WEB-INF/view/template/boardFooter.jsp" %>
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>
