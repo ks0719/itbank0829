@@ -1,5 +1,6 @@
 package spring.db.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,13 +62,19 @@ public class BoardDao {
 		
 		sql = "insert into board values(?, ?, ?, ?, ?, ?, ?, ?, ?, null, 0, 0, 0, sysdate, ?, ?, ?, ?)";
 		jdbcTemplate.update(sql, new Object[] {no, nick, path, board.getHead(), board.getTitle(), board.getDetail(), 
-				context > 0 ? context : no, seq + 1, context > 0 ? 1 : no, filename, board.getOriginfile(), board.getFiletype(), board.getFilesize()});
+				context > 0 ? context : no, seq + 1, context > 0 ? 1 : 0, filename, board.getOriginfile(), board.getFiletype(), board.getFilesize()});
 		
 		return no;
 	}
 
 	public List<Board> detail(int no) {
-		String sql = "select * from board where context = ? order by seq, best desc";
+		String sql = "select depth from board where no = ?";
+		
+		int depth = jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class);
+		
+		if (depth != 0) return new ArrayList<Board>();
+		
+		sql = "select * from board where context = ? order by seq, best desc";
 		
 		List<Board> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
 		

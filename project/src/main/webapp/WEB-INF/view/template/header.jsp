@@ -62,7 +62,7 @@ $(document).ready(function(){
 				$(this).attr("selected","selected");
 	    	} else if ($(this).val()=="${profile.sort}") {
 				$(this).attr("selected","selected");
-	    	} else if ($(this).val()=="${mylecture.tag}") {
+	    	} else if ($(this).val()=="${mylecture.tag}" || $(this).val()=="${mylecture.type}" ) {
 				$(this).attr("selected","selected");
 	    	}
 		});
@@ -151,14 +151,15 @@ $(document).ready(function(){
 			var commentNo = $(this).attr('value');
 			var result = confirm("정말 삭제하시겠습니까?");
 
-			$.ajax({
-				url: "commentDelete",
-				data: {"commentNo": commentNo, "result" : result},
-        		async : false,
-				success: function(res) {
-					if (result) $("#comment"+commentNo).remove();
-				}
-			});
+			if (result) {
+				$.ajax({
+					url: "commentDelete",
+					data: {"commentNo": commentNo, "result" : result},
+					success: function(res) {
+						$("#comment"+commentNo).remove();
+					}
+				});
+			}
 		});
 		
 		$(document).on("click", ".lecturer-array", function() {
@@ -204,6 +205,10 @@ $(document).ready(function(){
 				location.href = "myLecture?no=" + no + "&page=" + page;
 			}
 		});
+		function confirm(form){
+			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
+			}
+		}
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -665,6 +670,48 @@ $(function() {
     </div>
 </div>
 
+<<<<<<< HEAD
+	<table>
+		<tr>
+			<th rowspan="10">
+                <div>
+                    <h3>회원정보 넣을 곳</h3>
+                    <h3><a href="${pageContext.request.contextPath}/">홈으로</a></h3>
+                    <c:set value="${cookie.mynick.value}" var="mynick"/>
+   					<c:if test="${empty mynick }">
+	                    <h3><a href="#" class="showMask">로그인</a></h3>
+	                    <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
+                    </c:if>
+                    <c:if test="${not empty mynick }">
+                    	<h3><a href="${pageContext.request.contextPath}/member/memberlist">회원리스트</a></h3></h3>
+	              		<h3><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h3>
+	                    <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
+	                    <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
+						<h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;">내 수강정보</a></h3>
+						사진
+						닉네임
+						내 등급
+                    </c:if>
+                </div>
+                <div>
+                    <h3><a href="${pageContext.request.contextPath}/board/free">커뮤니티(자유게시판)</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/lecture/study?page=1">수업정보</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/teacher/lecturer?page=1">강사정보</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
+                </div>
+			</th>
+            
+            <td style="vertical-align: top">
+                <table>
+                    <tr>
+                        <th>
+                            공지/그림/광고
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+=======
 <c:set var="nick" value="${cookie.mynick.value}"/>
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
 
@@ -815,3 +862,4 @@ $(function() {
 
 
 
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
