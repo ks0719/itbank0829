@@ -566,7 +566,7 @@ $(document).ready(function(){
 //움직이는 레이어 팝업
 $(function() {
 		$( "#draggable" ).draggable({
-			revert:false
+			
 		});
 	});
 
