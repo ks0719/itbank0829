@@ -5,7 +5,7 @@
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
                 
-	<h3>회원정보 넣을 곳</h3>
+	<h3>환영합니다~</h3>
                     
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>              
 	
