@@ -5,6 +5,8 @@
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
+<%String nick = URLDecoder.decode((String)pageContext.getAttribute("mynick"), "UTF-8");%>
+
 <h1>상세보기</h1>
 <div class="page-wrap">
 	<div class="table-wrap">
@@ -103,7 +105,7 @@
 					</c:otherwise>
 				</c:choose>
 				<c:choose>
-					<c:when test="${cookie.mynick.value eq board.writer}">
+					<c:when test="${nick eq board.writer}">
 						<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${no}';">
 						<input type="button" value="삭제하기" class="input-btn board-delete" data-no="${board.no}" data-context="${no}">
 					</c:when>
