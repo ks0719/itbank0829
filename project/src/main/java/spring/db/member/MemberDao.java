@@ -63,6 +63,11 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	public String edit(Member mb,String nick) {
 		String sql="update member set nick=?,post=?,addr1=?,addr2=?,phone=? where nick=?";
 		jdbcTemplate.update(sql,new Object[] {mb.getNick(),mb.getPost(),mb.getAddr1(),mb.getAddr2(),mb.getPhone(),nick});
+		sql="update mail set MAIL_WRITER=? where MAIL_WRITER=?";
+		jdbcTemplate.update(sql,new Object[] {mb.getNick(),nick});
+		sql="update mail set MAIL_RECEIVER=? where MAIL_RECEIVER=?";
+		jdbcTemplate.update(sql,new Object[] {mb.getNick(),nick});
+		
 		return mb.getNick();
 	}
 	

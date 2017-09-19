@@ -565,8 +565,32 @@ $(document).ready(function(){
   	
 //움직이는 레이어 팝업
 $(function() {
+	var tpp=null;
+	var lpp=null;
+	var savetop=$("#save").data("top");
+	var saveleft=$("#save").data("left");
+	console.log("savetop="+savetop);
+	console.log("saveleft="+saveleft);
+	var top=$("#draggable").css("top",savetop);
+	var left=$("#draggable").css("top",saveleft);
+	console.log("top : "+top);
+	console.log("left : "+left);
 		$( "#draggable" ).draggable({
-			
+			 drag: function(event,ui){
+				 var top=$("#draggable").css("top");
+					var left=$("#draggable").css("left");
+				 console.log("top : "+top);
+					console.log("left : "+left);
+			 },
+			 stop: function(event,ui){
+				tpp= $("#save").data("top", $("#draggable").position().top);
+				lpp=$("#save").data("left", $("#draggable").position().left);
+
+				 
+				 
+				 console.log("최종 top : "+$("#save").data("top"));
+				 console.log("최종 left : "+$("#save").data("left"));
+			 }
 		});
 	});
 
@@ -610,7 +634,7 @@ $(function() {
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
-
+<div id="save" data-top="300" data-left="300"></div>
 <div id="draggable" class="ui-widget-content" style=
 "top: 215px;
  left: 417px; 
