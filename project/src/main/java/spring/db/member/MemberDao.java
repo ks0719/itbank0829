@@ -21,7 +21,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	
 	public void insert(Member member) {
 		
-		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'')";
+		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'','일반')";
 		
 		Object[]args=new Object[] {member.getId(),member.getPw(),member.getName(),member.getNick(),member.getPhone(),
 				member.getPost(),member.getAddr1(),member.getAddr2(),member.getSort()};
@@ -43,7 +43,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		  return nick;
 		 
 	  }
-	  public String mypw(String id) {
+	  public String mypwid(String id) {
 		  String sql="select pw from member where id=?";
 		  String pw=jdbcTemplate.queryForObject(sql, new Object[] {id},String.class);
 		  return pw;
@@ -70,13 +70,16 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		String sql = "select * from member where nick=?";
 		return jdbcTemplate.query(sql, new Object[] {nick}, mapper).get(0);
 	}
-
-	public boolean changepw(String nick,String pw,String newpw) {
-		String sql="select count(*) from member where nick=? and pw=?";
-		boolean result= jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
+	public String mypwnick(String nick) {
+		String sql="select pw from member where nick=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick},String.class);
+	}
+	public boolean changepw(String nick,String newpw) {
+		String sql="select count(*) from member where nick=?";
+		boolean result= jdbcTemplate.queryForObject(sql, new Object[] {nick},Integer.class)>0;
 		if(result) {
-			sql="update member set pw=? where nick=? and pw=?";
-			jdbcTemplate.update(sql, new Object[] {newpw,nick,pw});
+			sql="update member set pw=? where nick=?";
+			jdbcTemplate.update(sql, new Object[] {newpw,nick});
 			return true;
 		}
 		return false;
