@@ -62,7 +62,7 @@ $(document).ready(function(){
 				$(this).attr("selected","selected");
 	    	} else if ($(this).val()=="${profile.sort}") {
 				$(this).attr("selected","selected");
-	    	} else if ($(this).val()=="${mylecture.tag}") {
+	    	} else if ($(this).val()=="${mylecture.tag}" || $(this).val()=="${mylecture.type}" ) {
 				$(this).attr("selected","selected");
 	    	}
 		});
@@ -205,6 +205,10 @@ $(document).ready(function(){
 				location.href = "myLecture?no=" + no + "&page=" + page;
 			}
 		});
+		function confirm(form){
+			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
+			}
+		}
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -564,11 +568,42 @@ $(document).ready(function(){
   	
   	
   	
+<<<<<<< HEAD
 	//움직이는 레이어 팝업	
 	$(function() {
 			$( "#draggable" ).draggable({
 				
 			});
+=======
+//움직이는 레이어 팝업
+$(function() {
+	var tpp=null;
+	var lpp=null;
+	var savetop=$("#save").data("top");
+	var saveleft=$("#save").data("left");
+	console.log("savetop="+savetop);
+	console.log("saveleft="+saveleft);
+	var top=$("#draggable").css("top",savetop);
+	var left=$("#draggable").css("top",saveleft);
+	console.log("top : "+top);
+	console.log("left : "+left);
+		$( "#draggable" ).draggable({
+			 drag: function(event,ui){
+				 var top=$("#draggable").css("top");
+					var left=$("#draggable").css("left");
+				 console.log("top : "+top);
+					console.log("left : "+left);
+			 },
+			 stop: function(event,ui){
+				tpp= $("#save").data("top", $("#draggable").position().top);
+				lpp=$("#save").data("left", $("#draggable").position().left);
+
+				 
+				 
+				 console.log("최종 top : "+$("#save").data("top"));
+				 console.log("최종 left : "+$("#save").data("left"));
+			 }
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 		});
 	
 	
@@ -616,7 +651,7 @@ $(document).ready(function(){
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
-
+<div id="save" data-top="300" data-left="300"></div>
 <div id="draggable" class="ui-widget-content" style=
 "top: 215px;
  left: 417px; 
