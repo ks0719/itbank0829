@@ -21,7 +21,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	
 	public void insert(Member member) {
 		
-		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'')";
+		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'','일반')";
 		
 		Object[]args=new Object[] {member.getId(),member.getPw(),member.getName(),member.getNick(),member.getPhone(),
 				member.getPost(),member.getAddr1(),member.getAddr2(),member.getSort()};
