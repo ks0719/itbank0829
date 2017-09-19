@@ -62,7 +62,7 @@ $(document).ready(function(){
 				$(this).attr("selected","selected");
 	    	} else if ($(this).val()=="${profile.sort}") {
 				$(this).attr("selected","selected");
-	    	} else if ($(this).val()=="${mylecture.tag}") {
+	    	} else if ($(this).val()=="${mylecture.tag}" || $(this).val()=="${mylecture.type}" ) {
 				$(this).attr("selected","selected");
 	    	}
 		});
@@ -205,6 +205,10 @@ $(document).ready(function(){
 				location.href = "myLecture?no=" + no + "&page=" + page;
 			}
 		});
+		function confirm(form){
+			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
+			}
+		}
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
