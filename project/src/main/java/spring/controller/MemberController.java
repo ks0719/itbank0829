@@ -9,7 +9,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,13 @@ import spring.db.member.MemberDao;
 @Controller
 public class MemberController {
 	private static final String serveraddr="http://localhost:9080/project/WEB-INF/view";
+	private Logger log=LoggerFactory.getLogger(getClass());
+	
+	@Autowired
+	private MemberDao memberDao;
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
 		if(c != null){
@@ -48,13 +54,6 @@ public class MemberController {
 	
 
 	
-	private Logger log=LoggerFactory.getLogger(getClass());
-	
-	@Autowired
-	private MemberDao memberDao;
-	
-	@Autowired
-	BCryptPasswordEncoder passwordEncoder;
 	
 	
 	@RequestMapping(value="/member/sign",method=RequestMethod.GET)
@@ -129,7 +128,7 @@ public class MemberController {
 //		String nick=memberDao.logincheck(id, pw);
 //		log.debug("nick="+nick);
 //		log.debug("url="+url);
-		String encodepw=memberDao.mypw(id);
+		String encodepw=memberDao.mypwid(id);
 		//log.debug("일치하냐? : "+passwordEncoder.matches(pw, encodepw));
 		if(passwordEncoder.matches(pw, encodepw))
 		nick=memberDao.logincheck(id, encodepw);
