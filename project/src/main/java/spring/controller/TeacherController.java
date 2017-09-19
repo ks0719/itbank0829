@@ -255,7 +255,7 @@ public class TeacherController {
 		
 		m.addAttribute("list", list);
 		
-		return "teacher/lectures";
+		return "teacher/myLectures";
 	}
 	
 	@RequestMapping("/myLecture")

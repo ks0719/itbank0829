@@ -642,7 +642,7 @@ $(function() {
 </div>
 
 <c:set var="nick" value="${cookie.mynick.value}"/>
-<%String mynick = URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"); %>
+<%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
 
 <div class="wrapper">
 	<!-- 헤더 시작 -->
@@ -679,7 +679,7 @@ $(function() {
 						<div class="pull-left info">
 							<a href="${pageContext.request.contextPath}/data/maininfo">
 								<i class="fa fa-user-circle-o"></i>
-								<span>${param.mynick}</span>
+								<span>${mynick}</span>
 							</a>
 							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
 								<i class="fa fa-envelope"></i>
