@@ -208,7 +208,6 @@ $(document).ready(function(){
 		function confirm(form){
 			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
 			}
-		}
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -568,26 +567,9 @@ $(document).ready(function(){
   	
   	
   	
-<<<<<<< HEAD
 	//움직이는 레이어 팝업	
 	$(function() {
 			$( "#draggable" ).draggable({
-				
-			});
-=======
-//움직이는 레이어 팝업
-$(function() {
-	var tpp=null;
-	var lpp=null;
-	var savetop=$("#save").data("top");
-	var saveleft=$("#save").data("left");
-	console.log("savetop="+savetop);
-	console.log("saveleft="+saveleft);
-	var top=$("#draggable").css("top",savetop);
-	var left=$("#draggable").css("top",saveleft);
-	console.log("top : "+top);
-	console.log("left : "+left);
-		$( "#draggable" ).draggable({
 			 drag: function(event,ui){
 				 var top=$("#draggable").css("top");
 					var left=$("#draggable").css("left");
@@ -603,9 +585,8 @@ $(function() {
 				 console.log("최종 top : "+$("#save").data("top"));
 				 console.log("최종 left : "+$("#save").data("left"));
 			 }
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 		});
-	
+			});
 	
 	
 	//회원정보 수정
@@ -683,7 +664,9 @@ $(function() {
 </div>
 
 <c:set var="nick" value="${cookie.mynick.value}"/>
+<c:if test="${!empty nick }">
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
+</c:if>
 
 <div class="wrapper">
 	<!-- 헤더 시작 -->
