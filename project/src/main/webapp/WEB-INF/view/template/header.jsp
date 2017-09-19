@@ -574,6 +574,7 @@ $(document).ready(function(){
 	                    <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
                     </c:if>
                     <c:if test="${not empty mynick }">
+                    	<h3><a href="${pageContext.request.contextPath}/member/memberlist">회원리스트</a></h3></h3>
 	              		<h3><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h3>
 	                    <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
 	                    <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
