@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<%@ include file="/WEB-INF/view/template/boardHeader.jsp" %> 
+<%@ include file="/WEB-INF/view/template/header.jsp" %> 
 
 <h1>요청게시판</h1>
 
@@ -97,4 +97,4 @@
 	</form>
 </div>
 	
-<%@ include file="/WEB-INF/view/template/boardFooter.jsp" %>
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>

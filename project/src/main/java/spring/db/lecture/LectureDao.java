@@ -17,10 +17,20 @@ public class LectureDao {
 	};
 	
 	public boolean insert(LectureInfo info) {
-		String sql = "insert into lecture_info values(lecture_info_seq.nextval, ?, ?, ?, ?, ?, ?, '등록 가능', 0, 0, 0, ?, ?, ?, 0, ?, ?, 'false', sysdate, ?)";
+		String sql = "select lecture_info_seq.nextval from dual";
 		
-		Object[] args = new Object[] {info.getTag(), info.getTitle(), info.getTeacher(), info.getTime(), info.getType(), 
-				info.getPrice(), info.getPicture_name(), info.getPicture_realname(), info.getPicture_type(), 
+		int no = jdbcTemplate.queryForObject(sql, Integer.class);
+		
+		sql = "insert into lecture_info values(?, ?, ?, ?, ?, ?, ?, '등록 가능', 0, 0, 0, ?, ?, ?, ?, ?, ?, 'false', sysdate, ?)";
+		
+		String filename = null;
+		if (info.getPicture_type() != null) {
+			String[] extension = info.getPicture_type().split("/");
+			filename = "lecture" + no + "." + extension[extension.length - 1];
+		}
+		
+		Object[] args = new Object[] {no, info.getTag(), info.getTitle(), info.getTeacher(), info.getTime(), info.getType(), 
+				info.getPrice(), filename, info.getPicture_realname(), info.getPicture_type(), 
 				info.getPicture_size(), info.getIntro(), info.getDetail(), info.getPeriod()};
 		
 		return jdbcTemplate.update(sql, args) > 0;
@@ -72,6 +82,14 @@ public class LectureDao {
 						+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);
+	}
+	
+	public List<LectureInfo> teacherList(String nick) throws Exception {
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from lecture_info where teacher = ? order by no desc)"
+				+ " TMP) where rn between ? and ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {nick}, mapper);
 	}
 
 }

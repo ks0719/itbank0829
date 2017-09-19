@@ -14,6 +14,7 @@
 		<li><a href="${pageContext.request.contextPath}/member/deletemember" class="no-uline">회원 탈퇴</a></li>
 		<li><a href="#" id="lecturer-apply" value="${dto.nick}" class="no-uline">강사 신청</a></li>
 		<li><a href="#" class="no-uline">내가 쓴글</a></li>
+		<li><a href="${pageContext.request.contextPath}/teacher/teacherMain" class="no-uline">강사 전용</a></li>
 	</ul>
 </nav>
 </thead>

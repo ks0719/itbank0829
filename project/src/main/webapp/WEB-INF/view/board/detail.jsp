@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ include file="/WEB-INF/view/template/boardHeader.jsp" %>
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <h1>상세보기</h1>
 <div class="page-wrap">
@@ -80,8 +80,8 @@
 							</c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${cookie.mynick.value eq comment.writer}">
-								<a href="#" class="comment-delete" value="${comment.no}">삭제</a>
+							<c:when test="${mynick eq comment.writer}">
+								<a href="" class="comment-delete" value="${comment.no}">삭제</a>
 							</c:when>
 						</c:choose>
 						<br>
@@ -93,7 +93,11 @@
 			<div class="align-right">
 				<c:choose>
 					<c:when test="${not empty cookie.mynick.value}">
-						<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
+						<c:choose>
+							<c:when test="${board.no eq no}">
+								<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
+							</c:when>
+						</c:choose>
 						<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${no}';">
 					</c:when>
 					<c:otherwise>
@@ -102,7 +106,7 @@
 					</c:otherwise>
 				</c:choose>
 				<c:choose>
-					<c:when test="${cookie.mynick.value eq board.writer}">
+					<c:when test="${mynick eq board.writer}">
 						<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${no}';">
 						<input type="button" value="삭제하기" class="input-btn board-delete" data-no="${board.no}" data-context="${no}">
 					</c:when>
@@ -115,4 +119,4 @@
 	</div>
 </div>
 	
-<%@ include file="/WEB-INF/view/template/boardFooter.jsp" %>
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>
