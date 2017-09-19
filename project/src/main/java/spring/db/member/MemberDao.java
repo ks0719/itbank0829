@@ -9,6 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import spring.db.board.Board;
+import spring.db.lecture.LectureInfo;
+
+
 @Repository("memberDao")
 public class MemberDao {
 private Logger log=LoggerFactory.getLogger(getClass());
@@ -29,13 +33,12 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		jdbcTemplate.update(sql,args);
 	}
 	
-	public List<Member> list(String id, String password){
+	public List<Member> list(){
 		
-		String sql="select*from member where id=? and pw=? order by reg desc";
-		return jdbcTemplate.query(sql, new Object[] {id, password},mapper);
+		String sql="select * from member order by reg desc";
+		return jdbcTemplate.query(sql, mapper);
 	}
 
-	  
 	  public String logincheck(String id,String pw) {
 		  String sql="select nick from member where id=? and pw=?";
 		  String nick= jdbcTemplate.queryForObject(sql,new Object[] {id,pw}, String.class);
@@ -94,13 +97,6 @@ private Logger log=LoggerFactory.getLogger(getClass());
 			return jdbcTemplate.update(sql, new Object[] {value})>0;
 	}
 
-//	public boolean checkpw(String nick, String pw) {
-//		String sql="select*from member where nick=? and pw=?";
-////		String sql="select nick from member where pw=? and nick=?";
-////		return false;
-//		return jdbcTemplate.queryForObject(sql, new Object[] {nick, pw},Integer.class)>0;
-//	}
-	
 	public boolean checklogin(String id, String pw) {
 		String sql="select * from member where id=? and pw=?";
 		return jdbcTemplate.queryForObject(sql, new Object[] {id,pw},Integer.class)>0;
@@ -119,5 +115,42 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		list=jdbcTemplate.query(sql, new Object[] {nick},mapper);
 		return list.get(0);
 		
+	}
+	
+	public List<Member> detail(int no) {
+		
+		String sql="select*from member where no=?";
+		List<Member>list=jdbcTemplate.query(sql, new Object[] {no},mapper);
+		return list;
+	}
+	
+	public int count() {
+		
+		return jdbcTemplate.queryForObject("select count(*) from member", Integer.class);
+	}
+	//power = '일반' or power='강사'
+	
+	public int count(String type, String key) {
+		if (type == "" || key == null) return count();
+		return jdbcTemplate.queryForObject("select count(*) from member where lower (" + type + ") like '%'||'"+ key +"'||'%'", Integer.class);
+	}
+	
+	public List<Member>list(int start, int end){
+		
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from member order by no desc)"
+				+ " TMP) where rn between ? and ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {start, end}, mapper);
+	}
+	
+	public List<Member> list(String type, String key, int start, int end) {
+		if (type == "" || key == null) return list(start, end);
+		
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from member where lower (" + type + ") like '%'||?||'%' order by no desc)"
+						+ " TMP) where rn between ? and ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);
 	}
 }
