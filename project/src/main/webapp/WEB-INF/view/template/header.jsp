@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import = "java.net.URLDecoder" %>
+	<%@ page import = "java.net.URLDecoder" %>
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -563,9 +563,12 @@ $(document).ready(function(){
   	
   	
   	
+  	
 //움직이는 레이어 팝업
 $(function() {
-		$( "#draggable" ).draggable();
+		$( "#draggable" ).draggable({
+			
+		});
 	});
 
 </script>
@@ -609,19 +612,18 @@ $(function() {
 </head> 
 <body class="skin-blue">
 
-<div id="draggable" class="ui-widget-content" style="top:80%;
-    left:80%;
-    height: 130px;
-    width: 300px;
-    border: 0px;
-    cursor: pointer;
-    position: absolute;
-    z-index: 2147483647;
-    overflow: visible;
-    
-    background-color: transparent;
-    visibility: visible;
-    border: 1px solid;">
+<div id="draggable" class="ui-widget-content" style=
+"top: 215px;
+ left: 417px; 
+ height: 250px; 
+ width: 330px;
+  border: 0px; 
+  cursor: pointer; 
+  position: absolute;
+   z-index: 2147483647; 
+   overflow: visible; 
+   background-color: transparent; 
+   visibility: visible;">
 	  <p>마우스로 움직이는 팝업레이어</p>
 	</div>
 <div class="setDiv">
