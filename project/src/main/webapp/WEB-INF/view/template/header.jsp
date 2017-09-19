@@ -564,12 +564,17 @@ $(document).ready(function(){
   	
   	
   	
-//움직이는 레이어 팝업
-$(function() {
-		$( "#draggable" ).draggable({
-			
+	//움직이는 레이어 팝업	
+	$(function() {
+			$( "#draggable" ).draggable({
+				
+			});
 		});
-	});
+	
+	
+	
+	//회원정보 수정
+	
 
 </script>
 
@@ -642,48 +647,6 @@ $(function() {
     </div>
 </div>
 
-<<<<<<< HEAD
-	<table>
-		<tr>
-			<th rowspan="10">
-                <div>
-                    <h3>회원정보 넣을 곳</h3>
-                    <h3><a href="${pageContext.request.contextPath}/">홈으로</a></h3>
-                    <c:set value="${cookie.mynick.value}" var="mynick"/>
-   					<c:if test="${empty mynick }">
-	                    <h3><a href="#" class="showMask">로그인</a></h3>
-	                    <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
-                    </c:if>
-                    <c:if test="${not empty mynick }">
-                    	<h3><a href="${pageContext.request.contextPath}/member/memberlist">회원리스트</a></h3></h3>
-	              		<h3><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h3>
-	                    <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
-	                    <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
-						<h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;">내 수강정보</a></h3>
-						사진
-						닉네임
-						내 등급
-                    </c:if>
-                </div>
-                <div>
-                    <h3><a href="${pageContext.request.contextPath}/board/free">커뮤니티(자유게시판)</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/lecture/study?page=1">수업정보</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/teacher/lecturer?page=1">강사정보</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
-                </div>
-			</th>
-            
-            <td style="vertical-align: top">
-                <table>
-                    <tr>
-                        <th>
-                            공지/그림/광고
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div>
-=======
 <c:set var="nick" value="${cookie.mynick.value}"/>
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
 
@@ -825,13 +788,3 @@ $(function() {
 	
 	<div class="content-wrapper">
 	
-	
-	
-	
-	
-
-
-
-
-
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
