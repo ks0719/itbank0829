@@ -1,44 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
 
-<%@ include file="/WEB-INF/view/template/header.jsp" %>
+<h1>진행 중인 강의</h1>
 
 <div class="page-wrap">
-	<div class="table-wrap lecturer">
+	<div class="table-wrap">
 		<table border="1" class="tableUnit" rules=rows>
 			<tr>
-				<th class="lecturer-array" value="sort" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-					분류
+				<th>
+					태그
 				</th>
 				<th>
-					강사명
+					강의 제목
 				</th>
-				<th class="lecturer-array" value="count" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-					강의횟수
-				</th>
-				<th class="lecturer-array" value="grade" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
+				<th>
 					평점
 				</th>
 				<th>
-					등록일
+					가격
+				</th>
+				<th>
+					강의 시간
+				</th>
+				<th>
+					강의 기간
+				</th>
+				<th>
+					상태
 				</th>
 			</tr>
-			<c:forEach var="teacher" items="${list}">
-			<tr data-name="${teacher.name}" data-page="${page}" data-type="${type}" data-key="${key}" class="toLecturerInfo" style="cursor: pointer">
+			<c:forEach var="info" items="${list}">
+			<tr data-no="${info.no}" data-page="${page}" data-type="${type}" data-key="${key}" class="toMyLecture" style="cursor: pointer">
 				<td>
-					${teacher.sort}
+					[${info.tag}]
+				</td>
+				<td class="title">
+					${info.title}
 				</td>
 				<td>
-					${teacher.name}
+					${info.kin_grade}/${info.price_grade}/${info.kind_grade}
 				</td>
 				<td>
-					${teacher.count}
+					${info.price}
 				</td>
 				<td>
-					${teacher.grade}
+					${info.time}
 				</td>
 				<td>
-					${teacher.auto}
+					${info.period}
+				</td>
+				<td>
+					${info.state}
 				</td>
 			</tr>
 			</c:forEach>
@@ -49,13 +63,14 @@
 			<c:if test="${startBlock > 1}">
 		        <div class="paging-unit"><a href="${url}&page=${startBlock - 1}">&lt;</a></div>
 			</c:if>
+			
 			<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
 				<c:choose>
 					<c:when test="${i eq page}">
 						<div class="paging-unit active">${i}</div>
 					</c:when>
 					<c:otherwise>
-		       			<div class="paging-unit"><a href="${url}page=${i}">${i}</a></div>
+		       			<div class="paging-unit"><a href="${url}&page=${i}">${i}</a></div>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -65,15 +80,15 @@
 			</c:if>
 		</div>
 	</div>
-	<form action="lecturer" class="wrap">
+	<form action="study" class="wrap">
 		<input type="hidden" name="page" value="1">
-		<select name="type" title="검색 기준" class="user-input">
-			<option value="sort">강사분류</option>
-			<option value="name">강사명</option>
+		<select name="type" title="분류 선택" class="user-input">
+			<option value="tag">수업태그</option>
+			<option value="title">제목</option>
 		</select>
 		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
 		<input type="submit" value="검색" class="input-btn">
 	</form>
 </div>
 
-<%@ include file="/WEB-INF/view/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/template/teacherFooter.jsp" %>

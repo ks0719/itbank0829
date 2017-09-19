@@ -9,9 +9,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +53,10 @@ public class MemberController {
 	@Autowired
 	private MemberDao memberDao;
 	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
+	
+	
 	@RequestMapping(value="/member/sign",method=RequestMethod.GET)
 	public String signGet(Model m) {
 		m.addAttribute("loginCheck", false);
@@ -60,7 +66,12 @@ public class MemberController {
 	
 	@RequestMapping(value="/member/sign", method=RequestMethod.POST)
 	public String signPost(HttpServletRequest request) throws SQLException {
+		
+		
 		Member m=new Member(request);
+		String rawPassword=m.getPw();
+		String encodepw=passwordEncoder.encode(rawPassword);
+		m.setPw(encodepw);
 		memberDao.insert(m);
 		
 		return "redirect:/";
@@ -90,13 +101,15 @@ public class MemberController {
 	
 	@RequestMapping(value="/member/login",method=RequestMethod.POST)
 	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) throws UnsupportedEncodingException {
+		
 		String id=request.getParameter("id");
 		String pw=request.getParameter("pw");
-		log.debug("id="+id+",pw="+pw);
+		String nick = null;
+		//log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
-		log.debug("url="+url);
+		//log.debug("url="+url);
 		String param = request.getParameter("param");
-		log.debug("param="+param);
+		//log.debug("param="+param);
 		if(param!=null) {
 		param = param.replaceAll(", ", "&");
 		param = param.substring(1, param.length()-1);
@@ -105,11 +118,23 @@ public class MemberController {
 		
 		url=url.replaceAll(serveraddr, "").replaceAll(".jsp", "");
 		url += "?"+param;
-//		log.debug("url="+url);
-		String nick=memberDao.logincheck(id, pw);
-//		log.debug("nick="+nick);
-		//log.debug("state="+state);
+//		log.debug("url="+url);6
 		
+//		String encodepw=BCryptPasswordEncoder().encode(pw);
+//		String encodepw=passwordEncoder.encode(pw);
+//		log.debug("비번======"+encodepw);
+//		System.out.println(encodepw);
+//		Member m=new Member();
+//		System.out.println("BCrypt 비교: " + passwordEncoder.matches(pw,m.getPw()));
+//		String nick=memberDao.logincheck(id, pw);
+//		log.debug("nick="+nick);
+//		log.debug("url="+url);
+		String encodepw=memberDao.mypw(id);
+		//log.debug("일치하냐? : "+passwordEncoder.matches(pw, encodepw));
+		if(passwordEncoder.matches(pw, encodepw))
+		nick=memberDao.logincheck(id, encodepw);
+		//log.debug("nick="+nick);
+		//log.debug("state="+state);
 		
 		if(nick!=null) {
 			CookieGenerator cookie=new CookieGenerator();

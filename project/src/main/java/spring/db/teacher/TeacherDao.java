@@ -25,7 +25,7 @@ public class TeacherDao {
 	public int count(String type, String key) {
 		if (type == null || type == "" || key == null) return count();
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
-		return jdbcTemplate.queryForObject("select count(*) from teacher where lower (" + type + ") like '%'||'"+ key +"'||'%'", Integer.class);
+		return jdbcTemplate.queryForObject("select count(*) from teacher where lower (" + type + ") like '%'||'"+ key +"'||'%' and state='active'", Integer.class);
 	}
 	
 	public List<Teacher> list(String standard, String sub1, String sub2, String type, String key, int start, int end) {
@@ -34,7 +34,7 @@ public class TeacherDao {
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by " + standard + ", " + sub1 + ", " + sub2 + ")"
+				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' and state='active' order by " + standard + ", " + sub1 + ", " + sub2 + ")"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {key, start, end};
@@ -48,7 +48,7 @@ public class TeacherDao {
 		System.out.println("sub1 : " + sub1);
 		System.out.println("sub2 : " + sub2);
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher order by " + standard + ", " + sub1 + ", " + sub2 + ")"
+				+ "select * from teacher where state='active' order by " + standard + ", " + sub1 + ", " + sub2 + ")"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {start, end};
@@ -60,7 +60,7 @@ public class TeacherDao {
 		if (type == null || type == "" || key == null) return list(start, end);
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' order by no desc)"
+				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' and state='active' order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {key, start, end};
@@ -70,7 +70,7 @@ public class TeacherDao {
 
 	public List<Teacher> list(int start, int end) {
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from teacher order by no desc)"
+				+ "select * from teacher where state='active' order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {start, end};
@@ -79,7 +79,7 @@ public class TeacherDao {
 	}
 
 	public Teacher showOne(String nick) throws Exception {
-		String sql = "select * from teacher where name = ?";
+		String sql = "select * from teacher where name = ? and state='active'";
 		
 		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {nick}, mapper);
 		
@@ -87,12 +87,43 @@ public class TeacherDao {
 		return list.get(0);
 	}
 
-	public int getNo(String teacher) {
-		String sql = "select no from teacher where name = ?";
+	public boolean apply(Teacher teacher) {
+		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait')";
 		
-		int teacherno = jdbcTemplate.queryForObject(sql, new Object[] {teacher}, Integer.class);
+		String[] extension = teacher.getPicture_type().split("/");
+		String filename = teacher.getName() + "." + extension[extension.length - 1];
 		
-		return teacherno;
+		Object[] args = {teacher.getName(), teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size()};
+		
+		return jdbcTemplate.update(sql, args) > 0;
+	}
+
+	public boolean applycheck(String nick) {
+		String sql = "select count(*) from teacher where name = ?";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class) > 0;
+	}
+	
+	public boolean isTeacher(String nick) {
+		String sql = "select count(*) from teacher where name = ? and state = 'active'";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class) > 0;
+	}
+
+	public void edit(Teacher teacher) {
+		String sql = "update teacher set sort = ?, career = ?, intro = ?, picture_name = ?, picture_realname = ?, picture_type = ?, picture_size = ? where name = ?";
+		
+		String filename = null;
+		if (teacher.getPicture_type() != "") {
+			String[] extension = teacher.getPicture_type().split("/");
+			filename = teacher.getName() + "." + extension[extension.length - 1];
+		}
+		
+		Object[] args = {teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(), teacher.getName()};
+
+		jdbcTemplate.update(sql, args);
 	}
 
 }

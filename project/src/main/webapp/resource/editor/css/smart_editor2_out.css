@@ -10,3 +10,4 @@
 .se2_outputarea ul ul li{list-style-type:circle}
 .se2_outputarea ul ul ul li{list-style-type:square}
 .se2_outputarea img,.se2_outputarea fieldset{border:0}
+.se2_outputarea img { max-width:60%; } 

@@ -1,5 +1,6 @@
 package spring.controller;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.util.List;
 
@@ -11,8 +12,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import spring.db.lecture.LectureDao;
+import spring.db.lecture.LectureInfo;
+import spring.db.member.MemberDao;
+import spring.db.mylecture.MyLectureDao;
 import spring.db.teacher.Teacher;
 import spring.db.teacher.TeacherDao;
 
@@ -23,6 +33,15 @@ public class TeacherController {
 	
 	@Autowired
 	private TeacherDao teacherDao;
+	
+	@Autowired
+	private LectureDao lectureDao;
+	
+	@Autowired
+	private MyLectureDao mylectureDao;
+	
+	@Autowired
+	private MemberDao memberDao;
 	
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
@@ -42,6 +61,21 @@ public class TeacherController {
 		return "";
 	}
 	
+	@RequestMapping(value="/apply", method=RequestMethod.POST)
+	public String apply(MultipartHttpServletRequest mRequest) throws Exception {
+		MultipartFile file = mRequest.getFile("file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+
+		String[] extension = file.getContentType().split("/");
+		teacherDao.apply(new Teacher(mRequest));
+		String filename = getNick(mRequest) + "." + extension[extension.length - 1];
+		File target = new File(savePath, filename);
+		if(!target.exists()) target.mkdirs();
+		file.transferTo(target);
+		
+		return "data/maininfo";
+	}
+	
 	@RequestMapping("/apply")
 	public String apply(HttpServletRequest request, Model m) throws Exception {
 		String nick = getNick(request);
@@ -49,6 +83,16 @@ public class TeacherController {
 		m.addAttribute("nick", nick);
 		
 		return "teacher/apply";
+	}
+	
+	@RequestMapping("/applycheck")
+	@ResponseBody
+	public String applycheck(HttpServletRequest request, Model m) throws Exception {
+		String nick = getNick(request);
+		
+		boolean result = teacherDao.applycheck(nick);
+		
+		return String.valueOf(result);
 	}
 	
 	@RequestMapping("/lecturer")
@@ -87,7 +131,7 @@ public class TeacherController {
 				sub2 = "sort";
 				break;
 			default :
-				standard = "no";
+				standard = "reg";
 			}
 		}
 		log.debug("st : " + standard);
@@ -153,6 +197,98 @@ public class TeacherController {
 		m.addAttribute("url", url);
 		
 		return "teacher/lecturerInfo";
+	}
+	
+	@RequestMapping("/teacherMain")
+	public String toMain() {
+		return "teacher/teacherMain";
+	}
+	
+	@RequestMapping("/profile")
+	public String profile(HttpServletRequest req, Model m) throws Exception {
+		String name = getNick(req);
+		Teacher info = teacherDao.showOne(name);
+		
+		m.addAttribute("profile", info);
+		
+		return "teacher/profile";
+	}
+	
+	@RequestMapping(value="/profile", method=RequestMethod.POST)
+	public String profile(MultipartHttpServletRequest mRequest) throws Exception {
+		MultipartFile file = mRequest.getFile("file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		
+		
+		
+		if (!file.isEmpty()) {
+			String[] extension = file.getContentType().split("/");
+			String filename = getNick(mRequest) + "." + extension[extension.length - 1];
+			File target = new File(savePath, filename);
+			if(!target.exists()) target.mkdirs();
+			file.transferTo(target);
+		}
+		teacherDao.edit(new Teacher(mRequest));
+		
+		return "teacher/teacherMain";
+	}
+	
+	@RequestMapping("/resister")
+	public String resister(HttpServletRequest req, Model m) throws Exception {
+		String nick = getNick(req);
+		
+		m.addAttribute("nick", nick);
+		
+		return "teacher/resister";
+	}
+	
+	@RequestMapping(value="/resister", method=RequestMethod.POST)
+	public String resister(MultipartHttpServletRequest mRequest) {
+		lectureDao.insert(new LectureInfo(mRequest));
+		
+		return "teacher/teacherMain";
+	}
+	
+	@RequestMapping("/myLectures")
+	public String lectures(HttpServletRequest req, Model m) throws Exception {
+		List<LectureInfo> list = lectureDao.teacherList(getNick(req));
+		
+		m.addAttribute("list", list);
+		
+		return "teacher/lectures";
+	}
+	
+	@RequestMapping("/myLecture")
+	public String myLecture(Model m) {
+		
+		
+		return "teacher/myLecture";
+	}
+	
+	@RequestMapping("/students")
+	public String students() {
+//		List<>
+		
+		return "teacher/students";
+	}
+	
+	@RequestMapping("/qna")
+	public String qna() {
+		return "teacher/qna";
+	}
+	
+	@RequestMapping("/assessView")
+	public String assessView() {
+		return "teacher/assessView";
+	}
+	
+	@RequestMapping("/withdrow")
+	public String withdrow(HttpServletRequest req, Model m) throws Exception {
+		int point = memberDao.mypoint(getNick(req));
+		
+		m.addAttribute("point", point);
+		
+		return "teacher/withdrow";
 	}
 
 }

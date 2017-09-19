@@ -328,7 +328,9 @@ public class DataController {
 			model.addAttribute("url", "/data/maininfo"); 
 			return "data/redirect";
 		}
-		return "redirect:/data/fail";
+		model.addAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
+		model.addAttribute("url", "/data/changepw");
+		return "data/redirect";
 		
 	}
 	@RequestMapping("/data/redirect")

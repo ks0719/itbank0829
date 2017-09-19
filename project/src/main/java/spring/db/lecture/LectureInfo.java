@@ -3,6 +3,11 @@ package spring.db.lecture;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 public class LectureInfo {
 	private int no;
 	private String tag;
@@ -46,6 +51,26 @@ public class LectureInfo {
 		setAccept(rs.getString("accept"));
 		setReg(rs.getString("reg"));
 		setPeriod(rs.getString("period"));
+	}
+
+	public LectureInfo(MultipartHttpServletRequest mRequest) {
+		setTag(mRequest.getParameter("tag"));
+		setTitle(mRequest.getParameter("title"));
+		setTeacher(mRequest.getParameter("teacher"));
+		setTime(mRequest.getParameter("time"));
+		setType(mRequest.getParameter("type"));
+		setPrice(Integer.parseInt(mRequest.getParameter("price")));
+		
+		MultipartFile file = mRequest.getFile("file");
+		if (!file.isEmpty()) {
+			setPicture_realname(file.getOriginalFilename());
+			setPicture_type(file.getContentType());
+			setPicture_size(file.getSize());
+		}
+		
+		setIntro(mRequest.getParameter("intro"));
+		setDetail(mRequest.getParameter("detail"));
+		setPeriod(mRequest.getParameter("period"));
 	}
 
 	public int getNo() {

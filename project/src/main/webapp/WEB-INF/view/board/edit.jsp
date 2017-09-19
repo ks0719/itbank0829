@@ -63,7 +63,7 @@
 				</tr>
 			</table>
 			<div class="align-right">
-				<input type="submit" value="수정" class="input-btn">
+				<input type="submit" value="수정" class="input-btn" id="submit">
 				<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${path}';">
 			</div>
 		</form>
