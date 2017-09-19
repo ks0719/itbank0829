@@ -85,7 +85,9 @@ public class LectureDao {
 	}
 	
 	public List<LectureInfo> teacherList(String nick) throws Exception {
-		String sql = "select * from lecture_info where teacher = ?";
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from lecture_info where teacher = ? order by no desc)"
+				+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {nick}, mapper);
 	}
