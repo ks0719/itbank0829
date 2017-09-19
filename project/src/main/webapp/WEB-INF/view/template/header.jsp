@@ -151,14 +151,15 @@ $(document).ready(function(){
 			var commentNo = $(this).attr('value');
 			var result = confirm("정말 삭제하시겠습니까?");
 
-			$.ajax({
-				url: "commentDelete",
-				data: {"commentNo": commentNo, "result" : result},
-        		async : false,
-				success: function(res) {
-					if (result) $("#comment"+commentNo).remove();
-				}
-			});
+			if (result) {
+				$.ajax({
+					url: "commentDelete",
+					data: {"commentNo": commentNo, "result" : result},
+					success: function(res) {
+						$("#comment"+commentNo).remove();
+					}
+				});
+			}
 		});
 		
 		$(document).on("click", ".lecturer-array", function() {

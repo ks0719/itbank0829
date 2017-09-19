@@ -62,10 +62,10 @@ public class CommentDao {
 		jdbcTemplate.update(sql, context);
 	}
 
-	public void deleteOne(int commentNo) {
+	public boolean deleteOne(int commentNo) {
 		String sql = "delete commentboard where no = ?";
 		
-		jdbcTemplate.update(sql, commentNo);
+		return jdbcTemplate.update(sql, commentNo) > 0;
 	}
 
 }

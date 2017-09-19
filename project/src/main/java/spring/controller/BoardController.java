@@ -145,7 +145,6 @@ public class BoardController {
 		}
 		
 		List<Board> board = boardDao.detail(noI);
-		log.debug("갯수 : " + board.size());
 		if (board.size() == 0) throw new Exception("404");
 		boardDao.readUp(noI);
 		List<Comment> list = commentDao.list(noI);
