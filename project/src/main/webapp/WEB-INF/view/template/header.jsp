@@ -6,6 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="resource/js/jquery.cookie.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
@@ -569,6 +570,10 @@ $(document).ready(function(){
   	
 	//움직이는 레이어 팝업	
 	$(function() {
+		var chattop = $.cookie('chattop');
+		var chatleft = $.cookie('chatleft');
+		$("#draggable").css("top",chattop);
+		$("#draggable").css("left",chatleft);
 			$( "#draggable" ).draggable({
 			 drag: function(event,ui){
 				 var top=$("#draggable").css("top");
@@ -577,13 +582,24 @@ $(document).ready(function(){
 					console.log("left : "+left);
 			 },
 			 stop: function(event,ui){
-				tpp= $("#save").data("top", $("#draggable").position().top);
-				lpp=$("#save").data("left", $("#draggable").position().left);
+				var chattop = $("#draggable").css("top");
+				var chatleft =$("#draggable").css("left");
+				//'cookie'라는 key값으로 입력값을 저장한다. 
+				//1번째 parameter = 쿠키명 
+				// 2번째 parameter = 저장하고자 하는 쿠키값 
+				$.cookie('chattop', chattop,{
+					expires : 10
+                    ,secure : false
+				}); 
+				$.cookie('chatleft', chatleft,{
+					expires : 10
+                    ,secure : false
+				}); 
 
 				 
 				 
-				 console.log("최종 top : "+$("#save").data("top"));
-				 console.log("최종 left : "+$("#save").data("left"));
+				 console.log("최종 top : "+$("#draggable").css("top"));
+				 console.log("최종 left : "+$("#draggable").css("left"));
 			 }
 		});
 			});
@@ -629,13 +645,14 @@ $(document).ready(function(){
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
 <div id="save" data-top="300" data-left="300"></div>
 <div id="draggable" class="ui-widget-content" style=
-"top: 215px;
- left: 417px; 
+"top: 70%;
+ left: 75%; 
  height: 250px; 
  width: 330px;
   border: 0px; 
