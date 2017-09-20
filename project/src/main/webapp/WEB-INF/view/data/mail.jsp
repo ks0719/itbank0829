@@ -3,6 +3,37 @@
     
 <%@ include file="/WEB-INF/view/template/mailHeader.jsp" %>
 
+<div class="box box-primary">
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <table>
 	<thead>
 		<tr>

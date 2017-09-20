@@ -306,7 +306,7 @@ public class DataController {
 
 		m.addAttribute("mail", mail);
 
-		mailDao.read(mail);
+		mailDao.read(mail, nick);
 		return "data/mailDetail";
 	}
 
@@ -391,5 +391,9 @@ public class DataController {
 	public String redirect() {
 
 		return "data/redirect";
+	}
+	@RequestMapping("/data/complate")
+	public String complate() {
+		return "data/complate";
 	}
 }
