@@ -54,6 +54,7 @@ public class LectureInfo {
 	}
 
 	public LectureInfo(MultipartHttpServletRequest mRequest) {
+		setNo(mRequest.getParameter("no") == null ? 0 : Integer.parseInt(mRequest.getParameter("no")));
 		setTag(mRequest.getParameter("tag"));
 		setTitle(mRequest.getParameter("title"));
 		setTeacher(mRequest.getParameter("teacher"));
@@ -66,6 +67,11 @@ public class LectureInfo {
 			setPicture_realname(file.getOriginalFilename());
 			setPicture_type(file.getContentType());
 			setPicture_size(file.getSize());
+		} else {
+			setPicture_name(mRequest.getParameter("picture_name"));
+			setPicture_realname(mRequest.getParameter("picture_realname"));
+			setPicture_type(mRequest.getParameter("picture_type"));
+			setPicture_size(Long.parseLong(mRequest.getParameter("picture_size")));
 		}
 		
 		setIntro(mRequest.getParameter("intro"));

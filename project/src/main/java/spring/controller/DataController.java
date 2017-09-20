@@ -108,6 +108,43 @@ public class DataController {
 
 		return "data/exit";
 	}
+	
+	
+	@RequestMapping(value="/data/nickedit", method = RequestMethod.POST)
+	public String editnick(@RequestParam String nick, HttpServletRequest request) {
+		System.out.println(nick);
+		
+		boolean result=mbdao.check("nick", nick);
+		if(!result) {
+			
+			return "data/edit";
+		}else {
+			
+			return null;
+		}
+	}
+	
+	@RequestMapping(value="/data/phoneedit", method = RequestMethod.POST)
+	public String editphone(@RequestParam String phone, HttpServletRequest request) throws Exception {
+		System.out.println(phone);
+		
+		//내가 쓴거랑 디비안에 있는 정보랑 같은지 ?
+		String nick=getNick(request);
+		
+		Member mb= mbdao.select(nick);
+		if(mb.equals(phone)) return "data/edit";
+		
+		//중복체크
+		boolean result=mbdao.check("phone", phone);
+		
+		if(!result) {
+			
+			return "data/edit";
+		}else {
+			
+			return null;
+		}
+	}
 
 	@RequestMapping("/data/maininfo")
 	public String maininfo(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
@@ -269,7 +306,7 @@ public class DataController {
 
 		m.addAttribute("mail", mail);
 
-		mailDao.read(mail);
+		mailDao.read(mail, nick);
 		return "data/mailDetail";
 	}
 
@@ -354,5 +391,9 @@ public class DataController {
 	public String redirect() {
 
 		return "data/redirect";
+	}
+	@RequestMapping("/data/complate")
+	public String complate() {
+		return "data/complate";
 	}
 }

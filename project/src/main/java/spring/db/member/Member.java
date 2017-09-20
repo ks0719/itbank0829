@@ -78,6 +78,12 @@ public class Member {
 		setReg(request.getParameter("reg"));
 		setPower(request.getParameter("power"));
 	}
+	@Override
+	public String toString() {
+		return "Member [no=" + no + ", id=" + id + ", pw=" + pw + ", name=" + name + ", nick=" + nick + ", phone="
+				+ phone + ", sort=" + sort + ", post=" + post + ", addr1=" + addr1 + ", addr2=" + addr2 + ", mileage="
+				+ mileage + ", lev=" + lev + ", reg=" + reg + ", power=" + power + "]";
+	}
 	public int getNo() {
 		return no;
 	}
