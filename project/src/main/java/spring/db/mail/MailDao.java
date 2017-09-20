@@ -124,12 +124,9 @@ public class MailDao {
 		return res>0;
 	}
 	
-	public boolean read(Mail mail) {
-		String sql = "select mail_receiver from mail where no=?";
-		String receiver = jdbcTemplate.queryForObject(sql, new Object[] {mail.getNo()}, String.class);
-		System.out.println(receiver);
-		if(receiver.equals(mail.getMail_writer())) {
-			sql = "update mail set MAIL_READ='읽음' where no=?";
+	public boolean read(Mail mail, String nick) {
+		if(nick.equals(mail.getMail_receiver())) {
+			String sql = "update mail set MAIL_READ='읽음' where no=?";
 			return jdbcTemplate.update(sql, new Object[] {mail.getNo()})>0;
 		}
 		

@@ -269,7 +269,7 @@ public class DataController {
 
 		m.addAttribute("mail", mail);
 
-		mailDao.read(mail);
+		mailDao.read(mail, nick);
 		return "data/mailDetail";
 	}
 
