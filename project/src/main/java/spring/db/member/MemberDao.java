@@ -49,7 +49,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		  return pw;
 	  }
 	public boolean check(String column, String data) {
-	
+		
 		String sql = "select count(*) from member where "+column+"=?";
 		return jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
 	}

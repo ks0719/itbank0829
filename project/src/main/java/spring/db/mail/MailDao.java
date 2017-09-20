@@ -128,7 +128,7 @@ public class MailDao {
 		String sql = "select mail_receiver from mail where no=?";
 		String receiver = jdbcTemplate.queryForObject(sql, new Object[] {mail.getNo()}, String.class);
 		System.out.println(receiver);
-		if(receiver.equals(mail.getMail_writer())) {
+		if(receiver.equals(mail.getMail_receiver())) {
 			sql = "update mail set MAIL_READ='읽음' where no=?";
 			return jdbcTemplate.update(sql, new Object[] {mail.getNo()})>0;
 		}

@@ -5,6 +5,7 @@
 <html>
 <head>
 <script>
+
 $(document).ready(function(){
 	$("#checkAll").click(function(){
 		if($("#checkAll").prop("checked")){

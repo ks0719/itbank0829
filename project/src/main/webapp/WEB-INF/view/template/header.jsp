@@ -589,7 +589,99 @@ $(document).ready(function(){
 			});
 	
 	
-	//회원정보 수정
+		//회원 닉네임 수정
+		function dataEdit(){
+		if($("#nickcheck").val()=="중복확인"){
+			var nickregex=/^[가-힣]{2,6}$/;
+			var nicktarget = document.querySelector("#nick");
+			var result=false;
+			
+			if($("#nick").val()==""){
+				alert("닉네임을 입력하세요.");
+				result=false;
+			}else if(!nickregex.test(nicktarget.value)){
+		 		alert("올바른 닉네임을 입력하세요.");
+		 		result=false;
+		 	}			
+			else{
+				 $.ajax({
+					 	async: false,
+						url:"nickedit",
+						type:"post",
+						data:{nick:$("#nick").val()},
+						dataType:"text",
+						success:function(){
+							alert("사용 가능한 닉네임 입니다.");
+							$("#nick").attr("readonly","readonly");
+							$("#nickcheck").val("취소");
+							result=true;
+						},
+						error:function(){
+							alert("이미 등록된 닉네임 입니다.");
+							result=false;
+						}
+					});
+			}
+		}else{
+			$("#nickcheck").val("중복확인");
+			$("#nick").removeAttr("readonly");
+		}
+		return result;
+	}
+	
+	
+	//회원 핸드폰수정
+	function dataEdit2(){
+		if($("#phonecheck").val()=="중복확인"){
+			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
+  			var phonetarget = document.querySelector("#phone");
+  			var result=false;
+  			
+  			if($("#phone").val()==""){
+				alert("핸드폰번호를 입력하세요.");
+				result=false;
+			}else if(!phoneregex.test(phonetarget.value)){
+		 		alert("올바른 핸드폰 번호를 입력하세요.");
+		 		result=false;
+		 	}			
+			else{
+				 $.ajax({
+					 	async: false,
+						url:"phoneedit",
+						type:"post",
+						data:{phone:$("#phone").val()},
+						dataType:"text",
+						success:function(){
+							alert("사용 가능한 번호 입니다.");
+							$("#phone").attr("readonly","readonly");
+							$("#phonecheck").val("취소");
+							result=true;
+						},
+						error:function(){
+							alert("이미 등록된 번호 입니다.");
+							result=false;
+						}
+					});
+  			}
+		}else{
+			$("#phonecheck").val("중복확인");
+			$("#phone").removeAttr("readonly");
+		}
+		return result;
+	}
+	
+	//회원 수정 submit
+	function dataSubmit() {
+	 	if($("#nick").attr("readonly")!='readonly'){
+	 		alert("닉네임 중복 확인을 해주세요");
+	 	}else if($("#phone").attr("readonly")!='readonly'){
+	 		alert("휴대폰 중복확인을 해주세요");
+	 	}else{
+	 		alert("수정이 완료되었습니다.");
+	 		return true;
+	 	}
+	 		return false;
+	}
 	
 
 </script>
