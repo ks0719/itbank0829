@@ -355,4 +355,8 @@ public class DataController {
 
 		return "data/redirect";
 	}
+	@RequestMapping("/data/complate")
+	public String complate() {
+		return "data/complate";
+	}
 }

@@ -6,7 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
-<script type="text/javascript" src="resource/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resource/js/jquery.cookie.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
@@ -209,6 +209,16 @@ $(document).ready(function(){
 		function confirm(form){
 			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
 			}
+		//플로팅 배너
+		$("#testbanner").scrollFollow({
+
+            speed : 800,    // 꿈지럭 거리는 속도
+
+            offset : 200     // 웹페이지 상단에서 부터의 거리(바꿔보면 뭔지 안다)
+
+        });
+
+		
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -588,6 +598,7 @@ $(document).ready(function(){
 				//1번째 parameter = 쿠키명 
 				// 2번째 parameter = 저장하고자 하는 쿠키값 
 				$.cookie('chattop', chattop,{
+					path: "/",
 					expires : 10
                     ,secure : false
 				}); 
@@ -649,33 +660,25 @@ $(document).ready(function(){
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
-<div id="save" data-top="300" data-left="300"></div>
-<div id="draggable" class="ui-widget-content" style=
-"top: 70%;
- left: 75%; 
- height: 250px; 
- width: 330px;
-  border: 0px; 
-  cursor: pointer; 
-  position: absolute;
-   z-index: 2147483647; 
-   overflow: visible; 
-   background-color: transparent; 
-   visibility: visible;">
-	  <p>마우스로 움직이는 팝업레이어</p>
-	</div>
 <div class="setDiv">
     <div class="mask"></div>
     <div class="window">
-    <h5>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</h5>
-    <div id="null"></div>
+    <div class="form-group">
+    <label>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</label>
+    </div>
     <form action="${pageContext.request.contextPath }/member/login" method="post">
-    	아이디<input type="text" name="id"  id="loginid" required><br>
-    	비밀번호<input type="password" name="pw" id="loginpw" required><br>
+    <div class="form-group">
+    	<label>아이디</label>
+    	<input type="text" name="id"  id="loginid" class="form-control" placeholder="아이디를 입력해주세요" required>
+    	</div>
+    	 <div class="form-group">
+    	<label>비밀번호</label>
+    	<input type="password" name="pw" id="loginpw" class="form-control" placeholder="비밀번호를 입력해주세요" required>
+    	</div>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기" onclick="return logincheck();"/><br>
-        <input type="button" href="#" value="회원가입하기">
+        <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary" onclick="return logincheck();"/>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
     </form>
     </div>
 </div>
@@ -683,6 +686,20 @@ $(document).ready(function(){
 <c:set var="nick" value="${cookie.mynick.value}"/>
 <c:if test="${!empty nick }">
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
+<div id="draggable" class="ui-widget-content" style=
+"top: 70%;
+ left: 75%; 
+ height: 250px; 
+ width: 330px;
+  border:1px solid; 
+  cursor: pointer; 
+  position: absolute;
+   z-index: 2147483647; 
+   overflow: visible; 
+   background-color: transparent; 
+   visibility: visible;">
+   흠
+	</div>
 </c:if>
 
 <div class="wrapper">
@@ -699,7 +716,6 @@ $(document).ready(function(){
 		</nav>
 	</header>
 	<!-- 헤더 끝 -->
-	
 	<!-- 사이드바 시작 -->
 	<aside class="main-sidebar">
 		<section class="sidebar">
@@ -819,7 +835,8 @@ $(document).ready(function(){
 		</section>
 	</aside>
 	<!-- 사이드바 끝 -->
-	
+
+
 	
 	<div class="content-wrapper">
 	
