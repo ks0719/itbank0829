@@ -58,7 +58,7 @@ $(document).ready(function(){
 	$(document).ready(function() {
 		// 검색시 select option 유지
 		$("select option").each(function(){
-	    	if($(this).val()=="${type}"){
+	    	if($(this).val()=="${type}" || $(this).val()=="${search}"){
 				$(this).attr("selected","selected");
 	    	} else if ($(this).val()=="${profile.sort}") {
 				$(this).attr("selected","selected");
@@ -196,18 +196,16 @@ $(document).ready(function(){
 		$(document).on("click", ".toMyLecture", function() {
 			var no = $(this).data('no');
 			var page = $(this).data('page');
-			var type = $(this).data('type');
+			var search = $(this).data('search');
 			var key = $(this).data('key');
+			var where = $(this).data('where');
 
-			if (type != "" && key != "") {
-				location.href = "myLecture?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+			if (search != "" && key != null) {
+				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page + "&search=" + search + "&key=" + key;
 			} else {
-				location.href = "myLecture?no=" + no + "&page=" + page;
+				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page;
 			}
 		});
-		function confirm(form){
-			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
-			}
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
