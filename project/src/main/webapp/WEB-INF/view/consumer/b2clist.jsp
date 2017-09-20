@@ -7,7 +7,7 @@
 <div class="wrap_table" >
 <div class="page-wrap" style="widows: 100%;height: 500px; overflow: auto;">
 	<div class="table-wrap">
-		<table border="1" class="study" style="width: 100%;"> 
+		<table border="1" class="table table-hover" style="width: 100%;"> 
 		<thead>
 		<tr>
 				<th>
