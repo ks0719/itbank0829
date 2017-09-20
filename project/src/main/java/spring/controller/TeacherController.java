@@ -162,7 +162,6 @@ public class TeacherController {
 		if (standard != null) {
 			url += "standard=" + originStandard + "&";
 		}
-		log.debug("url : " + url);
 		
 		m.addAttribute("list", list);
 		m.addAttribute("page", pageNo);
@@ -251,16 +250,66 @@ public class TeacherController {
 	
 	@RequestMapping("/myLectures")
 	public String lectures(HttpServletRequest req, Model m) throws Exception {
-		List<LectureInfo> list = lectureDao.teacherList(getNick(req));
+		int page;
+		try {
+			page = Integer.parseInt(req.getParameter("page"));
+		} catch (Exception e) {
+			page = 1;
+		}
+		
+		String nick = getNick(req);
+		String type = req.getParameter("type");
+		String key = req.getParameter("key");
+		
+		int listCount = lectureDao.teacherCount(nick, type, key);
+		
+		log.debug(String.valueOf(listCount));
+	
+		int boardSize = 10;
+		int start = boardSize * page - 9;
+		int end = start + boardSize -1;
+		if (end > listCount) end = listCount;
+
+		List<LectureInfo> list = lectureDao.teacherList(nick, type, key, start, end);
+		
+		int blockSize = 10;
+		int blockTotal = (listCount + boardSize - 1) / boardSize;
+		int startBlock = (page - 1) / blockSize * blockSize + 1;
+		int endBlock = startBlock + blockSize - 1;
+		if (endBlock > blockTotal) endBlock = blockTotal;
+		
+		String url = "myLectures?";
+		if (type != null && key != null) {
+			url += "type=" + type + "&key=" + key + "&";
+			m.addAttribute("type", type);
+			m.addAttribute("key", key);
+		}
 		
 		m.addAttribute("list", list);
+		m.addAttribute("page", page);
+		m.addAttribute("type", type);
+		m.addAttribute("key", key);
+		m.addAttribute("start", start);
+		m.addAttribute("end", end);
+		m.addAttribute("startBlock", startBlock);
+		m.addAttribute("endBlock", endBlock);
+		m.addAttribute("url", url);
 		
-		return "teacher/lectures";
+		return "teacher/myLectures";
 	}
 	
 	@RequestMapping("/myLecture")
-	public String myLecture(Model m) {
+	public String myLecture(HttpServletRequest req, Model m) throws Exception {
+		int no;
+		try {
+			no = Integer.parseInt(req.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
 		
+		LectureInfo info = lectureDao.teacherShowOne(no, getNick(req));
+		
+		m.addAttribute("mylecture", info);
 		
 		return "teacher/myLecture";
 	}

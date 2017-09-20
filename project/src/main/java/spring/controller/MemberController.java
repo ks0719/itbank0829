@@ -4,18 +4,19 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,13 @@ import spring.db.member.MemberDao;
 @Controller
 public class MemberController {
 	private static final String serveraddr="http://localhost:9080/project/WEB-INF/view";
+	private Logger log=LoggerFactory.getLogger(getClass());
+	
+	@Autowired
+	private MemberDao memberDao;
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
 		if(c != null){
@@ -48,13 +56,6 @@ public class MemberController {
 	
 
 	
-	private Logger log=LoggerFactory.getLogger(getClass());
-	
-	@Autowired
-	private MemberDao memberDao;
-	
-	@Autowired
-	BCryptPasswordEncoder passwordEncoder;
 	
 	
 	@RequestMapping(value="/member/sign",method=RequestMethod.GET)
@@ -129,7 +130,7 @@ public class MemberController {
 //		String nick=memberDao.logincheck(id, pw);
 //		log.debug("nick="+nick);
 //		log.debug("url="+url);
-		String encodepw=memberDao.mypw(id);
+		String encodepw=memberDao.mypwid(id);
 		//log.debug("일치하냐? : "+passwordEncoder.matches(pw, encodepw));
 		if(passwordEncoder.matches(pw, encodepw))
 		nick=memberDao.logincheck(id, encodepw);
@@ -188,4 +189,68 @@ public class MemberController {
 		}
 	}
 	
+	@RequestMapping("/member/memberlist")
+	public String list(HttpServletRequest request, Model model) {
+		String type = request.getParameter("type");
+		String key = request.getParameter("key");
+		
+		
+		int pageNo;
+		try {
+			pageNo = Integer.parseInt(request.getParameter("page"));
+		} catch(Exception e) {
+			pageNo = 1;
+		}
+		if (pageNo <= 0 ) pageNo = 1;
+		
+		int listCount=memberDao.count(type, key);
+		log.debug(String.valueOf(listCount));
+		
+		int boardSize = 10;
+		int start = boardSize * pageNo - 9;
+		int end = start + boardSize -1;
+		if (end > listCount) end = listCount;
+		
+		List<Member>list=memberDao.list(type, key, start, end);
+		
+		int blockSize = 10;
+		int blockTotal = (listCount + boardSize - 1) / boardSize;
+		int startBlock = (pageNo - 1) / blockSize * blockSize + 1;
+		int endBlock = startBlock + blockSize - 1;
+		if (endBlock > blockTotal) endBlock = blockTotal;
+		
+		String url = "memberlist?";
+		if (type != null && key != null) {
+			url += "type=" + type + "&key=" + key + "&";
+			model.addAttribute("type", type);
+			model.addAttribute("key", key);
+		}
+		
+		model.addAttribute("list", list);
+		model.addAttribute("page",pageNo);
+		model.addAttribute("startBlock", startBlock);
+		model.addAttribute("endBlock", endBlock);
+		model.addAttribute("url", url);
+		
+		return "member/memberlist";
+	}
+	
+	@RequestMapping("/member/memberdetail")
+	public String detail(HttpServletRequest req, String no, Model m) throws Exception {
+	
+		
+		int noI;
+		try {
+			noI = Integer.parseInt(no);
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		List<Member>member=memberDao.detail(noI);
+		if(member.size()==0) throw new Exception("404");
+		
+		m.addAttribute("no",no);
+		m.addAttribute("memberList",member);
+		
+		return "member/memberdetail";
+	}
 }

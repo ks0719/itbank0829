@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<%@ page import = "java.net.URLDecoder" %>
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -61,7 +62,7 @@ $(document).ready(function(){
 				$(this).attr("selected","selected");
 	    	} else if ($(this).val()=="${profile.sort}") {
 				$(this).attr("selected","selected");
-	    	} else if ($(this).val()=="${mylecture.tag}") {
+	    	} else if ($(this).val()=="${mylecture.tag}" || $(this).val()=="${mylecture.type}" ) {
 				$(this).attr("selected","selected");
 	    	}
 		});
@@ -150,14 +151,15 @@ $(document).ready(function(){
 			var commentNo = $(this).attr('value');
 			var result = confirm("정말 삭제하시겠습니까?");
 
-			$.ajax({
-				url: "commentDelete",
-				data: {"commentNo": commentNo, "result" : result},
-        		async : false,
-				success: function(res) {
-					if (result) $("#comment"+commentNo).remove();
-				}
-			});
+			if (result) {
+				$.ajax({
+					url: "commentDelete",
+					data: {"commentNo": commentNo, "result" : result},
+					success: function(res) {
+						$("#comment"+commentNo).remove();
+					}
+				});
+			}
 		});
 		
 		$(document).on("click", ".lecturer-array", function() {
@@ -203,6 +205,9 @@ $(document).ready(function(){
 				location.href = "myLecture?no=" + no + "&page=" + page;
 			}
 		});
+		function confirm(form){
+			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
+			}
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -547,18 +552,45 @@ $(document).ready(function(){
   	
   	function changepw() {
   		var pw=null;
+  		var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
   	  if(chpw.newpw.value != chpw.repw.value ) {
-  	    alert("새 비밀번호가 일치하지 않습니다.");
+  		  if(!phoneregex.test(chpw.newpw.value)){
+  	    alert("비밀번호가 조건에 맞지 않습니다.");
+  	    return false;
   	   chpw.newpw.focus();
+  		  }
   	    return false;
   	  }
   	  else return true;
   	}
-//   	}
-//움직이는 레이어 팝업
-$(function() {
-		$( "#draggable" ).draggable();
-	});
+  	
+  	
+  	
+  	
+	//움직이는 레이어 팝업	
+	$(function() {
+			$( "#draggable" ).draggable({
+			 drag: function(event,ui){
+				 var top=$("#draggable").css("top");
+					var left=$("#draggable").css("left");
+				 console.log("top : "+top);
+					console.log("left : "+left);
+			 },
+			 stop: function(event,ui){
+				tpp= $("#save").data("top", $("#draggable").position().top);
+				lpp=$("#save").data("left", $("#draggable").position().left);
+
+				 
+				 
+				 console.log("최종 top : "+$("#save").data("top"));
+				 console.log("최종 left : "+$("#save").data("left"));
+			 }
+		});
+			});
+	
+	
+	//회원정보 수정
+	
 
 </script>
 
@@ -566,26 +598,56 @@ $(function() {
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 	<meta charset="utf-8">
 	<title>Welcome</title>
+	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+	<!-- Bootstrap 3.3.2 -->
+    <link href="${pageContext.request.contextPath}/css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />    
+    <!-- FontAwesome 4.7.0 -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <!-- Ionicons 2.0.0 -->
+    <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.css" rel="stylesheet" type="text/css" />    
+    <!-- Theme style -->
+    <link href="${pageContext.request.contextPath}/css/dist/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <!-- AdminLTE Skins. Choose a skin from the css/skins 
+         folder instead of downloading all of them to reduce the load. -->
+    <link href="${pageContext.request.contextPath}/css/dist/css/skins/_all-skins.css" rel="stylesheet" type="text/css" />
+<!--     iCheck -->
+<%--     <link href="${pageContext.request.contextPath}/css/plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" /> --%>
+<!--     Morris chart -->
+<%--     <link href="${pageContext.request.contextPath}/css/plugins/morris/morris.css" rel="stylesheet" type="text/css" /> --%>
+<!--     jvectormap -->
+<%--     <link href="${pageContext.request.contextPath}/css/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" /> --%>
+<!--     Date Picker -->
+<%--     <link href="${pageContext.request.contextPath}/css/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" /> --%>
+<!--     Daterange picker -->
+<%--     <link href="${pageContext.request.contextPath}/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" /> --%>
+<!--     bootstrap wysihtml5 - text editor -->
+<%--     <link href="${pageContext.request.contextPath}/css/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" /> --%>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
-<body>
-<div id="draggable" class="ui-widget-content" style="top:80%;
-    left:80%;
-    height: 130px;
-    width: 300px;
-    border: 0px;
-    cursor: pointer;
-    position: absolute;
-    z-index: 2147483647;
-    overflow: visible;
-    
-    background-color: transparent;
-    visibility: visible;
-    border: 1px solid;">
+<body class="skin-blue">
+<div id="save" data-top="300" data-left="300"></div>
+<div id="draggable" class="ui-widget-content" style=
+"top: 215px;
+ left: 417px; 
+ height: 250px; 
+ width: 330px;
+  border: 0px; 
+  cursor: pointer; 
+  position: absolute;
+   z-index: 2147483647; 
+   overflow: visible; 
+   background-color: transparent; 
+   visibility: visible;">
 	  <p>마우스로 움직이는 팝업레이어</p>
 	</div>
 <div class="setDiv">
- 
     <div class="mask"></div>
     <div class="window">
     <h5>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</h5>
@@ -601,42 +663,146 @@ $(function() {
     </div>
 </div>
 
-	<table>
-		<tr>
-			<th rowspan="10">
-                <div>
-                    <h3>회원정보 넣을 곳</h3>
-                    <h3><a href="${pageContext.request.contextPath}/">홈으로</a></h3>
-                    <c:set value="${cookie.mynick.value}" var="mynick"/>
-   					<c:if test="${empty mynick }">
-	                    <h3><a href="#" class="showMask">로그인</a></h3>
-	                    <h3><a href="${pageContext.request.contextPath}/member/sign">회원가입</a></h3>
-                    </c:if>
-                    <c:if test="${not empty mynick }">
-	              		<h3><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></h3>
-	                    <h3><a href="${pageContext.request.contextPath}/data/maininfo">내 정보 보기(maininfo.jsp)</a></h3>
-	                    <h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">쪽지함</a></h3>
-						<h3><a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;">내 수강정보</a></h3>
-						사진
-						닉네임
-						내 등급
-                    </c:if>
-                </div>
-                <div>
-                    <h3><a href="${pageContext.request.contextPath}/board/free">커뮤니티(자유게시판)</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/lecture/study?page=1">수업정보</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/teacher/lecturer?page=1">강사정보</a></h3>
-                    <h3><a href="${pageContext.request.contextPath}/consumer/basic">고객센터(고객센터 홈)</a></h3>
-                </div>
-			</th>
-            
-            <td style="vertical-align: top">
-                <table>
-                    <tr>
-                        <th>
-                            공지/그림/광고
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div>
+<c:set var="nick" value="${cookie.mynick.value}"/>
+<c:if test="${!empty nick }">
+<%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
+</c:if>
+
+<div class="wrapper">
+	<!-- 헤더 시작 -->
+	<header class="main-header">
+		<!-- 홈으로 버튼(로고로 사용해도됨) -->
+		<a href="${pageContext.request.contextPath}/" class="logo"><b>홈</b>으로</a>
+		<!-- 로고 옆 메뉴바 -->
+		<nav class="navbar navbar-static-top" role="navigation">
+			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+	            <span class="sr-only">Toggle navigation</span>
+	          </a>
+			광고 or 공지 넣을 자리(회원 정보 메뉴로 들어가면 여기다 회원정보 화면에 있는 a태그들 넣을 것)
+		</nav>
+	</header>
+	<!-- 헤더 끝 -->
+	
+	<!-- 사이드바 시작 -->
+	<aside class="main-sidebar">
+		<section class="sidebar">
+			<!-- 유저 정보 시작 -->
+			<div class="user-panel">
+				<c:choose>
+					<c:when test="${empty nick}">
+					<div class="pull-right info">
+						<a href="#" class="showMask"><i class="fa fa-sign-in"></i><span>로그인</span></a>
+						<a href="${pageContext.request.contextPath}/member/sign"><i class="fa fa-user-plus"></i><span>회원가입</span></a>
+					</div>
+					</c:when>
+					<c:otherwise>
+						<div class="pull-left image">
+							<!-- 테스트용 이미지 -->
+							<img src="${pageContext.request.contextPath}/img/users--blue-flag-png-image-100720.png" class="img-circle" alt="User Image"/>
+						</div>
+						<div class="pull-left info">
+							<a href="${pageContext.request.contextPath}/data/maininfo">
+								<i class="fa fa-user-circle-o"></i>
+								<span>${mynick}</span>
+							</a>
+							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
+								<i class="fa fa-envelope"></i>
+								<!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
+								<span class="label label-success">4</span>
+							</a>
+							
+							<br>
+							<a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;"><i class="fa fa-clipboard"></i><span>내 수강정보</span></a>
+							<br>
+							<a href="${pageContext.request.contextPath}/member/logout"><i class="fa fa-sign-out"></i><span>로그아웃</span></a>
+						</div>
+					</c:otherwise>
+				</c:choose>
+			
+			</div>
+			
+			<!-- 유저 정보 끝 -->
+			
+			<!--
+				클릭이 된 상태는 treeview 뒤에  active가 붙어야 한다
+				클릭이 된 상태는 treeview-menu 뒤에 menu-open이 붙어야 한다
+				따라서 나중에 그 페이지에 들어갔을 때 class가 변경되도록 설정 해주는 함수를 만들어 줘야 한다
+			-->
+			
+			<!-- 사이드바 메뉴 시작 -->
+			<ul class="sidebar-menu">
+				<c:choose>
+					<c:when test="${pageContext.request.requestURI.replace('/project/WEB-INF/view/','').substring(0,5) eq 'board'}">
+						<li class="treeview active">
+							<a href="#">
+								<i class="fa fa-edit"></i>
+								<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
+							</a>
+							<ul class="treeview-menu menu-open">
+					</c:when>
+					<c:otherwise>
+						<li class="treeview">
+							<a href="#">
+								<i class="fa fa-edit"></i>
+								<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
+							</a>
+							<ul class="treeview-menu">
+					</c:otherwise>
+				</c:choose>
+						<li>
+							<a href="${pageContext.request.contextPath}/board/free" class="active">
+								<i class="fa fa-circle-o"></i>자유게시판
+							</a>
+						</li>
+						<li>
+							<a href="${pageContext.request.contextPath}/board/info">
+								<i class="fa fa-circle-o"></i>정보게시판
+							</a>
+						</li>
+						<li>
+							<a href="${pageContext.request.contextPath}/board/qna">
+								<i class="fa fa-circle-o"></i>Q&A게시판
+							</a>
+						</li>
+						<li>
+							<a href="${pageContext.request.contextPath}/board/require">
+								<i class="fa fa-circle-o"></i>요청게시판
+							</a>
+						</li>
+						<li>
+							<a href="${pageContext.request.contextPath}/board/store">
+								<i class="fa fa-circle-o"></i>판매게시판
+							</a>
+						</li>
+						<li></li>
+					</ul>
+				</li>
+				
+				<li>
+					<a href="${pageContext.request.contextPath}/lecture/study?page=1">
+						<i class="fa fa-calendar-o"></i> <span>수업정보</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="${pageContext.request.contextPath}/teacher/lecturer?page=1">
+						<i class="fa fa-id-card"></i> <span>강사정보</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="${pageContext.request.contextPath}/consumer/basic">
+						<i class="fa fa-info-circle"></i> <span>고객센터</span>
+					</a>
+				</li>
+			</ul>
+			<!-- 사이드바 메뉴 끝 -->
+			
+			
+		</section>
+	</aside>
+	<!-- 사이드바 끝 -->
+	
+	
+	<div class="content-wrapper">
+	

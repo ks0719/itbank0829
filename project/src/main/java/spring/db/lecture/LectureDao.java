@@ -57,6 +57,15 @@ public class LectureDao {
 		return list.get(0);
 	}
 	
+	public LectureInfo teacherShowOne(int no, String nick) throws Exception {
+		String sql = "select * from lecture_info where teacher = ? and no = ?";
+		
+		List<LectureInfo> list = jdbcTemplate.query(sql, new Object[] {nick, no}, mapper);
+		
+		if (list.isEmpty()) throw new Exception("404");
+		return list.get(0);
+	}
+	
 	public int count() {
 		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true'", Integer.class);
 	}
@@ -84,10 +93,32 @@ public class LectureDao {
 		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);
 	}
 	
-	public List<LectureInfo> teacherList(String nick) throws Exception {
-		String sql = "select * from lecture_info where teacher = ?";
+	public int teacherCount(String nick) {
+		return jdbcTemplate.queryForObject("select count(*) from lecture_info where teacher = ?", new Object[] {nick}, Integer.class);
+	}
+	
+	public int teacherCount(String nick, String type, String key) {
+		if (type == "" || key == null) return teacherCount(nick);
+		System.out.println("타입, : " + type + ", 키 : " + key);
+		return jdbcTemplate.queryForObject("select count(*) from lecture_info where teacher = ? and " + type + " like '%'||?||'%'", new Object[] {nick, key}, Integer.class);
+	}
+	
+	public List<LectureInfo> teacherList(String nick, int start, int end) throws Exception {
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from lecture_info where teacher = ? order by no desc)"
+				+ " TMP) where rn between ? and ?";
 		
-		return jdbcTemplate.query(sql, new Object[] {nick}, mapper);
+		return jdbcTemplate.query(sql, new Object[] {nick, start, end}, mapper);
+	}
+	
+	public List<LectureInfo> teacherList(String nick, String type, String key, int start, int end) throws Exception {
+		if (type == "" || key == null) return teacherList(nick, start, end);
+		
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from lecture_info where teacher = ? and " + type + " like '%'||?||'%' order by no desc)"
+						+ " TMP) where rn between ? and ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {nick, key, start, end}, mapper);
 	}
 
 }
