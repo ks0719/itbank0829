@@ -30,11 +30,11 @@ $(document).ready(function(){
 	
 	$("#delete").on("click", function(){
 		console.log("실행됨");
-		var unitval = [];
+		var unitval = 
 		jQuery.ajaxSettings.traditional = true;
-        
+        //ajax통신이 안된 이유는 변수값이 에러가 나서 
         $.ajax({
-           url : "project/member/checkBox",
+           url : "checkBox",
            type : "post",
            data : {
               "userid" : unitval
