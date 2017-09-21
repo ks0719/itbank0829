@@ -53,7 +53,11 @@ $(document).ready(function(){
         $(this).hide();
         $('.window').hide();
     });
+    
 });
+
+
+
 
 
 	$(document).ready(function() {
@@ -570,6 +574,28 @@ $(document).ready(function(){
   	
   	
   	
+  	
+	$(document).ready(function() {
+		//새로운 메일 갯수
+		var mynick = "${cookie.mynick.value}";
+		
+		var error = $.ajax({
+			url:"/project/data/mail/newMail",
+			async: false,
+			type:"post",
+			data:{nick:mynick},
+			dataType:"text"
+		}).responseText;
+		
+		var newMail = error.substring(error.indexOf("/project/WEB-INF/view/")+"/project/WEB-INF/view/".length, error.indexOf(".jsp"))
+		
+		if(newMail!=0){
+			$('#newMail').text(newMail);
+		}
+		
+	});
+	
+  	
 	//움직이는 레이어 팝업	
 	$(function() {
 		var chattop = $.cookie('chattop');
@@ -577,7 +603,7 @@ $(document).ready(function(){
 		$("#draggable").css("top",chattop);
 		$("#draggable").css("left",chatleft);
 			$( "#draggable" ).draggable({
-				cancel: '.chat_list',
+				cancel: '.chat_list, #img, .chat_table',
 			 drag: function(event,ui){
 				 var top=$("#draggable").css("top");
 					var left=$("#draggable").css("left");
@@ -609,9 +635,123 @@ $(document).ready(function(){
 			});
 	
 	
-	//회원정보 수정
+		//회원 닉네임 수정
+		function dataEdit(){
+		if($("#nickcheck").val()=="중복확인"){
+			var nickregex=/^[가-힣]{2,6}$/;
+			var nicktarget = document.querySelector("#nick");
+			var result=false;
+			
+			if($("#nick").val()==""){
+				alert("닉네임을 입력하세요.");
+				result=false;
+			}else if(!nickregex.test(nicktarget.value)){
+		 		alert("올바른 닉네임을 입력하세요.");
+		 		result=false;
+		 	}			
+			else{
+				 $.ajax({
+					 	async: false,
+						url:"nickedit",
+						type:"post",
+						data:{nick:$("#nick").val()},
+						dataType:"text",
+						success:function(){
+							alert("사용 가능한 닉네임 입니다.");
+							$("#nick").attr("readonly","readonly");
+							$("#nickcheck").val("취소");
+							result=true;
+						},
+						error:function(){
+							alert("이미 등록된 닉네임 입니다.");
+							result=false;
+						}
+					});
+			}
+		}else{
+			$("#nickcheck").val("중복확인");
+			$("#nick").removeAttr("readonly");
+		}
+		return result;
+	}
 	
-
+	
+	//회원 핸드폰수정
+	function dataEdit2(){
+		if($("#phonecheck").val()=="중복확인"){
+			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
+  			var phonetarget = document.querySelector("#phone");
+  			var result=false;
+  			
+  			if($("#phone").val()==""){
+				alert("핸드폰번호를 입력하세요.");
+				result=false;
+			}else if(!phoneregex.test(phonetarget.value)){
+		 		alert("올바른 핸드폰 번호를 입력하세요.");
+		 		result=false;
+		 	}			
+			else{
+				 $.ajax({
+					 	async: false,
+						url:"phoneedit",
+						type:"post",
+						data:{phone:$("#phone").val()},
+						dataType:"text",
+						success:function(){
+							alert("사용 가능한 번호 입니다.");
+							$("#phone").attr("readonly","readonly");
+							$("#phonecheck").val("취소");
+							result=true;
+						},
+						error:function(){
+							alert("이미 등록된 번호 입니다.");
+							result=false;
+						}
+					});
+  			}
+		}else{
+			$("#phonecheck").val("중복확인");
+			$("#phone").removeAttr("readonly");
+		}
+		return result;
+	}
+	
+	//회원 수정 submit
+	function dataSubmit() {
+	 	if($("#nick").attr("readonly")!='readonly'){
+	 		alert("닉네임 중복 확인을 해주세요");
+	 	}else if($("#phone").attr("readonly")!='readonly'){
+	 		alert("휴대폰 중복확인을 해주세요");
+	 	}else{
+	 		alert("수정이 완료되었습니다.");
+	 		return true;
+	 	}
+	 		return false;
+	}
+	
+function chat_on(){
+	var image=document.getElementById("img");
+	if($("#chat").css("display")=="none"){
+		console.log("열림");
+		$("#chat").css("display","");
+		image.src="${pageContext.request.contextPath }/img/chat_close.png";
+		
+	}else{
+		console.log("닫힘");
+		$("#chat").css("display","none");
+		image.src="${pageContext.request.contextPath }/img/chat_open.png";
+	}
+}
+function chat_add(){
+	document.getElementById("chat_label").innerHTML="대화할 닉네임 입력";
+	
+}
+function chat_order(){
+	var value=document.getElementById("chat_label").value;
+	if(value=="대화할 닉네임 입력"){
+			
+	}
+}
 </script>
 
 <head>
@@ -677,20 +817,43 @@ $(document).ready(function(){
 </div>
 
 <c:set var="nick" value="${cookie.mynick.value}"/>
+
 <c:if test="${!empty nick }">
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
 <div id="draggable" class="ui-widget-content" style=
 "top: 70%;
  left: 75%; 
- height: 250px; 
+ height: 50px; 
  width: 330px;
   border:1px solid; 
   cursor: pointer; 
   position: absolute;
    overflow: visible; 
    visibility: visible;">
-   <div class="chat_list">
-   나옵니까?
+   채팅창
+   <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
+   <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
+   <table class="chat_table">
+   <tfoot>
+   
+   </tfoot>
+   <tbody>
+   <div style="position: absolute;bottom: 30px;right: 0px;" >
+   <label id="chat_label"></label>
+            <input type="text" id="chat"placeholder="입력.." onkeydown="chat_order();">
+        </div>
+        <textarea id="display"readonly style="resize: none;
+                outline:none;
+                width:100%;
+                height:80%;"></textarea>
+   </tbody>
+   <tfoot>
+   <div style="position: absolute; bottom: 0px;right: 0px;">
+   <img alt="추가하기" src="${pageContext.request.contextPath }/img/chat_add.png" onclick="chat_add();">
+   <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png">
+   </div>
+   </tfoot>
+   </table>
    </div>
 	</div>
 </c:if>
@@ -734,7 +897,7 @@ $(document).ready(function(){
 							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
 								<i class="fa fa-envelope"></i>
 								<!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
-								<span class="label label-success">4</span>
+								<span id="newMail" class="label label-success"></span>
 							</a>
 							
 							<br>
@@ -754,7 +917,6 @@ $(document).ready(function(){
 				클릭이 된 상태는 treeview-menu 뒤에 menu-open이 붙어야 한다
 				따라서 나중에 그 페이지에 들어갔을 때 class가 변경되도록 설정 해주는 함수를 만들어 줘야 한다
 			-->
-			
 			<!-- 사이드바 메뉴 시작 -->
 			<ul class="sidebar-menu">
 				<c:choose>

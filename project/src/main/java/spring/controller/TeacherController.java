@@ -21,7 +21,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
+import spring.db.member.Member;
 import spring.db.member.MemberDao;
+import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
 import spring.db.teacher.Teacher;
 import spring.db.teacher.TeacherDao;
@@ -392,6 +394,7 @@ public class TeacherController {
 		}
 
 		m.addAttribute("no", no);
+		m.addAttribute("where", mRequest.getParameter("whrer"));
 		m.addAttribute("page", mRequest.getParameter("page"));
 		String search = mRequest.getParameter("search");
 		String key = mRequest.getParameter("key");
@@ -404,8 +407,34 @@ public class TeacherController {
 	}
 	
 	@RequestMapping("/students")
-	public String students() {
-//		List<>
+	public String students(HttpServletRequest request, Model m) throws Exception {
+		int no;
+		try {
+			no = Integer.parseInt(request.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		List<MyLecture> list = mylectureDao.getStudents(no);
+		
+		// 회원정보 가져와야 함
+
+		String where = request.getParameter("where");
+		String page = request.getParameter("page");
+		String search = request.getParameter("type");
+		String key = request.getParameter("key");
+		
+		m.addAttribute("page", page);
+
+		if (search != "" && key != null) {
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		String url = "whrer=" + where + "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		m.addAttribute("url", url);
 		
 		return "teacher/students";
 	}

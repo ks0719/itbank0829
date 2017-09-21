@@ -28,6 +28,13 @@
 	});
 	
 	function isExist(nick){
+		if(nick=='') {
+			alert("닉네임을 입력해주세요");
+			return;
+		}
+		
+		
+		
 		if($("#check").val()=="확인"){
 			$.ajax({
 				url:"nickcheck",
@@ -39,8 +46,12 @@
 					$("#mail_receiver").attr("readonly", "readonly");
 					$("#send").removeAttr("disabled");
 				},
-				error:function(){
-					alert("존재하지 않는 회원입니다");
+				error:function(data){
+					if(data.responseText.indexOf("error : my nickname")>=0){
+						alert("나에겐 쪽지를 보낼 수 없습니다");
+					}else{
+						alert("존재하지 않는 회원입니다");
+					}
 				}
 			});
 		}else{
@@ -117,7 +128,7 @@
 	<!-- 헤더 시작 -->
 	<header class="main-header">
 		<!-- 홈으로 버튼(로고로 사용해도됨) -->
-		<a href="${pageContext.request.contextPath}/" class="logo"><b>쪽지함</b></a>
+		<a href="${pageContext.request.contextPath}/data/mail?box=index" class="logo"><b>쪽지함</b></a>
 		<!-- 로고 옆 메뉴바 -->
 		<nav class="navbar navbar-static-top" role="navigation">
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">

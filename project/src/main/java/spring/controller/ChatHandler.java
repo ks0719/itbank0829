@@ -29,7 +29,7 @@ public class ChatHandler extends TextWebSocketHandler{
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		//interceptor를 통해 주입된 HttpSession의 정보를 확인
 		Map<String, Object> attr = session.getAttributes();
-		log.info(attr.toString());
+		log.info("이건가?:"+attr.toString());
 		String id=(String) attr.get("id");
 		
 		Iterator<WebSocketSession> iter = set.iterator();

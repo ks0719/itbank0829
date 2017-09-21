@@ -129,13 +129,17 @@ public class MailDao {
 			String sql = "update mail set MAIL_READ='읽음' where no=?";
 			return jdbcTemplate.update(sql, new Object[] {mail.getNo()})>0;
 		}
-		
 		return false;
 	}
 	
 	public boolean isExist(String nick) {
 		String sql = "select count(*) from member where nick=?";
 		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class)>0;
+	}
+	
+	public int newMail(String nick) {
+		String sql = "select count(*) from mail where mail_receiver=? and mail_read='안읽음'";
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class);
 	}
 	
 }
