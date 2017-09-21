@@ -173,8 +173,11 @@ form {
             z-index:99999;
         }
  <!-- 움직이는 레이어 팝업 -->
- #draggable { width: 150px; height: 150px; padding: 0.5em; }
- <!--플로팅 메뉴-->
+ #draggable { 
+ width: 150px; 
+ height: 150px; 
+ padding: 0.5em; 
+ }
 
  
 
