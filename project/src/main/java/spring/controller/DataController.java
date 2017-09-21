@@ -327,7 +327,6 @@ public class DataController {
 
 	@RequestMapping(value = "data/mail/send", method = RequestMethod.GET)
 	public String sendGet(Model m, HttpServletRequest req) {
-		System.out.println(req.getParameter("nick"));
 		m.addAttribute("nick", req.getParameter("nick"));
 		return "data/send";
 	}
@@ -347,13 +346,22 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/data/mail/nickcheck", method = RequestMethod.POST)
-	public String idcheck(@RequestParam String nick) throws Exception {
+	public String idcheck(HttpServletRequest req ,@RequestParam String nick) throws Exception {
+		if(getNick(req).equals(nick)) return "error : my nickname";
+		
+		
 		boolean result = mailDao.isExist(nick);
 
 		if (result)
 			return "data/send";
 		else
 			return null;
+	}
+	
+	@RequestMapping("/data/mail/newMail")
+	public String newMail(Model m,@RequestParam String nick) throws UnsupportedEncodingException {
+		int newMail = mailDao.newMail(URLDecoder.decode(nick, "UTF-8"));
+		return String.valueOf(newMail);
 	}
 
 	@RequestMapping("/data/changepw")
@@ -392,6 +400,7 @@ public class DataController {
 
 		return "data/redirect";
 	}
+	
 	@RequestMapping("/data/complate")
 	public String complate() {
 		return "data/complate";
