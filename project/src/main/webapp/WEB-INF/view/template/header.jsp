@@ -590,7 +590,7 @@ $(function() {
 			url:"/project/data/mail/newMail",
 			async: false,
 			type:"post",
-			data:{nick:mynick},
+			data:({nick:mynick, isSpam:"false"}),
 			dataType:"text"
 		}).responseText;
 		
