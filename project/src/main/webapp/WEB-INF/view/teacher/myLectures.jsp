@@ -3,7 +3,16 @@
     
 <%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
 
-<h1>진행 중인 강의</h1>
+<c:choose>
+	<c:when test="${where eq 'myLecture'}">
+		<h1>내 강의 관리</h1>
+	</c:when>
+	<c:otherwise>
+		<h1>학생 관리</h1>
+	</c:otherwise>
+</c:choose>
+<br>
+<h3>진행 중인 강의</h3>
 
 <div class="page-wrap">
 	<div class="table-wrap">

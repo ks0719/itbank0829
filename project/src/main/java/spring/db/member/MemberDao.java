@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import spring.db.mylecture.MyLecture;
+
 
 @Repository("memberDao")
 public class MemberDao {
@@ -154,5 +156,17 @@ private Logger log=LoggerFactory.getLogger(getClass());
 						+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);
+	}
+
+	public List<Member> getInfo(List<MyLecture> list) {
+		List<Member> mList = null;
+		
+		for (MyLecture ml : list) {
+			String sql = "select nick, sort, level, reg from member nick = ?";
+			List<Member> tmp = jdbcTemplate.query(sql, new Object[] {ml.getId()}, mapper);
+			mList.add(tmp.get(0));
+		}
+		
+		return mList;
 	}
 }

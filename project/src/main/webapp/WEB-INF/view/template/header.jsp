@@ -190,7 +190,7 @@ $(document).ready(function(){
 				success: function(res) {
 					console.log(res);
 					if (res == "true") {
-						alert("이미 신청하셨거나 강사입니다.");
+						alert("심사를 기다려주세요.");
 					} else {
 						location.href = "${pageContext.request.contextPath}/teacher/apply";
 					}
@@ -211,10 +211,6 @@ $(document).ready(function(){
 				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page;
 			}
 		});
-		function confirm(form){
-			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
-			}
-
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -583,7 +579,7 @@ $(document).ready(function(){
 			url:"/project/data/mail/newMail",
 			async: false,
 			type:"post",
-			data:{nick:mynick},
+			data:({nick:mynick, isSpam:"false"}),
 			dataType:"text"
 		}).responseText;
 		
