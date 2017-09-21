@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import = "java.net.URLDecoder" %>
+	<%@ page import = "java.net.URLDecoder" %>
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resource/js/jquery.cookie.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
@@ -62,11 +63,11 @@ $(document).ready(function(){
 	$(document).ready(function() {
 		// 검색시 select option 유지
 		$("select option").each(function(){
-	    	if($(this).val()=="${type}"){
+	    	if($(this).val()=="${type}" || $(this).val()=="${search}"){
 				$(this).attr("selected","selected");
 	    	} else if ($(this).val()=="${profile.sort}") {
 				$(this).attr("selected","selected");
-	    	} else if ($(this).val()=="${mylecture.tag}") {
+	    	} else if ($(this).val()=="${mylecture.tag}" || $(this).val()=="${mylecture.type}" ) {
 				$(this).attr("selected","selected");
 	    	}
 		});
@@ -155,14 +156,15 @@ $(document).ready(function(){
 			var commentNo = $(this).attr('value');
 			var result = confirm("정말 삭제하시겠습니까?");
 
-			$.ajax({
-				url: "commentDelete",
-				data: {"commentNo": commentNo, "result" : result},
-        		async : false,
-				success: function(res) {
-					if (result) $("#comment"+commentNo).remove();
-				}
-			});
+			if (result) {
+				$.ajax({
+					url: "commentDelete",
+					data: {"commentNo": commentNo, "result" : result},
+					success: function(res) {
+						$("#comment"+commentNo).remove();
+					}
+				});
+			}
 		});
 		
 		$(document).on("click", ".lecturer-array", function() {
@@ -199,15 +201,20 @@ $(document).ready(function(){
 		$(document).on("click", ".toMyLecture", function() {
 			var no = $(this).data('no');
 			var page = $(this).data('page');
-			var type = $(this).data('type');
+			var search = $(this).data('search');
 			var key = $(this).data('key');
+			var where = $(this).data('where');
 
-			if (type != "" && key != "") {
-				location.href = "myLecture?no=" + no + "&page=" + page + "&type=" + type + "&key=" + key;
+			if (search != "" && key != null) {
+				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page + "&search=" + search + "&key=" + key;
 			} else {
-				location.href = "myLecture?no=" + no + "&page=" + page;
+				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page;
 			}
 		});
+		function confirm(form){
+			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
+			}
+
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -564,6 +571,12 @@ $(document).ready(function(){
   	  else return true;
   	}
   	
+  	
+  	
+  	
+  	
+  	//움직이는 레이어 팝업이 2개 있는데 뭐가 진짜임?
+  	
 //움직이는 레이어 팝업
 $(function() {
 		$( "#draggable" ).draggable();
@@ -589,13 +602,138 @@ $(function() {
 		
 	});
 	
+  	
+	//움직이는 레이어 팝업	
+	$(function() {
+		var chattop = $.cookie('chattop');
+		var chatleft = $.cookie('chatleft');
+		$("#draggable").css("top",chattop);
+		$("#draggable").css("left",chatleft);
+			$( "#draggable" ).draggable({
+			 drag: function(event,ui){
+				 var top=$("#draggable").css("top");
+					var left=$("#draggable").css("left");
+				 console.log("top : "+top);
+					console.log("left : "+left);
+			 },
+			 stop: function(event,ui){
+				var chattop = $("#draggable").css("top");
+				var chatleft =$("#draggable").css("left");
+				//'cookie'라는 key값으로 입력값을 저장한다. 
+				//1번째 parameter = 쿠키명 
+				// 2번째 parameter = 저장하고자 하는 쿠키값 
+				$.cookie('chattop', chattop,{
+					path: "/",
+					expires : 10
+                    ,secure : false
+				}); 
+				$.cookie('chatleft', chatleft,{
+					expires : 10
+                    ,secure : false
+				}); 
+
+				 
+				 
+				 console.log("최종 top : "+$("#draggable").css("top"));
+				 console.log("최종 left : "+$("#draggable").css("left"));
+			 }
+		});
+			});
 	
 	
+		//회원 닉네임 수정
+		function dataEdit(){
+		if($("#nickcheck").val()=="중복확인"){
+			var nickregex=/^[가-힣]{2,6}$/;
+			var nicktarget = document.querySelector("#nick");
+			var result=false;
+			
+			if($("#nick").val()==""){
+				alert("닉네임을 입력하세요.");
+				result=false;
+			}else if(!nickregex.test(nicktarget.value)){
+		 		alert("올바른 닉네임을 입력하세요.");
+		 		result=false;
+		 	}			
+			else{
+				 $.ajax({
+					 	async: false,
+						url:"nickedit",
+						type:"post",
+						data:{nick:$("#nick").val()},
+						dataType:"text",
+						success:function(){
+							alert("사용 가능한 닉네임 입니다.");
+							$("#nick").attr("readonly","readonly");
+							$("#nickcheck").val("취소");
+							result=true;
+						},
+						error:function(){
+							alert("이미 등록된 닉네임 입니다.");
+							result=false;
+						}
+					});
+			}
+		}else{
+			$("#nickcheck").val("중복확인");
+			$("#nick").removeAttr("readonly");
+		}
+		return result;
+	}
 	
 	
+	//회원 핸드폰수정
+	function dataEdit2(){
+		if($("#phonecheck").val()=="중복확인"){
+			var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/; 
+  			var phonetarget = document.querySelector("#phone");
+  			var result=false;
+  			
+  			if($("#phone").val()==""){
+				alert("핸드폰번호를 입력하세요.");
+				result=false;
+			}else if(!phoneregex.test(phonetarget.value)){
+		 		alert("올바른 핸드폰 번호를 입력하세요.");
+		 		result=false;
+		 	}			
+			else{
+				 $.ajax({
+					 	async: false,
+						url:"phoneedit",
+						type:"post",
+						data:{phone:$("#phone").val()},
+						dataType:"text",
+						success:function(){
+							alert("사용 가능한 번호 입니다.");
+							$("#phone").attr("readonly","readonly");
+							$("#phonecheck").val("취소");
+							result=true;
+						},
+						error:function(){
+							alert("이미 등록된 번호 입니다.");
+							result=false;
+						}
+					});
+  			}
+		}else{
+			$("#phonecheck").val("중복확인");
+			$("#phone").removeAttr("readonly");
+		}
+		return result;
+	}
 	
-	
-	
+	//회원 수정 submit
+	function dataSubmit() {
+	 	if($("#nick").attr("readonly")!='readonly'){
+	 		alert("닉네임 중복 확인을 해주세요");
+	 	}else if($("#phone").attr("readonly")!='readonly'){
+	 		alert("휴대폰 중복확인을 해주세요");
+	 	}else{
+	 		alert("수정이 완료되었습니다.");
+	 		return true;
+	 	}
+	 		return false;
+	}
 	
 
 </script>
@@ -635,48 +773,51 @@ $(function() {
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
-
-<div id="draggable" class="ui-widget-content" style="top:80%;
-    left:80%;
-    height: 130px;
-    width: 300px;
-    border: 0px;
-    cursor: pointer;
-    position: absolute;
-    z-index: 2147483647;
-    overflow: visible;
-    
-    background-color: transparent;
-    visibility: visible;
-    border: 1px solid;">
-	  <p>마우스로 움직이는 팝업레이어</p>
-	</div>
 <div class="setDiv">
     <div class="mask"></div>
     <div class="window">
-    <h5>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</h5>
-    <div id="null"></div>
+    <div class="form-group">
+    <label>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</label>
+    </div>
     <form action="${pageContext.request.contextPath }/member/login" method="post">
-    	아이디<input type="text" name="id"  id="loginid" required><br>
-    	비밀번호<input type="password" name="pw" id="loginpw" required><br>
+    <div class="form-group">
+    	<label>아이디</label>
+    	<input type="text" name="id"  id="loginid" class="form-control" placeholder="아이디를 입력해주세요" required>
+    	</div>
+    	 <div class="form-group">
+    	<label>비밀번호</label>
+    	<input type="password" name="pw" id="loginpw" class="form-control" placeholder="비밀번호를 입력해주세요" required>
+    	</div>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기" onclick="return logincheck();"/><br>
-        <input type="button" href="#" value="회원가입하기">
+        <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary" onclick="return logincheck();"/>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
     </form>
     </div>
 </div>
 
 <c:set var="nick" value="${cookie.mynick.value}"/>
-<%
-	if(pageContext.getAttribute("nick")!=null){
-		request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));
-	}
-%>
 
+<c:if test="${!empty nick }">
+<%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
+<div id="draggable" class="ui-widget-content" style=
+"top: 70%;
+ left: 75%; 
+ height: 250px; 
+ width: 330px;
+  border:1px solid; 
+  cursor: pointer; 
+  position: absolute;
+   z-index: 2147483647; 
+   overflow: visible; 
+   background-color: transparent; 
+   visibility: visible;">
+	</div>
+</c:if>
 
 <div class="wrapper">
 	<!-- 헤더 시작 -->
@@ -692,7 +833,6 @@ $(function() {
 		</nav>
 	</header>
 	<!-- 헤더 끝 -->
-	
 	<!-- 사이드바 시작 -->
 	<aside class="main-sidebar">
 		<section class="sidebar">
@@ -812,16 +952,8 @@ $(function() {
 		</section>
 	</aside>
 	<!-- 사이드바 끝 -->
-	
+
+
 	
 	<div class="content-wrapper">
 	
-	
-	
-	
-	
-
-
-
-
-

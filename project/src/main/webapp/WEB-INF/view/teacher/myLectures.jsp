@@ -16,9 +16,6 @@
 					강의 제목
 				</th>
 				<th>
-					평점
-				</th>
-				<th>
 					가격
 				</th>
 				<th>
@@ -32,15 +29,12 @@
 				</th>
 			</tr>
 			<c:forEach var="info" items="${list}">
-			<tr data-no="${info.no}" data-page="${page}" data-type="${type}" data-key="${key}" class="toMyLecture" style="cursor: pointer">
+			<tr data-no="${info.no}" data-page="${page}" data-search="${search}" data-key="${key}" data-where="${where}" class="toMyLecture" style="cursor: pointer">
 				<td>
 					[${info.tag}]
 				</td>
 				<td class="title">
 					${info.title}
-				</td>
-				<td>
-					${info.kin_grade}/${info.price_grade}/${info.kind_grade}
 				</td>
 				<td>
 					${info.price}
@@ -52,7 +46,7 @@
 					${info.period}
 				</td>
 				<td>
-					${info.state}
+					${info.accept}
 				</td>
 			</tr>
 			</c:forEach>
@@ -80,9 +74,9 @@
 			</c:if>
 		</div>
 	</div>
-	<form action="study" class="wrap">
+	<form action="myLectures" class="wrap">
 		<input type="hidden" name="page" value="1">
-		<select name="type" title="분류 선택" class="user-input">
+		<select name="search" title="분류 선택" class="user-input">
 			<option value="tag">수업태그</option>
 			<option value="title">제목</option>
 		</select>

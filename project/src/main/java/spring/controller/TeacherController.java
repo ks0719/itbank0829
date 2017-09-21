@@ -162,7 +162,6 @@ public class TeacherController {
 		if (standard != null) {
 			url += "standard=" + originStandard + "&";
 		}
-		log.debug("url : " + url);
 		
 		m.addAttribute("list", list);
 		m.addAttribute("page", pageNo);
@@ -243,26 +242,165 @@ public class TeacherController {
 	}
 	
 	@RequestMapping(value="/resister", method=RequestMethod.POST)
-	public String resister(MultipartHttpServletRequest mRequest) {
-		lectureDao.insert(new LectureInfo(mRequest));
+	public String resister(MultipartHttpServletRequest mRequest) throws Exception {
+		MultipartFile file = mRequest.getFile("file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		
+		int no = lectureDao.insert(new LectureInfo(mRequest));
+		
+		if (!file.isEmpty()) {
+			String[] extension = file.getContentType().split("/");
+			String filename = "lecture" + no + "." + extension[extension.length - 1];
+			File target = new File(savePath, filename);
+			if(!target.exists()) target.mkdirs();
+			file.transferTo(target);
+		}
 		
 		return "teacher/teacherMain";
 	}
 	
 	@RequestMapping("/myLectures")
 	public String lectures(HttpServletRequest req, Model m) throws Exception {
-		List<LectureInfo> list = lectureDao.teacherList(getNick(req));
+		String where = req.getParameter("where");
+		int page;
+		try {
+			page = Integer.parseInt(req.getParameter("page"));
+		} catch (Exception e) {
+			page = 1;
+		}
+		
+		String nick = getNick(req);
+		String search = req.getParameter("search");
+		String key = req.getParameter("key");
+		
+		int listCount = lectureDao.teacherCount(nick, search, key);
+		
+		log.debug(String.valueOf(listCount));
+	
+		int boardSize = 10;
+		int start = boardSize * page - 9;
+		int end = start + boardSize -1;
+		if (end > listCount) end = listCount;
+
+		List<LectureInfo> list = lectureDao.teacherList(nick, search, key, start, end);
+		
+		int blockSize = 10;
+		int blockTotal = (listCount + boardSize - 1) / boardSize;
+		int startBlock = (page - 1) / blockSize * blockSize + 1;
+		int endBlock = startBlock + blockSize - 1;
+		if (endBlock > blockTotal) endBlock = blockTotal;
+		
+		String url = "myLectures?where=" + where;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key + "&";
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
 		
 		m.addAttribute("list", list);
+		m.addAttribute("page", page);
+		m.addAttribute("search", search);
+		m.addAttribute("key", key);
+		m.addAttribute("start", start);
+		m.addAttribute("end", end);
+		m.addAttribute("startBlock", startBlock);
+		m.addAttribute("endBlock", endBlock);
+		m.addAttribute("url", url);
+		m.addAttribute("where", where);
 		
 		return "teacher/myLectures";
 	}
 	
 	@RequestMapping("/myLecture")
-	public String myLecture(Model m) {
+	public String myLecture(HttpServletRequest req, Model m) throws Exception {
+		String where = req.getParameter("where");
+		String page = req.getParameter("page");
+		String search = req.getParameter("search");
+		String key = req.getParameter("key");
+		int no;
+		try {
+			no = Integer.parseInt(req.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
 		
+		LectureInfo info = lectureDao.teacherShowOne(no, getNick(req));
+		
+		m.addAttribute("mylecture", info);
+//		m.addAttribute("page", page);
+		
+//		if (search != null && key != null) {
+//			m.addAttribute("type", search);
+//			m.addAttribute("key", key);
+//		}
+		String url = "where=" + where + "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		m.addAttribute("url", url);
 		
 		return "teacher/myLecture";
+	}
+	
+	@RequestMapping("/lectureEdit")
+	public String lectureEdit(HttpServletRequest request, Model m) throws Exception {
+		int no;
+		try {
+			no = Integer.parseInt(request.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+
+		LectureInfo info = lectureDao.teacherShowOne(no, getNick(request));
+		
+		m.addAttribute("mylecture", info);
+
+		String where = request.getParameter("where");
+		String page = request.getParameter("page");
+		String search = request.getParameter("type");
+		String key = request.getParameter("key");
+		
+		m.addAttribute("page", page);
+
+		if (search != "" && key != null) {
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		String url = "whrer=" + where + "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		m.addAttribute("url", url);
+		
+		return "teacher/lectureEdit";
+	}
+	
+	@RequestMapping(value="/lectureEdit", method=RequestMethod.POST)
+	public String lectureEdit(MultipartHttpServletRequest mRequest, Model m) throws Exception {
+		int no = Integer.parseInt(mRequest.getParameter("no"));
+		MultipartFile file = mRequest.getFile("file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		
+		lectureDao.edit(new LectureInfo(mRequest));
+		
+		if (!file.isEmpty()) {
+			String[] extension = file.getContentType().split("/");
+			String filename = "lecture" + no + "." + extension[extension.length - 1];
+			File target = new File(savePath, filename);
+			if(!target.exists()) target.mkdirs();
+			file.transferTo(target);
+		}
+
+		m.addAttribute("no", no);
+		m.addAttribute("page", mRequest.getParameter("page"));
+		String search = mRequest.getParameter("search");
+		String key = mRequest.getParameter("key");
+		if (search != "" && key != null) {
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+
+		return "redirect:/teacher/myLecture";
 	}
 	
 	@RequestMapping("/students")

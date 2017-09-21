@@ -81,7 +81,7 @@
 						</c:choose>
 						<c:choose>
 							<c:when test="${mynick eq comment.writer}">
-								<a href="#" class="comment-delete" value="${comment.no}">삭제</a>
+								<a href="" class="comment-delete" value="${comment.no}">삭제</a>
 							</c:when>
 						</c:choose>
 						<br>
@@ -93,7 +93,11 @@
 			<div class="align-right">
 				<c:choose>
 					<c:when test="${not empty cookie.mynick.value}">
-						<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
+						<c:choose>
+							<c:when test="${board.no eq no}">
+								<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
+							</c:when>
+						</c:choose>
 						<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${no}';">
 					</c:when>
 					<c:otherwise>

@@ -16,7 +16,7 @@ public class LectureDao {
 		return new LectureInfo(rs);
 	};
 	
-	public boolean insert(LectureInfo info) {
+	public int insert(LectureInfo info) {
 		String sql = "select lecture_info_seq.nextval from dual";
 		
 		int no = jdbcTemplate.queryForObject(sql, Integer.class);
@@ -33,7 +33,9 @@ public class LectureDao {
 				info.getPrice(), filename, info.getPicture_realname(), info.getPicture_type(), 
 				info.getPicture_size(), info.getIntro(), info.getDetail(), info.getPeriod()};
 		
-		return jdbcTemplate.update(sql, args) > 0;
+		jdbcTemplate.update(sql, args);
+		
+		return no;
 	}
 	
 	public boolean update(LectureInfo info) {
@@ -57,13 +59,22 @@ public class LectureDao {
 		return list.get(0);
 	}
 	
+	public LectureInfo teacherShowOne(int no, String nick) throws Exception {
+		String sql = "select * from lecture_info where teacher = ? and no = ?";
+		
+		List<LectureInfo> list = jdbcTemplate.query(sql, new Object[] {nick, no}, mapper);
+		
+		if (list.isEmpty()) throw new Exception("404");
+		return list.get(0);
+	}
+	
 	public int count() {
 		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true'", Integer.class);
 	}
 	
-	public int count(String type, String key) {
-		if (type == "" || key == null) return count();
-		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true' and lower (" + type + ") like '%'||'"+ key +"'||'%'", Integer.class);
+	public int count(String search, String key) {
+		if (search == "" || key == null) return count();
+		return jdbcTemplate.queryForObject("select count(*) from lecture_info where state = '등록 가능' and accept = 'true' and lower (" + search + ") like '%'||'"+ key +"'||'%'", Integer.class);
 	}
 	
 	public List<LectureInfo> list(int start, int end) {
@@ -74,22 +85,59 @@ public class LectureDao {
 		return jdbcTemplate.query(sql, new Object[] {start, end}, mapper);
 	}
 	
-	public List<LectureInfo> list(String type, String key, int start, int end) {
-		if (type == "" || key == null) return list(start, end);
+	public List<LectureInfo> list(String search, String key, int start, int end) {
+		if (search == "" || key == null) return list(start, end);
 		
 		String sql = "select * from (select rownum rn, TMP.* from ("
-				+ "select * from lecture_info where state = '등록 가능' and accept = 'true' and lower (" + type + ") like '%'||?||'%' order by no desc)"
+				+ "select * from lecture_info where state = '등록 가능' and accept = 'true' and lower (" + search + ") like '%'||?||'%' order by no desc)"
 						+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);
 	}
 	
-	public List<LectureInfo> teacherList(String nick) throws Exception {
+	public int teacherCount(String nick) {
+		return jdbcTemplate.queryForObject("select count(*) from lecture_info where teacher = ?", new Object[] {nick}, Integer.class);
+	}
+	
+	public int teacherCount(String nick, String search, String key) {
+		if (search == "" || key == null) return teacherCount(nick);
+		return jdbcTemplate.queryForObject("select count(*) from lecture_info where teacher = ? and " + search + " like '%'||?||'%'", new Object[] {nick, key}, Integer.class);
+	}
+	
+	public List<LectureInfo> teacherList(String nick, int start, int end) throws Exception {
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from lecture_info where teacher = ? order by no desc)"
 				+ " TMP) where rn between ? and ?";
 		
-		return jdbcTemplate.query(sql, new Object[] {nick}, mapper);
+		return jdbcTemplate.query(sql, new Object[] {nick, start, end}, mapper);
+	}
+	
+	public List<LectureInfo> teacherList(String nick, String search, String key, int start, int end) throws Exception {
+		if (search == "" || key == null) return teacherList(nick, start, end);
+		
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from lecture_info where teacher = ? and " + search + " like '%'||?||'%' order by no desc)"
+						+ " TMP) where rn between ? and ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {nick, key, start, end}, mapper);
+	}
+
+	public void edit(LectureInfo lectureInfo) {
+		String sql = "update lecture_info set tag = ?, title = ?, time = ?, type = ?, price = ?, intro = ?, detail = ?,"
+				+ " period = ?, picture_name = ?, picture_realname = ?, picture_type = ?, picture_size = ?, accept = 'false' where no = ?";
+
+		String filename = lectureInfo.getPicture_name();
+		if (lectureInfo.getPicture_type() != null) {
+			String[] extension = lectureInfo.getPicture_type().split("/");
+			filename = "lecture" + lectureInfo.getNo() + "." + extension[extension.length - 1];
+		}
+		
+		Object[] args = {lectureInfo.getTag(), lectureInfo.getTitle(), lectureInfo.getTime(), lectureInfo.getType(),
+				lectureInfo.getPrice(), lectureInfo.getIntro(), lectureInfo.getDetail(), lectureInfo.getPeriod(), 
+				filename, lectureInfo.getPicture_realname(), lectureInfo.getPicture_type(), lectureInfo.getPicture_size(), 
+				lectureInfo.getNo()};
+		
+		jdbcTemplate.update(sql, args);
 	}
 
 }

@@ -20,6 +20,7 @@ public class Member {
 	private int mileage;
 	private int lev;
 	private String reg;
+	private String power;
 	
 	public Member() {
 		super();
@@ -38,6 +39,13 @@ public class Member {
 		setMileage(rs.getInt("mileage"));
 		setLev(rs.getInt("lev"));
 		setReg(rs.getString("reg"));
+		setPower(rs.getString("power"));
+	}
+	public String getPower() {
+		return power;
+	}
+	public void setPower(String power) {
+		this.power = power;
 	}
 	public Member(HttpServletRequest request) throws SQLException {
 		try {
@@ -68,23 +76,13 @@ public class Member {
 			setLev(1);
 		}
 		setReg(request.getParameter("reg"));
+		setPower(request.getParameter("power"));
 	}
-	public Member(int no, String id, String pw, String name, String nick, String phone, String sort, String post,
-			String addr1, String addr2, int mileage, int lev, String reg) {
-		super();
-		this.no = no;
-		this.id = id;
-		this.pw = pw;
-		this.name = name;
-		this.nick = nick;
-		this.phone = phone;
-		this.sort = sort;
-		this.post = post;
-		this.addr1 = addr1;
-		this.addr2 = addr2;
-		this.mileage = mileage;
-		this.lev = lev;
-		this.reg = reg;
+	@Override
+	public String toString() {
+		return "Member [no=" + no + ", id=" + id + ", pw=" + pw + ", name=" + name + ", nick=" + nick + ", phone="
+				+ phone + ", sort=" + sort + ", post=" + post + ", addr1=" + addr1 + ", addr2=" + addr2 + ", mileage="
+				+ mileage + ", lev=" + lev + ", reg=" + reg + ", power=" + power + "]";
 	}
 	public int getNo() {
 		return no;
