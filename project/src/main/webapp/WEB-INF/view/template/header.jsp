@@ -577,6 +577,7 @@ $(document).ready(function(){
 		$("#draggable").css("top",chattop);
 		$("#draggable").css("left",chatleft);
 			$( "#draggable" ).draggable({
+				cancel: '.chat_list',
 			 drag: function(event,ui){
 				 var top=$("#draggable").css("top");
 					var left=$("#draggable").css("left");
@@ -686,11 +687,11 @@ $(document).ready(function(){
   border:1px solid; 
   cursor: pointer; 
   position: absolute;
-   z-index: 2147483647; 
    overflow: visible; 
-   background-color: transparent; 
    visibility: visible;">
-   흠
+   <div class="chat_list">
+   나옵니까?
+   </div>
 	</div>
 </c:if>
 
