@@ -359,8 +359,8 @@ public class DataController {
 	}
 	
 	@RequestMapping("/data/mail/newMail")
-	public String newMail(Model m,@RequestParam String nick) throws UnsupportedEncodingException {
-		int newMail = mailDao.newMail(URLDecoder.decode(nick, "UTF-8"));
+	public String newMail(Model m,@RequestParam String nick, @RequestParam String isSpam) throws UnsupportedEncodingException {
+		int newMail = mailDao.countNewMail(URLDecoder.decode(nick, "UTF-8"), Boolean.parseBoolean(isSpam));
 		return String.valueOf(newMail);
 	}
 
