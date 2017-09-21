@@ -3,8 +3,10 @@
     
 <%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
 
-<h1>강의 등록</h1>
+<h1>강의 수정</h1>
+<small>수정 시 다시 심사가 진행됩니다.</small>
 
+<br><br>
 <form action="lectureEdit" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="no" value="${mylecture.no}">
 	<input type="hidden" name="page" value="${page}">
