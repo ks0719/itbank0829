@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.db.lecture.LectureInfo;
+import spring.db.member.Member;
 
 @Repository("myLectureDao")
 public class MyLectureDao {
@@ -165,6 +166,12 @@ public class MyLectureDao {
 		catch(Exception e) {
 			return null;
 		}
+	}
+
+	public List<MyLecture> getStudents(int no) {
+		String sql = "select id from mylecture where no = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no}, mapper);
 	}
 	
 }
