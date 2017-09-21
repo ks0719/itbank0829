@@ -60,6 +60,11 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		return jdbcTemplate.update(sql, new Object[] {nick,pw})>0;
 	}
 	
+	public void delete(String id) {
+		String sql="delete member where id=?";
+		jdbcTemplate.update(sql, new Object[] {id});
+	}
+	
 	public String edit(Member mb,String nick) {
 		String sql="update member set nick=?,post=?,addr1=?,addr2=?,phone=? where nick=?";
 		jdbcTemplate.update(sql,new Object[] {mb.getNick(),mb.getPost(),mb.getAddr1(),mb.getAddr2(),mb.getPhone(),nick});

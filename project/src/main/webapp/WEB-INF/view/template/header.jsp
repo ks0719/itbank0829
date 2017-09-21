@@ -630,7 +630,6 @@ $(document).ready(function(){
 						data:{nick:$("#nick").val()},
 						dataType:"text",
 						success:function(){
-							alert("사용 가능한 닉네임 입니다.");
 							$("#nick").attr("readonly","readonly");
 							$("#nickcheck").val("취소");
 							result=true;
@@ -671,7 +670,6 @@ $(document).ready(function(){
 						data:{phone:$("#phone").val()},
 						dataType:"text",
 						success:function(){
-							alert("사용 가능한 번호 입니다.");
 							$("#phone").attr("readonly","readonly");
 							$("#phonecheck").val("취소");
 							result=true;
@@ -702,7 +700,8 @@ $(document).ready(function(){
 	 		return false;
 	}
 	
-
+	
+	
 </script>
 
 <head>
@@ -909,6 +908,11 @@ $(document).ready(function(){
 				<li>
 					<a href="${pageContext.request.contextPath}/consumer/basic">
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
+					</a>
+				</li>
+				<li>
+					<a href="${pageContext.request.contextPath}/member/memberlist">
+						<i class="fa fa-address-book-o"></i> <span>회원리스트(아이콘바꾸기)</span>
 					</a>
 				</li>
 			</ul>

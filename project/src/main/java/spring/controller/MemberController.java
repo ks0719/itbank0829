@@ -253,4 +253,15 @@ public class MemberController {
 		
 		return "member/memberdetail";
 	}
+	
+	
+	@RequestMapping(value="/member/checkBox", method = RequestMethod.POST)
+	public String unsignPost(@RequestParam String[] userid) {
+		
+		for(int i =0; i < userid.length; i++) {
+	         memberDao.delete(userid[i]);
+	         
+	      }
+	      return "member/memberlist";   
+	   }
 }

@@ -111,9 +111,16 @@ public class DataController {
 	
 	
 	@RequestMapping(value="/data/nickedit", method = RequestMethod.POST)
-	public String editnick(@RequestParam String nick, HttpServletRequest request) {
-		System.out.println(nick);
+	public String editnick(@RequestParam String nick, HttpServletRequest request) throws Exception {
 		
+		//내가 쓴거랑 디비안에 있는 정보랑 같은지 ?
+		String Nnick=getNick(request);
+
+		Member mb=mbdao.select(Nnick);
+		
+		if(mb.getNick().equals(nick)) return "data/edit";
+		
+		//중복체크
 		boolean result=mbdao.check("nick", nick);
 		if(!result) {
 			
@@ -126,13 +133,13 @@ public class DataController {
 	
 	@RequestMapping(value="/data/phoneedit", method = RequestMethod.POST)
 	public String editphone(@RequestParam String phone, HttpServletRequest request) throws Exception {
-		System.out.println(phone);
 		
 		//내가 쓴거랑 디비안에 있는 정보랑 같은지 ?
 		String nick=getNick(request);
 		
 		Member mb= mbdao.select(nick);
-		if(mb.equals(phone)) return "data/edit";
+		
+		if(mb.getPhone().equals(phone)) return "data/edit";
 		
 		//중복체크
 		boolean result=mbdao.check("phone", phone);

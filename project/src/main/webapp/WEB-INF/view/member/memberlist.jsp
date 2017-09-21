@@ -14,6 +14,8 @@ $(document).ready(function(){
 			$("input[name=checkB]").prop("checked",false);
 		}
 	});
+	
+	
 	$("input[name=checkB]").click(function(){
 		var chk = $("input[name=checkB]");
 		var tnf = true;
@@ -25,13 +27,32 @@ $(document).ready(function(){
 		}
 		$("#checkAll").prop("checked", tnf);
 	});
+	
+	$("#delete").on("click", function(){
+		console.log("실행됨");
+		var unitval = [];
+		jQuery.ajaxSettings.traditional = true;
+        
+        $.ajax({
+           url : "project/member/checkBox",
+           type : "post",
+           data : {
+              "userid" : unitval
+              },
+           success : function() {
+              alert("강제 탈퇴 완료");
+              location.reload();
+           }
+
+        });
+	});
 });
 </script>
-<title>회원정보</title>
+
+<title>회원리스트</title>
 </head>
 <body>
 <h1>회원리스트</h1>
-
 <div class="page-wrap">
 	<div class="table-wrap">
 		<table border="1" class="tableUnit" rules=rows>
@@ -64,7 +85,7 @@ $(document).ready(function(){
 			<c:forEach var="member" items="${list}">
 			<tr>
 				<td>
-					<input type="checkbox" name=checkB>
+					<input type="checkbox" name="checkB" value="${member.id }">
 				</td>
 				<td>
 					${member.no}
@@ -97,7 +118,7 @@ $(document).ready(function(){
 	
 	<%-- 회원 삭제 --%>
 	<div class="align-right">
-		<input type="button" value="삭제" class="input-btn" onclick="return remove();">
+		<input type="button" value="삭제"  id="delete" class="input-btn" >
 	</div>
 	
 	<div class="row">
@@ -122,7 +143,8 @@ $(document).ready(function(){
 			</c:if>
 	    </div>
 	</div>
-	<form action="memberlist" class="wrap">
+	
+	<form action="memberList" class="wrap">
 		<input type="hidden" name="page" value="1">
 		<select name="type" title="분류선택" class="user-input">
 			<option value="id">ID검색</option>
