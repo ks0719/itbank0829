@@ -318,6 +318,12 @@ public class DataController {
 		else
 			return null;
 	}
+	
+	@RequestMapping("/data/mail/newMail")
+	public String newMail(Model m,@RequestParam String nick) throws UnsupportedEncodingException {
+		int newMail = mailDao.newMail(URLDecoder.decode(nick, "UTF-8"));
+		return String.valueOf(newMail);
+	}
 
 	@RequestMapping("/data/changepw")
 	public String changepw() {
@@ -355,4 +361,5 @@ public class DataController {
 
 		return "data/redirect";
 	}
+	
 }

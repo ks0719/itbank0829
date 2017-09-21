@@ -52,7 +52,11 @@ $(document).ready(function(){
         $(this).hide();
         $('.window').hide();
     });
+    
 });
+
+
+
 
 
 	$(document).ready(function() {
@@ -560,12 +564,39 @@ $(document).ready(function(){
   	  else return true;
   	}
   	
-  	
-  	
 //움직이는 레이어 팝업
 $(function() {
 		$( "#draggable" ).draggable();
 	});
+	
+	$(document).ready(function() {
+		//새로운 메일 갯수
+		var mynick = "${cookie.mynick.value}";
+		
+		var error = $.ajax({
+			url:"/project/data/mail/newMail",
+			async: false,
+			type:"post",
+			data:{nick:mynick},
+			dataType:"text"
+		}).responseText;
+		
+		var newMail = error.substring(error.indexOf("/project/WEB-INF/view/")+"/project/WEB-INF/view/".length, error.indexOf(".jsp"))
+		
+		if(newMail!=0){
+			$('#newMail').text(newMail);
+		}
+		
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 </script>
 
@@ -640,7 +671,12 @@ $(function() {
 </div>
 
 <c:set var="nick" value="${cookie.mynick.value}"/>
-<%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
+<%
+	if(pageContext.getAttribute("nick")!=null){
+		request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));
+	}
+%>
+
 
 <div class="wrapper">
 	<!-- 헤더 시작 -->
@@ -682,7 +718,7 @@ $(function() {
 							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
 								<i class="fa fa-envelope"></i>
 								<!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
-								<span class="label label-success">4</span>
+								<span id="newMail" class="label label-success"></span>
 							</a>
 							
 							<br>
