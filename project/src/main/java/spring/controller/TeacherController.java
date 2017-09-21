@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,8 +20,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
+import spring.db.member.Member;
 import spring.db.member.MemberDao;
+import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
+import spring.db.teacher.Assess;
+import spring.db.teacher.Qna;
 import spring.db.teacher.Teacher;
 import spring.db.teacher.TeacherDao;
 
@@ -274,8 +277,6 @@ public class TeacherController {
 		String key = req.getParameter("key");
 		
 		int listCount = lectureDao.teacherCount(nick, search, key);
-		
-		log.debug(String.valueOf(listCount));
 	
 		int boardSize = 10;
 		int start = boardSize * page - 9;
@@ -314,6 +315,7 @@ public class TeacherController {
 	@RequestMapping("/myLecture")
 	public String myLecture(HttpServletRequest req, Model m) throws Exception {
 		String where = req.getParameter("where");
+		log.debug("where : " + where);
 		String page = req.getParameter("page");
 		String search = req.getParameter("search");
 		String key = req.getParameter("key");
@@ -327,12 +329,7 @@ public class TeacherController {
 		LectureInfo info = lectureDao.teacherShowOne(no, getNick(req));
 		
 		m.addAttribute("mylecture", info);
-//		m.addAttribute("page", page);
-		
-//		if (search != null && key != null) {
-//			m.addAttribute("type", search);
-//			m.addAttribute("key", key);
-//		}
+
 		String url = "where=" + where + "&page=" + page;
 		if (search != null && key != null) {
 			url += "&search=" + search + "&key=" + key;
@@ -359,14 +356,12 @@ public class TeacherController {
 		String page = request.getParameter("page");
 		String search = request.getParameter("type");
 		String key = request.getParameter("key");
-		
-		m.addAttribute("page", page);
 
 		if (search != "" && key != null) {
 			m.addAttribute("search", search);
 			m.addAttribute("key", key);
 		}
-		String url = "whrer=" + where + "&page=" + page;
+		String url = "where=" + where + "&page=" + page;
 		if (search != null && key != null) {
 			url += "&search=" + search + "&key=" + key;
 		}
@@ -392,6 +387,7 @@ public class TeacherController {
 		}
 
 		m.addAttribute("no", no);
+		m.addAttribute("where", mRequest.getParameter("whrer"));
 		m.addAttribute("page", mRequest.getParameter("page"));
 		String search = mRequest.getParameter("search");
 		String key = mRequest.getParameter("key");
@@ -404,19 +400,98 @@ public class TeacherController {
 	}
 	
 	@RequestMapping("/students")
-	public String students() {
-//		List<>
+	public String students(HttpServletRequest request, Model m) throws Exception {
+		int no;
+		try {
+			no = Integer.parseInt(request.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		List<MyLecture> list = mylectureDao.getStudents(no);
+		
+		// 회원정보 가져와야 함
+		List<Member> mList = memberDao.getInfo(list);
+		
+		m.addAttribute("list", mList);
+
+		String where = request.getParameter("where");
+		String page = request.getParameter("page");
+		String search = request.getParameter("type");
+		String key = request.getParameter("key");
+
+		if (search != "" && key != null) {
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		String url = "?no=" + no + "&where=" + where + "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		m.addAttribute("url", url);
 		
 		return "teacher/students";
 	}
 	
-	@RequestMapping("/qna")
-	public String qna() {
-		return "teacher/qna";
+	@RequestMapping("/qnaView")
+	public String qnaView(HttpServletRequest request, Model m) throws Exception {
+		int no;
+		try {
+			no = Integer.parseInt(request.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		List<Qna> list = teacherDao.qnaList(no);
+		
+		m.addAttribute("list", list);
+
+		String where = request.getParameter("where");
+		String page = request.getParameter("page");
+		String search = request.getParameter("type");
+		String key = request.getParameter("key");
+
+		if (search != "" && key != null) {
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		String url = "?no=" + no + "&where=" + where + "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		m.addAttribute("url", url);
+		
+		return "teacher/qnaView";
 	}
 	
 	@RequestMapping("/assessView")
-	public String assessView() {
+	public String assessView(HttpServletRequest request, Model m) throws Exception {
+		int no;
+		try {
+			no = Integer.parseInt(request.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		List<Assess> list = teacherDao.assessList(no);
+		
+		m.addAttribute("list", list);
+
+		String where = request.getParameter("where");
+		String page = request.getParameter("page");
+		String search = request.getParameter("type");
+		String key = request.getParameter("key");
+
+		if (search != "" && key != null) {
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		String url = "?no=" + no + "&where=" + where + "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		m.addAttribute("url", url);
+		
 		return "teacher/assessView";
 	}
 	

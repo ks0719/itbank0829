@@ -5,6 +5,7 @@
 <html>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script>
+
 	$(document).ready(function(){
 		$("#checkAll").click(function(){
 			if($("#checkAll").prop("checked")){
@@ -25,9 +26,47 @@
 			}
 			$("#checkAll").prop("checked", tnf);
 		});
+		
+		//새로운 메일 갯수
+		var mynick = "${cookie.mynick.value}";
+		
+		var error1 = $.ajax({
+			url:"/project/data/mail/newMail",
+			async: false,
+			type:"post",
+			data:{nick:mynick, isSpam:"false"},
+			dataType:"text"
+		}).responseText;
+		
+		var newMail = error1.substring(error1.indexOf("/project/WEB-INF/view/")+"/project/WEB-INF/view/".length, error1.indexOf(".jsp"))
+		
+		if(newMail!=0){
+			$('#newMail').text(newMail);
+		}
+		
+		var error2 = $.ajax({
+			url:"/project/data/mail/newMail",
+			async: false,
+			type:"post",
+			data:{nick:mynick, isSpam:"true"},
+			dataType:"text"
+		}).responseText;
+		
+		var spamMail = error2.substring(error2.indexOf("/project/WEB-INF/view/")+"/project/WEB-INF/view/".length, error2.indexOf(".jsp"))
+		
+		if(spamMail!=0){
+			$('#spamMail').text(spamMail);
+		}
 	});
 	
 	function isExist(nick){
+		if(nick=='') {
+			alert("닉네임을 입력해주세요");
+			return;
+		}
+		
+		
+		
 		if($("#check").val()=="확인"){
 			$.ajax({
 				url:"nickcheck",
@@ -39,8 +78,12 @@
 					$("#mail_receiver").attr("readonly", "readonly");
 					$("#send").removeAttr("disabled");
 				},
-				error:function(){
-					alert("존재하지 않는 회원입니다");
+				error:function(data){
+					if(data.responseText.indexOf("error : my nickname")>=0){
+						alert("나에겐 쪽지를 보낼 수 없습니다");
+					}else{
+						alert("존재하지 않는 회원입니다");
+					}
 				}
 			});
 		}else{
@@ -140,10 +183,10 @@
                   		여기도 홈처럼 그 페이지에 있으면 active되게 해줘야함
                   		새로운 메일이 있으면 계산해서 숫자로 표시 해줘야함(메인 헤더에 있는 코드 가져오면 됨)
                   	-->
-                    <li class="active"><a href="${pageContext.request.contextPath}/data/mail?box=index"><i class="fa fa-inbox"></i> 받은 쪽지함 <span class="label label-primary pull-right">12</span></a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/data/mail?box=index"><i class="fa fa-inbox"></i> 받은 쪽지함 <span id="newMail" class="label label-primary pull-right"></span></a></li>
                     <li><a href="${pageContext.request.contextPath}/data/mail?box=sent"><i class="fa fa-envelope-o"></i> 보낸 쪽지함</a></li>
-                    <li><a href="${pageContext.request.contextPath}/data/mail?box=spam"><i class="fa fa-file-text-o"></i> 스팸 쪽지함</a></li>
-                    <li><a href="${pageContext.request.contextPath}/data/mail?box=protect"><i class="fa fa-filter"></i> 보관함 <span class="label label-waring pull-right">65</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/data/mail?box=protect"><i class="fa fa-briefcase"></i> 보관함</a></li>
+                    <li><a href="${pageContext.request.contextPath}/data/mail?box=spam"><i class="fa fa-filter"></i> 스팸 쪽지함<span id="spamMail" class="label label-waring pull-right"></span></a></li>
                     <li><a href="${pageContext.request.contextPath}/data/mail?box=garbage"><i class="fa fa-trash-o"></i> 휴지통</a></li>
                   </ul>
                 </div><!-- /.box-body -->

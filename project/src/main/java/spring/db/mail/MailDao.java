@@ -137,4 +137,11 @@ public class MailDao {
 		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class)>0;
 	}
 	
+	public int countNewMail(String nick, boolean isSpam) {
+		
+		String sql = "select count(*) from mail where mail_receiver=? and mail_read='안읽음' and RECEIVER_POSITION";
+		if (isSpam) sql+="='spam'";
+		else sql+="!='spam'";
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class);
+	}
 }

@@ -17,6 +17,14 @@ public class TeacherDao {
 	RowMapper<Teacher> mapper = (rs, index) -> {
 		return new Teacher(rs);
 	};
+	
+	RowMapper<Qna> mapper2 = (rs, index) -> {
+		return new Qna(rs);
+	};
+	
+	RowMapper<Assess> mapper3 = (rs, index) -> {
+		return new Assess(rs);
+	};
 
 	private int count() {
 		return jdbcTemplate.queryForObject("select count(*) from teacher", Integer.class);
@@ -124,6 +132,18 @@ public class TeacherDao {
 				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(), teacher.getName()};
 
 		jdbcTemplate.update(sql, args);
+	}
+	
+	public List<Qna> qnaList(int no) {
+		String sql = "select * from qna where no = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no}, mapper2);
+	}
+	
+	public List<Assess> assessList(int no) {
+		String sql = "select * from assess where no = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
 	}
 
 }

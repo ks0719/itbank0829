@@ -53,7 +53,11 @@ $(document).ready(function(){
         $(this).hide();
         $('.window').hide();
     });
+    
 });
+
+
+
 
 
 	$(document).ready(function() {
@@ -186,7 +190,7 @@ $(document).ready(function(){
 				success: function(res) {
 					console.log(res);
 					if (res == "true") {
-						alert("이미 신청하셨거나 강사입니다.");
+						alert("심사를 기다려주세요.");
 					} else {
 						location.href = "${pageContext.request.contextPath}/teacher/apply";
 					}
@@ -207,10 +211,6 @@ $(document).ready(function(){
 				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page;
 			}
 		});
-		function confirm(form){
-			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
-			}
-
 	});
 	
 	// 이미지 업로드시 이미지 미리보기
@@ -570,6 +570,35 @@ $(document).ready(function(){
   	
   	
   	
+  	
+  	//움직이는 레이어 팝업이 2개 있는데 뭐가 진짜임?
+  	
+//움직이는 레이어 팝업
+$(function() {
+		$( "#draggable" ).draggable();
+	});
+	
+	$(document).ready(function() {
+		//새로운 메일 갯수
+		var mynick = "${cookie.mynick.value}";
+		
+		var error = $.ajax({
+			url:"/project/data/mail/newMail",
+			async: false,
+			type:"post",
+			data:({nick:mynick, isSpam:"false"}),
+			dataType:"text"
+		}).responseText;
+		
+		var newMail = error.substring(error.indexOf("/project/WEB-INF/view/")+"/project/WEB-INF/view/".length, error.indexOf(".jsp"))
+		
+		if(newMail!=0){
+			$('#newMail').text(newMail);
+		}
+		
+	});
+	
+  	
 	//움직이는 레이어 팝업	
 	$(function() {
 		var chattop = $.cookie('chattop');
@@ -767,6 +796,7 @@ $(document).ready(function(){
 </div>
 
 <c:set var="nick" value="${cookie.mynick.value}"/>
+
 <c:if test="${!empty nick }">
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
 <div id="draggable" class="ui-widget-content" style=
@@ -823,7 +853,7 @@ $(document).ready(function(){
 							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
 								<i class="fa fa-envelope"></i>
 								<!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
-								<span class="label label-success">4</span>
+								<span id="newMail" class="label label-success"></span>
 							</a>
 							
 							<br>
