@@ -723,10 +723,6 @@ $(document).ready(function(){
 	 		return false;
 	}
 	
-<<<<<<< HEAD
-	
-	
-=======
 function chat_on(){
 	var image=document.getElementById("img");
 	if($("#chat").css("display")=="none"){
@@ -750,7 +746,6 @@ function chat_order(){
 			
 	}
 }
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 </script>
 
 <head>
