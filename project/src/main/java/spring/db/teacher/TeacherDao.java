@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.db.lecture.LectureInfo;
+import spring.db.member.Member;
 
 @Repository
 public class TeacherDao {
@@ -95,14 +96,14 @@ public class TeacherDao {
 		return list.get(0);
 	}
 
-	public boolean apply(Teacher teacher) {
-		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait')";
+	public boolean apply(Teacher teacher, int memberNo) {
+		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait',?)";
 		
 		String[] extension = teacher.getPicture_type().split("/");
 		String filename = "lecturer/" + teacher.getName() + "." + extension[extension.length - 1];
 		
 		Object[] args = {teacher.getName(), teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
-				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size()};
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(),memberNo};
 		
 		return jdbcTemplate.update(sql, args) > 0;
 	}
@@ -145,5 +146,18 @@ public class TeacherDao {
 		
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
 	}
-
+	
+	public List<Teacher>list(){
+		
+		String sql="select * from teacher where state='wait'";
+		return jdbcTemplate.query(sql, mapper);
+	}
+	
+	public void stateedit(String nick) {
+		
+		String sql="update teacher set state='active' where name=?";
+		jdbcTemplate.update(sql,new Object[] {nick});
+		sql="update member set power='강사' where nick=?";
+		jdbcTemplate.update(sql,new Object[] {nick});
+	}
 }

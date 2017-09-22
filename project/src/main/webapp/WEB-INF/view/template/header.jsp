@@ -988,11 +988,11 @@ function chat_order(){
 					</a>
 				</li>
 				
-<!-- 				<li> -->
-<%-- 					<a href="${pageContext.request.contextPath}/member/memberlist"> --%>
-<!-- 						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span> -->
-<!-- 					</a> -->
-<!-- 				</li> -->
+				<li>
+					<a href="${pageContext.request.contextPath}/teacher/applynot">
+						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span>
+					</a>
+				</li>
 			</ul>
 			<!-- 사이드바 메뉴 끝 -->
 			
