@@ -118,7 +118,7 @@ public class BoardDao {
 	}
 
 	public void update(String originNick, String nick) {
-		String sql = "update board set writer = ? where nick = ?";
+		String sql = "update board set writer = ? where writer = ?";
 		
 		jdbcTemplate.update(sql, new Object[] {nick, originNick});
 	}

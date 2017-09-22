@@ -79,6 +79,17 @@ public class BoardController {
 		return result;
 	}
 	
+	private boolean isCommentWriter(HttpServletRequest req) throws Exception {
+		String nick = getNick(req);
+		if (nick == "") return false;
+		
+		int memberNo = getMemberNo(nick);
+		int no = Integer.parseInt(req.getParameter("no"));
+		
+		boolean result = commentDao.isWriter(no, memberNo);
+		return result;
+	}
+	
 	@RequestMapping("/{path}")
 	public String board(@PathVariable String path, HttpServletRequest request, Model m) {	
 		String type = request.getParameter("type");
@@ -304,8 +315,9 @@ public class BoardController {
 	@RequestMapping("/{path}/comment")
 	public String comment(@PathVariable String path, HttpServletRequest request, Model m) throws Exception {
 		String nick = getNick(request);
+		int memberNo = getMemberNo(nick);
 		log.debug("comment nick : " + nick);
-		Comment comment = commentDao.insert(nick, new Comment(request));
+		Comment comment = commentDao.insert(nick, memberNo, new Comment(request));
 		m.addAttribute("comment", comment);
 		
 		return "board/comment";
@@ -313,7 +325,8 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/commentBest")
 	@ResponseBody
-	public String commentBest(int commentNo) {
+	public String commentBest(HttpServletRequest req, int commentNo) throws Exception {
+		if (isCommentWriter(req)) throw new Exception("404");
 		Comment comment = commentDao.best(commentNo);
 		int best = comment.getBest();
 		
@@ -322,7 +335,9 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/commentDelete")
 	@ResponseBody
-	public void commentDelete(int commentNo, boolean result) {
+	public void commentDelete(HttpServletRequest req, int commentNo, boolean result) throws Exception {
+		if (isCommentWriter(req) == false) throw new Exception("404");
+		
 		if (result) commentDao.deleteOne(commentNo);
 	}
 	
