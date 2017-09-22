@@ -106,7 +106,7 @@
 					</c:otherwise>
 				</c:choose>
 				<c:choose>
-					<c:when test="${mynick eq board.writer}">
+					<c:when test="${memberNo eq board.memberNo}">
 						<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${no}';">
 						<input type="button" value="삭제하기" class="input-btn board-delete" data-no="${board.no}" data-context="${no}">
 					</c:when>
