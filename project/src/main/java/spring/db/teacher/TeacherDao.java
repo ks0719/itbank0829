@@ -146,4 +146,16 @@ public class TeacherDao {
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
 	}
 
+	public void update(String originNick, String nick) {
+		String sql = "update teacher set name = ? where name = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {nick, originNick});
+	}
+
+	public boolean isRight(int no, int memberNo) {
+		String sql = "select * from teacher where no = ? and memberNo = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no, memberNo}, mapper).size() > 0;
+	}
+
 }

@@ -68,6 +68,12 @@ public class CommentDao {
 		return jdbcTemplate.update(sql, commentNo) > 0;
 	}
 
+	public void update(String originNick, String nick) {
+		String sql = "update commentboard set writer = ? where writer = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {nick, originNick});
+	}
+
 	public boolean isWriter(int no, int memberNo) {
 		String sql = "select * from commentboard where no = ? and memberNo = ?";
 		

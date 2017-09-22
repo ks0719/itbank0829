@@ -183,7 +183,6 @@ $(document).ready(function(){
 		
 		$("#lecturer-apply").on("click", function() {
 			var nick = $(this).attr('value');
-			console.log(nick);
 			
 			$.ajax({
 				url: "${pageContext.request.contextPath}/teacher/applycheck",

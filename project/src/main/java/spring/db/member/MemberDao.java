@@ -170,7 +170,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		for (MyLecture ml : list) {
 			String sql = "select * from member where nick = ?";
 			List<Member> tmp = jdbcTemplate.query(sql, new Object[] {ml.getId()}, mapper);
-			if (tmp == null) continue;
+			if (tmp.size() == 0) continue;
 			else mList.add(tmp.get(0));
 		}
 		

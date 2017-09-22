@@ -22,6 +22,7 @@ public class Teacher {
 	private double grade;
 	private String reg;
 	private String state;
+	private int teacherno;
 	
 	public Teacher(ResultSet rs) throws SQLException {
 		setName(rs.getString("name"));
@@ -37,6 +38,7 @@ public class Teacher {
 		setGrade(rs.getDouble("grade"));
 		setReg(rs.getString("reg"));
 		setState(rs.getString("state"));
+		setTeacherno(rs.getInt("teacherno"));
 	}
 	
 	public Teacher(MultipartHttpServletRequest mRequest) {
@@ -150,6 +152,12 @@ public class Teacher {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public int getTeacherno() {
+		return teacherno;
+	}
+	public void setTeacherno(int teacherno) {
+		this.teacherno = teacherno;
 	}
 
 }
