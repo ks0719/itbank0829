@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -181,9 +181,12 @@ public class MemberController {
 		
 		String nick=getNick(req);
 		String pw=req.getParameter("pw");
-		boolean result=memberDao.delete(nick,pw);
+		String encodepw=memberDao.mypwnick(nick);
+		
+		boolean result=memberDao.delete(nick,encodepw);
 		
 		if(result) {
+			
 		}else {
 			throw new Exception();
 		}
@@ -256,12 +259,10 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="/member/checkBox", method = RequestMethod.POST)
-	public String unsignPost(@RequestParam String[] userid) {
-		
-		for(int i =0; i < userid.length; i++) {
-	         memberDao.delete(userid[i]);
-	         
-	      }
+	public String unsignPost(@RequestParam String userid) {
+//		log.debug("뭐 넘어옴?:"+Arrays.toString(userid));
+//		System.out.println(userid);
+		memberDao.delete(userid);
 	      return "member/memberlist";   
 	   }
 }
