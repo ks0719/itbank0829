@@ -741,16 +741,7 @@ function chat_add(){
 	document.getElementById("chat_label").innerHTML="대화할 닉네임 입력";
 	
 }
-function chat_order(){
-	if(event.keyCode==13){
-		var value=$("#chat_label").val();
-		console.log(value)
-		if(value=="대화할 닉네임 입력"){
-				var getnick=$("#chat").val();
-				console.log(getnick);
-		}
-	}
-}
+
 </script>
 
 <head>
@@ -792,6 +783,7 @@ function chat_order(){
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
+
 <div class="setDiv">
     <div class="mask"></div>
     <div class="window">
@@ -838,8 +830,8 @@ function chat_order(){
    </tfoot>
    <tbody>
    <div style="position: absolute;bottom: 30px;right: 0px;" >
-   <label id="chat_label"></label>
-            <input type="text" id="chat"placeholder="입력.." onkeydown="chat_order();">
+   <label id="chat_label">아래의 버튼을 눌러주세요.</label>
+            <input type="text" id="chat_text" placeholder="입력.." onkeydown="chat_order();">
         </div>
         <textarea id="display"readonly style="resize: none;
                 outline:none;
@@ -856,7 +848,31 @@ function chat_order(){
    </div>
 	</div>
 </c:if>
-
+<script>
+function chat_order(){
+	if(event.keyCode==13){
+		var value=$("#chat_label").text();
+		if(value=="대화할 닉네임 입력"){
+				var getnick=$("#chat_text").val();
+				var mynick="${mynick}";
+				$.ajax({
+					url:"chatadd",
+					type:"post",
+					async:true,
+					data:{mynick,getnick},
+					dataType: "text",
+					success: function(){
+						console.log("성공");
+						alert("친구가 추가되었습니다.");
+					},error:function(){
+						console.log("실패");
+						alert("이미 존재하거나 닉네임이 없습니다.");
+						
+					}
+				})
+		}
+	}
+}</script>
 <div class="wrapper">
 	<!-- 헤더 시작 -->
 	<header class="main-header">

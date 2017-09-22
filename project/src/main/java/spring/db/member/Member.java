@@ -21,6 +21,7 @@ public class Member {
 	private int lev;
 	private String reg;
 	private String power;
+	private String friend;
 	
 	public Member() {
 		super();
@@ -40,6 +41,7 @@ public class Member {
 		setLev(rs.getInt("lev"));
 		setReg(rs.getString("reg"));
 		setPower(rs.getString("power"));
+		setFriend(rs.getString("friend"));
 	}
 	public String getPower() {
 		return power;
@@ -78,11 +80,12 @@ public class Member {
 		setReg(request.getParameter("reg"));
 		setPower(request.getParameter("power"));
 	}
+
 	@Override
 	public String toString() {
 		return "Member [no=" + no + ", id=" + id + ", pw=" + pw + ", name=" + name + ", nick=" + nick + ", phone="
 				+ phone + ", sort=" + sort + ", post=" + post + ", addr1=" + addr1 + ", addr2=" + addr2 + ", mileage="
-				+ mileage + ", lev=" + lev + ", reg=" + reg + ", power=" + power + "]";
+				+ mileage + ", lev=" + lev + ", reg=" + reg + ", power=" + power + ", friend=" + friend + "]";
 	}
 	public int getNo() {
 		return no;
@@ -162,6 +165,11 @@ public class Member {
 	public void setReg(String reg) {
 		this.reg = reg;
 	}
-	
+	public void setFriend(String friend) {
+		this.friend = friend;
+	}
+	public String getFriend() {
+		return friend;
+	}
 	
 }
