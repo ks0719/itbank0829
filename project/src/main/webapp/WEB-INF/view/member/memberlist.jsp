@@ -30,8 +30,8 @@ $(document).ready(function(){
 	
 	$("#delete").on("click", function(){
 		console.log("실행됨");
-		var unitval = [];
 		jQuery.ajaxSettings.traditional = true;
+		var unitval = [];
         
         $.ajax({
            url : "project/member/checkBox",
