@@ -32,6 +32,7 @@ public class MemberController {
 	
 	@Autowired
 	private MemberDao memberDao;
+
 	
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
@@ -181,12 +182,10 @@ public class MemberController {
 		
 		String nick=getNick(req);
 		String pw=req.getParameter("pw");
-		String encodepw=memberDao.mypwnick(nick);
-		
-		boolean result=memberDao.delete(nick,encodepw);
-		
-		if(result) {
-			
+		String spw=memberDao.mypwnick(nick);
+		boolean same=passwordEncoder.matches(pw, spw);
+		boolean result=memberDao.delete(nick,spw);
+		if(result==same) {
 		}else {
 			throw new Exception();
 		}
