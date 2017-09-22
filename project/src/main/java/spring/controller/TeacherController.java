@@ -65,6 +65,22 @@ public class TeacherController {
 		return "";
 	}
 	
+//	private int getTeacherNo(String nick) {
+//		if (nick == "") return 0;
+//		return memberDao.memberNo(nick);
+//	}
+//	
+//	private boolean isTeacher(HttpServletRequest req) throws Exception {
+//		String nick = getNick(req);
+//		if (nick == "") return false;
+//		
+//		int memberNo = getTeacherNo(nick);
+//		int no = Integer.parseInt(req.getParameter("no"));
+//		
+//		boolean result = teacherDao.isRight(no, memberNo);
+//		return result;
+//	}
+	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
 	public String apply(MultipartHttpServletRequest mRequest) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
@@ -416,7 +432,6 @@ public class TeacherController {
 		
 		// 회원정보 가져와야 함
 		List<Member> mList = memberDao.getInfo(list);
-		log.debug("개수 : " + mList.size());
 		
 		m.addAttribute("list", mList);
 

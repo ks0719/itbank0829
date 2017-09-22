@@ -6,7 +6,7 @@
 <h1>강의 등록</h1>
 
 <form action="resister" method="post" enctype="multipart/form-data">
-	<input type="text" name="teacher" value="${nick}" readonly>
+	<input type="text" name="teacher" value="${mynick}" readonly>
 	<br><br>
 	<select name="tag" title="언어 선택">
 		<option value="C언어">C언어</option>

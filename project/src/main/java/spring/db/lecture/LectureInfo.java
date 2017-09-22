@@ -29,6 +29,7 @@ public class LectureInfo {
 	private String accept;
 	private String reg;
 	private String period;
+	private int teacherno;
 	
 	public LectureInfo(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
@@ -51,6 +52,7 @@ public class LectureInfo {
 		setAccept(rs.getString("accept"));
 		setReg(rs.getString("reg"));
 		setPeriod(rs.getString("period"));
+		setTeacherno(rs.getInt("teacherno"));
 	}
 
 	public LectureInfo(MultipartHttpServletRequest mRequest) {
@@ -237,6 +239,14 @@ public class LectureInfo {
 
 	public void setPeriod(String period) {
 		this.period = period;
+	}
+	
+	public int getTeacherno() {
+		return teacherno;
+	}
+	
+	public void setTeacherno(int teacherno) {
+		this.teacherno = teacherno;
 	}
 
 	

@@ -170,7 +170,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		for (MyLecture ml : list) {
 			String sql = "select * from member where nick = ?";
 			List<Member> tmp = jdbcTemplate.query(sql, new Object[] {ml.getId()}, mapper);
-			if (tmp == null) continue;
+			if (tmp.size() == 0) continue;
 			else mList.add(tmp.get(0));
 		}
 		
@@ -181,5 +181,23 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		String sql = "select no from member where nick = ?";
 		
 		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class);
+	}
+	public boolean isfriend(String getnick) {
+		String sql="select * from member where nick=?";
+		return jdbcTemplate.update(sql,new Object[] {getnick})>0;
+		
+	}
+	public void myfriend(String mynick,String getnick) {
+		String sql="update member set friends=friends||?||'/' where nick=?";
+		jdbcTemplate.update(sql, new Object[] {getnick,mynick});
+	}
+	public String[] myfriendlist(String mynick) {
+		String sql="select friends from member where nick=?";
+		String list= jdbcTemplate.queryForObject(sql, new Object[] {mynick},String.class);
+		if(list!=null) {
+		if(list.contains("/")) {
+			return list.split("/");
+		}
+		}return null;
 	}
 }

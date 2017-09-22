@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.CookieGenerator;
 
 import spring.db.board.BoardDao;
+import spring.db.board.CommentDao;
+import spring.db.lecture.LectureDao;
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
 import spring.db.member.Member;
@@ -31,6 +33,7 @@ import spring.db.myinfo.MyDao;
 import spring.db.myinfo.MyDto;
 import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
+import spring.db.teacher.TeacherDao;
 
 @Controller
 public class DataController {
@@ -50,6 +53,12 @@ public class DataController {
 	private MailDao mailDao;
 	@Autowired
 	private BoardDao boardDao;
+	@Autowired
+	private CommentDao commentDao;
+	@Autowired
+	private TeacherDao teacherDao;
+	@Autowired
+	private LectureDao lectureDao;
 
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c = req.getCookies();
@@ -104,6 +113,9 @@ public class DataController {
 		cookie.addCookie(response, URLEncoder.encode(nick, "utf-8"));
 		
 		boardDao.update(originNick, nick);
+		commentDao.update(originNick, nick);
+		teacherDao.update(originNick, nick);
+		lectureDao.update(originNick, nick);
 
 		return "redirect:/data/maininfo";
 	}
