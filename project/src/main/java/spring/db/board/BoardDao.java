@@ -82,10 +82,13 @@ public class BoardDao {
 	}
 
 	public boolean edit(int no, int memberNo, Board board) {
-		String sql = "update board set head = ?, title = ?, detail = ?, filename = ?, originfile = ?, filetype = ?, filesize = ? where no = ?, memberNo = ?";
+		String sql = "update board set head = ?, title = ?, detail = ?, filename = ?, originfile = ?, filetype = ?, filesize = ? where no = ? and memberNo = ?";
 		
-		String[] extension = board.getFiletype().split("/");
-		String filename = no + "." + extension[extension.length - 1];
+		String filename = null;
+		if (board.getFiletype() != "") {
+			String[] extension = board.getFiletype().split("/");
+			filename = "board" + "/" + no + "." + extension[extension.length - 1];
+		}
 		
 		return jdbcTemplate.update(sql, board.getHead(), board.getTitle(), board.getDetail(), filename, board.getOriginfile(), 
 				board.getFiletype(), board.getFilesize(), no, memberNo) > 0;
@@ -118,7 +121,7 @@ public class BoardDao {
 	}
 
 	public void update(String originNick, String nick) {
-		String sql = "update board set writer = ? where nick = ?";
+		String sql = "update board set writer = ? where writer = ?";
 		
 		jdbcTemplate.update(sql, new Object[] {nick, originNick});
 	}

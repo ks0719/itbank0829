@@ -39,7 +39,6 @@ public class Board {
 		setDetail(mRequest.getParameter("detail"));
 		setNotice(mRequest.getParameter("notice"));
 		setReg(mRequest.getParameter("reg"));
-		setMemberNo(Integer.parseInt(mRequest.getParameter("memberNo")));
 
 		MultipartFile file = mRequest.getFile("file");
 		if (file.getOriginalFilename() != "") {
@@ -74,6 +73,7 @@ public class Board {
 		setOriginfile(rs.getString("originfile"));
 		setFiletype(rs.getString("filetype"));
 		setFilesize(rs.getInt("filesize"));
+		setMemberNo(rs.getInt("memberNo"));
 	}
 	public int getNo() {
 		return no;

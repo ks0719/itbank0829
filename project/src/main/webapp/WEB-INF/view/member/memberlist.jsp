@@ -28,24 +28,32 @@ $(document).ready(function(){
 		$("#checkAll").prop("checked", tnf);
 	});
 	
+	
+	
 	$("#delete").on("click", function(){
+		var result=false;
 		console.log("실행됨");
-		var unitval = 
-		jQuery.ajaxSettings.traditional = true;
-        //ajax통신이 안된 이유는 변수값이 에러가 나서 
-        $.ajax({
-           url : "checkBox",
-           type : "post",
-           data : {
-              "userid" : unitval
-              },
-           success : function() {
-              alert("강제 탈퇴 완료");
-              location.reload();
-           }
-
+		$("input[name=checkB]:checked").each(function(){
+			var userid=$(this).val();	
+	     
+	        $.ajax({
+	        	async: false,
+	           url : "checkBox",
+	           type : "post",
+	           data : {userid:userid},
+	           dataType:"text",
+	           success : function() {
+	        	   result=true;
+	           }
+	        })
+	        
         });
+			if(result){
+				alert("강제 회원 삭제 성공");
+			}
 	});
+	
+	
 });
 </script>
 

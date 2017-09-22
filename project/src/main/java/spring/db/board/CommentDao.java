@@ -26,16 +26,16 @@ public class CommentDao {
 		return jdbcTemplate.query(sql, new Object[] {context}, mapper);
 	}
 	
-	public Comment insert(String nick, Comment comment) {
+	public Comment insert(String nick, int memberNo, Comment comment) {
 		int seq = 0;
 		String sql = "select max(seq) from commentboard where context = ?";
 		seq = jdbcTemplate.queryForObject(sql, new Object[] {comment.getContext()}, Integer.class) == null ? 0 : jdbcTemplate.queryForObject(sql, new Object[] {comment.getContext()}, Integer.class);
 		
 		int no = jdbcTemplate.queryForObject("select comment_seq.nextval from dual", Integer.class);
 		
-		sql = "insert into commentboard values(?, ?, ?, ?, ?, ?, 0, 0, sysdate)";
+		sql = "insert into commentboard values(?, ?, ?, ?, ?, ?, 0, 0, sysdate, ?)";
 		
-		jdbcTemplate.update(sql, no, nick, comment.getDetail(), comment.getTopcontext(), comment.getContext(), seq + 1);
+		jdbcTemplate.update(sql, no, nick, comment.getDetail(), comment.getTopcontext(), comment.getContext(), seq + 1, memberNo);
 		
 		return detail(no);
 	}
@@ -66,6 +66,18 @@ public class CommentDao {
 		String sql = "delete commentboard where no = ?";
 		
 		return jdbcTemplate.update(sql, commentNo) > 0;
+	}
+
+	public void update(String originNick, String nick) {
+		String sql = "update commentboard set writer = ? where writer = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {nick, originNick});
+	}
+
+	public boolean isWriter(int no, int memberNo) {
+		String sql = "select * from commentboard where no = ? and memberNo = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no, memberNo}, mapper).size() > 0;
 	}
 
 }

@@ -64,17 +64,36 @@ public class TeacherController {
 		return "";
 	}
 	
+//	private int getTeacherNo(String nick) {
+//		if (nick == "") return 0;
+//		return memberDao.memberNo(nick);
+//	}
+//	
+//	private boolean isTeacher(HttpServletRequest req) throws Exception {
+//		String nick = getNick(req);
+//		if (nick == "") return false;
+//		
+//		int memberNo = getTeacherNo(nick);
+//		int no = Integer.parseInt(req.getParameter("no"));
+//		
+//		boolean result = teacherDao.isRight(no, memberNo);
+//		return result;
+//	}
+	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
 	public String apply(MultipartHttpServletRequest mRequest) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		if (!file.isEmpty()) {
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+	
+			String[] extension = file.getContentType().split("/");
+			String filename = getNick(mRequest) + "." + extension[extension.length - 1];
+			File target = new File(savePath, filename);
+			if(!target.exists()) target.mkdirs();
+			file.transferTo(target);
+		}
 
-		String[] extension = file.getContentType().split("/");
 		teacherDao.apply(new Teacher(mRequest));
-		String filename = getNick(mRequest) + "." + extension[extension.length - 1];
-		File target = new File(savePath, filename);
-		if(!target.exists()) target.mkdirs();
-		file.transferTo(target);
 		
 		return "data/maininfo";
 	}
@@ -219,13 +238,13 @@ public class TeacherController {
 	@RequestMapping(value="/profile", method=RequestMethod.POST)
 	public String profile(MultipartHttpServletRequest mRequest) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
-		
-		
-		
 		if (!file.isEmpty()) {
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		
+			
+		
 			String[] extension = file.getContentType().split("/");
-			String filename = getNick(mRequest) + "." + extension[extension.length - 1];
+			String filename = "lecturer/" + getNick(mRequest) + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -253,7 +272,7 @@ public class TeacherController {
 		
 		if (!file.isEmpty()) {
 			String[] extension = file.getContentType().split("/");
-			String filename = "lecture" + no + "." + extension[extension.length - 1];
+			String filename = "lecture/" + no + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -380,7 +399,7 @@ public class TeacherController {
 		
 		if (!file.isEmpty()) {
 			String[] extension = file.getContentType().split("/");
-			String filename = "lecture" + no + "." + extension[extension.length - 1];
+			String filename = "lecture/" + no + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -412,7 +431,6 @@ public class TeacherController {
 		
 		// 회원정보 가져와야 함
 		List<Member> mList = memberDao.getInfo(list);
-		log.debug("개수 : " + mList.size());
 		
 		m.addAttribute("list", mList);
 

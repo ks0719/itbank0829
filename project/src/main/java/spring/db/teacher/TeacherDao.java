@@ -99,7 +99,7 @@ public class TeacherDao {
 		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait')";
 		
 		String[] extension = teacher.getPicture_type().split("/");
-		String filename = teacher.getName() + "." + extension[extension.length - 1];
+		String filename = "lecturer/" + teacher.getName() + "." + extension[extension.length - 1];
 		
 		Object[] args = {teacher.getName(), teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
 				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size()};
@@ -125,7 +125,7 @@ public class TeacherDao {
 		String filename = null;
 		if (teacher.getPicture_type() != "") {
 			String[] extension = teacher.getPicture_type().split("/");
-			filename = teacher.getName() + "." + extension[extension.length - 1];
+			filename = "lecturer/" + teacher.getName() + "." + extension[extension.length - 1];
 		}
 		
 		Object[] args = {teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
@@ -144,6 +144,18 @@ public class TeacherDao {
 		String sql = "select * from assess where no = ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
+	}
+
+	public void update(String originNick, String nick) {
+		String sql = "update teacher set name = ? where name = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {nick, originNick});
+	}
+
+	public boolean isRight(int no, int memberNo) {
+		String sql = "select * from teacher where no = ? and memberNo = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no, memberNo}, mapper).size() > 0;
 	}
 
 }

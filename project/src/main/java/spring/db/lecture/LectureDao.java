@@ -37,11 +37,11 @@ public class LectureDao {
 		
 		return no;
 	}
-	
-	public boolean update(LectureInfo info) {
-		String sql = "update lecture_info set ";
+
+	public void update(String originNick, String nick) {
+		String sql = "update lecture_info set teacher = ? where teacher = ?";
 		
-		return false;
+		jdbcTemplate.update(sql, new Object[] {nick, originNick});
 	}
 	
 	public boolean delete(int no) {

@@ -44,6 +44,6 @@
 </div>
 <br><br>
 <Button onclick="location.href='qnaView${url}';">학생 Q&A</Button>
-<Button onclick="location.href='myLectures${url}';">돌아가기</Button>
+<Button onclick="location.href='myLectures${url}';">목록으로</Button>
 
 <%@ include file="/WEB-INF/view/template/teacherFooter.jsp" %>
