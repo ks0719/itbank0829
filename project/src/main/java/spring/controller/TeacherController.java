@@ -67,14 +67,17 @@ public class TeacherController {
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
 	public String apply(MultipartHttpServletRequest mRequest) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		if (!file.isEmpty()) {
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+	
+			String[] extension = file.getContentType().split("/");
+			String filename = getNick(mRequest) + "." + extension[extension.length - 1];
+			File target = new File(savePath, filename);
+			if(!target.exists()) target.mkdirs();
+			file.transferTo(target);
+		}
 
-		String[] extension = file.getContentType().split("/");
 		teacherDao.apply(new Teacher(mRequest));
-		String filename = getNick(mRequest) + "." + extension[extension.length - 1];
-		File target = new File(savePath, filename);
-		if(!target.exists()) target.mkdirs();
-		file.transferTo(target);
 		
 		return "data/maininfo";
 	}
@@ -219,13 +222,13 @@ public class TeacherController {
 	@RequestMapping(value="/profile", method=RequestMethod.POST)
 	public String profile(MultipartHttpServletRequest mRequest) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
-		
-		
-		
 		if (!file.isEmpty()) {
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		
+			
+		
 			String[] extension = file.getContentType().split("/");
-			String filename = getNick(mRequest) + "." + extension[extension.length - 1];
+			String filename = "lecturer/" + getNick(mRequest) + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -253,7 +256,7 @@ public class TeacherController {
 		
 		if (!file.isEmpty()) {
 			String[] extension = file.getContentType().split("/");
-			String filename = "lecture" + no + "." + extension[extension.length - 1];
+			String filename = "lecture/" + no + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -380,7 +383,7 @@ public class TeacherController {
 		
 		if (!file.isEmpty()) {
 			String[] extension = file.getContentType().split("/");
-			String filename = "lecture" + no + "." + extension[extension.length - 1];
+			String filename = "lecture/" + no + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);

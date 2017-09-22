@@ -145,16 +145,20 @@ public class BoardController {
 			contextI = 0;
 		}
 		
-		MultipartFile file = mRequest.getFile("file");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
 
-		String[] extension = file.getContentType().split("/");
 		String nick = getNick(mRequest);
 		int no = boardDao.write(path, getMemberNo(nick), nick, new Board(mRequest), contextI);
-		String filename = no + "." + extension[extension.length - 1];
-		File target = new File(savePath, filename);
-		if(!target.exists()) target.mkdirs();
-		file.transferTo(target);
+		
+		MultipartFile file = mRequest.getFile("file");
+		if (!file.isEmpty()) {
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+	
+			String[] extension = file.getContentType().split("/");
+			String filename = "board" + "/" + no + "." + extension[extension.length - 1];
+			File target = new File(savePath, filename);
+			if(!target.exists()) target.mkdirs();
+			file.transferTo(target);
+		}
 		
 		if (contextI != 0) return "redirect:/board/" + path + "/detail?no=" + context;
 		return "redirect:/board/" + path + "/detail?no=" + no;
