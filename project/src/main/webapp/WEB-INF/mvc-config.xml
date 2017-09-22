@@ -35,15 +35,6 @@
 		<property name="maxUploadSize" value="100000000"/>
 <!-- 		<property name="maxInMemorySize" value="바이트"/> -->
 	</bean>
-<!-- websocket handler 등록 -->
-	<bean id="chatHandler" class="spring.controller.ChatHandler"></bean>
-	<websocket:handlers>
-		<!-- 클라이언트에서 접속할 위치(path), 처리할 클래스(handler) -->
-		<websocket:mapping handler="chatHandler" path="/chat"/>
-		<!-- 연결 수립시 HttpSession에 대한 정보를 설정해주기 위한 인터셉터 설정 -->
-		<websocket:handshake-interceptors>
-			<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-		</websocket:handshake-interceptors>
-	</websocket:handlers>
+
 
 </beans>

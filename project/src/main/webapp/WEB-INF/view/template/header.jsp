@@ -604,8 +604,8 @@ $(document).ready(function(){
 			 drag: function(event,ui){
 				 var top=$("#draggable").css("top");
 					var left=$("#draggable").css("left");
-				 console.log("top : "+top);
-					console.log("left : "+left);
+				 //console.log("top : "+top);
+					//console.log("left : "+left);
 			 },
 			 stop: function(event,ui){
 				var chattop = $("#draggable").css("top");
@@ -625,8 +625,8 @@ $(document).ready(function(){
 
 				 
 				 
-				 console.log("최종 top : "+$("#draggable").css("top"));
-				 console.log("최종 left : "+$("#draggable").css("left"));
+				 //console.log("최종 top : "+$("#draggable").css("top"));
+				 //console.log("최종 left : "+$("#draggable").css("left"));
 			 }
 		});
 			});
@@ -727,12 +727,12 @@ $(document).ready(function(){
 function chat_on(){
 	var image=document.getElementById("img");
 	if($("#chat").css("display")=="none"){
-		console.log("열림");
+		//console.log("열림");
 		$("#chat").css("display","");
 		image.src="${pageContext.request.contextPath }/img/chat_close.png";
 		
 	}else{
-		console.log("닫힘");
+		//console.log("닫힘");
 		$("#chat").css("display","none");
 		image.src="${pageContext.request.contextPath }/img/chat_open.png";
 	}
@@ -742,9 +742,13 @@ function chat_add(){
 	
 }
 function chat_order(){
-	var value=document.getElementById("chat_label").value;
-	if(value=="대화할 닉네임 입력"){
-			
+	if(event.keyCode==13){
+		var value=$("#chat_label").val();
+		console.log(value)
+		if(value=="대화할 닉네임 입력"){
+				var getnick=$("#chat").val();
+				console.log(getnick);
+		}
 	}
 }
 </script>
