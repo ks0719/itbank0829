@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.CookieGenerator;
 
+import spring.db.board.BoardDao;
 import spring.db.mail.Mail;
 import spring.db.mail.MailDao;
 import spring.db.member.Member;
@@ -47,6 +48,8 @@ public class DataController {
 	private MemberDao mbdao;
 	@Autowired
 	private MailDao mailDao;
+	@Autowired
+	private BoardDao boardDao;
 
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c = req.getCookies();
@@ -90,8 +93,8 @@ public class DataController {
 	@RequestMapping(value = "/data/edit", method = RequestMethod.POST)
 	public String editpost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Member mb = new Member(request);
-		String nick = getNick(request);
-		nick = mbdao.edit(mb, nick);
+		String originNick = getNick(request);
+		String nick = mbdao.edit(mb, originNick);
 		// log.debug("최종 닉네임 : "+nick);
 		CookieGenerator cookie = new CookieGenerator();
 
@@ -99,6 +102,8 @@ public class DataController {
 		cookie.setCookiePath("/");
 		cookie.setCookieMaxAge(-1);
 		cookie.addCookie(response, URLEncoder.encode(nick, "utf-8"));
+		
+		boardDao.update(originNick, nick);
 
 		return "redirect:/data/maininfo";
 	}

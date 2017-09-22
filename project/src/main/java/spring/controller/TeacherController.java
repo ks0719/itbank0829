@@ -412,6 +412,7 @@ public class TeacherController {
 		
 		// 회원정보 가져와야 함
 		List<Member> mList = memberDao.getInfo(list);
+		log.debug("개수 : " + mList.size());
 		
 		m.addAttribute("list", mList);
 

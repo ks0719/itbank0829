@@ -28,6 +28,7 @@ import spring.db.board.Board;
 import spring.db.board.BoardDao;
 import spring.db.board.Comment;
 import spring.db.board.CommentDao;
+import spring.db.member.MemberDao;
 
 @Controller
 @RequestMapping("/board")
@@ -39,6 +40,9 @@ public class BoardController {
 	
 	@Autowired
 	private CommentDao commentDao;
+	
+	@Autowired
+	private MemberDao memberDao;
 	
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
@@ -56,6 +60,23 @@ public class BoardController {
 	        }
 		}
 		return "";
+	}
+	
+	private int getMemberNo(String nick) {
+		if (nick == "") return 0;
+		log.debug("nick : " + nick);
+		return memberDao.memberNo(nick);
+	}
+	
+	private boolean isWriter(HttpServletRequest req) throws Exception {
+		String nick = getNick(req);
+		if (nick == "") return false;
+		
+		int memberNo = getMemberNo(nick);
+		int no = Integer.parseInt(req.getParameter("no"));
+		
+		boolean result = boardDao.isWriter(no, memberNo);
+		return result;
 	}
 	
 	@RequestMapping("/{path}")
@@ -118,7 +139,7 @@ public class BoardController {
 
 		String[] extension = file.getContentType().split("/");
 		String nick = getNick(mRequest);
-		int no = boardDao.write(path, nick, new Board(mRequest), contextI);
+		int no = boardDao.write(path, getMemberNo(nick), nick, new Board(mRequest), contextI);
 		String filename = no + "." + extension[extension.length - 1];
 		File target = new File(savePath, filename);
 		if(!target.exists()) target.mkdirs();
@@ -136,7 +157,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/{path}/detail")
-	public String detail(@PathVariable String path, String no, Model m) throws Exception {
+	public String detail(@PathVariable String path, HttpServletRequest req, String no, Model m) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -149,7 +170,10 @@ public class BoardController {
 		boardDao.readUp(noI);
 		List<Comment> list = commentDao.list(noI);
 		
+		int memberNo = getMemberNo(getNick(req));
+		
 		m.addAttribute("no", no);
+		m.addAttribute("memberNo", memberNo);
 		m.addAttribute("boardList", board);
 		m.addAttribute("list", list);
 		
@@ -172,12 +196,12 @@ public class BoardController {
 	}
 
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
-	public String edit(@PathVariable String path, String context, MultipartHttpServletRequest mRequest, int no, Model m) throws IllegalStateException, IOException {
+	public String edit(@PathVariable String path, String context, MultipartHttpServletRequest mRequest, int no, Model m) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
 		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
 
 		String[] extension = file.getContentType().split("/");
-		boardDao.edit(no, new Board(mRequest));
+		boardDao.edit(no, getMemberNo(getNick(mRequest)), new Board(mRequest));
 		String filename = no + "." + extension[extension.length - 1];
 		File target = new File(savePath, filename);
 		file.transferTo(target);		
@@ -186,7 +210,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/{path}/edit")
-	public String edit(@PathVariable String path, String no, String context, Model m) throws Exception {
+	public String edit(@PathVariable String path, HttpServletRequest req, String no, String context, Model m) throws Exception {
+		if (isWriter(req) == false) throw new Exception("404"); 
+		
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -204,7 +230,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/{path}/delete")
-	public String delete(@PathVariable String path, String no, String context) throws Exception {
+	public String delete(@PathVariable String path, HttpServletRequest req, String no, String context) throws Exception {
+		if (isWriter(req) == false) throw new Exception("404"); 
+		
 		int noI;
 		try {
 			noI = Integer.parseInt(no);

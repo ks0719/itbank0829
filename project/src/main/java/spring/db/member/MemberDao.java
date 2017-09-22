@@ -1,5 +1,6 @@
 package spring.db.member;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -159,14 +160,21 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	}
 
 	public List<Member> getInfo(List<MyLecture> list) {
-		List<Member> mList = null;
+		List<Member> mList = new ArrayList<>();
 		
 		for (MyLecture ml : list) {
-			String sql = "select nick, sort, level, reg from member nick = ?";
+			String sql = "select * from member where nick = ?";
 			List<Member> tmp = jdbcTemplate.query(sql, new Object[] {ml.getId()}, mapper);
-			mList.add(tmp.get(0));
+			if (tmp == null) continue;
+			else mList.add(tmp.get(0));
 		}
 		
 		return mList;
+	}
+
+	public int memberNo(String nick) {
+		String sql = "select no from member where nick = ?";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class);
 	}
 }

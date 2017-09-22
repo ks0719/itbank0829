@@ -46,7 +46,7 @@ public class BoardDao {
 		return jdbcTemplate.query(sql, new Object[] {path, key, start, end}, mapper);
 	}
 
-	public int write(String path, String nick, Board board, int context) {
+	public int write(String path, int memberNo, String nick, Board board, int context) {
 		String sql = "select board_seq.nextval from dual";
 		int no = jdbcTemplate.queryForObject(sql, Integer.class);
 		
@@ -60,9 +60,9 @@ public class BoardDao {
 		String[] extension = board.getFiletype().split("/");
 		String filename = no + "." + extension[extension.length - 1];
 		
-		sql = "insert into board values(?, ?, ?, ?, ?, ?, ?, ?, ?, null, 0, 0, 0, sysdate, ?, ?, ?, ?)";
+		sql = "insert into board values(?, ?, ?, ?, ?, ?, ?, ?, ?, null, 0, 0, 0, sysdate, ?, ?, ?, ?, ?)";
 		jdbcTemplate.update(sql, new Object[] {no, nick, path, board.getHead(), board.getTitle(), board.getDetail(), 
-				context > 0 ? context : no, seq + 1, context > 0 ? 1 : 0, filename, board.getOriginfile(), board.getFiletype(), board.getFilesize()});
+				context > 0 ? context : no, seq + 1, context > 0 ? 1 : 0, filename, board.getOriginfile(), board.getFiletype(), board.getFilesize(), memberNo});
 		
 		return no;
 	}
@@ -81,20 +81,20 @@ public class BoardDao {
 		return list;
 	}
 
-	public void edit(int no, Board board) {
-		String sql = "update board set head = ?, title = ?, detail = ?, filename = ?, originfile = ?, filetype = ?, filesize = ? where no = ?";
+	public boolean edit(int no, int memberNo, Board board) {
+		String sql = "update board set head = ?, title = ?, detail = ?, filename = ?, originfile = ?, filetype = ?, filesize = ? where no = ?, memberNo = ?";
 		
 		String[] extension = board.getFiletype().split("/");
 		String filename = no + "." + extension[extension.length - 1];
 		
-		jdbcTemplate.update(sql, board.getHead(), board.getTitle(), board.getDetail(), filename, board.getOriginfile(), 
-				board.getFiletype(), board.getFilesize(), no);
+		return jdbcTemplate.update(sql, board.getHead(), board.getTitle(), board.getDetail(), filename, board.getOriginfile(), 
+				board.getFiletype(), board.getFilesize(), no, memberNo) > 0;
 	}
 
-	public void delete(int no) {
+	public boolean delete(int no) {
 		String sql = "delete board where no = ? or context = ?";
 		
-		jdbcTemplate.update(sql, no, no);
+		return jdbcTemplate.update(sql, no, no) > 0;
 	}
 	
 	public void readUp(int no) {
@@ -115,6 +115,18 @@ public class BoardDao {
 		List<Board> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
 		
 		return list.get(0);
+	}
+
+	public void update(String originNick, String nick) {
+		String sql = "update board set writer = ? where nick = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {nick, originNick});
+	}
+
+	public boolean isWriter(int no, int memberNo) {
+		String sql = "select * from board where no = ? and memberNo = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no, memberNo}, mapper).size() > 0;
 	}
 
 }
