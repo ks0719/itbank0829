@@ -61,5 +61,8 @@
 		</c:forEach>
 	</table>
 </body>
+<div class="align-right">
+		<button class="input-btn"  onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
+</div>
 </html>
 <%@ include file="/WEB-INF/view/template/footer.jsp" %> 

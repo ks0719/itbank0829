@@ -258,12 +258,10 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="/member/checkBox", method = RequestMethod.POST)
-	public String unsignPost(@RequestParam String[] userid) {
-		log.debug("뭐 넘어옴?:"+Arrays.toString(userid));
-		for(int i =0; i < userid.length; i++) {
-	         memberDao.delete(userid[i]);
-	         
-	      }
+	public String unsignPost(@RequestParam String userid) {
+//		log.debug("뭐 넘어옴?:"+Arrays.toString(userid));
+//		System.out.println(userid);
+		memberDao.delete(userid);
 	      return "member/memberlist";   
 	   }
 }
