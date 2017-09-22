@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+	<%session.setAttribute("mynick", URLDecoder.decode("${mynick}", "UTF-8")); %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<%@ page import = "java.net.URLDecoder" %>
 <html>
@@ -571,13 +572,6 @@ $(document).ready(function(){
   	
   	
   	
-  	//움직이는 레이어 팝업이 2개 있는데 뭐가 진짜임?
-  	
-//움직이는 레이어 팝업
-$(function() {
-		$( "#draggable" ).draggable();
-	});
-	
 	$(document).ready(function() {
 		//새로운 메일 갯수
 		var mynick = "${cookie.mynick.value}";
@@ -606,6 +600,7 @@ $(function() {
 		$("#draggable").css("top",chattop);
 		$("#draggable").css("left",chatleft);
 			$( "#draggable" ).draggable({
+				cancel: '.chat_list, #img, .chat_table',
 			 drag: function(event,ui){
 				 var top=$("#draggable").css("top");
 					var left=$("#draggable").css("left");
@@ -659,7 +654,6 @@ $(function() {
 						data:{nick:$("#nick").val()},
 						dataType:"text",
 						success:function(){
-							alert("사용 가능한 닉네임 입니다.");
 							$("#nick").attr("readonly","readonly");
 							$("#nickcheck").val("취소");
 							result=true;
@@ -700,7 +694,6 @@ $(function() {
 						data:{phone:$("#phone").val()},
 						dataType:"text",
 						success:function(){
-							alert("사용 가능한 번호 입니다.");
 							$("#phone").attr("readonly","readonly");
 							$("#phonecheck").val("취소");
 							result=true;
@@ -731,7 +724,29 @@ $(function() {
 	 		return false;
 	}
 	
-
+function chat_on(){
+	var image=document.getElementById("img");
+	if($("#chat").css("display")=="none"){
+		console.log("열림");
+		$("#chat").css("display","");
+		image.src="${pageContext.request.contextPath }/img/chat_close.png";
+		
+	}else{
+		console.log("닫힘");
+		$("#chat").css("display","none");
+		image.src="${pageContext.request.contextPath }/img/chat_open.png";
+	}
+}
+function chat_add(){
+	document.getElementById("chat_label").innerHTML="대화할 닉네임 입력";
+	
+}
+function chat_order(){
+	var value=document.getElementById("chat_label").value;
+	if(value=="대화할 닉네임 입력"){
+			
+	}
+}
 </script>
 
 <head>
@@ -803,15 +818,38 @@ $(function() {
 <div id="draggable" class="ui-widget-content" style=
 "top: 70%;
  left: 75%; 
- height: 250px; 
+ height: 50px; 
  width: 330px;
   border:1px solid; 
   cursor: pointer; 
   position: absolute;
-   z-index: 2147483647; 
    overflow: visible; 
-   background-color: transparent; 
    visibility: visible;">
+   채팅창
+   <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
+   <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
+   <table class="chat_table">
+   <tfoot>
+   
+   </tfoot>
+   <tbody>
+   <div style="position: absolute;bottom: 30px;right: 0px;" >
+   <label id="chat_label"></label>
+            <input type="text" id="chat"placeholder="입력.." onkeydown="chat_order();">
+        </div>
+        <textarea id="display"readonly style="resize: none;
+                outline:none;
+                width:100%;
+                height:80%;"></textarea>
+   </tbody>
+   <tfoot>
+   <div style="position: absolute; bottom: 0px;right: 0px;">
+   <img alt="추가하기" src="${pageContext.request.contextPath }/img/chat_add.png" onclick="chat_add();">
+   <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png">
+   </div>
+   </tfoot>
+   </table>
+   </div>
 	</div>
 </c:if>
 
@@ -874,7 +912,6 @@ $(function() {
 				클릭이 된 상태는 treeview-menu 뒤에 menu-open이 붙어야 한다
 				따라서 나중에 그 페이지에 들어갔을 때 class가 변경되도록 설정 해주는 함수를 만들어 줘야 한다
 			-->
-			
 			<!-- 사이드바 메뉴 시작 -->
 			<ul class="sidebar-menu">
 				<c:choose>
@@ -939,6 +976,11 @@ $(function() {
 				<li>
 					<a href="${pageContext.request.contextPath}/consumer/basic">
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
+					</a>
+				</li>
+				<li>
+					<a href="${pageContext.request.contextPath}/member/memberlist">
+						<i class="fa fa-address-book-o"></i> <span>회원리스트(아이콘바꾸기)</span>
 					</a>
 				</li>
 			</ul>
