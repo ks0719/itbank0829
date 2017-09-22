@@ -39,6 +39,7 @@
 		<div class="align-right">
 			<input type="submit" value="신청하기">
 		</div>
+		<button onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
 	</form>
 </div>
 

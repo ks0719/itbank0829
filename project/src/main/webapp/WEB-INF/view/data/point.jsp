@@ -18,6 +18,7 @@
 정말로 충전하시겠습니까? 아래의 버튼을 누르시면 결제 페이지로 넘어갑니다.
 <hr>
 <input type="submit" value="결제하기"> 
+<button onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
 </form>
 </body>
 </html>

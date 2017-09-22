@@ -50,17 +50,17 @@ public class LectureController {
 	
 	@Autowired
 	private MyLectureDao myLectureDao;
-
-	@RequestMapping("/teacher")
-	public String teacher() {
-		
-		return "lecture/teacher";
-	}
 	
 	@RequestMapping("/assess")
 	public String assess() {
 		
 		return "lecture/assess";
+	}
+	
+	@RequestMapping("/qna")
+	public String qna() {
+		
+		return "lecture/qna";
 	}
 	
 	@RequestMapping("/class")
