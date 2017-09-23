@@ -740,7 +740,9 @@ function chat_add(){
 	document.getElementById("chat_label").innerHTML="대화할 닉네임 입력";
 	
 }
-
+function chat_del(){
+	
+}
 </script>
 
 <head>
@@ -832,15 +834,15 @@ function chat_add(){
    <label id="chat_label">아래의 버튼을 눌러주세요.</label>
             <input type="text" id="chat_text" placeholder="입력.." onkeydown="chat_order();">
         </div>
-        <textarea id="display"readonly style="resize: none;
+        <div id="display"readonly style="resize: none;
                 outline:none;
                 width:100%;
-                height:80%;"></textarea>
+                height:80%;"></div>
    </tbody>
    <tfoot>
    <div style="position: absolute; bottom: 0px;right: 0px;">
    <img alt="추가하기" src="${pageContext.request.contextPath }/img/chat_add.png" onclick="chat_add();">
-   <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png">
+   <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png" onclick="chat_del();">
    </div>
    </tfoot>
    </table>

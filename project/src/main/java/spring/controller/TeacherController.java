@@ -94,7 +94,7 @@ public class TeacherController {
 			file.transferTo(target);
 		}
 
-		teacherDao.apply(new Teacher(mRequest));
+//		teacherDao.apply(new Teacher(mRequest));
 		
 		return "data/maininfo";
 	}
