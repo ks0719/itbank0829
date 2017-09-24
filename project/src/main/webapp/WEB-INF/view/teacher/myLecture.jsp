@@ -4,8 +4,9 @@
     
 <%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
 
-<h1>강의 등록</h1>
+<h1>강의 상세정보</h1>
 
+<br><br>
 닉네임 : ${mynick}
 <br><br>
 언어 : ${mylecture.tag}
@@ -42,11 +43,17 @@
 <textarea rows="20" cols="80" readonly>${mylecture.detail}</textarea>
 <br><br>
 <c:choose>
-	<c:when test="${mylecture.state eq '등록 가능'}">
-		<Button onclick="location.href='lectureEdit?no=${mylecture.no}&${url}';">수정하기</Button>
+	<c:when test="${mylecture.state eq '마감'}">
+		지식 평가 : ${mylecture.kin_grade}
+		<br>
+		가격 평가 : ${mylecture.price_grade}
+		<br>
+		태도 평가 : ${mylecture.kind_grade}
+		<br><br>
+		<Button onclick="location.href='assessView?no=${mylecture.no}&${url}';">평가보기</Button>
 	</c:when>
 	<c:otherwise>
-		<Button onclick="location.href='assessView?no=${mylecture.no}&${url}';">평가보기</Button>
+		<Button onclick="location.href='lectureEdit?no=${mylecture.no}&${url}';">수정하기</Button>
 	</c:otherwise>
 </c:choose>
 <Button onclick="location.href='myLectures?${url}';">목록으로</Button>

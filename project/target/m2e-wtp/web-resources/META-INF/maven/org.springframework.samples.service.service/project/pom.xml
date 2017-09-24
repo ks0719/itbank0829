@@ -80,7 +80,7 @@
 			<version>${spring-framework.version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+		<!-- Spring WebSocket -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>

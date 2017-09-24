@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+	<%session.setAttribute("mynick", URLDecoder.decode("${mynick}", "UTF-8")); %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<%@ page import = "java.net.URLDecoder" %>
 <html>
@@ -182,7 +183,6 @@ $(document).ready(function(){
 		
 		$("#lecturer-apply").on("click", function() {
 			var nick = $(this).attr('value');
-			console.log(nick);
 			
 			$.ajax({
 				url: "${pageContext.request.contextPath}/teacher/applycheck",
@@ -190,7 +190,7 @@ $(document).ready(function(){
 				success: function(res) {
 					console.log(res);
 					if (res == "true") {
-						alert("이미 신청하셨거나 강사입니다.");
+						alert("심사를 기다려주세요.");
 					} else {
 						location.href = "${pageContext.request.contextPath}/teacher/apply";
 					}
@@ -211,11 +211,28 @@ $(document).ready(function(){
 				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page;
 			}
 		});
-		function confirm(form){
-			return confirm("수정하시면 심사를 다시 받아야 합니다. 그래도 수정하시겠습니까?");
-			}
-
 	});
+	
+	function resisterOK() {
+  		var regex1 = /^(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])~(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])$/;
+  		var regex2 = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])~([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
+	 	var period = document.querySelector("#period");
+	 	var time = document.querySelector("#time");
+	 	
+	 	console.log(period.value);
+	 	console.log(time.value);
+	 	
+	 	if(!regex1.test(period.value)) {
+	 		alert("강의기간 형식을 확인해주세요 (0000.00.00~0000.00.00)");
+	 		$("#period").focus();
+	 	} else if(!regex2.test(time.value)) {
+	 		alert("강의시간 형식을 확인해주세요 (00:00~00:00)");
+	 		$("#time").focus();
+	 	} else {
+	 		return true;
+	 	}
+	 		return false;
+	}
 	
 	// 이미지 업로드시 이미지 미리보기
 	function previewImage(targetObj, previewId) {
@@ -575,13 +592,6 @@ $(document).ready(function(){
   	
   	
   	
-  	//움직이는 레이어 팝업이 2개 있는데 뭐가 진짜임?
-  	
-//움직이는 레이어 팝업
-$(function() {
-		$( "#draggable" ).draggable();
-	});
-	
 	$(document).ready(function() {
 		//새로운 메일 갯수
 		var mynick = "${cookie.mynick.value}";
@@ -628,11 +638,12 @@ $(function() {
 		$("#draggable").css("top",chattop);
 		$("#draggable").css("left",chatleft);
 			$( "#draggable" ).draggable({
+				cancel: '.chat_list, #img, .chat_table',
 			 drag: function(event,ui){
 				 var top=$("#draggable").css("top");
 					var left=$("#draggable").css("left");
-				 console.log("top : "+top);
-					console.log("left : "+left);
+				 //console.log("top : "+top);
+					//console.log("left : "+left);
 			 },
 			 stop: function(event,ui){
 				var chattop = $("#draggable").css("top");
@@ -650,8 +661,8 @@ $(function() {
                     ,secure : false
 				}); 
 				 
-				 console.log("최종 top : "+$("#draggable").css("top"));
-				 console.log("최종 left : "+$("#draggable").css("left"));
+				 //console.log("최종 top : "+$("#draggable").css("top"));
+				 //console.log("최종 left : "+$("#draggable").css("left"));
 			 }
 		});
 			});
@@ -679,7 +690,6 @@ $(function() {
 						data:{nick:$("#nick").val()},
 						dataType:"text",
 						success:function(){
-							alert("사용 가능한 닉네임 입니다.");
 							$("#nick").attr("readonly","readonly");
 							$("#nickcheck").val("취소");
 							result=true;
@@ -720,7 +730,6 @@ $(function() {
 						data:{phone:$("#phone").val()},
 						dataType:"text",
 						success:function(){
-							alert("사용 가능한 번호 입니다.");
 							$("#phone").attr("readonly","readonly");
 							$("#phonecheck").val("취소");
 							result=true;
@@ -751,7 +760,26 @@ $(function() {
 	 		return false;
 	}
 	
-
+function chat_on(){
+	var image=document.getElementById("img");
+	if($("#chat").css("display")=="none"){
+		//console.log("열림");
+		$("#chat").css("display","");
+		image.src="${pageContext.request.contextPath }/img/chat_close.png";
+		
+	}else{
+		//console.log("닫힘");
+		$("#chat").css("display","none");
+		image.src="${pageContext.request.contextPath }/img/chat_open.png";
+	}
+}
+function chat_add(){
+	document.getElementById("chat_label").innerHTML="대화할 닉네임 입력";
+	
+}
+function chat_del(){
+	
+}
 </script>
 
 <head>
@@ -793,6 +821,7 @@ $(function() {
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
+
 <div class="setDiv">
     <div class="mask"></div>
     <div class="window">
@@ -823,18 +852,65 @@ $(function() {
 <div id="draggable" class="ui-widget-content" style=
 "top: 70%;
  left: 75%; 
- height: 250px; 
+ height: 50px; 
  width: 330px;
   border:1px solid; 
   cursor: pointer; 
   position: absolute;
-   z-index: 2147483647; 
    overflow: visible; 
-   background-color: transparent; 
    visibility: visible;">
+   채팅창
+   <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
+   <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
+   <table class="chat_table">
+   <tfoot>
+   
+   </tfoot>
+   <tbody>
+   <div style="position: absolute;bottom: 30px;right: 0px;" >
+   <label id="chat_label">아래의 버튼을 눌러주세요.</label>
+            <input type="text" id="chat_text" placeholder="입력.." onkeydown="chat_order();">
+        </div>
+        <div id="display"readonly style="resize: none;
+                outline:none;
+                width:100%;
+                height:80%;"></div>
+   </tbody>
+   <tfoot>
+   <div style="position: absolute; bottom: 0px;right: 0px;">
+   <img alt="추가하기" src="${pageContext.request.contextPath }/img/chat_add.png" onclick="chat_add();">
+   <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png" onclick="chat_del();">
+   </div>
+   </tfoot>
+   </table>
+   </div>
 	</div>
 </c:if>
-
+<script>
+function chat_order(){
+	if(event.keyCode==13){
+		var value=$("#chat_label").text();
+		if(value=="대화할 닉네임 입력"){
+				var getnick=$("#chat_text").val();
+				var mynick="${mynick}";
+				$.ajax({
+					url:"chatadd",
+					type:"post",
+					async:true,
+					data:{mynick,getnick},
+					dataType: "text",
+					success: function(){
+						console.log("성공");
+						alert("친구가 추가되었습니다.");
+					},error:function(){
+						console.log("실패");
+						alert("이미 존재하거나 닉네임이 없습니다.");
+						
+					}
+				})
+		}
+	}
+}</script>
 <div class="wrapper">
 	<!-- 헤더 시작 -->
 	<header class="main-header">
@@ -894,7 +970,6 @@ $(function() {
 				클릭이 된 상태는 treeview-menu 뒤에 menu-open이 붙어야 한다
 				따라서 나중에 그 페이지에 들어갔을 때 class가 변경되도록 설정 해주는 함수를 만들어 줘야 한다
 			-->
-			
 			<!-- 사이드바 메뉴 시작 -->
 			<ul class="sidebar-menu">
 					<li id="board" class="treeview">
@@ -946,6 +1021,17 @@ $(function() {
 				<li id="consumer">
 					<a href="${pageContext.request.contextPath}/consumer/basic">
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
+					</a>
+				</li>
+				<li>
+					<a href="${pageContext.request.contextPath}/member/memberlist">
+						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="${pageContext.request.contextPath}/teacher/applynot">
+						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span>
 					</a>
 				</li>
 			</ul>

@@ -15,6 +15,7 @@ public class Comment {
 	private int depth;
 	private int best;
 	private String reg;
+	private int memberNo;
 	
 	public Comment(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
@@ -26,6 +27,7 @@ public class Comment {
 		setDepth(rs.getInt("depth"));
 		setBest(rs.getInt("best"));
 		setReg(rs.getString("reg"));
+		setMemberNo(rs.getInt("memberNo"));
 	}
 	public Comment(HttpServletRequest request) {
 		setWriter(request.getParameter("writer"));
@@ -86,6 +88,12 @@ public class Comment {
 	}
 	public void setReg(String reg) {
 		this.reg = reg;
+	}
+	public int getMemberNo() {
+		return memberNo;
+	}
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
 	}
 	
 }

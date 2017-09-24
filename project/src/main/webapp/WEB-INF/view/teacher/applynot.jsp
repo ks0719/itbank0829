@@ -30,17 +30,15 @@ $(document).ready(function(){
 	
 	
 	
-	$("#delete").on("click", function(){
+	$("#apply").on("click", function(){
 		var result=false;
-		console.log("실행됨");
 		$("input[name=checkB]:checked").each(function(){
-			var userid=$(this).val();	
-	     
+			var teacherid=$(this).val();	
 	        $.ajax({
 	        	async: false,
-	           url : "checkBox",
+	           url : "checkapply",
 	           type : "post",
-	           data : {userid:userid},
+	           data : {teacherid:teacherid},
 	           dataType:"text",
 	           success : function() {
 	        	   result=true;
@@ -49,7 +47,7 @@ $(document).ready(function(){
 	        
         });
 			if(result){
-				alert("강제 회원 삭제 성공");
+				alert("강사 승인 완료!");
 			}
 	});
 	
@@ -57,10 +55,10 @@ $(document).ready(function(){
 });
 </script>
 
-<title>회원리스트</title>
+<title>미승인 강사</title>
 </head>
 <body>
-<h1>회원리스트</h1>
+<h1>미승인 리스트</h1>
 <div class="page-wrap">
 	<div class="table-wrap">
 		<table border="1" class="tableUnit" rules=rows>
@@ -69,55 +67,40 @@ $(document).ready(function(){
 					<input type="checkbox" id="checkAll">
 				</th>
 				<th>
-					번호
+					이름
 				</th>
 				<th>
-					회원ID
+					주언어
 				</th>
 				<th>
-					[회원권한]
+					신청일
 				</th>
 				<th>
-					회원이름
+					승인
 				</th>
 				<th>
-					회원닉네임
-				</th>
-				<th>
-					가입일
-				</th>
-				<th>
-					마일리지
+					거절
 				</th>
 			</tr>
-			<c:forEach var="member" items="${list}">
+			<c:forEach var="teacher" items="${list}">
 			<tr>
 				<td>
-					<input type="checkbox" name="checkB" value="${member.id }">
+					<input type="checkbox" name="checkB" value="${teacher.name }">
 				</td>
 				<td>
-					${member.no}
-				</td>
-<!-- 				<td class="title"> -->
-<%-- 					[${info.head}] <a href="${path}/detail?no=${info.no}">${info.title}</a> --%>
-<!-- 				</td> -->
-				<td>
-					<a href="${pageContext.request.contextPath}/member/memberdetail?no=${member.no}">${member.id }</a>
+					<a href="${pageContext.request.contextPath}/teacher/applynotdetail?no=${teacher.name}">${teacher.name }</a>
 				</td>
 				<td>
-					[${member.power}]
+					${teacher.sort }
 				</td>
 				<td>
-					${member.name}
+					${teacher.reg }
 				</td>
 				<td>
-					${member.nick}
+					<input type="button" id="Sapply" name="apply" value="승인">
 				</td>
 				<td>
-					${member.reg}
-				</td>
-				<td>
-					${member.mileage}
+					<input type="button" id="Napply" name="Napply" value="거절">
 				</td>
 			</tr>
 			</c:forEach>
@@ -126,7 +109,8 @@ $(document).ready(function(){
 	
 	<%-- 회원 삭제 --%>
 	<div class="align-right">
-		<input type="button" value="삭제"  id="delete" class="input-btn" >
+		<input type="button" value="거절"  id="delete" class="input-btn" >
+		<input type="button" value="승인" id="apply" class="input-btn">
 	</div>
 	
 	<div class="row">

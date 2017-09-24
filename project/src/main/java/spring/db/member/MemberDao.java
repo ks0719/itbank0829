@@ -1,5 +1,6 @@
 package spring.db.member;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import spring.db.mylecture.MyLecture;
 
 
 @Repository("memberDao")
@@ -22,7 +25,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	
 	public void insert(Member member) {
 		
-		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'','일반')";
+		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'','일반','')";
 		
 		Object[]args=new Object[] {member.getId(),member.getPw(),member.getName(),member.getNick(),member.getPhone(),
 				member.getPost(),member.getAddr1(),member.getAddr2(),member.getSort()};
@@ -58,6 +61,11 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		
 		String sql = "delete member where nick = ? and pw=?";
 		return jdbcTemplate.update(sql, new Object[] {nick,pw})>0;
+	}
+	
+	public void delete(String id) {
+		String sql="delete member where id=?";
+		jdbcTemplate.update(sql, new Object[] {id});
 	}
 	
 	public String edit(Member mb,String nick) {
@@ -154,5 +162,42 @@ private Logger log=LoggerFactory.getLogger(getClass());
 						+ " TMP) where rn between ? and ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {key, start, end}, mapper);
+	}
+
+	public List<Member> getInfo(List<MyLecture> list) {
+		List<Member> mList = new ArrayList<>();
+		
+		for (MyLecture ml : list) {
+			String sql = "select * from member where nick = ?";
+			List<Member> tmp = jdbcTemplate.query(sql, new Object[] {ml.getId()}, mapper);
+			if (tmp.size() == 0) continue;
+			else mList.add(tmp.get(0));
+		}
+		
+		return mList;
+	}
+
+	public int memberNo(String nick) {
+		String sql = "select no from member where nick = ?";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class);
+	}
+	public boolean isfriend(String getnick) {
+		String sql="select * from member where nick=?";
+		return jdbcTemplate.update(sql,new Object[] {getnick})>0;
+		
+	}
+	public void myfriend(String mynick,String getnick) {
+		String sql="update member set friends=friends||?||'/' where nick=?";
+		jdbcTemplate.update(sql, new Object[] {getnick,mynick});
+	}
+	public String[] myfriendlist(String mynick) {
+		String sql="select friends from member where nick=?";
+		String list= jdbcTemplate.queryForObject(sql, new Object[] {mynick},String.class);
+		if(list!=null) {
+		if(list.contains("/")) {
+			return list.split("/");
+		}
+		}return null;
 	}
 }

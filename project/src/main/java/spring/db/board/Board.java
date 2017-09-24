@@ -29,6 +29,7 @@ public class Board {
 	private String originfile;
 	private String filetype;
 	private long filesize;
+	private int memberNo;
 	
 	public Board(MultipartHttpServletRequest mRequest) {
 		setWriter(mRequest.getParameter("writer"));
@@ -72,6 +73,7 @@ public class Board {
 		setOriginfile(rs.getString("originfile"));
 		setFiletype(rs.getString("filetype"));
 		setFilesize(rs.getInt("filesize"));
+		setMemberNo(rs.getInt("memberNo"));
 	}
 	public int getNo() {
 		return no;
@@ -193,6 +195,12 @@ public class Board {
 	}
 	public void setFilesize(long filesize) {
 		this.filesize = filesize;
+	}
+	public int getMemberNo() {
+		return memberNo;
+	}
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
 	}
 
 }

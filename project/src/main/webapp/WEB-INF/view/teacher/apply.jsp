@@ -13,8 +13,9 @@
 
 <div>
 	<form action="apply" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="name" value="${nick}">
-		닉네임 : ${nick}
+		<input type="hidden" name="name" value="${mynick}">
+		<input type="hidden" name="teacherno" value="${teacherNo}">
+		닉네임 : ${mynick}
 		<br><br>
 		사진 : <input type="file" name="file" onchange="previewImage(this,'upload_photo')">
 		<br><br>
@@ -39,7 +40,9 @@
 		<div class="align-right">
 			<input type="submit" value="신청하기">
 		</div>
+		<button onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
 	</form>
+
 </div>
 
 </body>

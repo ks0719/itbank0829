@@ -168,7 +168,7 @@ public class MyLectureDao {
 	}
 
 	public List<MyLecture> getStudents(int no) {
-		String sql = "select id from mylecture where no = ?";
+		String sql = "select * from mylecture where no = ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper);
 	}

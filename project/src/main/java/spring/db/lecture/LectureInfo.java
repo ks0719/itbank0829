@@ -29,6 +29,7 @@ public class LectureInfo {
 	private String accept;
 	private String reg;
 	private String period;
+	private int teacherno;
 	
 	public LectureInfo(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
@@ -51,6 +52,7 @@ public class LectureInfo {
 		setAccept(rs.getString("accept"));
 		setReg(rs.getString("reg"));
 		setPeriod(rs.getString("period"));
+		setTeacherno(rs.getInt("teacherno"));
 	}
 
 	public LectureInfo(MultipartHttpServletRequest mRequest) {
@@ -71,12 +73,13 @@ public class LectureInfo {
 			setPicture_name(mRequest.getParameter("picture_name"));
 			setPicture_realname(mRequest.getParameter("picture_realname"));
 			setPicture_type(mRequest.getParameter("picture_type"));
-			setPicture_size(Long.parseLong(mRequest.getParameter("picture_size")));
+			setPicture_size(Long.parseLong(mRequest.getParameter("picture_size") == null ? "0" : mRequest.getParameter("picture_size")));
 		}
 		
 		setIntro(mRequest.getParameter("intro"));
 		setDetail(mRequest.getParameter("detail"));
 		setPeriod(mRequest.getParameter("period"));
+		setTeacherno(Integer.parseInt(mRequest.getParameter("teacherno")));
 	}
 
 	public int getNo() {
@@ -237,6 +240,14 @@ public class LectureInfo {
 
 	public void setPeriod(String period) {
 		this.period = period;
+	}
+	
+	public int getTeacherno() {
+		return teacherno;
+	}
+	
+	public void setTeacherno(int teacherno) {
+		this.teacherno = teacherno;
 	}
 
 	

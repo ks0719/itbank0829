@@ -21,7 +21,7 @@ public class LectureDao {
 		
 		int no = jdbcTemplate.queryForObject(sql, Integer.class);
 		
-		sql = "insert into lecture_info values(?, ?, ?, ?, ?, ?, ?, '등록 가능', 0, 0, 0, ?, ?, ?, ?, ?, ?, 'false', sysdate, ?)";
+		sql = "insert into lecture_info values(?, ?, ?, ?, ?, ?, ?, '등록 가능', 0, 0, 0, ?, ?, ?, ?, ?, ?, 'false', sysdate, ?, ?)";
 		
 		String filename = null;
 		if (info.getPicture_type() != null) {
@@ -31,17 +31,17 @@ public class LectureDao {
 		
 		Object[] args = new Object[] {no, info.getTag(), info.getTitle(), info.getTeacher(), info.getTime(), info.getType(), 
 				info.getPrice(), filename, info.getPicture_realname(), info.getPicture_type(), 
-				info.getPicture_size(), info.getIntro(), info.getDetail(), info.getPeriod()};
+				info.getPicture_size(), info.getIntro(), info.getDetail(), info.getPeriod(), info.getTeacherno()};
 		
 		jdbcTemplate.update(sql, args);
 		
 		return no;
 	}
-	
-	public boolean update(LectureInfo info) {
-		String sql = "update lecture_info set ";
+
+	public void update(String originNick, String nick) {
+		String sql = "update lecture_info set teacher = ? where teacher = ?";
 		
-		return false;
+		jdbcTemplate.update(sql, new Object[] {nick, originNick});
 	}
 	
 	public boolean delete(int no) {
