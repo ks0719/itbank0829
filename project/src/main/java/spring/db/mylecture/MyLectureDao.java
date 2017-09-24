@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import spring.db.lecture.LectureInfo;
-import spring.db.member.Member;
 
 @Repository("myLectureDao")
 public class MyLectureDao {

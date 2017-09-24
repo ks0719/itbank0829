@@ -600,6 +600,24 @@ $(function() {
 			$('#newMail').text(newMail);
 		}
 		
+		
+		//현재 위치 계산
+		var location = "${pageContext.request.requestURI.replace('/project/WEB-INF/view/','')}";
+		
+		if(location.indexOf('board')>=0){
+			$("#board").addClass('active');
+			
+			var boardLocation = location.substring(location.indexOf('/')+1);
+			boardLocation = boardLocation.substring(0, boardLocation.lastIndexOf('.'));
+				$("#"+boardLocation).addClass('active');
+		}else if(location.indexOf('lecture')==0){
+			$("#lecture").addClass('active');
+		}else if(location.indexOf('teacher')==0){
+			$("#teacher").addClass('active');
+		}else if(location.indexOf('consumer')==0){
+			$("#consumer").addClass('active');
+		}
+		
 	});
 	
   	
@@ -631,8 +649,6 @@ $(function() {
 					expires : 10
                     ,secure : false
 				}); 
-
-				 
 				 
 				 console.log("최종 top : "+$("#draggable").css("top"));
 				 console.log("최종 left : "+$("#draggable").css("left"));
@@ -881,66 +897,53 @@ $(function() {
 			
 			<!-- 사이드바 메뉴 시작 -->
 			<ul class="sidebar-menu">
-				<c:choose>
-					<c:when test="${pageContext.request.requestURI.replace('/project/WEB-INF/view/','').substring(0,5) eq 'board'}">
-						<li class="treeview active">
-							<a href="#">
-								<i class="fa fa-edit"></i>
-								<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
-							</a>
-							<ul class="treeview-menu menu-open">
-					</c:when>
-					<c:otherwise>
-						<li class="treeview">
-							<a href="#">
-								<i class="fa fa-edit"></i>
-								<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
-							</a>
-							<ul class="treeview-menu">
-					</c:otherwise>
-				</c:choose>
-						<li>
-							<a href="${pageContext.request.contextPath}/board/free" class="active">
+					<li id="board" class="treeview">
+						<a href="#">
+							<i class="fa fa-edit"></i>
+							<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+						<li id="free">
+							<a href="${pageContext.request.contextPath}/board/free">
 								<i class="fa fa-circle-o"></i>자유게시판
 							</a>
 						</li>
-						<li>
+						<li id="info">
 							<a href="${pageContext.request.contextPath}/board/info">
 								<i class="fa fa-circle-o"></i>정보게시판
 							</a>
 						</li>
-						<li>
+						<li id="qna">
 							<a href="${pageContext.request.contextPath}/board/qna">
 								<i class="fa fa-circle-o"></i>Q&A게시판
 							</a>
 						</li>
-						<li>
+						<li id="require">
 							<a href="${pageContext.request.contextPath}/board/require">
 								<i class="fa fa-circle-o"></i>요청게시판
 							</a>
 						</li>
-						<li>
+						<li id="store">
 							<a href="${pageContext.request.contextPath}/board/store">
 								<i class="fa fa-circle-o"></i>판매게시판
 							</a>
 						</li>
-						<li></li>
 					</ul>
 				</li>
 				
-				<li>
+				<li id="lecture">
 					<a href="${pageContext.request.contextPath}/lecture/study?page=1">
 						<i class="fa fa-calendar-o"></i> <span>수업정보</span>
 					</a>
 				</li>
 				
-				<li>
+				<li id="teacher">
 					<a href="${pageContext.request.contextPath}/teacher/lecturer?page=1">
 						<i class="fa fa-id-card"></i> <span>강사정보</span>
 					</a>
 				</li>
 				
-				<li>
+				<li id="consumer">
 					<a href="${pageContext.request.contextPath}/consumer/basic">
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
 					</a>

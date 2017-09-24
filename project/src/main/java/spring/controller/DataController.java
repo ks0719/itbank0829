@@ -36,6 +36,7 @@ public class DataController {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	public static final int MY_LECTURE_PAGE = 10;
+	public static final int MAIL_WIDTH = 10;
 
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
@@ -170,43 +171,6 @@ public class DataController {
 		return "data/maininfo";
 	}
 
-	@RequestMapping(value = "/data/mail", method = RequestMethod.GET)
-	public String mailGet(Model m, HttpServletRequest req) throws Exception {
-		String nick = getNick(req);
-
-		String box = (req.getParameter("box") == null) ? "index" : req.getParameter("box");
-
-		List<Mail> list = mailDao.list(nick, box);
-
-		m.addAttribute("list", list);
-		return "data/mail";
-	}
-
-	@RequestMapping(value = "/data/mail", method = RequestMethod.POST)
-	public String mailPost(Model m, HttpServletRequest req) throws Exception {
-		// garbage,no[] 또는 protect,no[] 이렇게 들어옴
-		Map<String, String[]> map = req.getParameterMap();
-		Set<String> params = map.keySet();
-		String nick = getNick(req);
-		for (String location : params) {
-			for (String no : map.get(location)) {
-				if (location.equals("protect")) {
-					mailDao.update(nick, location, Integer.parseInt(no));
-				} else if (location.equals("garbage")) {
-					if (req.getParameter("box").equals("garbage")) {
-						mailDao.delete(nick, Integer.parseInt(no));
-					} else {
-						mailDao.update(nick, location, Integer.parseInt(no));
-					}
-				}
-			}
-		}
-
-		List<Mail> list = mailDao.list(nick, req.getParameter("box"));
-
-		m.addAttribute("list", list);
-		return "data/mail";
-	}
 
 	@RequestMapping("/data/pay")
 	public String pay() {
@@ -256,6 +220,75 @@ public class DataController {
 		model.addAttribute("money", money);
 		return "data/pay";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/data/mail", method = RequestMethod.GET)
+	public String mailGet(Model m, HttpServletRequest req) throws Exception {
+		//페이징 해줘야함
+		// page 넘버 설정
+		int page;
+		try {
+			page = Integer.parseInt(req.getParameter("page"));
+		} catch (Exception e) {
+			page = 1;
+		}
+		page = (page < 1) ? 1 : page;
+		
+		String nick = getNick(req);
+		
+		String box = (req.getParameter("box") == null) ? "index" : req.getParameter("box");
+		
+		List<Mail> list = mailDao.list(nick, box, page);
+		
+		m.addAttribute("list", list);
+		
+		int maxLength = mailDao.maxLength(nick, box);
+		
+		int start = (page-1)*mailDao.MAIL_HEIGHT+1;
+		int end = start+mailDao.MAIL_HEIGHT-1;
+		end = (end > maxLength) ? maxLength : end;
+		
+		m.addAttribute("box", box);
+		m.addAttribute("start", start);
+		m.addAttribute("end", end);
+		m.addAttribute("maxLength", maxLength);
+		m.addAttribute("maxPage", (maxLength-1)/mailDao.MAIL_HEIGHT+1);
+		m.addAttribute("page", page);
+		
+		return "data/mail";
+	}
+	
+	@RequestMapping(value = "/data/mail", method = RequestMethod.POST)
+	public String mailPost(Model m, HttpServletRequest req) throws Exception {
+		//garbage,no[] 또는 protect,no[] 이렇게 들어옴
+		Map<String, String[]> map = req.getParameterMap();
+		Set<String> params = map.keySet();
+		String nick = getNick(req);
+		for (String location : params) {
+			for (String no : map.get(location)) {
+				if (location.equals("protect")) {
+					mailDao.update(nick, location, Integer.parseInt(no));
+				} else if (location.equals("garbage")) {
+					if (req.getParameter("box").equals("garbage")) {
+						mailDao.delete(nick, Integer.parseInt(no));
+					} else {
+						mailDao.update(nick, location, Integer.parseInt(no));
+					}
+				}
+			}
+		}
+		
+		List<Mail> list = mailDao.list(nick, req.getParameter("box"), 1);
+		
+		m.addAttribute("list", list);
+		return "data/mail";
+	}
 
 	@RequestMapping("/data/manageLecture")
 	public String manageLecture(Model m, HttpServletRequest req) throws Exception {
@@ -274,9 +307,17 @@ public class DataController {
 
 		List<MyLecture> list = myLectureDao.list(nick, box, page);
 
-		int start = (page - 1) / MY_LECTURE_PAGE + 1;
+		int start = (page - 1) / MY_LECTURE_PAGE * MY_LECTURE_PAGE + 1;
 		int end = start + MY_LECTURE_PAGE - 1;
-
+		
+		
+		
+		
+		
+		
+		
+		
+		//여기서부터 복사해야함
 		int maxPage = myLectureDao.maxPage(nick, box);
 		end = (end > maxPage) ? maxPage : end;
 
@@ -305,6 +346,7 @@ public class DataController {
 			throw new Exception("404");
 
 		m.addAttribute("mail", mail);
+		m.addAttribute("box", box);
 
 		mailDao.read(mail, nick);
 		return "data/mailDetail";

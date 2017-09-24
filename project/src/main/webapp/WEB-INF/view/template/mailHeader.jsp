@@ -8,10 +8,14 @@
 
 	$(document).ready(function(){
 		$("#checkAll").click(function(){
-			if($("#checkAll").prop("checked")){
+			if($("#checkAll").hasClass("fa-square-o")){
 				$("input[name=chk]").prop("checked",true);
+				$("#checkAll").removeClass("fa-square-o");
+				$("#checkAll").addClass("fa-check-square-o");
 			}else{
 				$("input[name=chk]").prop("checked",false);
+				$("#checkAll").addClass("fa-square-o");
+				$("#checkAll").removeClass("fa-check-square-o");
 			}
 		});
 		
@@ -24,7 +28,17 @@
 					tnf=false;
 				}
 			}
-			$("#checkAll").prop("checked", tnf);
+			
+			if(tnf){
+				$("#checkAll").removeClass("fa-square-o");
+				$("#checkAll").addClass("fa-check-square-o");
+				
+			}else{
+				$("#checkAll").addClass("fa-square-o");
+				$("#checkAll").removeClass("fa-check-square-o");
+			}
+			
+			
 		});
 		
 		//새로운 메일 갯수
@@ -57,6 +71,10 @@
 		if(spamMail!=0){
 			$('#spamMail').text(spamMail);
 		}
+		
+		var box = '${param.box}';
+		if(box == '') box='index';
+		$("#"+box).addClass("active");
 	});
 	
 	function isExist(nick){
@@ -94,7 +112,7 @@
 	}
 	
 	function mailDetail(no){
-		location.href = "${pageContext.request.contextPath}/data/mailDetail?box=${param.box}&no="+no;
+		location.href = "${pageContext.request.contextPath}/data/mailDetail?box=${box}&page=${page}&no="+no;
 	}
 	
 	function del(){
@@ -109,14 +127,14 @@
 		if(location=='garbage'){
 			for(var i=0; i<chk.length; i++){
 				if($(chk[i]).prop("checked")){
-					$("#garbage").append("<input type='hidden' name='garbage' value='"+$(chk[i]).val()+"'>");
+					$("#garbageSubmit").append("<input type='hidden' name='garbage' value='"+$(chk[i]).val()+"'>");
 					tnf='del';
 				}
 			}
 		}else if(location=='protect'){
 			for(var i=0; i<chk.length; i++){
 				if($(chk[i]).prop("checked")){
-					$("#protect").append("<input type='hidden' name='protect' value='"+$(chk[i]).val()+"'>");
+					$("#protectSubmit").append("<input type='hidden' name='protect' value='"+$(chk[i]).val()+"'>");
 					tnf='protect';
 				}
 			}
@@ -166,7 +184,6 @@
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	            <span class="sr-only">Toggle navigation</span>
 	          </a>
-			뭐 넣을지 생각 (없으면 그냥 버튼만 남기기)
 		</nav>
 	</header>
 	<!-- 헤더 끝 -->
@@ -174,20 +191,15 @@
 	<!-- 사이드바 시작 -->
 	<aside class="main-sidebar">
 		<section class="sidebar">
-			
 			<div class="box box-solid">
                 <div class="box-body no-padding">
+					<a href="mail/send?box=${param.box}" class="btn btn-primary btn-block margin-updown"><i class="fa fa-pencil"></i> 쪽지쓰기</a>
                   <ul class="nav nav-pills nav-stacked">
-                  	<!--
-                  		아이콘 수정 해야함
-                  		여기도 홈처럼 그 페이지에 있으면 active되게 해줘야함
-                  		새로운 메일이 있으면 계산해서 숫자로 표시 해줘야함(메인 헤더에 있는 코드 가져오면 됨)
-                  	-->
-                    <li class="active"><a href="${pageContext.request.contextPath}/data/mail?box=index"><i class="fa fa-inbox"></i> 받은 쪽지함 <span id="newMail" class="label label-primary pull-right"></span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/data/mail?box=sent"><i class="fa fa-envelope-o"></i> 보낸 쪽지함</a></li>
-                    <li><a href="${pageContext.request.contextPath}/data/mail?box=protect"><i class="fa fa-briefcase"></i> 보관함</a></li>
-                    <li><a href="${pageContext.request.contextPath}/data/mail?box=spam"><i class="fa fa-filter"></i> 스팸 쪽지함<span id="spamMail" class="label label-waring pull-right"></span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/data/mail?box=garbage"><i class="fa fa-trash-o"></i> 휴지통</a></li>
+                    <li id="index"><a href="${pageContext.request.contextPath}/data/mail?box=index"><i class="fa fa-inbox"></i> 받은 쪽지함 <span id="newMail" class="label label-primary pull-right"></span></a></li>
+                    <li id="sent"><a href="${pageContext.request.contextPath}/data/mail?box=sent"><i class="fa fa-envelope-o"></i> 보낸 쪽지함</a></li>
+                    <li id="protect"><a href="${pageContext.request.contextPath}/data/mail?box=protect"><i class="fa fa-briefcase"></i> 보관함</a></li>
+                    <li id="spam"><a href="${pageContext.request.contextPath}/data/mail?box=spam"><i class="fa fa-filter"></i> 스팸 쪽지함<span id="spamMail" class="label label-waring pull-right"></span></a></li>
+                    <li id="garbage"><a href="${pageContext.request.contextPath}/data/mail?box=garbage"><i class="fa fa-trash-o"></i> 휴지통</a></li>
                   </ul>
                 </div><!-- /.box-body -->
               </div><!-- /. box -->
