@@ -9,6 +9,7 @@
 <br><br>
 <form action="lectureEdit" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="no" value="${mylecture.no}">
+	<input type="hidden" name="teacherno" value="${teacherNo}">
 	<input type="hidden" name="page" value="${page}">
 	<input type="hidden" name="search" value="${search}">
 	<input type="hidden" name="key" value="${key}">
