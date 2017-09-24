@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page import = "java.net.URLDecoder" %>
 <html>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script>
@@ -80,10 +80,8 @@
 	function isExist(nick){
 		if(nick=='') {
 			alert("닉네임을 입력해주세요");
-			return;
+			return false;
 		}
-		
-		
 		
 		if($("#check").val()=="확인"){
 			$.ajax({
@@ -109,10 +107,6 @@
 			$("#mail_receiver").removeAttr("readonly");
 			$("#send").attr("disabled", "disabled");
 		}
-	}
-	
-	function mailDetail(no){
-		location.href = "${pageContext.request.contextPath}/data/mailDetail?box=${box}&page=${page}&no="+no;
 	}
 	
 	function del(){
@@ -174,6 +168,12 @@
 
 <body class="skin-mail">
 
+<c:set var="incodedNick" value="${cookie.mynick.value}"/>
+<c:if test="${!empty nick }">
+	<%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("incodedNick"), "UTF-8"));%>
+</c:if>
+
+
 <div class="wrapper">
 	<!-- 헤더 시작 -->
 	<header class="main-header">
@@ -193,7 +193,7 @@
 		<section class="sidebar">
 			<div class="box box-solid">
                 <div class="box-body no-padding">
-					<a href="mail/send?box=${param.box}" class="btn btn-primary btn-block margin-updown"><i class="fa fa-pencil"></i> 쪽지쓰기</a>
+					<a href="${pageContext.request.contextPath}/data/mail/send?box=${param.box}" class="btn btn-primary btn-block margin-updown"><i class="fa fa-pencil"></i> 쪽지쓰기</a>
                   <ul class="nav nav-pills nav-stacked">
                     <li id="index"><a href="${pageContext.request.contextPath}/data/mail?box=index"><i class="fa fa-inbox"></i> 받은 쪽지함 <span id="newMail" class="label label-primary pull-right"></span></a></li>
                     <li id="sent"><a href="${pageContext.request.contextPath}/data/mail?box=sent"><i class="fa fa-envelope-o"></i> 보낸 쪽지함</a></li>

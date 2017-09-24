@@ -52,9 +52,9 @@
 							</c:otherwise>
 						</c:choose>
 							<td class="small-col"><input type="checkbox" name="chk" value="${list.no}"></td>
-							<td class="name" onclick="mailDetail(${list.no});">${list.mail_writer}</td>
-							<td class="subject" onclick="mailDetail(${list.no});">${list.mail_title}</td>
-							<td class="time" onclick="mailDetail(${list.no});">${list.mail_reg}</td>
+							<td class="name">${list.mail_writer}</td>
+							<td class="subject"><a href="${pageContext.request.contextPath}/data/mailDetail?box=${box}&page=${page}&no=${list.no}">${list.mail_title}</a></td>
+							<td class="time">${list.mail_reg}</td>
 			    		</tr>
 			    	</c:forEach>
 				</table>
