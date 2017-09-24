@@ -65,10 +65,10 @@ public class TeacherController {
 		return "";
 	}
 	
-//	private int getTeacherNo(String nick) {
-//		if (nick == "") return 0;
-//		return memberDao.memberNo(nick);
-//	}
+	private int getTeacherNo(String nick) {
+		if (nick == "") return 0;
+		return memberDao.memberNo(nick);
+	}
 //	
 //	private boolean isTeacher(HttpServletRequest req) throws Exception {
 //		String nick = getNick(req);
@@ -157,9 +157,6 @@ public class TeacherController {
 				standard = "reg";
 			}
 		}
-		log.debug("st : " + standard);
-		log.debug("s1 : " + sub1);
-		log.debug("s2 : " + sub2);
 
 		int listCount = teacherDao.count(type, key);
 		
@@ -258,8 +255,9 @@ public class TeacherController {
 	@RequestMapping("/resister")
 	public String resister(HttpServletRequest req, Model m) throws Exception {
 		String nick = getNick(req);
+		int teacherNo = getTeacherNo(nick);
 		
-		m.addAttribute("nick", nick);
+		m.addAttribute("teacherNo", teacherNo);
 		
 		return "teacher/resister";
 	}
@@ -335,7 +333,6 @@ public class TeacherController {
 	@RequestMapping("/myLecture")
 	public String myLecture(HttpServletRequest req, Model m) throws Exception {
 		String where = req.getParameter("where");
-		log.debug("where : " + where);
 		String page = req.getParameter("page");
 		String search = req.getParameter("search");
 		String key = req.getParameter("key");

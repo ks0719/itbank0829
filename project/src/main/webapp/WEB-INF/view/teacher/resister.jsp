@@ -5,7 +5,8 @@
 
 <h1>강의 등록</h1>
 
-<form action="resister" method="post" enctype="multipart/form-data">
+<form action="resister" method="post" onsubmit="return resisterOK();" enctype="multipart/form-data">
+	<input type="hidden" name="teacherno" value="${teacherNo}">
 	<input type="text" name="teacher" value="${mynick}" readonly>
 	<br><br>
 	<select name="tag" title="언어 선택">
@@ -25,9 +26,9 @@
 	<br><br>
 	<input type="text" name="title" placeholder="강의 제목" required>
 	<br><br>
-	<input type="text" name="period" placeholder="강의 기간" required>
+	<input type="text" name="period" id="period" placeholder="강의 기간 (0000.00.00~0000.00.00)" required>
 	<br><br>
-	<input type="text" name="time" placeholder="강의 시간" required>
+	<input type="text" name="time" id="time" placeholder="강의 시간 (00:00~00:00)" required>
 	<br><br>
 	<select name="type" title="강의 형태">
 		<option value="인강">인강</option>

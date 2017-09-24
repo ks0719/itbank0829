@@ -213,6 +213,27 @@ $(document).ready(function(){
 		});
 	});
 	
+	function resisterOK() {
+  		var regex1 = /^(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])~(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])$/;
+  		var regex2 = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])~([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
+	 	var period = document.querySelector("#period");
+	 	var time = document.querySelector("#time");
+	 	
+	 	console.log(period.value);
+	 	console.log(time.value);
+	 	
+	 	if(!regex1.test(period.value)) {
+	 		alert("강의기간 형식을 확인해주세요 (0000.00.00~0000.00.00)");
+	 		$("#period").focus();
+	 	} else if(!regex2.test(time.value)) {
+	 		alert("강의시간 형식을 확인해주세요 (00:00~00:00)");
+	 		$("#time").focus();
+	 	} else {
+	 		return true;
+	 	}
+	 		return false;
+	}
+	
 	// 이미지 업로드시 이미지 미리보기
 	function previewImage(targetObj, previewId) {
 	    var preview = document.getElementById(previewId);   
