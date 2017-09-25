@@ -115,13 +115,16 @@ public class BoardController {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
 		
+		log.debug("path : " + path);
+		
 		int pageNo;
 		try {
-			pageNo = Integer.parseInt("page");
+			pageNo = Integer.parseInt(request.getParameter("page"));
 		} catch(Exception e) {
 			pageNo = 1;
 		}
 		if (pageNo <= 0 ) pageNo = 1;
+		log.debug("pageNo : " + pageNo);
 
 		int listCount = boardDao.count(path, type, key);
 //		log.debug(String.valueOf(listCount));
@@ -278,13 +281,12 @@ public class BoardController {
 		} catch(Exception e) {
 			throw new Exception("404");
 		}
-//		log.debug("삭제");
+		
+		String savePath = req.getServletContext().getRealPath("/resource/file/board");
+		deleteFile(savePath, String.valueOf(no));
 		
 		boardDao.delete(noI);
 		commentDao.delete(noI);
-		
-//		log.debug("no : " + no + ", context : " + context);
-//		log.debug(String.valueOf(context.equals(no)));
 
 		if (no.equals(context)) {
 			return "redirect:/board/" + path;
@@ -302,7 +304,7 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		String savePath = request.getServletContext().getRealPath("/resource/file");
+		String savePath = request.getServletContext().getRealPath("/resource/file/board");
 		
 		Board board = boardDao.detailOne(noI);
 		
