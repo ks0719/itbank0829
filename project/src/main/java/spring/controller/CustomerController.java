@@ -52,6 +52,8 @@ public class CustomerController {
 	}
 	@RequestMapping(value="/consumer/b2c",method=RequestMethod.POST)
 	public String b2cpost(MultipartHttpServletRequest mRequest, Model model) throws Exception {
+	UploadController upload=new UploadController();
+	upload.multiplePhotoUpload(mRequest);
 	String nick=getNick(mRequest);
 	dto=new B2CDto(mRequest);
 	log.debug("dto="+dto.toString());

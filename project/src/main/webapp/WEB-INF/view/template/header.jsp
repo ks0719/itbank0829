@@ -778,7 +778,7 @@ function chat_add(){
 	
 }
 function chat_del(){
-	
+	document.getElementById("chat_label").innerHTML="삭제할 닉네임 입력";
 }
 </script>
 
@@ -895,19 +895,37 @@ function chat_order(){
 				var mynick="${mynick}";
 				$.ajax({
 					url:"chatadd",
-					type:"post",
 					async:true,
+					type:"post",
 					data:{mynick,getnick},
 					dataType: "text",
 					success: function(){
 						console.log("성공");
-						alert("친구가 추가되었습니다.");
+						alert("친구 추가가 되었습니다.");
 					},error:function(){
 						console.log("실패");
-						alert("이미 존재하거나 닉네임이 없습니다.");
+						alert("이미 존재하는 친구거나 닉네임이 존재하지 않습니다.");
 						
 					}
-				})
+				});
+		}else if(value=="삭제할 닉네임 입력"){
+			var getnick=$("#chat_text").val();
+			var mynick="${mynick}";
+			$.ajax({
+				url:"chatdel",
+				async:true,
+				type:"post",
+				data:{mynick,getnick},
+				dataType:"text",
+				success:function(){
+					console.log("성공");
+					alert("삭제가 완료되었습니다.");
+				},error:function(){
+					console.log("실패");
+					alert("없는 친구거나 닉네임이 바르지 않습니다.");
+				}
+				
+			});
 		}
 	}
 }</script>
@@ -1041,7 +1059,6 @@ function chat_order(){
 		</section>
 	</aside>
 	<!-- 사이드바 끝 -->
-
 
 	
 	<div class="content-wrapper">
