@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -268,14 +268,15 @@ public class MemberController {
 	@RequestMapping("/chatadd")
 	public String chatadd(String mynick,String getnick) throws Exception {
 		log.debug("넘어온값은 ? :"+mynick+"/"+getnick);
+		List<String> list=new ArrayList<>();
 		boolean result=memberDao.isfriend(getnick);
 		if(result) {
-		String[] list=memberDao.myfriendlist(mynick);
-		log.debug(Arrays.toString(list));
+			list=memberDao.myfriendlist(mynick);
+			log.debug("친구 목록 : "+list.toString());
 		if(list!=null) {
 			for(String i:list) {
 				if(i.equals(getnick)) {
-					throw new Exception("404");
+					return "해당 회원이 친구 목록에 존재합니다.";
 				}
 			}
 		}
@@ -283,10 +284,33 @@ public class MemberController {
 		return "member/memberlist";
 		
 		}
-			return "에러";
+			log.debug("추가:닉네임이 없어?");
+			return "해당 닉네임을 가진 회원이 없습니다.";
 		
 	}
-	
-	
-	
+	@RequestMapping("/chatdel")
+	public String chatdel(String mynick,String getnick) {
+		log.debug("넘어온 값은 ? : "+mynick+"/"+getnick);
+		List<String> list=new ArrayList<>();
+		boolean result=memberDao.isfriend(getnick);
+		if(result) {
+			list=memberDao.myfriendlist(mynick);
+			log.debug("친구 목록 : "+list.toString());
+			if(list!=null) {
+				for(int i=0;i<list.size();i++) {
+					if(list.get(i).equals(getnick)) {
+						log.debug("삭제합니다.");
+						list.remove(i);
+						//log.debug(list.toString());
+						String newlist=list.toString().replaceAll(",", "/").replaceAll("\\[", "").replaceAll("\\]", "").trim().replaceAll(" ", "");
+						//log.debug("새 친구목록 : "+newlist);
+						memberDao.friendrenew(mynick, newlist);
+						return "member/memberlist";
+					}
+				}
+			}
+		}
+		log.debug("삭제:해당 닉네임이 없어?");
+		return "해당 닉네임을 가진 회원이 없습니다.";
+	}
 }

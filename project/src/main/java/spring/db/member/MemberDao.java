@@ -191,13 +191,27 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		String sql="update member set friends=friends||?||'/' where nick=?";
 		jdbcTemplate.update(sql, new Object[] {getnick,mynick});
 	}
-	public String[] myfriendlist(String mynick) {
+	public void friendrenew(String mynick,String newlist) {
+		String sql="update member set friends=? where nick=?";
+		jdbcTemplate.update(sql, new Object[] {newlist,mynick});
+	}
+	public List<String> myfriendlist(String mynick) {
 		String sql="select friends from member where nick=?";
-		String list= jdbcTemplate.queryForObject(sql, new Object[] {mynick},String.class);
-		if(list!=null) {
-		if(list.contains("/")) {
-			return list.split("/");
+		String value= jdbcTemplate.queryForObject(sql, new Object[] {mynick},String.class);
+		List<String> list=new ArrayList<>();
+		if(value!=null) {
+		if(value.contains("/")) {
+			String[] sp=value.split("/");
+			for(int i=0;i<sp.length;i++) {
+				list.add(sp[i]);
+			}
+			return list;
 		}
-		}return null;
+		}
+		if(value!=null) {
+			list.add(value);
+			return list;
+		}
+		return list;
 	}
 }

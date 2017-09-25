@@ -73,22 +73,6 @@ public class TeacherController {
 		return memberDao.memberNo(nick);
 	}
 	
-	
-//	private int getTeacherNo(String nick) {
-//		if (nick == "") return 0;
-//		return memberDao.memberNo(nick);
-//	}
-//	
-//	private boolean isTeacher(HttpServletRequest req) throws Exception {
-//		String nick = getNick(req);
-//		if (nick == "") return false;
-//		
-//		int memberNo = getTeacherNo(nick);
-//		int no = Integer.parseInt(req.getParameter("no"));
-//		
-//		boolean result = teacherDao.isRight(no, memberNo);
-//		return result;
-//	}
 	private int getTeacherNo(String nick) {
 		if (nick == "") return 0;
 		return memberDao.memberNo(nick);
@@ -202,7 +186,7 @@ public class TeacherController {
 		int listCount = teacherDao.count(type, key);
 		
 		int boardSize = 10;
-		int start = boardSize * pageNo - 9;
+		int start = boardSize * pageNo - (boardSize - 1);
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
 		
@@ -232,6 +216,7 @@ public class TeacherController {
 		m.addAttribute("end", end);
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
+		m.addAttribute("blockTotal", blockTotal);
 		m.addAttribute("url", url);
 		
 		return "teacher/lecturer";

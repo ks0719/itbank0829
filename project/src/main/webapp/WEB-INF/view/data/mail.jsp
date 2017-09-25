@@ -21,18 +21,20 @@
 		  			${start}-${end}/${maxLength}
 				</c:if>
 			  <div class="btn-group">
-			  	<c:choose>
-			  		<c:when test="${empty page||page==1}">
-			  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page+1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-			  		</c:when>
-			  		<c:when test="${not empty page && 1<page && page<maxPage}">
-			  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page-1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-			  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page+1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-			  		</c:when>
-			  		<c:when test="${not empty page && page==maxPage}">
-			  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page-1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-			  		</c:when>
-			  	</c:choose>
+			  	<c:if test="${maxPage>1}">
+				  	<c:choose>
+				  		<c:when test="${empty page||page==1}">
+				  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page+1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+				  		</c:when>
+				  		<c:when test="${not empty page && 1<page && page<maxPage}">
+				  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page-1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+				  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page+1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+				  		</c:when>
+				  		<c:when test="${not empty page && page==maxPage}">
+				  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page-1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+				  		</c:when>
+				  	</c:choose>
+				  </c:if>
 			  </div>
 			</div>
 		</div>
@@ -52,9 +54,9 @@
 							</c:otherwise>
 						</c:choose>
 							<td class="small-col"><input type="checkbox" name="chk" value="${list.no}"></td>
-							<td class="name" onclick="mailDetail(${list.no});">${list.mail_writer}</td>
-							<td class="subject" onclick="mailDetail(${list.no});">${list.mail_title}</td>
-							<td class="time" onclick="mailDetail(${list.no});">${list.mail_reg}</td>
+							<td class="name">${list.mail_writer}</td>
+							<td class="subject"><a href="${pageContext.request.contextPath}/data/mailDetail?box=${box}&page=${page}&no=${list.no}">${list.mail_title}</a></td>
+							<td class="time">${list.mail_reg}</td>
 			    		</tr>
 			    	</c:forEach>
 				</table>

@@ -93,7 +93,7 @@ public class MyLectureDao {
 		return jdbcTemplate.query(sql,new Object[]{id, start, end},mapper);
 	}
 	
-	public int maxPage(String id, String box) {
+	public int maxLength(String id, String box) {
 		String sql = "select count(*) from mylecture where id=?";
 		switch (box) {
 		case "all":
@@ -109,11 +109,10 @@ public class MyLectureDao {
 			sql += " and wish='wish'";
 			break;
 		default:
-			return (defaultLecture(id, 0).size()-1)/MY_LECTURE_LENGTH+1;
+			return defaultLecture(id, 0).size();
 		}
 		
-		int data_length = jdbcTemplate.queryForObject(sql, new Object[] {id} ,Integer.class);
-		return (data_length-1)/MY_LECTURE_LENGTH+1;
+		return jdbcTemplate.queryForObject(sql, new Object[] {id} ,Integer.class);
 	}
 	
 	public boolean insert(String nick, LectureInfo lecture, String wish) {
@@ -171,6 +170,12 @@ public class MyLectureDao {
 		String sql = "select * from mylecture where no = ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper);
+	}
+
+	public void evalCount(int no, String nick) {
+		String sql = "update mylecture set eval = '평가 완료' where no = ? and id = ?";
+		
+		jdbcTemplate.update(sql, no, nick);
 	}
 	
 }

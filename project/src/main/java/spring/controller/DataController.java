@@ -254,8 +254,6 @@ public class DataController {
 	
 	@RequestMapping(value = "/data/mail", method = RequestMethod.GET)
 	public String mailGet(Model m, HttpServletRequest req) throws Exception {
-		//페이징 해줘야함
-		// page 넘버 설정
 		int page;
 		try {
 			page = Integer.parseInt(req.getParameter("page"));
@@ -274,15 +272,15 @@ public class DataController {
 		
 		int maxLength = mailDao.maxLength(nick, box);
 		
-		int start = (page-1)*mailDao.MAIL_HEIGHT+1;
-		int end = start+mailDao.MAIL_HEIGHT-1;
+		int start = (page-1)*MailDao.MAIL_HEIGHT+1;
+		int end = start+MailDao.MAIL_HEIGHT-1;
 		end = (end > maxLength) ? maxLength : end;
 		
 		m.addAttribute("box", box);
 		m.addAttribute("start", start);
 		m.addAttribute("end", end);
 		m.addAttribute("maxLength", maxLength);
-		m.addAttribute("maxPage", (maxLength-1)/mailDao.MAIL_HEIGHT+1);
+		m.addAttribute("maxPage", (maxLength-1)/MailDao.MAIL_HEIGHT+1);
 		m.addAttribute("page", page);
 		
 		return "data/mail";
@@ -331,19 +329,11 @@ public class DataController {
 
 		List<MyLecture> list = myLectureDao.list(nick, box, page);
 
-		int start = (page - 1) / MY_LECTURE_PAGE * MY_LECTURE_PAGE + 1;
-		int end = start + MY_LECTURE_PAGE - 1;
+		int maxLength = myLectureDao.maxLength(nick, box);
 		
-		
-		
-		
-		
-		
-		
-		
-		//여기서부터 복사해야함
-		int maxPage = myLectureDao.maxPage(nick, box);
-		end = (end > maxPage) ? maxPage : end;
+		int start = (page-1)*MyLectureDao.MY_LECTURE_LENGTH+1;
+		int end = start+MyLectureDao.MY_LECTURE_LENGTH-1;
+		end = (end > maxLength) ? maxLength : end;
 
 		m.addAttribute("list", list);
 		m.addAttribute("page", page);
@@ -362,7 +352,8 @@ public class DataController {
 		}
 
 		String box = req.getParameter("box");
-
+		String page = req.getParameter("page");
+		
 		String nick = getNick(req);
 
 		Mail mail = mailDao.select(nick, no, box);
@@ -371,6 +362,7 @@ public class DataController {
 
 		m.addAttribute("mail", mail);
 		m.addAttribute("box", box);
+		m.addAttribute("page", page);
 
 		mailDao.read(mail, nick);
 		return "data/mailDetail";
@@ -379,7 +371,8 @@ public class DataController {
 	@RequestMapping(value = "/data/mailDetail", method = RequestMethod.POST)
 	public String mailDetailPost(Model m, HttpServletRequest req) throws Exception {
 		String box = req.getParameter("box");
-
+		String page = req.getParameter("page");
+		
 		String nick = getNick(req);
 
 		if (box.equals("garbage")) {
@@ -388,12 +381,14 @@ public class DataController {
 			mailDao.update(nick, "garbage", Integer.parseInt(req.getParameter("no")));
 		}
 
-		return "redirect:mail?box=" + box;
+		return "redirect:mail?box="+box+"&page="+page;
 	}
 
 	@RequestMapping(value = "data/mail/send", method = RequestMethod.GET)
 	public String sendGet(Model m, HttpServletRequest req) {
 		m.addAttribute("nick", req.getParameter("nick"));
+		m.addAttribute("page", req.getParameter("page"));
+		m.addAttribute("box", req.getParameter("box"));
 		return "data/send";
 	}
 
