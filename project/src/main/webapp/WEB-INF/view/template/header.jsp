@@ -618,6 +618,11 @@ $(document).ready(function(){
 			$("#board").addClass('active');
 			
 			var boardLocation = location.replace('board/', '');
+			
+			if(boardLocation.indexOf('/')>=0){
+				boardLocation = boardLocation.substring(0, boardLocation.indexOf('/'));
+			}
+			
 			$("#"+boardLocation).addClass('active');
 		}else if(location.indexOf('lecture')==0){
 			$("#lecture").addClass('active');
