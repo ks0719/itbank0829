@@ -4,6 +4,15 @@
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
+
+
+
+
+
+
+
+
+
 <h1>상세보기</h1>
 <div class="page-wrap">
 	<div class="table-wrap">
@@ -122,6 +131,14 @@
 					</c:when>
 				</c:choose>
 				
+				<c:choose>
+			       	<c:when test="${empty cookie.mynick.value}">
+						<input type="button" value="글쓰기" class="input-btn" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
+			       	</c:when>
+			       	<c:otherwise>
+						<input type="button" value="글쓰기" class="input-btn" onclick="location.href='write?seq=1';">
+			       	</c:otherwise>
+		       </c:choose>
 				<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${path}';">
 			</div>
 			<div class="empty-row"></div>

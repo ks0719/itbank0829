@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
     
 </div>
+</div>
+</div>
+	<footer class="main-footer"></footer>
 </div>	
     <!-- Bootstrap 3.3.2 JS -->
     <script src="${pageContext.request.contextPath}/css/bootstrap/js/bootstrap.js" type="text/javascript"></script>    

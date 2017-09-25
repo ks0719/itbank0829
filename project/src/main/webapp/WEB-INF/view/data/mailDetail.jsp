@@ -17,9 +17,20 @@
          
          <div class="mailbox-controls with-border text-center">
            <div class="btn-group">
-           	<!-- 내가 눌렀을때는 답장하기 작동하면 안됨 -->
            	<!-- 신고, 차단 구현해야함 -->
-             <button onclick="document.send.submit();" class="btn btn-default btn-sm" data-toggle="tooltip" title="Reply">답장하기</button>
+           		<form action="" method="post" name="delete">
+           			<input type="hidden" name="page" value="${page}">
+           			<input type="hidden" name="box" value="${box}">
+           		</form>
+           		<form action="mail/send" method="get" name="send">
+           			<input type="hidden" name="nick" value="${mail.getMail_writer()}">
+           			<input type="hidden" name="page" value="${page}">
+           			<input type="hidden" name="box" value="${box}">
+           		</form>
+           		<form action=""></form>
+             <c:if test="${mynick != mail.getMail_writer()}">
+             	<button onclick="document.send.submit();" class="btn btn-default btn-sm" data-toggle="tooltip" title="Reply">답장하기</button>
+             </c:if>
              <button onclick="del(); document.delete.submit();" class="btn btn-default btn-sm" data-toggle="tooltip" title="Delete">삭제하기</button>
              <button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${param.page}'" class="btn btn-default btn-sm" data-toggle="tooltip" title="List">목록으로</button>
            </div>

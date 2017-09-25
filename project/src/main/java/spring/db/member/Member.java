@@ -65,6 +65,7 @@ public class Member {
 		setPost(request.getParameter("post"));
 		setAddr1(request.getParameter("addr1"));
 		setAddr2(request.getParameter("addr2"));
+		setFriend(request.getParameter("friend"));
 		try {
 			setMileage(Integer.parseInt(request.getParameter("mileage")));
 		}catch(Exception e){

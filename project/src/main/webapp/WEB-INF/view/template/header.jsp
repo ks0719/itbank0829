@@ -612,14 +612,18 @@ $(document).ready(function(){
 		
 		
 		//현재 위치 계산
-		var location = "${pageContext.request.requestURI.replace('/project/WEB-INF/view/','')}";
+		var location = window.location.pathname.replace('/project/','');
 		
 		if(location.indexOf('board')>=0){
 			$("#board").addClass('active');
 			
-			var boardLocation = location.substring(location.indexOf('/')+1);
-			boardLocation = boardLocation.substring(0, boardLocation.lastIndexOf('.'));
-				$("#"+boardLocation).addClass('active');
+			var boardLocation = location.replace('board/', '');
+			
+			if(boardLocation.indexOf('/')>=0){
+				boardLocation = boardLocation.substring(0, boardLocation.indexOf('/'));
+			}
+			
+			$("#"+boardLocation).addClass('active');
 		}else if(location.indexOf('lecture')==0){
 			$("#lecture").addClass('active');
 		}else if(location.indexOf('teacher')==0){
@@ -961,11 +965,11 @@ function chat_order(){
 							<img src="${pageContext.request.contextPath}/img/users--blue-flag-png-image-100720.png" class="img-circle" alt="User Image"/>
 						</div>
 						<div class="pull-left info">
-							<a href="${pageContext.request.contextPath}/data/maininfo">
+							<a href="${pageContext.request.contextPath}/data/maininfo" data-toggle="tooltip" title="내 정보 관리" data-placement="bottom">
 								<i class="fa fa-user-circle-o"></i>
 								<span>${mynick}</span>
 							</a>
-							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
+							<a href="" data-toggle="tooltip" title="쪽지함" data-placement="bottom" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
 								<i class="fa fa-envelope"></i>
 								<!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
 								<span id="newMail" class="label label-success"></span>
