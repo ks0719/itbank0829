@@ -112,7 +112,7 @@ public class BoardController {
 	
 	@RequestMapping("/{path}")
 	public String board(@PathVariable String path, HttpServletRequest request, Model m) {	
-		String type = request.getParameter("type");
+		String search = request.getParameter("search");
 		String key = request.getParameter("key");
 		
 //		log.debug("path : " + path);
@@ -126,7 +126,7 @@ public class BoardController {
 		if (pageNo <= 0 ) pageNo = 1;
 //		log.debug("pageNo : " + pageNo);
 
-		int listCount = boardDao.count(path, type, key);
+		int listCount = boardDao.count(path, search, key);
 //		log.debug(String.valueOf(listCount));
 		
 		int boardSize = 3;
@@ -135,7 +135,7 @@ public class BoardController {
 		if (end > listCount) end = listCount;
 		
 //		log.debug(start + ", " + end);
-		List<Board> list = boardDao.list(path, type, key, start, end);
+		List<Board> list = boardDao.list(path, search, key, start, end);
 		
 		int blockSize = 10;
 		int blockTotal = (listCount + boardSize - 1) / boardSize;
@@ -144,9 +144,9 @@ public class BoardController {
 		if (endBlock > blockTotal) endBlock = blockTotal;
 		
 		String url = path + "?";
-		if (type != null && key != null) {
-			url += "type=" + type + "&key=" + key + "&";
-			m.addAttribute("type", type);
+		if (search != null && key != null) {
+			url += "search=" + search + "&key=" + key + "&";
+			m.addAttribute("search", search);
 			m.addAttribute("key", key);
 		}
 		
@@ -196,6 +196,10 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/detail")
 	public String detail(@PathVariable String path, HttpServletRequest req, String no, Model m) throws Exception {
+		String page = req.getParameter("page");
+		String search = req.getParameter("search");
+		String key = req.getParameter("key");
+		
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -210,7 +214,14 @@ public class BoardController {
 		
 		int memberNo = getMemberNo(getNick(req));
 		
-		m.addAttribute("no", no);
+		String url = path + "?page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		
+		m.addAttribute("url", url);
 		m.addAttribute("memberNo", memberNo);
 		m.addAttribute("boardList", board);
 		m.addAttribute("list", list);
