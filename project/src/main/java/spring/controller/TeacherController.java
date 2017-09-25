@@ -113,11 +113,18 @@ public class TeacherController {
 		}
 	}
 	
+	private int getteacherNo(String nick) {
+		if (nick == "") return 0;
+		log.debug("nick : " + nick);
+		return memberDao.memberNo(nick);
+	}
+	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
 	public String apply(MultipartHttpServletRequest mRequest, HttpServletRequest request) throws Exception {
 		int memberNo = Integer.parseInt(mRequest.getParameter("teacherno"));
 		
 		MultipartFile file = mRequest.getFile("file");
+		
 		if (!file.isEmpty()) {
 			String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecturer");
 	
@@ -128,7 +135,7 @@ public class TeacherController {
 			file.transferTo(target);
 		}
 
-		teacherDao.apply(new Teacher(mRequest),memberNo);
+		teacherDao.apply(new Teacher(mRequest), memberNo);
 		
 		return "data/maininfo";
 	}
@@ -575,5 +582,14 @@ public class TeacherController {
 		
 		return "teacher/applynot";
 		
+	}
+	
+	
+	@RequestMapping(value="/checkdelete", method=RequestMethod.POST)
+	public String applydelete(@RequestParam String teacherid) {
+		
+		System.out.println(teacherid);
+		teacherDao.teachernotapply(teacherid);
+		return "teacher/applynot";
 	}
 }

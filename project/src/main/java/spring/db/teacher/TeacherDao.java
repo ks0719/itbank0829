@@ -96,14 +96,14 @@ public class TeacherDao {
 		return list.get(0);
 	}
 
-	public boolean apply(Teacher teacher, int memberNo) {
+	public boolean apply(Teacher teacher, int teacherNo) {
 		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait',?)";
 		
 		String[] extension = teacher.getPicture_type().split("/");
 		String filename = "lecturer/" + teacher.getName() + "." + extension[extension.length - 1];
 		
 		Object[] args = {teacher.getName(), teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
-				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(),memberNo};
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(),teacherNo};
 		
 		return jdbcTemplate.update(sql, args) > 0;
 	}
@@ -159,6 +159,12 @@ public class TeacherDao {
 		jdbcTemplate.update(sql,new Object[] {nick});
 		sql="update member set power='강사' where nick=?";
 		jdbcTemplate.update(sql,new Object[] {nick});
+	}
+	
+	public void teachernotapply(String nick) {
+		
+		String sql="delete teacher where name = ?";
+		jdbcTemplate.update(sql, new Object[] {nick});
 	}
 
 	public void update(String originNick, String nick) {
