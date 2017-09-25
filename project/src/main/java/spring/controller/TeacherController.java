@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +66,13 @@ public class TeacherController {
 		return "";
 	}
 	
+	private int getMemberNo(String nick) {
+		if (nick == "") return 0;
+		log.debug("nick : " + nick);
+		return memberDao.memberNo(nick);
+	}
+	
+	
 //	private int getTeacherNo(String nick) {
 //		if (nick == "") return 0;
 //		return memberDao.memberNo(nick);
@@ -82,7 +90,10 @@ public class TeacherController {
 //	}
 	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
-	public String apply(MultipartHttpServletRequest mRequest) throws Exception {
+	public String apply(MultipartHttpServletRequest mRequest, HttpServletRequest request) throws Exception {
+		String nick=getNick(request);
+		int memberNo = getMemberNo(nick);
+		
 		MultipartFile file = mRequest.getFile("file");
 		if (!file.isEmpty()) {
 			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
@@ -94,7 +105,7 @@ public class TeacherController {
 			file.transferTo(target);
 		}
 
-		teacherDao.apply(new Teacher(mRequest));
+		teacherDao.apply(new Teacher(mRequest),memberNo);
 		
 		return "data/maininfo";
 	}
