@@ -21,7 +21,7 @@ public class Member {
 	private int lev;
 	private String reg;
 	private String power;
-	private String friend;
+	private String friends;
 	
 	public Member() {
 		super();
@@ -41,7 +41,7 @@ public class Member {
 		setLev(rs.getInt("lev"));
 		setReg(rs.getString("reg"));
 		setPower(rs.getString("power"));
-		setFriend(rs.getString("friend"));
+		setFriends(rs.getString("friends"));
 	}
 	public String getPower() {
 		return power;
@@ -65,7 +65,7 @@ public class Member {
 		setPost(request.getParameter("post"));
 		setAddr1(request.getParameter("addr1"));
 		setAddr2(request.getParameter("addr2"));
-		setFriend(request.getParameter("friend"));
+		setFriends(request.getParameter("friends"));
 		try {
 			setMileage(Integer.parseInt(request.getParameter("mileage")));
 		}catch(Exception e){
@@ -86,7 +86,7 @@ public class Member {
 	public String toString() {
 		return "Member [no=" + no + ", id=" + id + ", pw=" + pw + ", name=" + name + ", nick=" + nick + ", phone="
 				+ phone + ", sort=" + sort + ", post=" + post + ", addr1=" + addr1 + ", addr2=" + addr2 + ", mileage="
-				+ mileage + ", lev=" + lev + ", reg=" + reg + ", power=" + power + ", friend=" + friend + "]";
+				+ mileage + ", lev=" + lev + ", reg=" + reg + ", power=" + power + ", friend=" + friends + "]";
 	}
 	public int getNo() {
 		return no;
@@ -166,11 +166,11 @@ public class Member {
 	public void setReg(String reg) {
 		this.reg = reg;
 	}
-	public void setFriend(String friend) {
-		this.friend = friend;
+	public void setFriends(String friends) {
+		this.friends = friends;
 	}
-	public String getFriend() {
-		return friend;
+	public String getFriends() {
+		return friends;
 	}
 	
 }
