@@ -23,10 +23,10 @@
 					</thead>
 					<tbody>
 						<c:forEach var="info" items="${list}">
-							<tr>
+							<tr class="toDetail" data-path="${path}" data-no="${info.no}" data-page="${page}" data-search="${search}" data-key="${key}" style="cursor: pointer">
 								<td>${info.no}</td>
 								<td class="title">
-									[${info.head}] <a href="${path}/detail?no=${info.no}">${info.title}</a>
+									[${info.head}] ${info.title}
 								</td>
 								<td>${info.writer}</td>
 								<td>${info.auto}</td>
@@ -77,7 +77,7 @@
 		
 		<form action="${path}" class="wrap">
 			<input type="hidden" name="page" value="1">
-			<select name="type" title="분류선택" class="user-input">
+			<select name="search" title="분류선택" class="user-input">
 				<option value="head">말머리</option>
 				<option value="title">제목</option>
 				<option value="writer">작성자</option>

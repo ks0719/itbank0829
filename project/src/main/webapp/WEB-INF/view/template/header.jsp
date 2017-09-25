@@ -211,6 +211,21 @@ $(document).ready(function(){
 				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page;
 			}
 		});
+		
+		$(document).on("click", ".toDetail", function() {
+			var no = $(this).data('no');
+			var path = $(this).data('path');
+			var page = $(this).data('page');
+			var search = $(this).data('search');
+			var key = $(this).data('key');
+
+			if (search != "" && key != null) {
+				location.href = path + "/detail?no=" + no + "&page=" + page + "&search=" + search + "&key=" + key;
+			} else {
+				location.href = path + "/detail?no=" + no + "&page=" + page;
+			}
+		});
+		
 	});
 	
 	function resisterOK() {

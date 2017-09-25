@@ -139,7 +139,7 @@
 						<input type="button" value="글쓰기" class="input-btn" onclick="location.href='write?seq=1';">
 			       	</c:otherwise>
 		       </c:choose>
-				<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${path}';">
+				<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${url}';">
 			</div>
 			<div class="empty-row"></div>
 		</c:forEach>
