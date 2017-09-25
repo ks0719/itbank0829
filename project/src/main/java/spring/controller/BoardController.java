@@ -1,6 +1,7 @@
 package spring.controller;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLDecoder;
@@ -64,7 +65,7 @@ public class BoardController {
 	
 	private int getMemberNo(String nick) {
 		if (nick == "") return 0;
-		log.debug("nick : " + nick);
+//		log.debug("nick : " + nick);
 		return memberDao.memberNo(nick);
 	}
 	
@@ -88,6 +89,25 @@ public class BoardController {
 		
 		boolean result = commentDao.isWriter(no, memberNo);
 		return result;
+	}
+	
+	private void deleteFile(String savePath, String filename) {
+		File f = new File(savePath);
+		     
+		String fileList[] = f.list(new FilenameFilter() {
+		 
+		    @Override
+		    public boolean accept(File dir, String name) {
+		        return name.startsWith(filename);
+		    }
+		 
+		});
+		
+	    File file;
+		for (int i = 0; i < fileList.length; i++) {
+			file = new File(savePath, fileList[i]);
+			file.delete();
+		}
 	}
 	
 	@RequestMapping("/{path}")
@@ -144,17 +164,16 @@ public class BoardController {
 		} catch(Exception e) {
 			contextI = 0;
 		}
-		
 
 		String nick = getNick(mRequest);
 		int no = boardDao.write(path, getMemberNo(nick), nick, new Board(mRequest), contextI);
 		
 		MultipartFile file = mRequest.getFile("file");
 		if (!file.isEmpty()) {
-			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file/board");
 	
 			String[] extension = file.getContentType().split("/");
-			String filename = "board" + "/" + no + "." + extension[extension.length - 1];
+			String filename = no + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -213,13 +232,18 @@ public class BoardController {
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
 	public String edit(@PathVariable String path, String context, MultipartHttpServletRequest mRequest, int no, Model m) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
-
-		String[] extension = file.getContentType().split("/");
+		if (!file.isEmpty()) {
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file/board");
+			
+			deleteFile(savePath, String.valueOf(no));
+	
+			String[] extension = file.getContentType().split("/");
+			String filename = no + "." + extension[extension.length - 1];
+			File target = new File(savePath, filename);
+			file.transferTo(target);
+		}
+		
 		boardDao.edit(no, getMemberNo(getNick(mRequest)), new Board(mRequest));
-		String filename = no + "." + extension[extension.length - 1];
-		File target = new File(savePath, filename);
-		file.transferTo(target);		
 
 		return "redirect:/board/" + path + "/detail?no=" + context;
 	}
@@ -254,13 +278,13 @@ public class BoardController {
 		} catch(Exception e) {
 			throw new Exception("404");
 		}
-		log.debug("삭제");
+//		log.debug("삭제");
 		
 		boardDao.delete(noI);
 		commentDao.delete(noI);
 		
-		log.debug("no : " + no + ", context : " + context);
-		log.debug(String.valueOf(context.equals(no)));
+//		log.debug("no : " + no + ", context : " + context);
+//		log.debug(String.valueOf(context.equals(no)));
 
 		if (no.equals(context)) {
 			return "redirect:/board/" + path;
@@ -320,7 +344,7 @@ public class BoardController {
 	public String comment(@PathVariable String path, HttpServletRequest request, Model m) throws Exception {
 		String nick = getNick(request);
 		int memberNo = getMemberNo(nick);
-		log.debug("comment nick : " + nick);
+//		log.debug("comment nick : " + nick);
 		Comment comment = commentDao.insert(nick, memberNo, new Comment(request));
 		m.addAttribute("comment", comment);
 		

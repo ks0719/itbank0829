@@ -77,7 +77,7 @@ public class Mail {
 		this.mail_title = mail_title;
 	}
 	public String getMail_content() {
-		return mail_content;
+		return mail_content.replace("\n", "</p><p>");
 	}
 	public void setMail_content(String mail_content) {
 		this.mail_content = mail_content;
