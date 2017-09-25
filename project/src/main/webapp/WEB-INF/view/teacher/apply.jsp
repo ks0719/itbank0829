@@ -14,11 +14,7 @@
 <div>
 	<form action="apply" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="name" value="${mynick}">
-<<<<<<< HEAD
 		닉네임 : ${mynick}
-=======
-		닉네임 : ${nick}
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 		<br><br>
 		사진 : <input type="file" name="file" onchange="previewImage(this,'upload_photo')">
 		<br><br>
