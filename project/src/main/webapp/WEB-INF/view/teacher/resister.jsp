@@ -26,14 +26,14 @@
 	<br><br>
 	<input type="text" name="title" placeholder="강의 제목" required>
 	<br><br>
-	<input type="text" name="period" id="period" placeholder="강의 기간 (0000.00.00~0000.00.00)" required>
-	<br><br>
-	<input type="text" name="time" id="time" placeholder="강의 시간 (00:00~00:00)" required>
-	<br><br>
 	<select name="type" title="강의 형태">
 		<option value="인강">인강</option>
 		<option value="원격강의">원격강의</option>
 	</select>
+	<br><br>
+	<input type="text" name="period" id="period" placeholder="강의 기간 (0000.00.00~0000.00.00)" required>
+	<br><br>
+	<input type="text" name="time" id="time" placeholder="강의 시간 (00:00~00:00)" required>
 	<br><br>
 	<input type="text" name="price" placeholder="강의 가격" required>
 	<br><br>

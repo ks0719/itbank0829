@@ -249,6 +249,5 @@ public class LectureInfo {
 	public void setTeacherno(int teacherno) {
 		this.teacherno = teacherno;
 	}
-
 	
 }
