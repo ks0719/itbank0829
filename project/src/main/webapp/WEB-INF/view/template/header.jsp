@@ -3,6 +3,7 @@
 	<%session.setAttribute("mynick", URLDecoder.decode("${mynick}", "UTF-8")); %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<%@ page import = "java.net.URLDecoder" %>
+    <!-- 왜 세션에다가 똑같은 mynick 넣었는지 물어보기  -->
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -943,11 +944,11 @@ function chat_order(){
 							<img src="${pageContext.request.contextPath}/img/users--blue-flag-png-image-100720.png" class="img-circle" alt="User Image"/>
 						</div>
 						<div class="pull-left info">
-							<a href="${pageContext.request.contextPath}/data/maininfo">
+							<a href="${pageContext.request.contextPath}/data/maininfo" data-toggle="tooltip" title="내 정보 관리" data-placement="bottom">
 								<i class="fa fa-user-circle-o"></i>
 								<span>${mynick}</span>
 							</a>
-							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
+							<a href="" data-toggle="tooltip" title="쪽지함" data-placement="bottom" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
 								<i class="fa fa-envelope"></i>
 								<!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
 								<span id="newMail" class="label label-success"></span>
