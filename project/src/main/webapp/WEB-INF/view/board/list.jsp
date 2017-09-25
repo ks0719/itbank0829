@@ -2,9 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<%@ include file="/WEB-INF/view/template/header.jsp" %> 
-
-<h1>요청게시판</h1>
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <div class="page-wrap">
 	<div class="table-wrap">
@@ -61,7 +59,7 @@
 	       	<c:otherwise>
 				<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write?seq=1&context=';">
 	       	</c:otherwise>
-       	</c:choose>
+       </c:choose>
 	</div>
 	<div class="row">
 		<div class="paging-wrap">

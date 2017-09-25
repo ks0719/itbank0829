@@ -153,7 +153,7 @@ public class BoardController {
 		m.addAttribute("endBlock", endBlock);
 		m.addAttribute("url", url);
 		m.addAttribute("path", path);
-		return "board/" + path;
+		return "board/list";
 	}
 	
 	@RequestMapping(value="/{path}/write", method=RequestMethod.POST)
