@@ -115,11 +115,6 @@ $(document).ready(function(){
 		                        <td class="time">수업날짜</td>
 		                        <td>결제금액</td>
 		                        <td>상세보기</td>
-		                        <c:choose>
-		                        	<c:when test="${box eq 'eval'}">
-		                        		<td>평가하기</td>
-		                        	</c:when>
-		                        </c:choose>
 							</tr>
 							<!-- 리스트 반복문으로 찍을 공간 -->
 							<c:forEach var="list" items="${list}">

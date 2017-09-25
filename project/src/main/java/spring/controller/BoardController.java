@@ -115,7 +115,7 @@ public class BoardController {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
 		
-		log.debug("path : " + path);
+//		log.debug("path : " + path);
 		
 		int pageNo;
 		try {
@@ -124,7 +124,7 @@ public class BoardController {
 			pageNo = 1;
 		}
 		if (pageNo <= 0 ) pageNo = 1;
-		log.debug("pageNo : " + pageNo);
+//		log.debug("pageNo : " + pageNo);
 
 		int listCount = boardDao.count(path, type, key);
 //		log.debug(String.valueOf(listCount));
