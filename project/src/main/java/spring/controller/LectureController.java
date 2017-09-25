@@ -205,6 +205,7 @@ public class LectureController {
 		m.addAttribute("page", pageNo);
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
+		m.addAttribute("blockTotal", blockTotal);
 		m.addAttribute("url", url);
 		
 		return "lecture/study";
