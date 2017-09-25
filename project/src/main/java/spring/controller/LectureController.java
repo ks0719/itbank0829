@@ -57,6 +57,17 @@ public class LectureController {
 		return "lecture/assess";
 	}
 	
+	@RequestMapping(value="/assess", method=RequestMethod.POST)
+	public String assess(HttpServletRequest req, Model m) throws Exception {
+		int no = Integer.parseInt(req.getParameter("no"));
+		
+		
+		int count = myLectureDao.evalCount(no);
+//		lectureDao.assess(no, count);
+		
+		return "lecture/assess";
+	}
+	
 	@RequestMapping("/qna")
 	public String qna() {
 		

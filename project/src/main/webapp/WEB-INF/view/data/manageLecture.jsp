@@ -115,6 +115,11 @@ $(document).ready(function(){
 		                        <td class="time">수업날짜</td>
 		                        <td>결제금액</td>
 		                        <td>상세보기</td>
+		                        <c:choose>
+		                        	<c:when test="${param.box eq 'eval'}">
+		                        		<td>평가하기</td>
+		                        	</c:when>
+		                        </c:choose>
 							</tr>
 							<!-- 리스트 반복문으로 찍을 공간 -->
 							<c:forEach var="list" items="${list}">
@@ -128,6 +133,11 @@ $(document).ready(function(){
 			                        <td class="time">${list.period}</td>
 			                        <td>${list.price}</td>
 			                        <td><a href="" class="detail" onclick="change(${list.no}); return false;">상세보기</a></td>
+			                        <c:choose>
+			                        	<c:when test="${param.box eq 'eval'}">
+			                        		<td><a href="location.href='${pageContext.request.contextPath}/lecture/assess?no=${list.no}'">평가하기</a></td>
+			                        	</c:when>
+			                        </c:choose>
 								</tr>
 					    	</c:forEach>
 						</table>

@@ -171,5 +171,11 @@ public class MyLectureDao {
 		
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper);
 	}
+
+	public int evalCount(int no) {
+		String sql = "select * from mylecture where no = ? and eval = '평가 완료'";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class);
+	}
 	
 }

@@ -57,7 +57,7 @@
 				<input type="button" value="글쓰기" class="input-btn" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
 	       	</c:when>
 	       	<c:otherwise>
-				<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write?seq=1&context=';">
+				<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write?seq=1';">
 	       	</c:otherwise>
        </c:choose>
 	</div>
