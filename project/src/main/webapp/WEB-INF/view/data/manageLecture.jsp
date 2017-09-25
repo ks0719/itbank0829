@@ -11,6 +11,10 @@ function change(no){
 	$("#changeable").load("${pageContext.request.contextPath}/lecture/class?no="+no+" .borN");
 }
 
+function change2(no){
+	$("#changeable").load("${pageContext.request.contextPath}/lecture/assess?no="+no+" .borN");
+}
+
 $(document).ready(function(){
 	var box = '${param.box}';
 	if(box == '') box='index';
@@ -135,7 +139,7 @@ $(document).ready(function(){
 			                        <td><a href="" class="detail" onclick="change(${list.no}); return false;">상세보기</a></td>
 			                        <c:choose>
 			                        	<c:when test="${param.box eq 'eval'}">
-			                        		<td><a href="location.href='${pageContext.request.contextPath}/lecture/assess?no=${list.no}'">평가하기</a></td>
+			                        		<td><a href="" class="detail" onclick="change2(${list.no}); return false;">평가하기</a></td>
 			                        	</c:when>
 			                        </c:choose>
 								</tr>

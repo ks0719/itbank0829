@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import spring.db.teacher.Assess;
+
 @Repository
 public class LectureDao {
 	@Autowired
@@ -14,6 +16,10 @@ public class LectureDao {
 	
 	RowMapper<LectureInfo> mapper = (rs, index) -> {
 		return new LectureInfo(rs);
+	};
+	
+	RowMapper<Assess> mapper2 = (rs, index) -> {
+		return new Assess(rs);
 	};
 	
 	public int insert(LectureInfo info) {
@@ -138,6 +144,37 @@ public class LectureDao {
 				lectureInfo.getNo()};
 		
 		jdbcTemplate.update(sql, args);
+	}
+
+	public void assess(int no, Assess assess) {
+		String sql = "insert into assess values(?, ?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sql, no, assess.getKin_grade(), assess.getPrice_grade(), assess.getKind_grade(), assess.getDetail());
+		
+		sql = "select * from assess where no = ?";
+		
+		List<Assess> list = jdbcTemplate.query(sql, new Object[] {no}, mapper2);
+		
+		double kin_grade = 0.0;
+		double price_grade = 0.0;
+		double kind_grade = 0.0;
+		
+		for (Assess a : list) {
+			kin_grade += a.getKin_grade();
+			price_grade += a.getPrice_grade();
+			kind_grade += a.getKind_grade();
+		}
+		
+		int size = list.size();
+		String format = "#.##";
+		java.text.DecimalFormat df = new java.text.DecimalFormat(format);
+		kin_grade /= (double) size;
+		price_grade /= (double) size;
+		kind_grade /= (double) size;
+		
+		sql = "update lecture_info set kin_grade = ?, price_grade = ?, kind_grade = ? where no = ?";
+		
+		jdbcTemplate.update(sql, df.format(kin_grade), df.format(price_grade), df.format(kind_grade), no);
 	}
 
 }

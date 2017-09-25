@@ -20,6 +20,7 @@ import spring.db.member.Member;
 import spring.db.member.MemberDao;
 import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
+import spring.db.teacher.Assess;
 
 @Controller
 @RequestMapping("/lecture")
@@ -52,20 +53,21 @@ public class LectureController {
 	private MyLectureDao myLectureDao;
 	
 	@RequestMapping("/assess")
-	public String assess() {
+	public String assess(HttpServletRequest req, Model m) {
+		m.addAttribute("no", req.getParameter("no"));
 		
 		return "lecture/assess";
 	}
 	
 	@RequestMapping(value="/assess", method=RequestMethod.POST)
-	public String assess(HttpServletRequest req, Model m) throws Exception {
+	public String assess(HttpServletRequest req) throws Exception {
 		int no = Integer.parseInt(req.getParameter("no"));
+		String nick = getNick(req);
 		
+		myLectureDao.evalCount(no, nick);
+		lectureDao.assess(no, new Assess(req));
 		
-		int count = myLectureDao.evalCount(no);
-//		lectureDao.assess(no, count);
-		
-		return "lecture/assess";
+		return "redirect:/data/manageLecture?box=eval";
 	}
 	
 	@RequestMapping("/qna")
