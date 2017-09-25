@@ -7,9 +7,12 @@
 
 <div class="row">
 	<div class="col-xs-12">
-	
-		<div class="box">
-			<div class="box-body">
+		<div class="box box-primary">
+			<div class="box-body no-padding">
+			
+			<div class="table-responsive">
+			
+			
 				<table id="example2" class="table table-bordered table-hover">
 					<thead>
 						<tr>
@@ -48,43 +51,53 @@
 								</c:choose>
 							</td>
 						</tr>
+						<tr>
+							<td colspan="7" style="text-align:center;">
+								<c:if test="${startBlock > 1}">
+							        <button class="btn btn-default btn-sm" onclick="location.href='${url}page=${startBlock - 1}'"><i class="fa fa-chevron-left"></i></button>
+								</c:if>
+						
+								<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
+									<c:choose>
+										<c:when test="${i eq page}">
+											<button class="btn btn-flat btn-sm">${i}</button>
+										</c:when>
+										<c:otherwise>
+											<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${i}'">${i}</button>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								
+								<c:if test="${endBlock < blockTotal}">
+						        	<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${endBlock + 1}'"><i class="fa fa-chevron-right"></i></button>
+								</c:if>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="7" style="text-align:center;">
+								<form action="${path}" class="wrap">
+									<input type="hidden" name="page" value="1">
+									<select name="type" title="분류선택" class="user-input">
+										<option value="head">말머리</option>
+										<option value="title">제목</option>
+										<option value="writer">작성자</option>
+									</select>
+									<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
+									<input type="submit" value="검색" class="input-btn">
+								</form>
+							</td>
+						</tr>
 					</tfoot>
 				</table>
 				
-				
-				<div class="paging-wrap">
-					<c:if test="${startBlock > 1}">
-				        <button class="btn btn-default btn-sm" onclick="location.href='${url}page=${startBlock - 1}'"><i class="fa fa-chevron-left"></i></button>
-					</c:if>
-			
-					<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
-						<c:choose>
-							<c:when test="${i eq page}">
-								<button class="btn btn-flat btn-sm">${i}</button>
-							</c:when>
-							<c:otherwise>
-								<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${i}'">${i}</button>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-					
-					<c:if test="${endBlock < blockTotal}">
-			        	<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${endBlock + 1}'"><i class="fa fa-chevron-right"></i></button>
-					</c:if>
-			    </div>
+			    
+			    
+			  </div>  
+			    
+			    
 			</div>
 		</div>
 		
-		<form action="${path}" class="wrap">
-			<input type="hidden" name="page" value="1">
-			<select name="type" title="분류선택" class="user-input">
-				<option value="head">말머리</option>
-				<option value="title">제목</option>
-				<option value="writer">작성자</option>
-			</select>
-			<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
-			<input type="submit" value="검색" class="input-btn">
-		</form>
 		
 	</div>
 </div>
