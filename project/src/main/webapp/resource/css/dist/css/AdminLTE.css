@@ -3619,8 +3619,15 @@ fieldset[disabled] .btn-vk.active {
 .margin {
   margin: 10px;
 }
+.margin-updown{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
 .margin-bottom {
   margin-bottom: 20px;
+}
+.margin-top {
+  margin-top: 20px;
 }
 /* Display inline */
 .inline {
@@ -3635,6 +3642,13 @@ fieldset[disabled] .btn-vk.active {
 }
 .description-block.margin-bottom {
   margin-bottom: 25px;
+}
+.description-block.margin-updown{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.description-block.margin-top {
+  margin-top: 25px;
 }
 .description-block > .description-header {
   margin: 0;

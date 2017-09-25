@@ -945,7 +945,7 @@
   color: #fff;
 }
 .skin-mail .sidebar-menu > li.header {
-  color: #4b646f;
+  color: #000000;
   background: #1a2226;
 }
 .skin-mail .sidebar-menu > li > a {
@@ -968,13 +968,13 @@
   background: #ffffff;
 }
 .skin-mail .sidebar a {
-  color: #b8c7ce;
+  color: #000000;
 }
 .skin-mail .sidebar a:hover {
   text-decoration: none;
 }
 .skin-mail .treeview-menu > li > a {
-  color: #8aa4af;
+  color: #000000;
 }
 .skin-mail .treeview-menu > li.active > a,
 .skin-mail .treeview-menu > li > a:hover {

@@ -13,6 +13,7 @@
 
 <div>
 	<form action="apply" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="teacherno" value="${teacherNo}">
 		<input type="hidden" name="name" value="${mynick}">
 		닉네임 : ${mynick}
 		<br><br>
