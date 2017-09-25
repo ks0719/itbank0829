@@ -115,8 +115,7 @@ public class TeacherController {
 	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
 	public String apply(MultipartHttpServletRequest mRequest, HttpServletRequest request) throws Exception {
-		String nick=getNick(request);
-		int memberNo = getMemberNo(nick);
+		int memberNo = Integer.parseInt(mRequest.getParameter("teacherno"));
 		
 		MultipartFile file = mRequest.getFile("file");
 		if (!file.isEmpty()) {
