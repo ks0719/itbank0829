@@ -41,7 +41,7 @@ public class Member {
 		setLev(rs.getInt("lev"));
 		setReg(rs.getString("reg"));
 		setPower(rs.getString("power"));
-		setFriend(rs.getString("friend"));
+		setFriend(rs.getString("friends"));
 	}
 	public String getPower() {
 		return power;

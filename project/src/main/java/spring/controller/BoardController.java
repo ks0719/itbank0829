@@ -154,6 +154,7 @@ public class BoardController {
 		m.addAttribute("page", pageNo);
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
+		m.addAttribute("blockTotal", blockTotal);
 		m.addAttribute("url", url);
 		m.addAttribute("path", path);
 		return "board/list";
