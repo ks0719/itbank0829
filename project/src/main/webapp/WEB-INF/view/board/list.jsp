@@ -54,22 +54,22 @@
 				
 				<div class="paging-wrap">
 					<c:if test="${startBlock > 1}">
-				        <div class="paging-unit"><a href="${url}page=${startBlock - 1}">&lt;</a></div>
+				        <button class="btn btn-default btn-sm" onclick="location.href='${url}page=${startBlock - 1}'"><i class="fa fa-chevron-left"></i></button>
 					</c:if>
 			
 					<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
 						<c:choose>
 							<c:when test="${i eq page}">
-								<div class="paging-unit active">${i}</div>
+								<button class="btn btn-flat btn-sm">${i}</button>
 							</c:when>
 							<c:otherwise>
-			        			<div class="paging-unit"><a href="${url}page=${i}">${i}</a></div>
+								<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${i}'">${i}</button>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 					
 					<c:if test="${endBlock < blockTotal}">
-			        	<div class="paging-unit"><a href="${url}page=${endBlock + 1}">&gt;</a></div>
+			        	<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${endBlock + 1}'"><i class="fa fa-chevron-right"></i></button>
 					</c:if>
 			    </div>
 			</div>
