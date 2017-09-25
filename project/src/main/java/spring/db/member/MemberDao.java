@@ -25,7 +25,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	
 	public void insert(Member member) {
 		
-		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'','일반')";
+		String sql="insert into member values(member_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1, sysdate,'','일반','')";
 		
 		Object[]args=new Object[] {member.getId(),member.getPw(),member.getName(),member.getNick(),member.getPhone(),
 				member.getPost(),member.getAddr1(),member.getAddr2(),member.getSort()};
@@ -181,5 +181,23 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		String sql = "select no from member where nick = ?";
 		
 		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class);
+	}
+	public boolean isfriend(String getnick) {
+		String sql="select * from member where nick=?";
+		return jdbcTemplate.update(sql,new Object[] {getnick})>0;
+		
+	}
+	public void myfriend(String mynick,String getnick) {
+		String sql="update member set friends=friends||?||'/' where nick=?";
+		jdbcTemplate.update(sql, new Object[] {getnick,mynick});
+	}
+	public String[] myfriendlist(String mynick) {
+		String sql="select friends from member where nick=?";
+		String list= jdbcTemplate.queryForObject(sql, new Object[] {mynick},String.class);
+		if(list!=null) {
+		if(list.contains("/")) {
+			return list.split("/");
+		}
+		}return null;
 	}
 }

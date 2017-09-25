@@ -1,6 +1,7 @@
 package spring.controller;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.net.URLDecoder;
 import java.util.List;
 
@@ -10,10 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -64,6 +67,13 @@ public class TeacherController {
 		return "";
 	}
 	
+	private int getMemberNo(String nick) {
+		if (nick == "") return 0;
+		log.debug("nick : " + nick);
+		return memberDao.memberNo(nick);
+	}
+	
+	
 //	private int getTeacherNo(String nick) {
 //		if (nick == "") return 0;
 //		return memberDao.memberNo(nick);
@@ -79,12 +89,38 @@ public class TeacherController {
 //		boolean result = teacherDao.isRight(no, memberNo);
 //		return result;
 //	}
+	private int getTeacherNo(String nick) {
+		if (nick == "") return 0;
+		return memberDao.memberNo(nick);
+	}
+	
+	private void deleteFile(String savePath, String filename) {
+		File f = new File(savePath);
+		     
+		String fileList[] = f.list(new FilenameFilter() {
+		 
+		    @Override
+		    public boolean accept(File dir, String name) {
+		        return name.startsWith(filename);
+		    }
+		 
+		});
+		
+	    File file;
+		for (int i = 0; i < fileList.length; i++) {
+			file = new File(savePath, fileList[i]);
+			file.delete();
+		}
+	}
 	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
-	public String apply(MultipartHttpServletRequest mRequest) throws Exception {
+	public String apply(MultipartHttpServletRequest mRequest, HttpServletRequest request) throws Exception {
+		String nick=getNick(request);
+		int memberNo = getMemberNo(nick);
+		
 		MultipartFile file = mRequest.getFile("file");
 		if (!file.isEmpty()) {
-			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecturer");
 	
 			String[] extension = file.getContentType().split("/");
 			String filename = getNick(mRequest) + "." + extension[extension.length - 1];
@@ -93,7 +129,7 @@ public class TeacherController {
 			file.transferTo(target);
 		}
 
-		teacherDao.apply(new Teacher(mRequest));
+		teacherDao.apply(new Teacher(mRequest),memberNo);
 		
 		return "data/maininfo";
 	}
@@ -102,7 +138,7 @@ public class TeacherController {
 	public String apply(HttpServletRequest request, Model m) throws Exception {
 		String nick = getNick(request);
 		
-		m.addAttribute("nick", nick);
+		m.addAttribute("teacherNo", getTeacherNo(nick));
 		
 		return "teacher/apply";
 	}
@@ -156,9 +192,6 @@ public class TeacherController {
 				standard = "reg";
 			}
 		}
-		log.debug("st : " + standard);
-		log.debug("s1 : " + sub1);
-		log.debug("s2 : " + sub2);
 
 		int listCount = teacherDao.count(type, key);
 		
@@ -239,12 +272,12 @@ public class TeacherController {
 	public String profile(MultipartHttpServletRequest mRequest) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
 		if (!file.isEmpty()) {
-			String savePath = mRequest.getServletContext().getRealPath("/resource/file");
-		
-			
+			String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecturer");
+
+			deleteFile(savePath, getNick(mRequest));
 		
 			String[] extension = file.getContentType().split("/");
-			String filename = "lecturer/" + getNick(mRequest) + "." + extension[extension.length - 1];
+			String filename = getNick(mRequest) + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -257,8 +290,9 @@ public class TeacherController {
 	@RequestMapping("/resister")
 	public String resister(HttpServletRequest req, Model m) throws Exception {
 		String nick = getNick(req);
+		int teacherNo = getTeacherNo(nick);
 		
-		m.addAttribute("nick", nick);
+		m.addAttribute("teacherNo", teacherNo);
 		
 		return "teacher/resister";
 	}
@@ -266,13 +300,13 @@ public class TeacherController {
 	@RequestMapping(value="/resister", method=RequestMethod.POST)
 	public String resister(MultipartHttpServletRequest mRequest) throws Exception {
 		MultipartFile file = mRequest.getFile("file");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecture");
 		
 		int no = lectureDao.insert(new LectureInfo(mRequest));
 		
-		if (!file.isEmpty()) {
+		if (!file.isEmpty()) {			
 			String[] extension = file.getContentType().split("/");
-			String filename = "lecture/" + no + "." + extension[extension.length - 1];
+			String filename = no + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -334,7 +368,6 @@ public class TeacherController {
 	@RequestMapping("/myLecture")
 	public String myLecture(HttpServletRequest req, Model m) throws Exception {
 		String where = req.getParameter("where");
-		log.debug("where : " + where);
 		String page = req.getParameter("page");
 		String search = req.getParameter("search");
 		String key = req.getParameter("key");
@@ -370,6 +403,7 @@ public class TeacherController {
 		LectureInfo info = lectureDao.teacherShowOne(no, getNick(request));
 		
 		m.addAttribute("mylecture", info);
+		m.addAttribute("teacherNo", getTeacherNo(getNick(request)));
 
 		String where = request.getParameter("where");
 		String page = request.getParameter("page");
@@ -393,13 +427,15 @@ public class TeacherController {
 	public String lectureEdit(MultipartHttpServletRequest mRequest, Model m) throws Exception {
 		int no = Integer.parseInt(mRequest.getParameter("no"));
 		MultipartFile file = mRequest.getFile("file");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecture");
 		
 		lectureDao.edit(new LectureInfo(mRequest));
 		
 		if (!file.isEmpty()) {
+			deleteFile(savePath, String.valueOf(no));
+			
 			String[] extension = file.getContentType().split("/");
-			String filename = "lecture/" + no + "." + extension[extension.length - 1];
+			String filename = no + "." + extension[extension.length - 1];
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
@@ -522,5 +558,23 @@ public class TeacherController {
 		
 		return "teacher/withdrow";
 	}
-
+	
+	
+	@RequestMapping("/applynot")
+	public String notapply(HttpServletRequest request, Model model) {
+		
+		List<Teacher>list=teacherDao.list();
+		model.addAttribute("list", list);
+		
+		return "teacher/applynot";
+	}
+	
+	@RequestMapping(value="/checkapply", method=RequestMethod.POST)
+	public String apply(@RequestParam String teacherid) {
+		
+		teacherDao.stateedit(teacherid);
+		
+		return "teacher/applynot";
+		
+	}
 }

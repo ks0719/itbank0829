@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository("mailDao")
 public class MailDao {
 
+	public static final int MAIL_HEIGHT = 15;
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
@@ -17,25 +19,62 @@ public class MailDao {
 		
 		return new Mail(rs);
 	};
-
-	public List<Mail> list(String nick, String box){
-		String sql="select * from mail";
+	
+	public List<Mail> defaultList(String nick, int pageno){
+		int start, end;
+		if(pageno==0) {
+			start=1;
+			end = Integer.MAX_VALUE;
+		}else {
+			start = (pageno-1)*MAIL_HEIGHT+1;
+			end = start+MAIL_HEIGHT-1;
+		}
+		
+		String sql = "select * from ("
+				+ "select rownum rn, TMP.* from("
+				
+				+ "select * from mail "
+				
+				+"where mail_receiver=? and receiver_position='index'"
+				+ " order by mail_reg desc, no desc"
+				+ ")TMP) "
+				+ "where rn between ? and ?";
+		
+		return jdbcTemplate.query(sql,new Object[]{nick, start, end},mapper);
+	}
+	
+	public List<Mail> list(String nick, String box, int pageno) throws Exception {
+		int start = (pageno-1)*MAIL_HEIGHT+1;
+		int end = start+MAIL_HEIGHT-1;
+		
+		String sql = "select * from ("
+				+ "select rownum rn, TMP.* from("
+				+ "select * from mail ";
+		
+		
 		switch(box) {
 		case "spam":
-			sql+=" where mail_receiver=? and receiver_position=? order by mail_reg desc, no desc";
-			return jdbcTemplate.query(sql, new Object[] {nick,box},mapper);
+			sql+= "where mail_receiver=? and receiver_position=?";
+			break;
 		case "sent":
-			sql+=" where mail_writer=? and writer_position=? order by mail_reg desc, no desc";
-			return jdbcTemplate.query(sql, new Object[] {nick, box},mapper);
+			sql+="where mail_writer=? and writer_position=?";
+			break;
 		case "protect":
 		case "garbage":
-			sql += " where mail_receiver=? and receiver_position=? or mail_writer=? and writer_position=?";
-			return jdbcTemplate.query(sql, new Object[] {nick, box, nick, box},mapper);
-			//받는 사람이 나일때  or box가 없을때
+			sql+="where mail_receiver=? and receiver_position=? or mail_writer=? and writer_position=?";
+			sql += 	" order by mail_reg desc, no desc"
+					+ ")TMP) "
+					+ "where rn between ? and ?";
+			return jdbcTemplate.query(sql, new Object[] {nick, box, nick, box, start, end},mapper);
 		default:
-			sql+=" where mail_receiver=? and receiver_position='index' order by mail_reg desc, no desc";
-			return jdbcTemplate.query(sql, new Object[] {nick},mapper);
+			return defaultList(nick, pageno);
 		}
+				
+		sql += 	" order by mail_reg desc, no desc"
+				+ ")TMP) "
+				+ "where rn between ? and ?";
+		
+		return jdbcTemplate.query(sql,new Object[]{nick, box, start, end},mapper);
 	}
 	
 	public boolean delete(String mail_receiver, int no) {
@@ -141,7 +180,32 @@ public class MailDao {
 		
 		String sql = "select count(*) from mail where mail_receiver=? and mail_read='안읽음' and RECEIVER_POSITION";
 		if (isSpam) sql+="='spam'";
-		else sql+="!='spam'";
+		else sql+="='index'";
 		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class);
+	}
+	
+	public int maxLength(String nick, String box) {
+		String sql = "select count(*) from mail ";
+		
+		int data_length;
+		switch(box) {
+		case "spam":
+			sql+= "where mail_receiver=? and receiver_position=?";
+			data_length = jdbcTemplate.queryForObject(sql, new Object[] {nick, box},Integer.class);
+			break;
+		case "sent":
+			sql+="where mail_writer=? and writer_position=?";
+			data_length = jdbcTemplate.queryForObject(sql, new Object[] {nick, box},Integer.class);
+			break;
+		case "protect":
+		case "garbage":
+			sql+="where mail_receiver=? and receiver_position=? or mail_writer=? and writer_position=?";
+			data_length = jdbcTemplate.queryForObject(sql, new Object[] {nick, box, nick, box},Integer.class);
+			break;
+		default:
+			return defaultList(nick, 0).size();
+		}
+		
+		return data_length;
 	}
 }

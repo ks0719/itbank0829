@@ -213,6 +213,27 @@ $(document).ready(function(){
 		});
 	});
 	
+	function resisterOK() {
+  		var regex1 = /^(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])~(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])$/;
+  		var regex2 = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])~([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
+	 	var period = document.querySelector("#period");
+	 	var time = document.querySelector("#time");
+	 	
+	 	console.log(period.value);
+	 	console.log(time.value);
+	 	
+	 	if(!regex1.test(period.value)) {
+	 		alert("강의기간 형식을 확인해주세요 (0000.00.00~0000.00.00)");
+	 		$("#period").focus();
+	 	} else if(!regex2.test(time.value)) {
+	 		alert("강의시간 형식을 확인해주세요 (00:00~00:00)");
+	 		$("#time").focus();
+	 	} else {
+	 		return true;
+	 	}
+	 		return false;
+	}
+	
 	// 이미지 업로드시 이미지 미리보기
 	function previewImage(targetObj, previewId) {
 	    var preview = document.getElementById(previewId);   
@@ -589,6 +610,24 @@ $(document).ready(function(){
 			$('#newMail').text(newMail);
 		}
 		
+		
+		//현재 위치 계산
+		var location = "${pageContext.request.requestURI.replace('/project/WEB-INF/view/','')}";
+		
+		if(location.indexOf('board')>=0){
+			$("#board").addClass('active');
+			
+			var boardLocation = location.substring(location.indexOf('/')+1);
+			boardLocation = boardLocation.substring(0, boardLocation.lastIndexOf('.'));
+				$("#"+boardLocation).addClass('active');
+		}else if(location.indexOf('lecture')==0){
+			$("#lecture").addClass('active');
+		}else if(location.indexOf('teacher')==0){
+			$("#teacher").addClass('active');
+		}else if(location.indexOf('consumer')==0){
+			$("#consumer").addClass('active');
+		}
+		
 	});
 	
   	
@@ -621,8 +660,6 @@ $(document).ready(function(){
 					expires : 10
                     ,secure : false
 				}); 
-
-				 
 				 
 				 //console.log("최종 top : "+$("#draggable").css("top"));
 				 //console.log("최종 left : "+$("#draggable").css("left"));
@@ -740,15 +777,8 @@ function chat_add(){
 	document.getElementById("chat_label").innerHTML="대화할 닉네임 입력";
 	
 }
-function chat_order(){
-	if(event.keyCode==13){
-		var value=$("#chat_label").val();
-		console.log(value)
-		if(value=="대화할 닉네임 입력"){
-				var getnick=$("#chat").val();
-				console.log(getnick);
-		}
-	}
+function chat_del(){
+	
 }
 </script>
 
@@ -791,6 +821,7 @@ function chat_order(){
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
+
 <div class="setDiv">
     <div class="mask"></div>
     <div class="window">
@@ -837,25 +868,49 @@ function chat_order(){
    </tfoot>
    <tbody>
    <div style="position: absolute;bottom: 30px;right: 0px;" >
-   <label id="chat_label"></label>
-            <input type="text" id="chat"placeholder="입력.." onkeydown="chat_order();">
+   <label id="chat_label">아래의 버튼을 눌러주세요.</label>
+            <input type="text" id="chat_text" placeholder="입력.." onkeydown="chat_order();">
         </div>
-        <textarea id="display"readonly style="resize: none;
+        <div id="display"readonly style="resize: none;
                 outline:none;
                 width:100%;
-                height:80%;"></textarea>
+                height:80%;"></div>
    </tbody>
    <tfoot>
    <div style="position: absolute; bottom: 0px;right: 0px;">
    <img alt="추가하기" src="${pageContext.request.contextPath }/img/chat_add.png" onclick="chat_add();">
-   <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png">
+   <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png" onclick="chat_del();">
    </div>
    </tfoot>
    </table>
    </div>
 	</div>
 </c:if>
-
+<script>
+function chat_order(){
+	if(event.keyCode==13){
+		var value=$("#chat_label").text();
+		if(value=="대화할 닉네임 입력"){
+				var getnick=$("#chat_text").val();
+				var mynick="${mynick}";
+				$.ajax({
+					url:"chatadd",
+					type:"post",
+					async:true,
+					data:{mynick,getnick},
+					dataType: "text",
+					success: function(){
+						console.log("성공");
+						alert("친구가 추가되었습니다.");
+					},error:function(){
+						console.log("실패");
+						alert("이미 존재하거나 닉네임이 없습니다.");
+						
+					}
+				})
+		}
+	}
+}</script>
 <div class="wrapper">
 	<!-- 헤더 시작 -->
 	<header class="main-header">
@@ -917,66 +972,53 @@ function chat_order(){
 			-->
 			<!-- 사이드바 메뉴 시작 -->
 			<ul class="sidebar-menu">
-				<c:choose>
-					<c:when test="${pageContext.request.requestURI.replace('/project/WEB-INF/view/','').substring(0,5) eq 'board'}">
-						<li class="treeview active">
-							<a href="#">
-								<i class="fa fa-edit"></i>
-								<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
-							</a>
-							<ul class="treeview-menu menu-open">
-					</c:when>
-					<c:otherwise>
-						<li class="treeview">
-							<a href="#">
-								<i class="fa fa-edit"></i>
-								<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
-							</a>
-							<ul class="treeview-menu">
-					</c:otherwise>
-				</c:choose>
-						<li>
-							<a href="${pageContext.request.contextPath}/board/free" class="active">
+					<li id="board" class="treeview">
+						<a href="#">
+							<i class="fa fa-edit"></i>
+							<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+						<li id="free">
+							<a href="${pageContext.request.contextPath}/board/free">
 								<i class="fa fa-circle-o"></i>자유게시판
 							</a>
 						</li>
-						<li>
+						<li id="info">
 							<a href="${pageContext.request.contextPath}/board/info">
 								<i class="fa fa-circle-o"></i>정보게시판
 							</a>
 						</li>
-						<li>
+						<li id="qna">
 							<a href="${pageContext.request.contextPath}/board/qna">
 								<i class="fa fa-circle-o"></i>Q&A게시판
 							</a>
 						</li>
-						<li>
+						<li id="require">
 							<a href="${pageContext.request.contextPath}/board/require">
 								<i class="fa fa-circle-o"></i>요청게시판
 							</a>
 						</li>
-						<li>
+						<li id="store">
 							<a href="${pageContext.request.contextPath}/board/store">
 								<i class="fa fa-circle-o"></i>판매게시판
 							</a>
 						</li>
-						<li></li>
 					</ul>
 				</li>
 				
-				<li>
+				<li id="lecture">
 					<a href="${pageContext.request.contextPath}/lecture/study?page=1">
 						<i class="fa fa-calendar-o"></i> <span>수업정보</span>
 					</a>
 				</li>
 				
-				<li>
+				<li id="teacher">
 					<a href="${pageContext.request.contextPath}/teacher/lecturer?page=1">
 						<i class="fa fa-id-card"></i> <span>강사정보</span>
 					</a>
 				</li>
 				
-				<li>
+				<li id="consumer">
 					<a href="${pageContext.request.contextPath}/consumer/basic">
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
 					</a>
@@ -987,11 +1029,11 @@ function chat_order(){
 					</a>
 				</li>
 				
-<!-- 				<li> -->
-<%-- 					<a href="${pageContext.request.contextPath}/member/memberlist"> --%>
-<!-- 						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span> -->
-<!-- 					</a> -->
-<!-- 				</li> -->
+				<li>
+					<a href="${pageContext.request.contextPath}/teacher/applynot">
+						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span>
+					</a>
+				</li>
 			</ul>
 			<!-- 사이드바 메뉴 끝 -->
 			

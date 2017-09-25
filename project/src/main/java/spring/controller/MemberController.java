@@ -27,7 +27,7 @@ import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
-	private static final String serveraddr="http://localhost:9080/project/WEB-INF/view";
+	private static final String serveraddr="http://localhost:8080/project/WEB-INF/view";
 	private Logger log=LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -264,4 +264,25 @@ public class MemberController {
 		memberDao.delete(userid);
 	      return "member/memberlist";   
 	   }
+	@RequestMapping("/chatadd")
+	public String chatadd(String mynick,String getnick) throws Exception {
+		log.debug("넘어온값은 ? :"+mynick+"/"+getnick);
+		boolean result=memberDao.isfriend(getnick);
+		if(result) {
+		String[] list=memberDao.myfriendlist(mynick);
+		log.debug(Arrays.toString(list));
+		if(list!=null) {
+			for(String i:list) {
+				if(i.equals(getnick)) {
+					throw new Exception("404");
+				}
+			}
+		}
+		memberDao.myfriend(mynick, getnick);
+		return "member/memberlist";
+		
+		}
+			return "에러";
+		
+	}
 }
