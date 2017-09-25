@@ -3,7 +3,6 @@
 	<%session.setAttribute("mynick", URLDecoder.decode("${mynick}", "UTF-8")); %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<%@ page import = "java.net.URLDecoder" %>
-    <!-- 왜 세션에다가 똑같은 mynick 넣었는지 물어보기  -->
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -613,14 +612,13 @@ $(document).ready(function(){
 		
 		
 		//현재 위치 계산
-		var location = "${pageContext.request.requestURI.replace('/project/WEB-INF/view/','')}";
+		var location = window.location.pathname.replace('/project/','');
 		
 		if(location.indexOf('board')>=0){
 			$("#board").addClass('active');
 			
-			var boardLocation = location.substring(location.indexOf('/')+1);
-			boardLocation = boardLocation.substring(0, boardLocation.lastIndexOf('.'));
-				$("#"+boardLocation).addClass('active');
+			var boardLocation = location.replace('board/', '');
+			$("#"+boardLocation).addClass('active');
 		}else if(location.indexOf('lecture')==0){
 			$("#lecture").addClass('active');
 		}else if(location.indexOf('teacher')==0){

@@ -4,63 +4,60 @@
     
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
+
+<div class="row">
+	<div class="col-xs-12">
+	
+	<div class="box">
+		<div class="box-body">
+			<table id="example2" class="table table-bordered table-hover">
+				<thead>
+					<tr>
+	                  <th>번호</th>
+	                  <th class="title">[말머리] 제목</th>
+	                  <th>작성자</th>
+	                  <th>등록일</th>
+	                  <th>조회수</th>
+	                  <th>추천수</th>
+	                </tr>
+				</thead>
+				<tbody>
+					<c:forEach var="info" items="${list}">
+						<tr>
+							<td>${info.no}</td>
+							<td class="title">
+								[${info.head}] <a href="${path}/detail?no=${info.no}">${info.title}</a>
+							</td>
+							<td>${info.writer}</td>
+							<td>${info.auto}</td>
+							<td>${info.read}</td>
+							<td>${info.best}</td>
+	                    </tr>
+					</c:forEach>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="7" style="text-align:right;">
+							<c:choose>
+								<c:when test="${empty cookie.mynick.value}">
+									<input type="button" value="글쓰기" class="btn btn-primary" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
+						       	</c:when>
+						       	<c:otherwise>
+									<input type="button" value="글쓰기" class="btn btn-primary" onclick="location.href='${path}/write?seq=1&context=';">
+						       	</c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+	
+	</div>
+</div>
+
+
 <div class="page-wrap">
-	<div class="table-wrap">
-		<table border="1" class="tableUnit" rules=rows>
-			<tr>
-				<th>
-					번호
-				</th>
-				<th class="title">
-					[말머리] 제목
-				</th>
-				<th>
-					작성자
-				</th>
-				<th>
-					등록일
-				</th>
-				<th>
-					조회수
-				</th>
-				<th>
-					추천수
-				</th>
-			</tr>
-			<c:forEach var="info" items="${list}">
-			<tr>
-				<td>
-					${info.no}
-				</td>
-				<td class="title">
-					[${info.head}] <a href="${path}/detail?no=${info.no}">${info.title}</a>
-				</td>
-				<td>
-					${info.writer}
-				</td>
-				<td>
-					${info.auto}
-				</td>
-				<td>
-					${info.read}
-				</td>
-				<td>
-					${info.best}
-				</td>
-			</tr>
-			</c:forEach>
-		</table>
-	</div>
-	<div class="align-right">
-		<c:choose>
-	       	<c:when test="${empty cookie.mynick.value}">
-				<input type="button" value="글쓰기" class="input-btn" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
-	       	</c:when>
-	       	<c:otherwise>
-				<input type="button" value="글쓰기" class="input-btn" onclick="location.href='${path}/write?seq=1&context=';">
-	       	</c:otherwise>
-       </c:choose>
-	</div>
 	<div class="row">
 		<div class="paging-wrap">
 			<c:if test="${startBlock > 1}">
