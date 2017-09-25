@@ -177,9 +177,8 @@
 <div class="wrapper">
 	<!-- 헤더 시작 -->
 	<header class="main-header">
-		<!-- 홈으로 버튼(로고로 사용해도됨) -->
 		<a href="${pageContext.request.contextPath}/data/mail?box=index" class="logo"><b>쪽지함</b></a>
-		<!-- 로고 옆 메뉴바 -->
+		<!-- 메뉴바 -->
 		<nav class="navbar navbar-static-top" role="navigation">
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	            <span class="sr-only">Toggle navigation</span>

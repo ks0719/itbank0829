@@ -272,15 +272,15 @@ public class DataController {
 		
 		int maxLength = mailDao.maxLength(nick, box);
 		
-		int start = (page-1)*mailDao.MAIL_HEIGHT+1;
-		int end = start+mailDao.MAIL_HEIGHT-1;
+		int start = (page-1)*MailDao.MAIL_HEIGHT+1;
+		int end = start+MailDao.MAIL_HEIGHT-1;
 		end = (end > maxLength) ? maxLength : end;
 		
 		m.addAttribute("box", box);
 		m.addAttribute("start", start);
 		m.addAttribute("end", end);
 		m.addAttribute("maxLength", maxLength);
-		m.addAttribute("maxPage", (maxLength-1)/mailDao.MAIL_HEIGHT+1);
+		m.addAttribute("maxPage", (maxLength-1)/MailDao.MAIL_HEIGHT+1);
 		m.addAttribute("page", page);
 		
 		return "data/mail";
@@ -329,11 +329,11 @@ public class DataController {
 
 		List<MyLecture> list = myLectureDao.list(nick, box, page);
 
-		int start = (page - 1) / MY_LECTURE_PAGE * MY_LECTURE_PAGE + 1;
-		int end = start + MY_LECTURE_PAGE - 1;
+		int maxLength = myLectureDao.maxLength(nick, box);
 		
-		int maxPage = myLectureDao.maxPage(nick, box);
-		end = (end > maxPage) ? maxPage : end;
+		int start = (page-1)*MyLectureDao.MY_LECTURE_LENGTH+1;
+		int end = start+MyLectureDao.MY_LECTURE_LENGTH-1;
+		end = (end > maxLength) ? maxLength : end;
 
 		m.addAttribute("list", list);
 		m.addAttribute("page", page);

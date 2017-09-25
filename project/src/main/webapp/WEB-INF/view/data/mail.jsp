@@ -21,18 +21,20 @@
 		  			${start}-${end}/${maxLength}
 				</c:if>
 			  <div class="btn-group">
-			  	<c:choose>
-			  		<c:when test="${empty page||page==1}">
-			  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page+1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-			  		</c:when>
-			  		<c:when test="${not empty page && 1<page && page<maxPage}">
-			  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page-1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-			  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page+1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-			  		</c:when>
-			  		<c:when test="${not empty page && page==maxPage}">
-			  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page-1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-			  		</c:when>
-			  	</c:choose>
+			  	<c:if test="${maxPage>1}">
+				  	<c:choose>
+				  		<c:when test="${empty page||page==1}">
+				  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page+1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+				  		</c:when>
+				  		<c:when test="${not empty page && 1<page && page<maxPage}">
+				  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page-1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+				  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page+1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+				  		</c:when>
+				  		<c:when test="${not empty page && page==maxPage}">
+				  			<button onclick="location.href='${pageContext.request.contextPath}/data/mail?box=${box}&page=${page-1}'" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+				  		</c:when>
+				  	</c:choose>
+				  </c:if>
 			  </div>
 			</div>
 		</div>
