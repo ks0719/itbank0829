@@ -181,7 +181,7 @@ public class LectureController {
 		int listCount = lectureDao.count(type, key);
 		log.debug(String.valueOf(listCount));
 		
-		int boardSize = 10;
+		int boardSize = 3;
 		int start = boardSize * (pageNo-1) +1;
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
