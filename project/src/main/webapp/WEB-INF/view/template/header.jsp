@@ -214,7 +214,7 @@ $(document).ready(function(){
 	});
 	
 	function resisterOK() {
-  		var regex1 = /^(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])~(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])$/;
+  		var regex1 = /^\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])~\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])$/;
   		var regex2 = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])~([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
 	 	var period = document.querySelector("#period");
 	 	var time = document.querySelector("#time");
@@ -223,10 +223,10 @@ $(document).ready(function(){
 	 	console.log(time.value);
 	 	
 	 	if(!regex1.test(period.value)) {
-	 		alert("강의기간 형식을 확인해주세요 (0000.00.00~0000.00.00)");
+	 		alert("강의기간 형식을 확인해주세요 (YY.MM.DD~YY.MM.DD)");
 	 		$("#period").focus();
 	 	} else if(!regex2.test(time.value)) {
-	 		alert("강의시간 형식을 확인해주세요 (00:00~00:00)");
+	 		alert("강의시간 형식을 확인해주세요 (HH:mm~HH:mm)");
 	 		$("#time").focus();
 	 	} else {
 	 		return true;
@@ -782,7 +782,7 @@ function chat_add(){
 	
 }
 function chat_del(){
-	
+	document.getElementById("chat_label").innerHTML="삭제할 닉네임 입력";
 }
 </script>
 
@@ -899,19 +899,37 @@ function chat_order(){
 				var mynick="${mynick}";
 				$.ajax({
 					url:"chatadd",
-					type:"post",
 					async:true,
+					type:"post",
 					data:{mynick,getnick},
 					dataType: "text",
 					success: function(){
 						console.log("성공");
-						alert("친구가 추가되었습니다.");
+						alert("친구 추가가 되었습니다.");
 					},error:function(){
 						console.log("실패");
-						alert("이미 존재하거나 닉네임이 없습니다.");
+						alert("이미 존재하는 친구거나 닉네임이 존재하지 않습니다.");
 						
 					}
-				})
+				});
+		}else if(value=="삭제할 닉네임 입력"){
+			var getnick=$("#chat_text").val();
+			var mynick="${mynick}";
+			$.ajax({
+				url:"chatdel",
+				async:true,
+				type:"post",
+				data:{mynick,getnick},
+				dataType:"text",
+				success:function(){
+					console.log("성공");
+					alert("삭제가 완료되었습니다.");
+				},error:function(){
+					console.log("실패");
+					alert("없는 친구거나 닉네임이 바르지 않습니다.");
+				}
+				
+			});
 		}
 	}
 }</script>
@@ -1045,7 +1063,6 @@ function chat_order(){
 		</section>
 	</aside>
 	<!-- 사이드바 끝 -->
-
 
 	
 	<div class="content-wrapper">
