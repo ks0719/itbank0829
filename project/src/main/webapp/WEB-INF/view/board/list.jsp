@@ -61,7 +61,7 @@
 	<div class="row">
 		<div class="paging-wrap">
 			<c:if test="${startBlock > 1}">
-		        <div class="paging-unit"><a href="${url}&page=${startBlock - 1}">&lt;</a></div>
+		        <div class="paging-unit"><a href="${url}page=${startBlock - 1}">&lt;</a></div>
 			</c:if>
 	
 			<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
@@ -70,13 +70,13 @@
 						<div class="paging-unit active">${i}</div>
 					</c:when>
 					<c:otherwise>
-	        			<div class="paging-unit"><a href="${url}&page=${i}">${i}</a></div>
+	        			<div class="paging-unit"><a href="${url}page=${i}">${i}</a></div>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 			
 			<c:if test="${endBlock < blockTotal}">
-	        	<div class="paging-unit"><a href="${url}&page=${endBlock + 1}">&gt;</a></div>
+	        	<div class="paging-unit"><a href="${url}page=${endBlock + 1}">&gt;</a></div>
 			</c:if>
 	    </div>
 	</div>

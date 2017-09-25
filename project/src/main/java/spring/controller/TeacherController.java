@@ -73,22 +73,6 @@ public class TeacherController {
 		return memberDao.memberNo(nick);
 	}
 	
-	
-//	private int getTeacherNo(String nick) {
-//		if (nick == "") return 0;
-//		return memberDao.memberNo(nick);
-//	}
-//	
-//	private boolean isTeacher(HttpServletRequest req) throws Exception {
-//		String nick = getNick(req);
-//		if (nick == "") return false;
-//		
-//		int memberNo = getTeacherNo(nick);
-//		int no = Integer.parseInt(req.getParameter("no"));
-//		
-//		boolean result = teacherDao.isRight(no, memberNo);
-//		return result;
-//	}
 	private int getTeacherNo(String nick) {
 		if (nick == "") return 0;
 		return memberDao.memberNo(nick);
