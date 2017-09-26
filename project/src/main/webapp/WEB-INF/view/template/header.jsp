@@ -647,11 +647,16 @@ $(document).ready(function(){
 		}else if(location.indexOf('lecture')==0){
 			$("#lecture").addClass('active');
 		}else if(location.indexOf('teacher')==0){
-			$("#teacher").addClass('active');
+			//teacher로 주소가 시작하는 페이지가 많기 때문에 따로 설정 해줘야함
+			if(location.indexOf('teacher/applynot')!=0){
+				$("#teacher").addClass('active');
+			}
+			
 		}else if(location.indexOf('consumer')==0){
 			$("#consumer").addClass('active');
 		}else if(location.indexOf('member')==0){
-			$("#member").addClass('active');
+			//member로 주소가 시작하는 페이지가 많기 때문에 따로 설정 해줘야함
+			
 		}
 		
 	});

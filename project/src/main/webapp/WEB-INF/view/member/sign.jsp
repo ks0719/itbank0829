@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/template/header.jsp" %>    
 
+<!-- AdminLTE css 업데이트가 안됨 -->
 
 <div class="example-modal">
 	<div class="modal">
