@@ -193,7 +193,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 	}
 	public void friendrenew(String mynick,String newlist) {
 		String sql="update member set friends=? where nick=?";
-		jdbcTemplate.update(sql, new Object[] {newlist,mynick});
+		jdbcTemplate.update(sql, new Object[] {newlist.equals("")?newlist:newlist+"/",mynick});
 	}
 	public List<String> myfriendlist(String mynick) {
 		String sql="select friends from member where nick=?";
