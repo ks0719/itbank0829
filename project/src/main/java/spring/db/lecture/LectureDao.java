@@ -1,5 +1,7 @@
 package spring.db.lecture;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -238,7 +240,28 @@ public class LectureDao {
 				sql = "delete lecture_video where no = ?";
 				
 				jdbcTemplate.update(sql, info.getNo());
+				
+				deleteFile(String.valueOf(info.getNo()));
 			}
+		}
+	}
+	
+	private void deleteFile(String filename) {
+		File f = new File("/resource/file/lectureVideo");
+		     
+		String fileList[] = f.list(new FilenameFilter() {
+		 
+		    @Override
+		    public boolean accept(File dir, String name) {
+		        return name.startsWith(filename);
+		    }
+		 
+		});
+		
+	    File file;
+		for (int i = 0; i < fileList.length; i++) {
+			file = new File("/resource/file/lectureVideo", fileList[i]);
+			file.delete();
 		}
 	}
 
