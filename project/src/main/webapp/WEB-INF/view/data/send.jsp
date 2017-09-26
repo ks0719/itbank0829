@@ -8,16 +8,18 @@
 	<form action="" method="post">
 		<div class="box-body">
 			<div class="form-group">
+			<div class="input-group">
 				<c:choose>
 	 				<c:when test="${nick==''||nick==null}">
-	 					<input style="display: inline; width: 70%; float: left;" class="form-control" type="text" id="mail_receiver" name="mail_receiver" placeholder="받는 사람 닉네임" required>
-	 					<input class="btn btn-default" style="display: inline;" type="button" id="check" value="확인" onclick="isExist($('#mail_receiver').val());">
+	 					<input class="form-control" type="text" id="mail_receiver" name="mail_receiver" placeholder="받는 사람 닉네임" required>
+	 					<span class="input-group-btn"><input class="btn btn-info btn-flat" style="display: inline;" type="button" id="check" value="확인" onclick="isExist($('#mail_receiver').val());"></span>
 	 				</c:when>
 	 				<c:otherwise>
-	 					<input style="display: inline; width: 70%; float: left;" class="form-control" type="text" id="mail_receiver" name="mail_receiver" value="${nick}" readonly placeholder="받는 사람 닉네임" required>
-	 					<input class="btn btn-default" style="display: inline;" type="button" id="check" value="취소" onclick="isExist($('#mail_receiver').val());">
+	 					<input class="form-control" type="text" id="mail_receiver" name="mail_receiver" value="${nick}" readonly placeholder="받는 사람 닉네임" required>
+	 					<span class="input-group-btn"><input class="btn btn-info btn-flat" style="display: inline;" type="button" id="check" value="취소" onclick="isExist($('#mail_receiver').val());"></span>
 	 				</c:otherwise>
 	 			</c:choose>
+	 		</div>
             </div>
 			<div class="form-group">
 				<input class="form-control" name="mail_title" placeholder="제목" required/>
