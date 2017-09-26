@@ -129,7 +129,7 @@ public class BoardController {
 		int listCount = boardDao.count(path, search, key);
 //		log.debug(String.valueOf(listCount));
 		
-		int boardSize = 3;
+		int boardSize = 10;
 		int start = boardSize * pageNo - (boardSize - 1);
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;

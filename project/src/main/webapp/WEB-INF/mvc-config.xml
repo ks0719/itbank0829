@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"
 		xmlns:websocket="http://www.springframework.org/schema/websocket">
-
     <mvc:annotation-driven />
     <context:component-scan base-package="spring.controller"/>
     <!-- 왠지 모르지만 밑에거 쓰니까 이미지가 다 뜬다 설명은 아래와 같이 써있다 -->
@@ -21,18 +23,31 @@
 	<mvc:resources location="/resource/js" mapping="/js/**"/>
 	<mvc:resources location="/resource/photo_upload" mapping="photo_upload/**"/>
 	<mvc:resources location="/resource/file/" mapping="/file/**"/>
+	<mvc:resources location="/resource/remote" mapping="/remote/**"/>
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	        <!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
 	        <property name="prefix" value="/WEB-INF/view/"/>
 	        <property name="suffix" value=".jsp"/>
 	</bean>
 	
-	<!-- file Upload -->
+	<!-- websocket handler 등록 -->
+	<bean id="chatHandler" class="spring.controller.ChatHandler"></bean>
+	<websocket:handlers>
+		<!-- 클라이언트에서 접속할 위치(path), 처리할 클래스(handler) -->
+		<websocket:mapping handler="chatHandler" path="/chat"/>
+		<!-- 연결 수립시 HttpSession에 대한 정보를 설정해주기 위한 인터셉터 설정 -->
+		<websocket:handshake-interceptors>
+			<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
 
+    <mvc:annotation-driven />
+	
+	<!-- file Upload -->
 	<!-- Multipart/form-data 요청을 처리할 bean을 등록 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="UTF-8"/>
-		<property name="maxUploadSize" value="100000000"/>
+		<property name="maxUploadSize" value="10000000000"/>
 <!-- 		<property name="maxInMemorySize" value="바이트"/> -->
 	</bean>
 

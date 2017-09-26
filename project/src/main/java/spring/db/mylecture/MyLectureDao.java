@@ -129,6 +129,7 @@ public class MyLectureDao {
 			//이 강의가 예전에 찜하기를 한 강의인지 아닌지 확인해야함
 			//그런데 귀찮으니 걍 다 찜을 먼저 하고 update를 실행
 			wish(nick, lecture);
+			System.out.println("no : " + lecture.getNo() + ", " + nick);
 			String sql = "update mylecture set wish='', state='결제 완료' where no=? and id=?";
 			return jdbcTemplate.update(sql, new Object[] {lecture.getNo(), nick})>0;
 		}
@@ -172,10 +173,10 @@ public class MyLectureDao {
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper);
 	}
 
-	public int evalCount(int no) {
-		String sql = "select * from mylecture where no = ? and eval = '평가 완료'";
+	public void evalCount(int no, String nick) {
+		String sql = "update mylecture set eval = '평가 완료' where no = ? and id = ?";
 		
-		return jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class);
+		jdbcTemplate.update(sql, no, nick);
 	}
 	
 }

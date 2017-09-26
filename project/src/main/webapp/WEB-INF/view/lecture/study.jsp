@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 
-<div class="row">
+<div class="row" class="borN">
 	<div class="col-xs-12">
 		<div class="box box-primary">
 			<div class="box-body no-padding">
