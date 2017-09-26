@@ -30,6 +30,8 @@ $(document).ready(function(){
 	
 	
 	
+	
+	
 	$("#apply").on("click", function(){
 		var result=false;
 		$("input[name=checkB]:checked").each(function(){
@@ -47,9 +49,36 @@ $(document).ready(function(){
 	        
         });
 			if(result){
-				alert("강사 승인 완료!");
+				alert("강사신청 승인 완료!");
 			}
 	});
+	
+	
+	
+	$("#deleteteacher").on("click", function(){
+		var result=false;
+		$("input[name=checkB]:checked").each(function(){
+			var teacherid=$(this).val();	
+	        $.ajax({
+	        	async: false,
+	           url : "checkdelete",
+	           type : "post",
+	           data : {teacherid:teacherid},
+	           dataType:"text",
+	           success : function() {
+	        	   result=true;
+	           }
+	        })
+	        
+        });
+			if(result){
+				alert("강사신청 거절 완료!");
+			}
+	});
+	
+	
+	
+	
 	
 	
 });
@@ -67,6 +96,9 @@ $(document).ready(function(){
 					<input type="checkbox" id="checkAll">
 				</th>
 				<th>
+					번호
+				</th>
+				<th>
 					이름
 				</th>
 				<th>
@@ -75,12 +107,6 @@ $(document).ready(function(){
 				<th>
 					신청일
 				</th>
-				<th>
-					승인
-				</th>
-				<th>
-					거절
-				</th>
 			</tr>
 			<c:forEach var="teacher" items="${list}">
 			<tr>
@@ -88,7 +114,10 @@ $(document).ready(function(){
 					<input type="checkbox" name="checkB" value="${teacher.name }">
 				</td>
 				<td>
-					<a href="${pageContext.request.contextPath}/teacher/applynotdetail?no=${teacher.name}">${teacher.name }</a>
+					${teacher.teacherno }
+				</td>
+				<td>
+					<a href="${pageContext.request.contextPath}/teacher/applynotdetail?teacherno=${teacher.teacherno}">${teacher.name }</a>
 				</td>
 				<td>
 					${teacher.sort }
@@ -96,20 +125,14 @@ $(document).ready(function(){
 				<td>
 					${teacher.reg }
 				</td>
-				<td>
-					<input type="button" id="Sapply" name="apply" value="승인">
-				</td>
-				<td>
-					<input type="button" id="Napply" name="Napply" value="거절">
-				</td>
 			</tr>
 			</c:forEach>
 		</table>
 	</div>
 	
-	<%-- 회원 삭제 --%>
+	<%--한번에 승인//거절 --%>
 	<div class="align-right">
-		<input type="button" value="거절"  id="delete" class="input-btn" >
+		<input type="button" value="거절"  id="deleteteacher" class="input-btn" >
 		<input type="button" value="승인" id="apply" class="input-btn">
 	</div>
 	
@@ -136,12 +159,11 @@ $(document).ready(function(){
 	    </div>
 	</div>
 	
-	<form action="memberList" class="wrap">
+	<form action="applynot" class="wrap">
 		<input type="hidden" name="page" value="1">
 		<select name="type" title="분류선택" class="user-input">
-			<option value="id">ID검색</option>
+			<option value="sort">주 언어</option>
 			<option value="name">이름검색</option>
-			<option value="nick">닉네임검색</option>
 		</select>
 		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
 		<input type="submit" value="검색" class="input-btn">

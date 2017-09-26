@@ -37,7 +37,7 @@
 				</tr>
 			</table>
 			<c:if test="${empty rdto }">
-			<button onclick="location.href='${pageContext.request.contextPath}/consumer/reply?no=${param.no }'">버튼</button>
+			<button onclick="location.href='${pageContext.request.contextPath}/consumer/reply?no=${param.no }'">답변달기</button>
 			</c:if>
 			<c:if test="${!empty rdto }">
 			<table border="1" class="tableUnit" rules=rows>

@@ -211,10 +211,25 @@ $(document).ready(function(){
 				location.href = where + "?where=" + where +"&no=" + no + "&page=" + page;
 			}
 		});
+		
+		$(document).on("click", ".toDetail", function() {
+			var no = $(this).data('no');
+			var path = $(this).data('path');
+			var page = $(this).data('page');
+			var search = $(this).data('search');
+			var key = $(this).data('key');
+
+			if (search != "" && key != null) {
+				location.href = path + "/detail?no=" + no + "&page=" + page + "&search=" + search + "&key=" + key;
+			} else {
+				location.href = path + "/detail?no=" + no + "&page=" + page;
+			}
+		});
+		
 	});
 	
 	function resisterOK() {
-  		var regex1 = /^(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])~(20)\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])$/;
+  		var regex1 = /^\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])~\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])$/;
   		var regex2 = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])~([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
 	 	var period = document.querySelector("#period");
 	 	var time = document.querySelector("#time");
@@ -223,10 +238,10 @@ $(document).ready(function(){
 	 	console.log(time.value);
 	 	
 	 	if(!regex1.test(period.value)) {
-	 		alert("강의기간 형식을 확인해주세요 (0000.00.00~0000.00.00)");
+	 		alert("강의기간 형식을 확인해주세요 (YY.MM.DD~YY.MM.DD)");
 	 		$("#period").focus();
 	 	} else if(!regex2.test(time.value)) {
-	 		alert("강의시간 형식을 확인해주세요 (00:00~00:00)");
+	 		alert("강의시간 형식을 확인해주세요 (HH:mm~HH:mm)");
 	 		$("#time").focus();
 	 	} else {
 	 		return true;
@@ -612,20 +627,26 @@ $(document).ready(function(){
 		
 		
 		//현재 위치 계산
-		var location = "${pageContext.request.requestURI.replace('/project/WEB-INF/view/','')}";
+		var location = window.location.pathname.replace('/project/','');
 		
 		if(location.indexOf('board')>=0){
 			$("#board").addClass('active');
 			
-			var boardLocation = location.substring(location.indexOf('/')+1);
-			boardLocation = boardLocation.substring(0, boardLocation.lastIndexOf('.'));
-				$("#"+boardLocation).addClass('active');
+			var boardLocation = location.replace('board/', '');
+			
+			if(boardLocation.indexOf('/')>=0){
+				boardLocation = boardLocation.substring(0, boardLocation.indexOf('/'));
+			}
+			
+			$("#"+boardLocation).addClass('active');
 		}else if(location.indexOf('lecture')==0){
 			$("#lecture").addClass('active');
 		}else if(location.indexOf('teacher')==0){
 			$("#teacher").addClass('active');
 		}else if(location.indexOf('consumer')==0){
 			$("#consumer").addClass('active');
+		}else if(location.indexOf('member')==0){
+			$("#member").addClass('active');
 		}
 		
 	});
@@ -778,7 +799,7 @@ function chat_add(){
 	
 }
 function chat_del(){
-	
+	document.getElementById("chat_label").innerHTML="삭제할 닉네임 입력";
 }
 </script>
 
@@ -895,19 +916,37 @@ function chat_order(){
 				var mynick="${mynick}";
 				$.ajax({
 					url:"chatadd",
-					type:"post",
 					async:true,
+					type:"post",
 					data:{mynick,getnick},
 					dataType: "text",
 					success: function(){
 						console.log("성공");
-						alert("친구가 추가되었습니다.");
+						alert("친구 추가가 되었습니다.");
 					},error:function(){
 						console.log("실패");
-						alert("이미 존재하거나 닉네임이 없습니다.");
+						alert("이미 존재하는 친구거나 닉네임이 존재하지 않습니다.");
 						
 					}
-				})
+				});
+		}else if(value=="삭제할 닉네임 입력"){
+			var getnick=$("#chat_text").val();
+			var mynick="${mynick}";
+			$.ajax({
+				url:"chatdel",
+				async:true,
+				type:"post",
+				data:{mynick,getnick},
+				dataType:"text",
+				success:function(){
+					console.log("성공");
+					alert("삭제가 완료되었습니다.");
+				},error:function(){
+					console.log("실패");
+					alert("없는 친구거나 닉네임이 바르지 않습니다.");
+				}
+				
+			});
 		}
 	}
 }</script>
@@ -943,11 +982,11 @@ function chat_order(){
 							<img src="${pageContext.request.contextPath}/img/users--blue-flag-png-image-100720.png" class="img-circle" alt="User Image"/>
 						</div>
 						<div class="pull-left info">
-							<a href="${pageContext.request.contextPath}/data/maininfo">
+							<a href="${pageContext.request.contextPath}/data/maininfo" data-toggle="tooltip" title="내 정보 관리" data-placement="bottom">
 								<i class="fa fa-user-circle-o"></i>
 								<span>${mynick}</span>
 							</a>
-							<a href="" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
+							<a href="" data-toggle="tooltip" title="쪽지함" data-placement="bottom" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
 								<i class="fa fa-envelope"></i>
 								<!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
 								<span id="newMail" class="label label-success"></span>
@@ -1023,7 +1062,7 @@ function chat_order(){
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
 					</a>
 				</li>
-				<li>
+				<li id="member">
 					<a href="${pageContext.request.contextPath}/member/memberlist">
 						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
 					</a>
@@ -1041,7 +1080,6 @@ function chat_order(){
 		</section>
 	</aside>
 	<!-- 사이드바 끝 -->
-
 
 	
 	<div class="content-wrapper">

@@ -2,10 +2,14 @@ package spring.db.teacher;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import spring.db.lecture.LectureInfo;
 import spring.db.member.Member;
@@ -37,6 +41,12 @@ public class TeacherDao {
 		return jdbcTemplate.queryForObject("select count(*) from teacher where lower (" + type + ") like '%'||'"+ key +"'||'%' and state='active'", Integer.class);
 	}
 	
+	public int count2(String type, String key) {
+		if (type == null || type == "" || key == null) return count();
+		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
+		return jdbcTemplate.queryForObject("select count(*) from teacher where lower (" + type + ") like '%'||'"+ key +"'||'%' and state='wait'", Integer.class);
+	}
+	
 	public List<Teacher> list(String standard, String sub1, String sub2, String type, String key, int start, int end) {
 		if (sub1 == "" || sub2 == "") return list(type, key, start, end);
 		if (type == null || type == "" || key == null) return list(standard, sub1, sub2, start, end);
@@ -50,6 +60,7 @@ public class TeacherDao {
 		
 		return jdbcTemplate.query(sql, args, mapper);
 	}
+	
 
 	public List<Teacher> list(String standard, String sub1, String sub2, int start, int end) {
 		if (sub1 == "" || sub2 == "") return list(start, end);
@@ -64,12 +75,25 @@ public class TeacherDao {
 
 		return jdbcTemplate.query(sql, args, mapper);
 	}
+	
 
 	public List<Teacher> list(String type, String key, int start, int end) {
 		if (type == null || type == "" || key == null) return list(start, end);
 		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
 		String sql = "select * from (select rownum rn, TMP.* from ("
 				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' and state='active' order by reg desc)"
+				+ " TMP) where rn between ? and ?";
+		
+		Object[] args = {key, start, end};
+
+		return jdbcTemplate.query(sql, args, mapper);
+	}
+	
+	public List<Teacher> list2(String type, String key, int start, int end) {
+		if (type == null || type == "" || key == null) return list2(start, end);
+		if (!(type.equals("sort") || type.equals("name"))) type = "sort";
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from teacher where lower (" + type + ") like '%'||?||'%' and state='wait' order by reg desc)"
 				+ " TMP) where rn between ? and ?";
 		
 		Object[] args = {key, start, end};
@@ -86,6 +110,17 @@ public class TeacherDao {
 
 		return jdbcTemplate.query(sql, args, mapper);
 	}
+	
+	public List<Teacher> list2(int start, int end) {
+		String sql = "select * from (select rownum rn, TMP.* from ("
+				+ "select * from teacher where state='wait' order by reg desc)"
+				+ " TMP) where rn between ? and ?";
+		
+		Object[] args = {start, end};
+
+		return jdbcTemplate.query(sql, args, mapper);
+	}
+	
 
 	public Teacher showOne(String nick) throws Exception {
 		String sql = "select * from teacher where name = ? and state='active'";
@@ -96,14 +131,14 @@ public class TeacherDao {
 		return list.get(0);
 	}
 
-	public boolean apply(Teacher teacher, int memberNo) {
+	public boolean apply(Teacher teacher, int teacherNo) {
 		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait',?)";
 		
 		String[] extension = teacher.getPicture_type().split("/");
 		String filename = "lecturer/" + teacher.getName() + "." + extension[extension.length - 1];
 		
 		Object[] args = {teacher.getName(), teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
-				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(),memberNo};
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(),teacherNo};
 		
 		return jdbcTemplate.update(sql, args) > 0;
 	}
@@ -160,6 +195,26 @@ public class TeacherDao {
 		sql="update member set power='강사' where nick=?";
 		jdbcTemplate.update(sql,new Object[] {nick});
 	}
+	
+	public void stateedit2(int no) {
+		
+		String sql="update teacher set state='active' where teacherno=?";
+		jdbcTemplate.update(sql, new Object[] {no});
+		sql="update member set power='강사' where no=?";
+		jdbcTemplate.update(sql, new Object[] {no});
+	}
+	
+	public void teachernotapply(String nick) {
+		
+		String sql="delete teacher where name = ?";
+		jdbcTemplate.update(sql, new Object[] {nick});
+	}
+	
+	public void notaccept(int no) {
+		
+		String sql="delete teacher where teacherno=?";
+		jdbcTemplate.update(sql, new Object[] {no});
+	}
 
 	public void update(String originNick, String nick) {
 		String sql = "update teacher set name = ? where name = ?";
@@ -172,5 +227,13 @@ public class TeacherDao {
 		
 		return jdbcTemplate.query(sql, new Object[] {no, memberNo}, mapper).size() > 0;
 	}
-
+	
+	
+	public List<Teacher> detail(int teacherno) {
+		
+		String sql="select*from teacher where teacherno=?";
+		List<Teacher>list=jdbcTemplate.query(sql, new Object[] {teacherno},mapper);
+		return list;
+	}
+	
 }

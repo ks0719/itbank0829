@@ -6,29 +6,30 @@
 
 <h1>수강평가하기</h1>
 
-<form action="assess">
+<form action="${pageContext.request.contextPath}/lecture/assess" class="borN" method="post">
+	<input type="hidden" name="no" value="${no}">
 	지식 평점 : 
-	<select>
+	<select name="kin_grade">
 		<c:forEach var="i" begin="1" end="10" step="1">
 			<option value="${i}">${i}</option>
 		</c:forEach>
 	</select>
 	<br><br>
 	가격 평점 : 
-	<select>
+	<select name="price_grade">
 		<c:forEach var="i" begin="1" end="10" step="1">
 			<option value="${i}">${i}</option>
 		</c:forEach>
 	</select>
 	<br><br>
 	태도 평점 : 
-	<select>
+	<select name="kind_grade">
 		<c:forEach var="i" begin="1" end="10" step="1">
 			<option value="${i}">${i}</option>
 		</c:forEach>
 	</select>
 	<br><br>
-	<textarea rows="10" cols="80" placeholder="강사님께 한 마디 (5자 이상)" required></textarea>
+	<textarea rows="10" cols="60" name="detail" placeholder="강사님께 한 마디 (5자 이상)" required></textarea>
 	<br><br>
 	<input type="submit" value="평가 완료">
 </form>

@@ -73,22 +73,6 @@ public class TeacherController {
 		return memberDao.memberNo(nick);
 	}
 	
-	
-//	private int getTeacherNo(String nick) {
-//		if (nick == "") return 0;
-//		return memberDao.memberNo(nick);
-//	}
-//	
-//	private boolean isTeacher(HttpServletRequest req) throws Exception {
-//		String nick = getNick(req);
-//		if (nick == "") return false;
-//		
-//		int memberNo = getTeacherNo(nick);
-//		int no = Integer.parseInt(req.getParameter("no"));
-//		
-//		boolean result = teacherDao.isRight(no, memberNo);
-//		return result;
-//	}
 	private int getTeacherNo(String nick) {
 		if (nick == "") return 0;
 		return memberDao.memberNo(nick);
@@ -113,12 +97,18 @@ public class TeacherController {
 		}
 	}
 	
+	private int getteacherNo(String nick) {
+		if (nick == "") return 0;
+		log.debug("nick : " + nick);
+		return memberDao.memberNo(nick);
+	}
+	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
 	public String apply(MultipartHttpServletRequest mRequest, HttpServletRequest request) throws Exception {
-		String nick=getNick(request);
-		int memberNo = getMemberNo(nick);
+		int memberNo = Integer.parseInt(mRequest.getParameter("teacherno"));
 		
 		MultipartFile file = mRequest.getFile("file");
+		
 		if (!file.isEmpty()) {
 			String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecturer");
 	
@@ -129,7 +119,7 @@ public class TeacherController {
 			file.transferTo(target);
 		}
 
-		teacherDao.apply(new Teacher(mRequest),memberNo);
+		teacherDao.apply(new Teacher(mRequest), memberNo);
 		
 		return "data/maininfo";
 	}
@@ -196,7 +186,7 @@ public class TeacherController {
 		int listCount = teacherDao.count(type, key);
 		
 		int boardSize = 10;
-		int start = boardSize * pageNo - 9;
+		int start = boardSize * pageNo - (boardSize - 1);
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
 		
@@ -226,6 +216,7 @@ public class TeacherController {
 		m.addAttribute("end", end);
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
+		m.addAttribute("blockTotal", blockTotal);
 		m.addAttribute("url", url);
 		
 		return "teacher/lecturer";
@@ -562,13 +553,55 @@ public class TeacherController {
 	
 	@RequestMapping("/applynot")
 	public String notapply(HttpServletRequest request, Model model) {
+		String type = request.getParameter("type");
+		String key = request.getParameter("key");
 		
-		List<Teacher>list=teacherDao.list();
-		model.addAttribute("list", list);
+		int pageNo;
+		try {
+			pageNo = Integer.parseInt(request.getParameter("page"));
+		} catch(Exception e) {
+			pageNo = 1;
+		}
+		if (pageNo <= 0 ) pageNo = 1;
+		
+		int listCount=teacherDao.count2(type, key);
+		
+		int boardSize = 10;
+		int start = boardSize * pageNo - 9;
+		int end = start + boardSize -1;
+		if (end > listCount) end = listCount;
+		
+		List<Teacher>list2=teacherDao.list2(type, key, start, end);
+		
+		int blockSize = 10;
+		int blockTotal = (listCount + boardSize - 1) / boardSize;
+		int startBlock = (pageNo - 1) / blockSize * blockSize + 1;
+		int endBlock = startBlock + blockSize - 1;
+		if (endBlock > blockTotal) endBlock = blockTotal;
+		
+		
+		String url="applynot?";
+		if (type != null && key != null) {
+			url += "type=" + type + "&key=" + key + "&";
+			model.addAttribute("type", type);
+			model.addAttribute("key", key);
+		}
+		
+		
+		model.addAttribute("list", list2);
+		model.addAttribute("page",pageNo);
+		model.addAttribute("startBlock", startBlock);
+		model.addAttribute("endBlock", endBlock);
+		model.addAttribute("url", url);
+		
+		
+		
 		
 		return "teacher/applynot";
 	}
 	
+	
+	//여러개 승인
 	@RequestMapping(value="/checkapply", method=RequestMethod.POST)
 	public String apply(@RequestParam String teacherid) {
 		
@@ -576,5 +609,65 @@ public class TeacherController {
 		
 		return "teacher/applynot";
 		
+	}
+	
+	//상세보기 승인
+	@RequestMapping(value="/accept", method=RequestMethod.POST)
+	public String accept(@RequestParam String acceptteacher) throws Exception {
+		System.out.println(acceptteacher);
+		int no;
+		try {
+			no=Integer.parseInt(acceptteacher);
+		}catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		teacherDao.stateedit2(no);
+		
+		return "redirect:teacher/applynot";
+	}
+	
+	//여러개 거절
+	@RequestMapping(value="/checkdelete", method=RequestMethod.POST)
+	public String applydelete(@RequestParam String teacherid) {
+		
+		teacherDao.teachernotapply(teacherid);
+		return "teacher/applynot";
+	}
+	
+	
+	//상세보기 거절
+	@RequestMapping(value="/acceptnot", method=RequestMethod.POST)
+	public String acceptnot(@RequestParam String notaccept) throws Exception {
+		System.out.println(notaccept);
+		int no;
+		try {
+			no=Integer.parseInt(notaccept);
+		}catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		teacherDao.notaccept(no);
+		
+		return "teacher/applynot";
+	}
+	
+	
+	@RequestMapping("/applynotdetail")
+	public String detail(HttpServletRequest request, String teacherno, Model model) throws Exception {
+		int noI;
+		try {
+			noI=Integer.parseInt(teacherno);
+		}catch(Exception e) {
+			throw new Exception("404");
+		}
+		
+		List<Teacher>teacher=teacherDao.detail(noI);
+		if(teacher.size()==0) throw new Exception("404");
+		
+		model.addAttribute("teacherno",teacherno);
+		model.addAttribute("teacherList",teacher);
+		
+		return "teacher/applynotdetail";
 	}
 }

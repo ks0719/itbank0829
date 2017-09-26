@@ -3,6 +3,8 @@ package spring.db.teacher;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class Assess {
 	private int no;
 	private int kin_grade;
@@ -16,6 +18,13 @@ public class Assess {
 		setPrice_grade(rs.getInt("price_grade"));
 		setKind_grade(rs.getInt("kind_grade"));
 		setDetail(rs.getString("detail"));
+	}
+	public Assess(HttpServletRequest req) {
+		setNo(Integer.parseInt(req.getParameter("no")));
+		setKin_grade(Integer.parseInt(req.getParameter("kin_grade")));
+		setPrice_grade(Integer.parseInt(req.getParameter("price_grade")));
+		setKind_grade(Integer.parseInt(req.getParameter("kind_grade")));
+		setDetail(req.getParameter("detail"));
 	}
 	public int getNo() {
 		return no;

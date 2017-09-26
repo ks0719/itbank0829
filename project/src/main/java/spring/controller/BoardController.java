@@ -112,27 +112,30 @@ public class BoardController {
 	
 	@RequestMapping("/{path}")
 	public String board(@PathVariable String path, HttpServletRequest request, Model m) {	
-		String type = request.getParameter("type");
+		String search = request.getParameter("search");
 		String key = request.getParameter("key");
+		
+//		log.debug("path : " + path);
 		
 		int pageNo;
 		try {
-			pageNo = Integer.parseInt("page");
+			pageNo = Integer.parseInt(request.getParameter("page"));
 		} catch(Exception e) {
 			pageNo = 1;
 		}
 		if (pageNo <= 0 ) pageNo = 1;
+//		log.debug("pageNo : " + pageNo);
 
-		int listCount = boardDao.count(path, type, key);
+		int listCount = boardDao.count(path, search, key);
 //		log.debug(String.valueOf(listCount));
 		
-		int boardSize = 10;
-		int start = boardSize * pageNo - 9;
+		int boardSize = 3;
+		int start = boardSize * pageNo - (boardSize - 1);
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
 		
 //		log.debug(start + ", " + end);
-		List<Board> list = boardDao.list(path, type, key, start, end);
+		List<Board> list = boardDao.list(path, search, key, start, end);
 		
 		int blockSize = 10;
 		int blockTotal = (listCount + boardSize - 1) / boardSize;
@@ -141,9 +144,9 @@ public class BoardController {
 		if (endBlock > blockTotal) endBlock = blockTotal;
 		
 		String url = path + "?";
-		if (type != null && key != null) {
-			url += "type=" + type + "&key=" + key + "&";
-			m.addAttribute("type", type);
+		if (search != null && key != null) {
+			url += "search=" + search + "&key=" + key + "&";
+			m.addAttribute("search", search);
 			m.addAttribute("key", key);
 		}
 		
@@ -151,9 +154,10 @@ public class BoardController {
 		m.addAttribute("page", pageNo);
 		m.addAttribute("startBlock", startBlock);
 		m.addAttribute("endBlock", endBlock);
+		m.addAttribute("blockTotal", blockTotal);
 		m.addAttribute("url", url);
 		m.addAttribute("path", path);
-		return "board/" + path;
+		return "board/list";
 	}
 	
 	@RequestMapping(value="/{path}/write", method=RequestMethod.POST)
@@ -192,6 +196,10 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/detail")
 	public String detail(@PathVariable String path, HttpServletRequest req, String no, Model m) throws Exception {
+		String page = req.getParameter("page");
+		String search = req.getParameter("search");
+		String key = req.getParameter("key");
+		
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -206,7 +214,14 @@ public class BoardController {
 		
 		int memberNo = getMemberNo(getNick(req));
 		
-		m.addAttribute("no", no);
+		String url = path + "?page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		
+		m.addAttribute("url", url);
 		m.addAttribute("memberNo", memberNo);
 		m.addAttribute("boardList", board);
 		m.addAttribute("list", list);
@@ -278,13 +293,12 @@ public class BoardController {
 		} catch(Exception e) {
 			throw new Exception("404");
 		}
-//		log.debug("삭제");
+		
+		String savePath = req.getServletContext().getRealPath("/resource/file/board");
+		deleteFile(savePath, String.valueOf(no));
 		
 		boardDao.delete(noI);
 		commentDao.delete(noI);
-		
-//		log.debug("no : " + no + ", context : " + context);
-//		log.debug(String.valueOf(context.equals(no)));
 
 		if (no.equals(context)) {
 			return "redirect:/board/" + path;
@@ -302,7 +316,7 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		String savePath = request.getServletContext().getRealPath("/resource/file");
+		String savePath = request.getServletContext().getRealPath("/resource/file/board");
 		
 		Board board = boardDao.detailOne(noI);
 		
