@@ -3,6 +3,7 @@ package spring.controller;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URLDecoder;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -301,6 +303,18 @@ public class TeacherController {
 			File target = new File(savePath, filename);
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
+		}
+
+		List<MultipartFile> list = mRequest.getFiles("video");
+		savePath = mRequest.getServletContext().getRealPath("/resource/file/lectureVideo");
+		int count = 1;
+		for(MultipartFile f : list) {
+			String[] extension = f.getContentType().split("/");
+			String filename = no + "(" + count + ")." + extension[extension.length - 1];
+			File target = new File(savePath, filename);
+			if(!target.exists()) target.mkdirs();
+			f.transferTo(target);
+			count++;
 		}
 		
 		return "teacher/teacherMain";

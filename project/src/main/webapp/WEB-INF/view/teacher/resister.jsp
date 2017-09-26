@@ -31,6 +31,9 @@
 		<option value="원격강의">원격강의</option>
 	</select>
 	<br><br>
+	동영상
+	<input type="file" name="video" multiple>
+	<br><br>
 	<input type="text" name="period" id="period" placeholder="강의 기간 (YY.MM.DD~YY.MM.DD)" required>
 	<br><br>
 	<input type="text" name="time" id="time" placeholder="강의 시간 (HH:mm~HH:mm)" required>
