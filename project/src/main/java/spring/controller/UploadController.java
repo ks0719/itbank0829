@@ -1,12 +1,20 @@
 package spring.controller;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -17,6 +25,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UploadController {
+	
+	private String getNick(HttpServletRequest req) throws Exception {
+		Cookie[] c=req.getCookies();
+		if(c != null){
+	        for(int i=0; i < c.length; i++){
+	            Cookie ck = c[i] ;
+	            // 저장된 쿠키 이름을 가져온다
+	            String cName = ck.getName();
+	            // 쿠키값을 가져온다
+	            String cValue =  URLDecoder.decode(ck.getValue(),"utf-8");
+//	            log.debug("쿠키값  :"+cValue);
+	            if(cName.equals("mynick")) {
+	            	return cValue;
+	            }
+	        }
+		}
+		return "";
+	}
+	
 	private Logger log=LoggerFactory.getLogger(getClass());
 	//단일파일업로드
 	@RequestMapping("/photoUpload")
@@ -93,8 +120,21 @@ public class UploadController {
 		    }
 		    return sb.toString();
 		  }
+@RequestMapping("/capture")
+	public String capture(HttpServletRequest request) throws Exception {
+			String mynick=getNick(request);
+			Robot robot = new Robot();
+			//내 모니터 화면의 크기를 가져오는 방법
+			Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+			//모니터의 화면을 selectRect에 가로,세로 표현
+			Rectangle selectRect = new Rectangle((int)screen.getWidth(), (int)screen.getHeight());
+				BufferedImage buffimg = robot.createScreenCapture(selectRect);
+				File screenfile = new File(request.getServletContext().getRealPath("/resource/remote/"),mynick+"_screen.png");
+				ImageIO.write(buffimg, "png", screenfile);		
+
+	
 
 
-
-
+return "/capture";
+}
 }

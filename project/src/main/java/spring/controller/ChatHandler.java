@@ -19,6 +19,9 @@ public class ChatHandler extends TextWebSocketHandler{
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		set.add(session);
 		log.info("클라이언트 접속 : "+session.getRemoteAddress());
+		//Map<String,Object> attr=session.getAttributes();
+		//og.debug("별걸 다하네 : "+attr.get("mynick"));
+		//log.debug("이건또 뭐야?"+session.getAttributes());
 	}
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
