@@ -1,6 +1,9 @@
 package spring.controller;
 
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -139,6 +142,20 @@ public class LectureController {
 			throw new Exception("404");
 		}
 		LectureInfo lecture = lectureDao.showOne(no);
+		
+		// 강의 시작 날짜에는 신청 불가
+		String[] period = lecture.getPeriod().split("~");
+		String start = period[0];
+		
+		Date d = new Date();
+		DateFormat date = new SimpleDateFormat("yy.MM.dd");
+		String now = date.format(d);
+		
+		if (start.compareTo(now) <= 0) {
+			lectureDao.end();
+			return "lecture/study";
+		}
+		
 		m.addAttribute("lecture", lecture);
 		
 		//현재 로그인한 회원의 보유 포인트를 가져와야함
