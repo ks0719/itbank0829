@@ -231,11 +231,10 @@ $(document).ready(function(){
 	function resisterOK() {
   		var regex1 = /^\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])~\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[0-1])$/;
   		var regex2 = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])~([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
+  		var regex3 = /^[0-9]+$/;
 	 	var period = document.querySelector("#period");
 	 	var time = document.querySelector("#time");
-	 	
-	 	console.log(period.value);
-	 	console.log(time.value);
+	 	var price = document.querySelector("#price");
 	 	
 	 	if(!regex1.test(period.value)) {
 	 		alert("강의기간 형식을 확인해주세요 (YY.MM.DD~YY.MM.DD)");
@@ -243,6 +242,9 @@ $(document).ready(function(){
 	 	} else if(!regex2.test(time.value)) {
 	 		alert("강의시간 형식을 확인해주세요 (HH:mm~HH:mm)");
 	 		$("#time").focus();
+	 	} else if(!regex3.test(price.value)) {
+	 		alert("강의가격 형식을 확인해주세요");
+	 		$("#price").focus();
 	 	} else {
 	 		return true;
 	 	}

@@ -22,6 +22,10 @@ public class LectureDao {
 		return new Assess(rs);
 	};
 	
+	RowMapper<LectureVideo> mapper3 = (rs, index) -> {
+		return new LectureVideo(rs);
+	};
+	
 	public int insert(LectureInfo info) {
 		String sql = "select lecture_info_seq.nextval from dual";
 		
@@ -175,6 +179,18 @@ public class LectureDao {
 		sql = "update lecture_info set kin_grade = ?, price_grade = ?, kind_grade = ? where no = ?";
 		
 		jdbcTemplate.update(sql, df.format(kin_grade), df.format(price_grade), df.format(kind_grade), no);
+	}
+
+	public void video(int no, String filename, String originalFilename, String contentType, long size) {
+		String sql = "insert into lecture_video values(?, ?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sql, no, filename, originalFilename, contentType, size);
+	}
+	
+	public List<LectureVideo> videoList(int no) {
+		String sql = "select * from lecture_vodel where no = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
 	}
 
 }

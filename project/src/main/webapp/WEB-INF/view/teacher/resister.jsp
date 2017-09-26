@@ -38,7 +38,7 @@
 	<br><br>
 	<input type="text" name="time" id="time" placeholder="강의 시간 (HH:mm~HH:mm)" required>
 	<br><br>
-	<input type="text" name="price" placeholder="강의 가격" required>
+	<input type="text" name="price" id="price" placeholder="강의 가격" required>
 	<br><br>
 	<textarea rows="10" cols="80" name="intro" placeholder="강의소개" required></textarea>
 	<br><br>
