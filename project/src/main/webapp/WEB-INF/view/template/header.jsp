@@ -11,55 +11,6 @@
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	initialize();
-	
-	$("#send").on("click", function(){
-		if(!window.websocket) return;
-		
-		var message = $("#chat").val();
-		websocket.send(message);
-		$("#chat").val("");
-		$("#chat").focus();
-	});
-});
-
-$(window).on("unload", finalize);
-
-function initialize(){
-	var websocketURI = "ws://localhost:8080/project/chat";
-	
-	//접속
-	window.websocket = new WebSocket(websocketURI);
-	console.log("웹소켓 연결 시도");
-	console.log(window.websocket);
-	
-	//이벤트 설정
-	websocket.onopen = function(e){
-		console.log("웹소켓 연결 성공");
-		console.log(e);
-	};
-	websocket.onmessage = function(e){
-		console.log("메세지 수신");
-		console.log(e);
-		
-		$("#display").val($("#display").val() + "\n" + e.data );
-	};
-	websocket.onerror = function(e){
-		console.log("오류 발생");
-		console.log(e);
-	};
-	websocket.onclose = function(e){
-		console.log("웹소켓 연결 종료");
-		console.log(e);
-	};
-}
-function finalize(){
-	if(window.websocket){
-		websocket.close();
-	}
-	console.log("웹소켓 연결 종료");
-}
 
 function wrapWindowByMask(){
     // 화면의 높이와 너비를 변수로 만듭니다.
@@ -928,6 +879,57 @@ function chat_start(){
 <c:if test="${!empty nick }">
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
 <%session.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8")); %>
+<script>
+$(document).ready(function(){
+	initialize();
+	
+	$("#send").on("click", function(){
+		if(!window.websocket) return;
+		
+		var message = $("#chat").val();
+		websocket.send(message);
+		$("#chat").val("");
+		$("#chat").focus();
+	});
+});
+
+$(window).on("unload", finalize);
+
+function initialize(){
+	var websocketURI = "ws://localhost:8080/project/chat";
+	
+	//접속
+	window.websocket = new WebSocket(websocketURI);
+	console.log("웹소켓 연결 시도");
+	console.log(window.websocket);
+	
+	//이벤트 설정
+	websocket.onopen = function(e){
+		console.log("웹소켓 연결 성공");
+		console.log(e);
+	};
+	websocket.onmessage = function(e){
+		console.log("메세지 수신");
+		console.log(e);
+		
+		$("#display").val($("#display").val() + "\n" + e.data );
+	};
+	websocket.onerror = function(e){
+		console.log("오류 발생");
+		console.log(e);
+	};
+	websocket.onclose = function(e){
+		console.log("웹소켓 연결 종료");
+		console.log(e);
+	};
+}
+function finalize(){
+	if(window.websocket){
+		websocket.close();
+	}
+	console.log("웹소켓 연결 종료");
+}
+</script>
 <div id="draggable" class="ui-widget-content" style=
 "top: 70%;
  left: 75%; 
