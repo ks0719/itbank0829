@@ -32,7 +32,7 @@
 	</select>
 	<br><br>
 	동영상
-	<input type="file" name="video" multiple>
+	<input type="file" name="video" id="video" multiple>
 	<br><br>
 	<input type="text" name="period" id="period" placeholder="강의 기간 (YY.MM.DD~YY.MM.DD)" required>
 	<br><br>

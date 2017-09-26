@@ -141,6 +141,7 @@ $(document).ready(function(){
         		}
         	});
 		});
+		
 		$(document).on("click", ".comment-best", function() {
 			var commentNo = $(this).attr('value');
 
@@ -153,6 +154,7 @@ $(document).ready(function(){
 				}
 			});
 		});
+		
 		$(document).on("click", ".comment-delete", function() {
 			var commentNo = $(this).attr('value');
 			var result = confirm("정말 삭제하시겠습니까?");
@@ -225,7 +227,6 @@ $(document).ready(function(){
 				location.href = path + "/detail?no=" + no + "&page=" + page;
 			}
 		});
-		
 	});
 	
 	function resisterOK() {

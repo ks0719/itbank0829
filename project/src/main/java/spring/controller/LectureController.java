@@ -184,7 +184,7 @@ public class LectureController {
 		int listCount = lectureDao.count(type, key);
 		log.debug(String.valueOf(listCount));
 		
-		int boardSize = 3;
+		int boardSize = 10;
 		int start = boardSize * (pageNo-1) +1;
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
@@ -227,8 +227,13 @@ public class LectureController {
 	
 	@RequestMapping("/listening")
 	public String listen(HttpServletRequest req, Model m) {
-		m.addAttribute("no", req.getParameter("no"));
+		m.addAttribute("video", req.getParameter("video"));
 		
-		return "lecture/lectureList";
+		return "lecture/listening";
+	}
+	
+	public void lectureManage() {
+		lectureDao.end();
+		lectureDao.clean();
 	}
 }

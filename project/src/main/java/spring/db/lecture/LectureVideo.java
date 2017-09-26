@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 public class LectureVideo {
 	private int no;
+	private String title;
 	private String filename;
 	private String filerealname;
 	private String filetype;
@@ -12,6 +13,7 @@ public class LectureVideo {
 	
 	public LectureVideo(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
+		setTitle(rs.getString("title"));
 		setFilename(rs.getString("filename"));
 		setFilerealname(rs.getString("filerealname"));
 		setFiletype(rs.getString("filetype"));
@@ -22,6 +24,12 @@ public class LectureVideo {
 	}
 	public void setNo(int no) {
 		this.no = no;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getFilename() {
 		return filename;
