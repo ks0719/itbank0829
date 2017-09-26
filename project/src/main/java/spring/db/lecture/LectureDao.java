@@ -1,5 +1,10 @@
 package spring.db.lecture;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,10 @@ public class LectureDao {
 	
 	RowMapper<Assess> mapper2 = (rs, index) -> {
 		return new Assess(rs);
+	};
+	
+	RowMapper<LectureVideo> mapper3 = (rs, index) -> {
+		return new LectureVideo(rs);
 	};
 	
 	public int insert(LectureInfo info) {
@@ -175,6 +184,85 @@ public class LectureDao {
 		sql = "update lecture_info set kin_grade = ?, price_grade = ?, kind_grade = ? where no = ?";
 		
 		jdbcTemplate.update(sql, df.format(kin_grade), df.format(price_grade), df.format(kind_grade), no);
+	}
+
+	public void video(int no, String title, String filename, String originalFilename, String contentType, long size) {
+		String sql = "insert into lecture_video values(?, ?, ?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sql, no, title, filename, originalFilename, contentType, size);
+	}
+	
+	public List<LectureVideo> videoList(int no) {
+		String sql = "select * from lecture_video where no = ? order by filename";
+		
+		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
+	}
+	
+	public void end() {
+		String sql = "select * from lecture_info where state = '등록 가능'";
+		
+		List<LectureInfo> list = jdbcTemplate.query(sql, mapper);
+		
+		for (LectureInfo info : list) {
+			String[] sp = info.getPeriod().split("~");
+			String start = sp[0];
+			
+			Date d = new Date();
+			DateFormat date = new SimpleDateFormat("yy.MM.dd");
+			String now = date.format(d);
+			
+			if (start.compareTo(now) <= 0) {
+				sql = "update lecture_info set state='마감' where no = ?";
+				
+				jdbcTemplate.update(sql, info.getNo());
+			}
+		}
+	}
+
+	public void clean() {
+		String sql = "select * from lecture_info where state = '마감'";
+		
+		List<LectureInfo> list = jdbcTemplate.query(sql, mapper);
+		
+		for (LectureInfo info : list) {
+			String[] sp = info.getPeriod().split("~");
+			String end = sp[1];
+			
+			Date d = new Date();
+			DateFormat date = new SimpleDateFormat("yy.MM.dd");
+			String now = date.format(d);
+			
+			if (end.compareTo(now) < 0) {
+				sql = "update lecture_info set state='종료' where no = ?";
+				
+				jdbcTemplate.update(sql, info.getNo());
+				
+				sql = "delete lecture_video where no = ?";
+				
+				jdbcTemplate.update(sql, info.getNo());
+				
+				deleteFile(String.valueOf(info.getNo()));
+			}
+		}
+	}
+	
+	private void deleteFile(String filename) {
+		File f = new File("/resource/file/lectureVideo");
+		     
+		String fileList[] = f.list(new FilenameFilter() {
+		 
+		    @Override
+		    public boolean accept(File dir, String name) {
+		        return name.startsWith(filename);
+		    }
+		 
+		});
+		
+	    File file;
+		for (int i = 0; i < fileList.length; i++) {
+			file = new File("/resource/file/lectureVideo", fileList[i]);
+			file.delete();
+		}
 	}
 
 }

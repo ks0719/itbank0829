@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
+import spring.db.lecture.LectureVideo;
 import spring.db.member.Member;
 import spring.db.member.MemberDao;
 import spring.db.mylecture.MyLecture;
@@ -183,7 +184,7 @@ public class LectureController {
 		int listCount = lectureDao.count(type, key);
 		log.debug(String.valueOf(listCount));
 		
-		int boardSize = 3;
+		int boardSize = 10;
 		int start = boardSize * (pageNo-1) +1;
 		int end = start + boardSize -1;
 		if (end > listCount) end = listCount;
@@ -211,5 +212,28 @@ public class LectureController {
 		m.addAttribute("url", url);
 		
 		return "lecture/study";
+	}
+	
+	@RequestMapping("/lectureList")
+	public String list(HttpServletRequest req, Model m) {
+		int no = Integer.parseInt(req.getParameter("no"));
+		
+		List<LectureVideo> list = lectureDao.videoList(no);
+		
+		m.addAttribute("list", list);
+		
+		return "lecture/lectureList";
+	}
+	
+	@RequestMapping("/listening")
+	public String listen(HttpServletRequest req, Model m) {
+		m.addAttribute("video", req.getParameter("video"));
+		
+		return "lecture/listening";
+	}
+	
+	public void lectureManage() {
+		lectureDao.end();
+		lectureDao.clean();
 	}
 }

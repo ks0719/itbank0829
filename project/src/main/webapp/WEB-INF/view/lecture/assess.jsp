@@ -4,8 +4,6 @@
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-<h1>수강평가하기</h1>
-
 <form action="${pageContext.request.contextPath}/lecture/assess" class="borN" method="post">
 	<input type="hidden" name="no" value="${no}">
 	지식 평점 : 
