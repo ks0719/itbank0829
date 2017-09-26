@@ -33,7 +33,6 @@ $(document).ready(function(){
 	
 	
 	$("#apply").on("click", function(){
-		console.log("승인");
 		var result=false;
 		$("input[name=checkB]:checked").each(function(){
 			var teacherid=$(this).val();	
@@ -57,7 +56,6 @@ $(document).ready(function(){
 	
 	
 	$("#deleteteacher").on("click", function(){
-		console.log("거절눌름");
 		var result=false;
 		$("input[name=checkB]:checked").each(function(){
 			var teacherid=$(this).val();	
@@ -119,7 +117,7 @@ $(document).ready(function(){
 					${teacher.teacherno }
 				</td>
 				<td>
-					<a href="${pageContext.request.contextPath}/teacher/applynotdetail?no=${teacher.name}">${teacher.name }</a>
+					<a href="${pageContext.request.contextPath}/teacher/applynotdetail?teacherno=${teacher.teacherno}">${teacher.name }</a>
 				</td>
 				<td>
 					${teacher.sort }
@@ -161,12 +159,11 @@ $(document).ready(function(){
 	    </div>
 	</div>
 	
-	<form action="memberList" class="wrap">
+	<form action="applynot" class="wrap">
 		<input type="hidden" name="page" value="1">
 		<select name="type" title="분류선택" class="user-input">
-			<option value="id">ID검색</option>
+			<option value="sort">주 언어</option>
 			<option value="name">이름검색</option>
-			<option value="nick">닉네임검색</option>
 		</select>
 		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
 		<input type="submit" value="검색" class="input-btn">

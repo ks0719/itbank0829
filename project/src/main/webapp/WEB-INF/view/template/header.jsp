@@ -645,6 +645,8 @@ $(document).ready(function(){
 			$("#teacher").addClass('active');
 		}else if(location.indexOf('consumer')==0){
 			$("#consumer").addClass('active');
+		}else if(location.indexOf('member')==0){
+			$("#member").addClass('active');
 		}
 		
 	});
@@ -1060,7 +1062,7 @@ function chat_order(){
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
 					</a>
 				</li>
-				<li>
+				<li id="member">
 					<a href="${pageContext.request.contextPath}/member/memberlist">
 						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
 					</a>
