@@ -102,37 +102,26 @@
 					<div class="example-modal">
 						<div class="modal modal-primary">
 							<div class="modal-dialog">
-							
-							
-							
 								<div class="modal-content">
 									<div class="input-group">
-									
+										<div class="modal-body">
+											<textarea placeholder="댓글 입력" id="user-input${board.no}" name="detail" style="color: black; width:570px; height: 150px;" required></textarea>
+										</div>
 										
-										
-											<div class="modal-body">
-												<textarea placeholder="댓글 입력" id="user-input${board.no}" name="detail" style="color: black; width:570px; height: 150px;" required></textarea>
-											</div>
-											
-											<div class="modal-footer">
-												<span class="input-group-btn">
-													<c:choose>
-														<c:when test="${not empty cookie.mynick.value}">
-															<Button class="btn btn-info btn-flat board-comment" data-no="${board.no}" data-context="${no}">등록</Button>
-														</c:when>
-														<c:otherwise>
-															<Button class="btn btn-info btn-flat" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">등록</Button>
-														</c:otherwise>
-													</c:choose>
-												</span>
-											</div>
-										
-										
+										<div class="modal-footer">
+											<span class="input-group-btn">
+												<c:choose>
+													<c:when test="${not empty cookie.mynick.value}">
+														<Button class="btn btn-info btn-flat board-comment" data-no="${board.no}" data-context="${no}">등록</Button>
+													</c:when>
+													<c:otherwise>
+														<Button class="btn btn-info btn-flat" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">등록</Button>
+													</c:otherwise>
+												</c:choose>
+											</span>
+										</div>
 									</div>
 								</div>
-								
-								
-								
 							</div>					
 						</div>
 					</div>
@@ -142,42 +131,81 @@
 					
 					
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					<!-- 댓글 출력 공간 시작 -->
 					
-					<div id="comments${board.no}">
-						<c:forEach var="comment" items="${list}">
-							<c:if test="${comment.context eq board.no}">
-								<div id="comment${comment.no}">
-									${comment.detail}-${comment.writer} ${comment.reg}
-									<c:choose>
-										<c:when test="${comment.memberNo eq memberNo}">
-											<Button onclick="alert('자신의 글은 추천할 수 없습니다'); return false;">추천</Button> <span id="best${comment.no}">${comment.best}</span>
-										</c:when>
-										<c:when test="${not empty cookie.mynick.value}">
-											<Button class="comment-best" value="${comment.no}">추천</Button> <span id="best${comment.no}">${comment.best}</span>
-										</c:when>
-										<c:otherwise>
-											<Button onclick="alert('로그인이 필요한 서비스 입니다'); return false;">추천</Button> <span id="best${comment.no}">${comment.best}</span>
-										</c:otherwise>
-									</c:choose>
-									<c:choose>
-										<c:when test="${memberNo eq comment.memberNo}">
-											<button class="comment-delete" value="${comment.no}">삭제</button>
-										</c:when>
-									</c:choose>
-									<br>
+					<div class="example-modal">
+						<div class="modal modal">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div id="comments${board.no}">
+										<c:forEach var="comment" items="${list}">
+											<c:if test="${comment.context eq board.no}">
+												<div id="comment${comment.no}">
+													<div class="modal-header"></div>
+													<div class="modal-body">
+															<div class="col-md-12">
+																<ul class="timeline">
+																	<li>
+																		<div class="timeline-item">
+																			<span class="time"><i class="fa fa-clock-o"></i>${comment.reg}</span>
+														                    <h3 class="timeline-header"><a href="#">${comment.writer}(누르면 쪽지로 가게끔 하기)</a></h3>
+														                    <div class="timeline-body">
+														                    	${comment.detail}
+														                    </div>
+														                    <div class='timeline-footer'></div>
+																		</div>
+																	</li>
+																</ul>
+															</div>
+													</div>
+													<div class="modal-footer">
+														<c:choose>
+															<c:when test="${comment.memberNo eq memberNo}">
+															
+															
+															
+																<a href="" onclick="alert('자신의 글은 추천할 수 없습니다'); return false;">추천</a> <span>${comment.best}</span>
+																
+																
+																
+															</c:when>
+															<c:when test="${not empty cookie.mynick.value}">
+															
+															
+																
+																<a href="" class="comment-best" value="${comment.no}">추천</a> <span id="best${comment.no}">${comment.best}</span>
+																
+																
+																
+															</c:when>
+															<c:otherwise>
+															
+															
+															
+																<a href="" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">추천</a> <span>${comment.best}</span>
+																
+																
+																
+															</c:otherwise>
+														</c:choose>
+														<c:choose>
+															<c:when test="${memberNo eq comment.memberNo}">
+															
+															
+																<a href="" class="comment-delete" value="${comment.no}">삭제</a>
+																
+																
+																
+															</c:when>
+														</c:choose>
+													</div>
+												</div>
+											</c:if>
+										</c:forEach>
+									</div>
 								</div>
-							</c:if>
-						</c:forEach>
+							</div>
+						</div>
 					</div>
 		
 					<!-- 댓글 출력 공간 끝 -->
