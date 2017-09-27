@@ -102,36 +102,42 @@
 					<div class="example-modal">
 						<div class="modal modal-primary">
 							<div class="modal-dialog">
+							
+							
+							
 								<div class="modal-content">
 									<div class="input-group">
 									
-									
-									
-											<form action="#" class="board-comment" value="${board.no}">
-										<div class="modal-body">
-											<textarea placeholder="댓글 입력" class="user-input" name="detail" style="color: black; width:570px; height: 150px; resize: none;" required></textarea>
-										</div>
 										
-										<div class="modal-footer">
-												<input type="hidden" name="topcontext" value="${no}">
-												<input type="hidden" name="context" value="${board.no}">
 										
-												<span class="input-group-btn">
-													<c:choose>
-														<c:when test="${not empty cookie.mynick.value}">
-																<input type="submit" class="btn btn-info btn-flat" value="등록">
-														</c:when>
-														<c:otherwise>
-																<input type="submit" class="btn btn-info btn-flat" onclick="alert('로그인이 필요한 서비스 입니다'); return false;" value="등록">
-														</c:otherwise>
-													</c:choose>
-												</span>
-										</div>
+											<div class="modal-body">
+												<textarea placeholder="댓글 입력" class="user-input" name="detail" style="color: black; width:570px; height: 150px;" required></textarea>
+											</div>
+											
+											<div class="modal-footer">
+												<form action="#" class="board-comment" value="${board.no}">
+													<input type="hidden" name="topcontext" value="${no}">
+													<input type="hidden" name="context" value="${board.no}">
+											
+													<span class="input-group-btn">
+														<c:choose>
+															<c:when test="${not empty cookie.mynick.value}">
+																	<input type="submit" class="btn btn-info btn-flat" value="등록">
+															</c:when>
+															<c:otherwise>
+																	<input type="submit" class="btn btn-info btn-flat" onclick="alert('로그인이 필요한 서비스 입니다'); return false;" value="등록">
+															</c:otherwise>
+														</c:choose>
+													</span>
+												</form>
+											</div>
 										
-											</form>
 										
 									</div>
 								</div>
+								
+								
+								
 							</div>					
 						</div>
 					</div>
