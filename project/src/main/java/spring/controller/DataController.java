@@ -326,6 +326,8 @@ public class DataController {
 		String box = (req.getParameter("box") == null) ? "index" : req.getParameter("box");
 
 		String nick = getNick(req);
+		
+		lectureDao.clean();
 
 		List<MyLecture> list = myLectureDao.list(nick, box, page);
 
