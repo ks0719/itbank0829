@@ -137,6 +137,8 @@ public class BoardDao {
 		
 		int best = jdbcTemplate.queryForObject(sql, new Object[] {boardno, memberno}, Integer.class);
 		
+		System.out.println("best : " + best);
+		
 		if (best == 0) {
 			sql = "insert into best values(?, ?)";
 			jdbcTemplate.update(sql, boardno, memberno);

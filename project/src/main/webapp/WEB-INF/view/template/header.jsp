@@ -127,6 +127,24 @@ $(document).ready(function(){
 			}
 		});
 		
+		$(document).on("click", ".board-best", function() {
+			var contextNo = $(this).data('no');
+			event.preventDefault();
+        	
+        	$.ajax({
+        		url: "best",
+        		data: {"no" : contextNo},
+        		async : false,
+        		success: function(res) {
+					if (res == "true") {
+						alert("추천이 완료되었습니다");
+					} else {
+						alert("이미 추천하셨습니다");
+					}
+        		}
+        	});
+		});
+		
 		$(document).on("click", ".board-comment", function() {
 			var contextNo = $(this).data('no');
 			var topcontextNo = $(this).data('context');
