@@ -31,6 +31,11 @@
 						제목
 					</td>
 					<td class="text-left">
+						<c:choose>
+							<c:when test="${board.seq > 1}">
+							답글 : 
+							</c:when>
+						</c:choose>
 						${board.title}
 					</td>
 				</tr>

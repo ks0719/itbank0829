@@ -235,7 +235,6 @@ public class LectureDao {
 			String now = date.format(d);
 			
 			if (end.compareTo(now) < 0) {
-				System.out.println("번호 : " + info.getNo());
 				sql = "update lecture_info set state='종료' where no = ?";
 				
 				jdbcTemplate.update(sql, info.getNo());
