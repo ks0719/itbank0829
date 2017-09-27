@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -571,10 +572,14 @@ public class TeacherController {
 	
 	
 	@RequestMapping("/applynot")
-	public String notapply(HttpServletRequest request, Model model) {
+	public String notapply(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
 		
+		String name=(String) session.getAttribute("member");
+		if(name.equals("관리자")) {
+			
+	
 		int pageNo;
 		try {
 			pageNo = Integer.parseInt(request.getParameter("page"));
@@ -617,6 +622,9 @@ public class TeacherController {
 		
 		
 		return "teacher/applynot";
+		}else {
+			throw new Exception("일반 접근 제한");
+		}
 	}
 	
 	
@@ -643,7 +651,7 @@ public class TeacherController {
 		
 		teacherDao.stateedit2(no);
 		
-		return "redirect:teacher/applynot";
+		return "teacher/applynot";
 	}
 	
 	//여러개 거절
@@ -673,7 +681,13 @@ public class TeacherController {
 	
 	
 	@RequestMapping("/applynotdetail")
-	public String detail(HttpServletRequest request, String teacherno, Model model) throws Exception {
+	public String detail(HttpServletRequest request, String teacherno, Model model, HttpSession session) throws Exception {
+		
+		String name=(String) session.getAttribute("member");
+		if(name.equals("관리자")) {
+			
+			
+		
 		int noI;
 		try {
 			noI=Integer.parseInt(teacherno);
@@ -688,5 +702,8 @@ public class TeacherController {
 		model.addAttribute("teacherList",teacher);
 		
 		return "teacher/applynotdetail";
+		}else {
+			throw new Exception("일반 접근 제한");
+		}
 	}
 }

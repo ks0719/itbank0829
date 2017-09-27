@@ -46,6 +46,14 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		  return nick;
 		 
 	  }
+	  
+	  public String powercheck(String id, String pw) {
+		  
+		  String sql="select power from member where id=? and pw=?";
+		  String power=jdbcTemplate.queryForObject(sql, new Object[] {id, pw},String.class);
+		  return power;
+	  }
+	  
 	  public String mypwid(String id) {
 		  String sql="select pw from member where id=?";
 		  String pw=jdbcTemplate.queryForObject(sql, new Object[] {id},String.class);

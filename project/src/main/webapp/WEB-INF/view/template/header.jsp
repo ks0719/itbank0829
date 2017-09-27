@@ -919,6 +919,8 @@ function chat_start(){
     	<input type="hidden" value="${param}" name="param">
         <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary" onclick="return logincheck();"/>
         <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/idfind';" class="btn btn-default">아이디찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/pwfind';" class="btn btn-default">비밀번호찾기</button>
     </form>
     </div>
 </div>
