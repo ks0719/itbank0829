@@ -27,7 +27,7 @@
 		</c:forEach>
 	</select>
 	<br><br>
-	<textarea rows="10" cols="60" name="detail" placeholder="강사님께 한 마디 (5자 이상)" required></textarea>
+	<textarea rows="10" cols="60" name="detail" placeholder="강사님께 한 마디" required></textarea>
 	<br><br>
 	<input type="submit" value="평가 완료">
 </form>

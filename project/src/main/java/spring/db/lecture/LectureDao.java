@@ -260,10 +260,12 @@ public class LectureDao {
 		 
 		});
 		
-	    File file;
-		for (int i = 0; i < fileList.length; i++) {
-			file = new File("/resource/file/lectureVideo", fileList[i]);
-			file.delete();
+		if (fileList != null) {
+		    File file;
+			for (int i = 0; i < fileList.length; i++) {
+				file = new File("/resource/file/lectureVideo", fileList[i]);
+				file.delete();
+			}
 		}
 	}
 

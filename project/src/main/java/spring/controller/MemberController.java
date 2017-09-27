@@ -5,11 +5,14 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,11 +106,12 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="/member/login",method=RequestMethod.POST)
-	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) throws UnsupportedEncodingException {
+	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response, HttpSession session) throws UnsupportedEncodingException {
 		
 		String id=request.getParameter("id");
 		String pw=request.getParameter("pw");
 		String nick = null;
+		String power=null;
 		//log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
 		//log.debug("url="+url);
@@ -136,6 +140,7 @@ public class MemberController {
 		//log.debug("일치하냐? : "+passwordEncoder.matches(pw, encodepw));
 		if(passwordEncoder.matches(pw, encodepw))
 		nick=memberDao.logincheck(id, encodepw);
+		power=memberDao.powercheck(id, encodepw);
 		//log.debug("nick="+nick);
 		//log.debug("state="+state);
 		
@@ -145,6 +150,9 @@ public class MemberController {
 			cookie.setCookiePath("/");
 			cookie.setCookieMaxAge(-1);
 			cookie.addCookie(response, URLEncoder.encode(nick, "utf-8"));
+			
+			 session.setAttribute("member", power);
+			 
 		return "redirect:"+url;
 		}
 		else {
@@ -193,10 +201,12 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/memberlist")
-	public String list(HttpServletRequest request, Model model) {
+	public String list(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
 		
+		String name=(String) session.getAttribute("member");
+		if(name.equals("관리자")) {
 		
 		int pageNo;
 		try {
@@ -236,12 +246,17 @@ public class MemberController {
 		model.addAttribute("url", url);
 		
 		return "member/memberlist";
+		
+		}else {
+			throw new Exception("일반 접근 제한");
+		}
 	}
 	
 	@RequestMapping("/member/memberdetail")
-	public String detail(HttpServletRequest req, String no, Model m) throws Exception {
+	public String detail(HttpServletRequest req, String no, Model m, HttpSession session) throws Exception {
 	
-		
+		String name=(String) session.getAttribute("member");
+		if(name.equals("관리자")) {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -255,6 +270,9 @@ public class MemberController {
 		m.addAttribute("memberList",member);
 		
 		return "member/memberdetail";
+		}else {
+			throw new Exception("일반 접근 제한");
+		}
 	}
 	
 	

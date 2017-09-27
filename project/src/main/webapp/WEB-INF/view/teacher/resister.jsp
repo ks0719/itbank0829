@@ -18,6 +18,7 @@
 		<option value="Python">Python</option>
 	</select>
 	<br><br>
+	사진
 	<input type="file" name="file" onchange="previewImage(this,'upload_photo')">
 	<br><br>
 	<div class="upload_photo" id="upload_photo" style="display: in-block; width: 150px; height: 150px;"> <!-- 스타일 지정 필수 -->
