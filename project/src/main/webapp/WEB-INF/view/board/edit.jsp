@@ -20,7 +20,7 @@
 						말머리
 					</td>
 					<td class="text-left">
-						<select name="head" class="user-input" title="말머리" id="board-select">
+						<select name="head" class="form-control" title="말머리" id="board-select" style="display: inline; width: 13%;">
 							<option value="Java">Java</option>
 							<option value="JSP">JSP</option>
 							<option value="C언어">C언어</option>
