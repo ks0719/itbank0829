@@ -132,7 +132,7 @@
 								<input type="button" value="추천하기" class="input-btn" onclick="alert('자신의 글은 추천할 수 없습니다'); return false;">
 							</c:when>
 							<c:otherwise>
-								<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${no}';">
+								<input type="button" value="추천하기" class="input-btn" onclick="location.href='best${url2}&no=${board.no}&context=${no}';">
 							</c:otherwise>
 						</c:choose>
 					</c:when>
