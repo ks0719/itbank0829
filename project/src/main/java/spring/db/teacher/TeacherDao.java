@@ -179,6 +179,10 @@ public class TeacherDao {
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
 	}
 	
+	public void assess(int no, int grade) {
+		
+	}
+	
 	public List<Teacher>list(){
 		
 		String sql="select * from teacher where state='wait'";
