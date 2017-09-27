@@ -364,9 +364,10 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/comment")
 	public String comment(@PathVariable String path, HttpServletRequest request, Model m) throws Exception {
+		if (request.getParameter("detail").equals("")) return null;
 		String nick = getNick(request);
 		int memberNo = getMemberNo(nick);
-//		log.debug("comment nick : " + nick);
+
 		Comment comment = commentDao.insert(nick, memberNo, new Comment(request));
 		m.addAttribute("comment", comment);
 		
