@@ -111,25 +111,20 @@
 										
 										
 											<div class="modal-body">
-												<textarea placeholder="댓글 입력" class="user-input" name="detail" style="color: black; width:570px; height: 150px;" required></textarea>
+												<textarea placeholder="댓글 입력" id="user-input${board.no}" name="detail" style="color: black; width:570px; height: 150px;" required></textarea>
 											</div>
 											
 											<div class="modal-footer">
-												<form action="#" class="board-comment" value="${board.no}">
-													<input type="hidden" name="topcontext" value="${no}">
-													<input type="hidden" name="context" value="${board.no}">
-											
-													<span class="input-group-btn">
-														<c:choose>
-															<c:when test="${not empty cookie.mynick.value}">
-																	<input type="submit" class="btn btn-info btn-flat" value="등록">
-															</c:when>
-															<c:otherwise>
-																	<input type="submit" class="btn btn-info btn-flat" onclick="alert('로그인이 필요한 서비스 입니다'); return false;" value="등록">
-															</c:otherwise>
-														</c:choose>
-													</span>
-												</form>
+												<span class="input-group-btn">
+													<c:choose>
+														<c:when test="${not empty cookie.mynick.value}">
+															<Button class="btn btn-info btn-flat board-comment" data-no="${board.no}" data-context="${no}">등록</Button>
+														</c:when>
+														<c:otherwise>
+															<Button class="btn btn-info btn-flat" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">등록</Button>
+														</c:otherwise>
+													</c:choose>
+												</span>
 											</div>
 										
 										

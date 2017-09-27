@@ -131,5 +131,18 @@ public class BoardDao {
 		
 		return jdbcTemplate.query(sql, new Object[] {no, memberNo}, mapper).size() > 0;
 	}
+	
+	public boolean best(int boardno, int memberno) {
+		String sql = "select count(*) from best where boardno = ? and memberno = ?";
+		
+		int best = jdbcTemplate.queryForObject(sql, new Object[] {boardno, memberno}, Integer.class);
+		
+		if (best == 0) {
+			sql = "insert into best values(?, ?)";
+			jdbcTemplate.update(sql, boardno, memberno);
+			return true;
+		}
+		return false;
+	}
 
 }

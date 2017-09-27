@@ -30,7 +30,6 @@ public class Comment {
 		setMemberNo(rs.getInt("memberNo"));
 	}
 	public Comment(HttpServletRequest request) {
-		setWriter(request.getParameter("writer"));
 		setDetail(request.getParameter("detail"));
 		setTopcontext(Integer.parseInt(request.getParameter("topcontext")));
 		setContext(Integer.parseInt(request.getParameter("context")));

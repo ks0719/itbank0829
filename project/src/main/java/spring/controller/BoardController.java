@@ -247,15 +247,9 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
+//		boolean result = boardDao.best(no, get)
 		boardDao.best(noI);
-
-		String url = "&page=" + page;
-		if (search != null && key != null) {
-			url += "&search=" + search + "&key=" + key;
-		}
-		
-		if (context != null) return "redirect:/board/" + path + "/detail?no=" + context + url;
-		return "redirect:/board/" + path + "/detail?no=" + no + url;
+		return "false";
 	}
 
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
@@ -370,9 +364,10 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/comment")
 	public String comment(@PathVariable String path, HttpServletRequest request, Model m) throws Exception {
+		if (request.getParameter("detail").equals("")) return null;
 		String nick = getNick(request);
 		int memberNo = getMemberNo(nick);
-//		log.debug("comment nick : " + nick);
+
 		Comment comment = commentDao.insert(nick, memberNo, new Comment(request));
 		m.addAttribute("comment", comment);
 		
