@@ -12,7 +12,9 @@
 				<c:choose>
 	 				<c:when test="${nick==''||nick==null}">
 	 					<input class="form-control" type="text" id="mail_receiver" name="mail_receiver" placeholder="받는 사람 닉네임" required>
-	 					<span class="input-group-btn"><input class="btn btn-info btn-flat" style="display: inline;" type="button" id="check" value="확인" onclick="isExist($('#mail_receiver').val());"></span>
+	 					<span class="input-group-btn">
+	 						<input class="btn btn-info btn-flat" style="display: inline;" type="button" id="check" value="확인" onclick="isExist($('#mail_receiver').val());">
+	 					</span>
 	 				</c:when>
 	 				<c:otherwise>
 	 					<input class="form-control" type="text" id="mail_receiver" name="mail_receiver" value="${nick}" readonly placeholder="받는 사람 닉네임" required>
