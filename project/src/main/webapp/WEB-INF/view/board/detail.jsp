@@ -62,8 +62,8 @@
 				</c:if>
 			</table>
 			<div>
-				<form action="#" class="board-comment" value="${board.no}">
-					<input type="hidden" name="topcontext" value="${no}">
+				<form action="" class="board-comment" value="${board.no}">
+					<input type="hidden" name="topcontext" value="${param.no}">
 					<input type="hidden" name="context" value="${board.no}">
 					<input type="text" name="detail" class="user-input" placeholder="댓글 입력">
 					<c:choose>
