@@ -82,7 +82,7 @@
 				<form action="#" class="board-comment" value="${board.no}">
 					<input type="hidden" name="topcontext" value="${no}">
 					<input type="hidden" name="context" value="${board.no}">
-					<input type="text" name="detail" class="user-input" placeholder="댓글 입력">
+					<input type="text" name="detail" class="user-input" placeholder="댓글 입력" required>
 					<c:choose>
 						<c:when test="${not empty cookie.mynick.value}">
 							<input type="submit" class="input-btn" value="등록">

@@ -79,6 +79,11 @@ public class DataController {
 		}
 		throw new Exception("404");
 	}
+	
+	private boolean isTeacher(String nick) {
+		if (nick == "") return false;
+		return mbdao.power(nick).equals("강사");
+	}
 
 	@RequestMapping("/data/edit")
 	public String editget(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
@@ -173,7 +178,7 @@ public class DataController {
 	}
 
 	@RequestMapping("/data/maininfo")
-	public String maininfo(HttpServletRequest request, Model model, HttpSession session) throws UnsupportedEncodingException {
+	public String maininfo(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		Cookie[] c = request.getCookies();
 		if (c != null) {
 			for (int i = 0; i < c.length; i++) {
@@ -193,6 +198,9 @@ public class DataController {
 				// log.debug("쿠키값 못찾음");
 			}
 		}
+		
+		boolean isTeacher = isTeacher(getNick(request));
+		model.addAttribute("isTeacher", isTeacher);
 		
 		return "data/maininfo";
 	}

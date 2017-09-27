@@ -222,4 +222,10 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		}
 		return list;
 	}
+
+	public String power(String nick) {
+		String sql = "select power from member where nick = ?";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, String.class);
+	}
 }

@@ -70,10 +70,9 @@ public class TeacherController {
 		return "";
 	}
 	
-	private int getMemberNo(String nick) {
-		if (nick == "") return 0;
-		log.debug("nick : " + nick);
-		return memberDao.memberNo(nick);
+	private boolean isTeacher(String nick) {
+		if (nick == "") return false;
+		return memberDao.power(nick).equals("강사");
 	}
 	
 	private int getTeacherNo(String nick) {
@@ -135,7 +134,7 @@ public class TeacherController {
 	public String applycheck(HttpServletRequest request, Model m) throws Exception {
 		String nick = getNick(request);
 		
-		boolean result = teacherDao.applycheck(getMemberNo(nick));
+		boolean result = teacherDao.applycheck(getTeacherNo(nick));
 		
 		return String.valueOf(result);
 	}
@@ -241,13 +240,10 @@ public class TeacherController {
 		return "teacher/lecturerInfo";
 	}
 	
-	@RequestMapping("/teacherMain")
-	public String toMain() {
-		return "teacher/teacherMain";
-	}
-	
 	@RequestMapping("/profile")
 	public String profile(HttpServletRequest req, Model m) throws Exception {
+		if (isTeacher(getNick(req)) == false) throw new Exception("404");
+		
 		int teacherNo = getTeacherNo(getNick(req));
 		Teacher info = teacherDao.showOne(teacherNo);
 		
@@ -278,6 +274,8 @@ public class TeacherController {
 	@RequestMapping("/resister")
 	public String resister(HttpServletRequest req, Model m) throws Exception {
 		String nick = getNick(req);
+		if (isTeacher(nick) == false) throw new Exception("404");
+		
 		int teacherNo = getTeacherNo(nick);
 		
 		m.addAttribute("teacherNo", teacherNo);
@@ -331,6 +329,8 @@ public class TeacherController {
 		}
 		
 		String nick = getNick(req);
+		if (isTeacher(nick) == false) throw new Exception("404");
+		
 		String search = req.getParameter("search");
 		String key = req.getParameter("key");
 		
@@ -372,6 +372,8 @@ public class TeacherController {
 	
 	@RequestMapping("/myLecture")
 	public String myLecture(HttpServletRequest req, Model m) throws Exception {
+		if (isTeacher(getNick(req)) == false) throw new Exception("404");
+		
 		String where = req.getParameter("where");
 		String page = req.getParameter("page");
 		String search = req.getParameter("search");
@@ -398,6 +400,8 @@ public class TeacherController {
 	
 	@RequestMapping("/lectureEdit")
 	public String lectureEdit(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
 		int no;
 		try {
 			no = Integer.parseInt(request.getParameter("no"));
@@ -430,6 +434,8 @@ public class TeacherController {
 	
 	@RequestMapping(value="/lectureEdit", method=RequestMethod.POST)
 	public String lectureEdit(MultipartHttpServletRequest mRequest, Model m) throws Exception {
+		if (isTeacher(getNick(mRequest)) == false) throw new Exception("404");
+		
 		int no = Integer.parseInt(mRequest.getParameter("no"));
 		MultipartFile file = mRequest.getFile("file");
 		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecture");
@@ -461,6 +467,8 @@ public class TeacherController {
 	
 	@RequestMapping("/students")
 	public String students(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
 		int no;
 		try {
 			no = Integer.parseInt(request.getParameter("no"));
@@ -495,6 +503,8 @@ public class TeacherController {
 	
 	@RequestMapping("/qnaView")
 	public String qnaView(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
 		int no;
 		try {
 			no = Integer.parseInt(request.getParameter("no"));
@@ -526,6 +536,8 @@ public class TeacherController {
 	
 	@RequestMapping("/assessView")
 	public String assessView(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
 		int no;
 		try {
 			no = Integer.parseInt(request.getParameter("no"));
@@ -557,6 +569,8 @@ public class TeacherController {
 	
 	@RequestMapping("/withdrow")
 	public String withdrow(HttpServletRequest req, Model m) throws Exception {
+		if (isTeacher(getNick(req)) == false) throw new Exception("404");
+		
 		int point = memberDao.mypoint(getNick(req));
 		
 		m.addAttribute("point", point);
