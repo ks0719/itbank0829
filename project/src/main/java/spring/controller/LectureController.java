@@ -198,6 +198,8 @@ public class LectureController {
 		}
 		if (pageNo <= 0 ) pageNo = 1;
 		
+		lectureDao.end();
+		
 		int listCount = lectureDao.count(type, key);
 		log.debug(String.valueOf(listCount));
 		

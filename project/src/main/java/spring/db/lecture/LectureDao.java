@@ -199,6 +199,7 @@ public class LectureDao {
 	}
 	
 	public void end() {
+		System.out.println("end 부름");
 		String sql = "select * from lecture_info where state = '등록 가능'";
 		
 		List<LectureInfo> list = jdbcTemplate.query(sql, mapper);
@@ -220,6 +221,7 @@ public class LectureDao {
 	}
 
 	public void clean() {
+		System.out.println("clean 부름");
 		String sql = "select * from lecture_info where state = '마감'";
 		
 		List<LectureInfo> list = jdbcTemplate.query(sql, mapper);
@@ -233,6 +235,7 @@ public class LectureDao {
 			String now = date.format(d);
 			
 			if (end.compareTo(now) < 0) {
+				System.out.println("번호 : " + info.getNo());
 				sql = "update lecture_info set state='종료' where no = ?";
 				
 				jdbcTemplate.update(sql, info.getNo());

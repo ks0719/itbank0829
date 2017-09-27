@@ -76,8 +76,8 @@
 				</c:if>
 			</table>
 			<div>
-				<form action="#" class="board-comment" value="${board.no}">
-					<input type="hidden" name="topcontext" value="${no}">
+				<form action="" class="board-comment" value="${board.no}">
+					<input type="hidden" name="topcontext" value="${param.no}">
 					<input type="hidden" name="context" value="${board.no}">
 					<input type="text" name="detail" class="user-input" placeholder="댓글 입력">
 					<c:choose>
@@ -120,8 +120,8 @@
 				<c:choose>
 					<c:when test="${not empty cookie.mynick.value}">
 						<c:choose>
-							<c:when test="${board.no eq no}">
-								<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
+							<c:when test="${board.no eq param.no}">
+								<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${param.no}';">
 							</c:when>
 						</c:choose>
 						<c:choose>
@@ -129,7 +129,7 @@
 								<input type="button" value="추천하기" class="input-btn" onclick="alert('자신의 글은 추천할 수 없습니다'); return false;">
 							</c:when>
 							<c:otherwise>
-								<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${no}';">
+								<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${param.no}';">
 							</c:otherwise>
 						</c:choose>
 					</c:when>
@@ -140,8 +140,8 @@
 				</c:choose>
 				<c:choose>
 					<c:when test="${memberNo eq board.memberNo}">
-						<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${no}';">
-						<input type="button" value="삭제하기" class="input-btn board-delete" data-no="${board.no}" data-context="${no}">
+						<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${param.no}';">
+						<input type="button" value="삭제하기" class="input-btn board-delete" data-no="${board.no}" data-context="${param.no}">
 					</c:when>
 				</c:choose>
 				
