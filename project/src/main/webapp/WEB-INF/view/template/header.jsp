@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-	<%session.setAttribute("mynick", URLDecoder.decode("${mynick}", "UTF-8")); %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<%@ page import = "java.net.URLDecoder" %>
 <html>
@@ -12,6 +11,7 @@
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
+
 function wrapWindowByMask(){
     // 화면의 높이와 너비를 변수로 만듭니다.
     var maskHeight = $(document).height();
@@ -226,7 +226,7 @@ $(document).ready(function(){
 			} else {
 				location.href = path + "/detail?no=" + no + "&page=" + page;
 			}
-		});
+		});	
 	});
 	
 	function resisterOK() {
@@ -344,8 +344,10 @@ $(document).ready(function(){
 	  });
 	  
 
-	  
-	  
+
+
+
+
 	  
 	  
 	  
@@ -645,11 +647,16 @@ $(document).ready(function(){
 		}else if(location.indexOf('lecture')==0){
 			$("#lecture").addClass('active');
 		}else if(location.indexOf('teacher')==0){
-			$("#teacher").addClass('active');
+			//teacher로 주소가 시작하는 페이지가 많기 때문에 따로 설정 해줘야함
+			if(location.indexOf('teacher/applynot')!=0){
+				$("#teacher").addClass('active');
+			}
+			
 		}else if(location.indexOf('consumer')==0){
 			$("#consumer").addClass('active');
 		}else if(location.indexOf('member')==0){
-			$("#member").addClass('active');
+			//member로 주소가 시작하는 페이지가 많기 때문에 따로 설정 해줘야함
+			
 		}
 		
 	});
@@ -798,11 +805,14 @@ function chat_on(){
 	}
 }
 function chat_add(){
-	document.getElementById("chat_label").innerHTML="대화할 닉네임 입력";
+	document.getElementById("chat_label").innerHTML="추가할 닉네임 입력";
 	
 }
 function chat_del(){
 	document.getElementById("chat_label").innerHTML="삭제할 닉네임 입력";
+}
+function chat_start(){
+	document.getElementById("chat_label").innerHTML="대화할 친구 클릭";
 }
 </script>
 
@@ -822,18 +832,6 @@ function chat_del(){
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
     <link href="${pageContext.request.contextPath}/css/dist/css/skins/_all-skins.css" rel="stylesheet" type="text/css" />
-<!--     iCheck -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Morris chart -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/morris/morris.css" rel="stylesheet" type="text/css" /> --%>
-<!--     jvectormap -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Date Picker -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Daterange picker -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" /> --%>
-<!--     bootstrap wysihtml5 - text editor -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" /> --%>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -873,6 +871,58 @@ function chat_del(){
 
 <c:if test="${!empty nick }">
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
+<%session.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8")); %>
+<script>
+$(document).ready(function(){
+	initialize();
+	
+	$("#send").on("click", function(){
+		if(!window.websocket) return;
+		
+		var message = $("#chat").val();
+		websocket.send(message);
+		$("#chat").val("");
+		$("#chat").focus();
+	});
+});
+
+$(window).on("unload", finalize);
+
+function initialize(){
+	var websocketURI = "ws://localhost:8080/project/chat";
+	
+	//접속
+	window.websocket = new WebSocket(websocketURI);
+	console.log("웹소켓 연결 시도");
+	console.log(window.websocket);
+	
+	//이벤트 설정
+	websocket.onopen = function(e){
+		console.log("웹소켓 연결 성공");
+		console.log(e);
+	};
+	websocket.onmessage = function(e){
+		console.log("메세지 수신");
+		console.log(e);
+		
+		$("#display").val($("#display").val() + "\n" + e.data );
+	};
+	websocket.onerror = function(e){
+		console.log("오류 발생");
+		console.log(e);
+	};
+	websocket.onclose = function(e){
+		console.log("웹소켓 연결 종료");
+		console.log(e);
+	};
+}
+function finalize(){
+	if(window.websocket){
+		websocket.close();
+	}
+	console.log("웹소켓 연결 종료");
+}
+</script>
 <div id="draggable" class="ui-widget-content" style=
 "top: 70%;
  left: 75%; 
@@ -887,9 +937,11 @@ function chat_del(){
    <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
    <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
    <table class="chat_table">
-   <tfoot>
+   <thead>
+   <div id="myfriendlist">
    
-   </tfoot>
+   </div>
+   </thead>
    <tbody>
    <div style="position: absolute;bottom: 30px;right: 0px;" >
    <label id="chat_label">아래의 버튼을 눌러주세요.</label>
@@ -902,6 +954,7 @@ function chat_del(){
    </tbody>
    <tfoot>
    <div style="position: absolute; bottom: 0px;right: 0px;">
+   <img alt="시작하기" src="${pageContext.request.contextPath}/img/chat_start.png" onclick="chat_start();">
    <img alt="추가하기" src="${pageContext.request.contextPath }/img/chat_add.png" onclick="chat_add();">
    <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png" onclick="chat_del();">
    </div>
@@ -914,7 +967,7 @@ function chat_del(){
 function chat_order(){
 	if(event.keyCode==13){
 		var value=$("#chat_label").text();
-		if(value=="대화할 닉네임 입력"){
+		if(value=="추가할 닉네임 입력"){
 				var getnick=$("#chat_text").val();
 				var mynick="${mynick}";
 				$.ajax({
@@ -923,12 +976,12 @@ function chat_order(){
 					type:"post",
 					data:{mynick,getnick},
 					dataType: "text",
-					success: function(){
+					success: function(data){
 						console.log("성공");
-						alert("친구 추가가 되었습니다.");
-					},error:function(){
+						alert(data);
+					},error:function(data){
 						console.log("실패");
-						alert("이미 존재하는 친구거나 닉네임이 존재하지 않습니다.");
+						alert(data);
 						
 					}
 				});
@@ -941,15 +994,18 @@ function chat_order(){
 				type:"post",
 				data:{mynick,getnick},
 				dataType:"text",
-				success:function(){
+				success:function(data){
 					console.log("성공");
-					alert("삭제가 완료되었습니다.");
-				},error:function(){
+					alert(data);
+				},error:function(data){
 					console.log("실패");
-					alert("없는 친구거나 닉네임이 바르지 않습니다.");
+					alert(data);
 				}
 				
 			});
+		}else if(value=="대화할 친구 클릭"){
+			var getnick=$("#chat_text").val();
+			var mynick="${mynick}";
 		}
 	}
 }</script>

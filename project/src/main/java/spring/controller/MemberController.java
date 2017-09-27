@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.CookieGenerator;
 
 import spring.db.member.Member;
@@ -27,7 +28,7 @@ import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
-	private static final String serveraddr="http://localhost:9080/project/WEB-INF/view";
+	private static final String serveraddr="http://localhost:8080/project/WEB-INF/view";
 	private Logger log=LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -265,7 +266,8 @@ public class MemberController {
 	      return "member/memberlist";   
 	   }
 	
-	@RequestMapping("/chatadd")
+	@RequestMapping(value="/chatadd",produces="text/plain;charset=utf-8")
+	@ResponseBody
 	public String chatadd(String mynick,String getnick) throws Exception {
 		log.debug("넘어온값은 ? :"+mynick+"/"+getnick);
 		List<String> list=new ArrayList<>();
@@ -281,14 +283,15 @@ public class MemberController {
 			}
 		}
 		memberDao.myfriend(mynick, getnick);
-		return "member/memberlist";
+		return "친구가 추가되었습니다.";
 		
 		}
 			log.debug("추가:닉네임이 없어?");
 			return "해당 닉네임을 가진 회원이 없습니다.";
 		
 	}
-	@RequestMapping("/chatdel")
+	@RequestMapping(value="/chatdel",produces="text/plain;charset=utf-8")
+	@ResponseBody
 	public String chatdel(String mynick,String getnick) {
 		log.debug("넘어온 값은 ? : "+mynick+"/"+getnick);
 		List<String> list=new ArrayList<>();
@@ -300,12 +303,13 @@ public class MemberController {
 				for(int i=0;i<list.size();i++) {
 					if(list.get(i).equals(getnick)) {
 						log.debug("삭제합니다.");
+						log.debug("삭제전 목록 : "+list.toString());
 						list.remove(i);
-						//log.debug(list.toString());
+						log.debug("삭제후 목록 : "+list.toString());
 						String newlist=list.toString().replaceAll(",", "/").replaceAll("\\[", "").replaceAll("\\]", "").trim().replaceAll(" ", "");
-						//log.debug("새 친구목록 : "+newlist);
+						log.debug("새 친구목록 : "+newlist);
 						memberDao.friendrenew(mynick, newlist);
-						return "member/memberlist";
+						return "해당 친구가 삭제되었습니다.";
 					}
 				}
 			}

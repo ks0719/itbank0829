@@ -4065,3 +4065,20 @@ Gradient Background colors
   opacity: 1;
   filter: alpha(opacity=100);
 }
+
+/**
+	modal
+*/
+.example-modal .modal {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  right: auto;
+  left: auto;
+  display: block;
+  z-index: 1;
+}
+
+.example-modal .modal {
+  background: transparent!important;
+}
