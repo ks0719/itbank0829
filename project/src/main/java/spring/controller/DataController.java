@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,7 +173,7 @@ public class DataController {
 	}
 
 	@RequestMapping("/data/maininfo")
-	public String maininfo(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
+	public String maininfo(HttpServletRequest request, Model model, HttpSession session) throws UnsupportedEncodingException {
 		Cookie[] c = request.getCookies();
 		if (c != null) {
 			for (int i = 0; i < c.length; i++) {
@@ -192,6 +193,7 @@ public class DataController {
 				// log.debug("쿠키값 못찾음");
 			}
 		}
+		
 		return "data/maininfo";
 	}
 

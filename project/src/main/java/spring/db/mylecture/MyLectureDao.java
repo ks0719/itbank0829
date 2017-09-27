@@ -172,11 +172,5 @@ public class MyLectureDao {
 		
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper);
 	}
-
-	public void evalCount(int no, String nick) {
-		String sql = "update mylecture set eval = '평가 완료' where no = ? and id = ?";
-		
-		jdbcTemplate.update(sql, no, nick);
-	}
 	
 }

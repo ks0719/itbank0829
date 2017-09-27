@@ -141,7 +141,7 @@ public class TeacherController {
 	public String applycheck(HttpServletRequest request, Model m) throws Exception {
 		String nick = getNick(request);
 		
-		boolean result = teacherDao.applycheck(nick);
+		boolean result = teacherDao.applycheck(getMemberNo(nick));
 		
 		return String.valueOf(result);
 	}
@@ -235,7 +235,7 @@ public class TeacherController {
 			pageNo = 1;
 		}
 		
-		Teacher info = teacherDao.showOne(name);
+		Teacher info = teacherDao.showOne(getTeacherNo(getNick(req)));
 		
 		String url = "?page=" + pageNo;
 		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");
@@ -254,8 +254,8 @@ public class TeacherController {
 	
 	@RequestMapping("/profile")
 	public String profile(HttpServletRequest req, Model m) throws Exception {
-		String name = getNick(req);
-		Teacher info = teacherDao.showOne(name);
+		int teacherNo = getTeacherNo(getNick(req));
+		Teacher info = teacherDao.showOne(teacherNo);
 		
 		m.addAttribute("profile", info);
 		
