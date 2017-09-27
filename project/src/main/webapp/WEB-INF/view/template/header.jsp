@@ -1142,4 +1142,3 @@ function chat_order(){
 
 	
 	<div class="content-wrapper">
-	
