@@ -247,15 +247,9 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
+//		boolean result = boardDao.best(no, get)
 		boardDao.best(noI);
-
-		String url = "&page=" + page;
-		if (search != null && key != null) {
-			url += "&search=" + search + "&key=" + key;
-		}
-		
-		if (context != null) return "redirect:/board/" + path + "/detail?no=" + context + url;
-		return "redirect:/board/" + path + "/detail?no=" + no + url;
+		return "false";
 	}
 
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
