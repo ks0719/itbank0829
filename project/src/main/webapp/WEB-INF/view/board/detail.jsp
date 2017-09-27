@@ -8,20 +8,18 @@
 
 
 <!-- <div class="row"> -->
-<!-- 	<div class="col-md-12"> -->
-<!-- 		<div class="box box-primary"> -->
-<!-- 			<div class="box-body no-padding"> -->
-<%-- 				<c:forEach var="board" items="${boardList}"> --%>
-				
+<%-- 	<c:forEach var="board" items="${boardList}"> --%>
+<!-- 		<div class="col-md-12"> -->
+<!-- 			<div class="box box-primary"> -->
+<!-- 				<div class="box-body no-padding"> -->
 <!-- 					<div class="mailbox-read-info"> -->
 <%-- 						<h3>${board.title}</h3> --%>
 <!-- 						<h5>From: support@almsaeedstudio.com <span class="mailbox-read-time pull-right">15 Feb. 2015 11:03 PM</span></h5> -->
 <!-- 					</div> -->
-			
-<%-- 				</c:forEach> --%>
+<!-- 				</div> -->
 <!-- 			</div> -->
 <!-- 		</div> -->
-<!-- 	</div> -->
+<%-- 	</c:forEach> --%>
 <!-- </div> -->
 
 
@@ -76,8 +74,8 @@
 				</c:if>
 			</table>
 			<div>
-				<form action="" class="board-comment" value="${board.no}">
-					<input type="hidden" name="topcontext" value="${param.no}">
+				<form action="#" class="board-comment" value="${board.no}">
+					<input type="hidden" name="topcontext" value="${no}">
 					<input type="hidden" name="context" value="${board.no}">
 					<input type="text" name="detail" class="user-input" placeholder="댓글 입력">
 					<c:choose>
@@ -120,8 +118,8 @@
 				<c:choose>
 					<c:when test="${not empty cookie.mynick.value}">
 						<c:choose>
-							<c:when test="${board.no eq param.no}">
-								<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${param.no}';">
+							<c:when test="${board.no eq no}">
+								<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
 							</c:when>
 						</c:choose>
 						<c:choose>
@@ -129,7 +127,7 @@
 								<input type="button" value="추천하기" class="input-btn" onclick="alert('자신의 글은 추천할 수 없습니다'); return false;">
 							</c:when>
 							<c:otherwise>
-								<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${param.no}';">
+								<input type="button" value="추천하기" class="input-btn" onclick="location.href='best?no=${board.no}&context=${no}';">
 							</c:otherwise>
 						</c:choose>
 					</c:when>
@@ -140,8 +138,8 @@
 				</c:choose>
 				<c:choose>
 					<c:when test="${memberNo eq board.memberNo}">
-						<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${param.no}';">
-						<input type="button" value="삭제하기" class="input-btn board-delete" data-no="${board.no}" data-context="${param.no}">
+						<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${no}';">
+						<input type="button" value="삭제하기" class="input-btn board-delete" data-no="${board.no}" data-context="${no}">
 					</c:when>
 				</c:choose>
 				
