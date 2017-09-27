@@ -31,7 +31,7 @@ import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
-	private static final String serveraddr="http://localhost:9080/project/WEB-INF/view";
+	private static final String serveraddr="http://localhost:8080/project/WEB-INF/view";
 	private Logger log=LoggerFactory.getLogger(getClass());
 	
 	@Autowired

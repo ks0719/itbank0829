@@ -11,55 +11,6 @@
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	initialize();
-	
-	$("#send").on("click", function(){
-		if(!window.websocket) return;
-		
-		var message = $("#chat").val();
-		websocket.send(message);
-		$("#chat").val("");
-		$("#chat").focus();
-	});
-});
-
-$(window).on("unload", finalize);
-
-function initialize(){
-	var websocketURI = "ws://localhost:8080/project/chat";
-	
-	//접속
-	window.websocket = new WebSocket(websocketURI);
-	console.log("웹소켓 연결 시도");
-	console.log(window.websocket);
-	
-	//이벤트 설정
-	websocket.onopen = function(e){
-		console.log("웹소켓 연결 성공");
-		console.log(e);
-	};
-	websocket.onmessage = function(e){
-		console.log("메세지 수신");
-		console.log(e);
-		
-		$("#display").val($("#display").val() + "\n" + e.data );
-	};
-	websocket.onerror = function(e){
-		console.log("오류 발생");
-		console.log(e);
-	};
-	websocket.onclose = function(e){
-		console.log("웹소켓 연결 종료");
-		console.log(e);
-	};
-}
-function finalize(){
-	if(window.websocket){
-		websocket.close();
-	}
-	console.log("웹소켓 연결 종료");
-}
 
 function wrapWindowByMask(){
     // 화면의 높이와 너비를 변수로 만듭니다.
@@ -696,11 +647,16 @@ $(document).ready(function(){
 		}else if(location.indexOf('lecture')==0){
 			$("#lecture").addClass('active');
 		}else if(location.indexOf('teacher')==0){
-			$("#teacher").addClass('active');
+			//teacher로 주소가 시작하는 페이지가 많기 때문에 따로 설정 해줘야함
+			if(location.indexOf('teacher/applynot')!=0){
+				$("#teacher").addClass('active');
+			}
+			
 		}else if(location.indexOf('consumer')==0){
 			$("#consumer").addClass('active');
 		}else if(location.indexOf('member')==0){
-			$("#member").addClass('active');
+			//member로 주소가 시작하는 페이지가 많기 때문에 따로 설정 해줘야함
+			
 		}
 		
 	});
@@ -876,18 +832,6 @@ function chat_start(){
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
     <link href="${pageContext.request.contextPath}/css/dist/css/skins/_all-skins.css" rel="stylesheet" type="text/css" />
-<!--     iCheck -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Morris chart -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/morris/morris.css" rel="stylesheet" type="text/css" /> --%>
-<!--     jvectormap -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Date Picker -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Daterange picker -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" /> --%>
-<!--     bootstrap wysihtml5 - text editor -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" /> --%>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -930,6 +874,57 @@ function chat_start(){
 <c:if test="${!empty nick }">
 <%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
 <%session.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8")); %>
+<script>
+$(document).ready(function(){
+	initialize();
+	
+	$("#send").on("click", function(){
+		if(!window.websocket) return;
+		
+		var message = $("#chat").val();
+		websocket.send(message);
+		$("#chat").val("");
+		$("#chat").focus();
+	});
+});
+
+$(window).on("unload", finalize);
+
+function initialize(){
+	var websocketURI = "ws://localhost:8080/project/chat";
+	
+	//접속
+	window.websocket = new WebSocket(websocketURI);
+	console.log("웹소켓 연결 시도");
+	console.log(window.websocket);
+	
+	//이벤트 설정
+	websocket.onopen = function(e){
+		console.log("웹소켓 연결 성공");
+		console.log(e);
+	};
+	websocket.onmessage = function(e){
+		console.log("메세지 수신");
+		console.log(e);
+		
+		$("#display").val($("#display").val() + "\n" + e.data );
+	};
+	websocket.onerror = function(e){
+		console.log("오류 발생");
+		console.log(e);
+	};
+	websocket.onclose = function(e){
+		console.log("웹소켓 연결 종료");
+		console.log(e);
+	};
+}
+function finalize(){
+	if(window.websocket){
+		websocket.close();
+	}
+	console.log("웹소켓 연결 종료");
+}
+</script>
 <div id="draggable" class="ui-widget-content" style=
 "top: 70%;
  left: 75%; 
