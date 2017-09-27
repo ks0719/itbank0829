@@ -127,17 +127,20 @@ $(document).ready(function(){
 			}
 		});
 		
-		$(document).on("submit", ".board-comment", function() {
-			var contextNo = $(this).attr('value');
+		$(document).on("click", ".board-comment", function() {
+			var contextNo = $(this).data('no');
+			var topcontextNo = $(this).data('context');
+			var detail = $("#user-input" + contextNo).val().replace(/\n/g, "<br>");
+			console.log(contextNo + ", " + topcontextNo + ", " + detail);
 			event.preventDefault();
         	
         	$.ajax({
         		url: "comment",
-        		data: $(this).serialize(),
+        		data: {"context" : contextNo, "topcontext" : topcontextNo, "detail" : detail},
         		async : false,
         		success: function(res) {
         			$("#comments"+contextNo).append(res);
-        			$(".user-input").val('');
+        			$("#user-input" + contextNo).val('');
         		}
         	});
 		});
