@@ -239,7 +239,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/{path}/best")
-	public String best(@PathVariable String path, String no, String page, String search, String key, String context) throws Exception {
+	@ResponseBody
+	public String best(String no, HttpServletRequest req) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -247,8 +248,12 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-//		boolean result = boardDao.best(no, get)
-		boardDao.best(noI);
+		boolean result = boardDao.best(noI, getMemberNo(getNick(req)));
+
+		if (result) {
+			boardDao.best(noI);
+			return "true";
+		}
 		return "false";
 	}
 
