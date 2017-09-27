@@ -7,13 +7,27 @@
 
 
 
+<!-- <div class="row"> -->
+<!-- 	<div class="col-md-12"> -->
+<!-- 		<div class="box box-primary"> -->
+<!-- 			<div class="box-body no-padding"> -->
+<%-- 				<c:forEach var="board" items="${boardList}"> --%>
+				
+<!-- 					<div class="mailbox-read-info"> -->
+<%-- 						<h3>${board.title}</h3> --%>
+<!-- 						<h5>From: support@almsaeedstudio.com <span class="mailbox-read-time pull-right">15 Feb. 2015 11:03 PM</span></h5> -->
+<!-- 					</div> -->
+			
+<%-- 				</c:forEach> --%>
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- </div> -->
 
 
 
 
 
-
-<h1>상세보기</h1>
 <div class="page-wrap">
 	<div class="table-wrap">
 		<c:forEach var="board" items="${boardList}">
