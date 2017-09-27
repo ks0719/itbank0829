@@ -100,12 +100,6 @@ public class TeacherController {
 		}
 	}
 	
-	private int getteacherNo(String nick) {
-		if (nick == "") return 0;
-		log.debug("nick : " + nick);
-		return memberDao.memberNo(nick);
-	}
-	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
 	public String apply(MultipartHttpServletRequest mRequest, HttpServletRequest request) throws Exception {
 		int memberNo = Integer.parseInt(mRequest.getParameter("teacherno"));

@@ -36,51 +36,51 @@
 					
 					<!-- 버튼 위치 공간 시작 -->
 					<div class="box-footer">
-						<div class="pull-right">
+						<div>
 							<c:choose>
 								<c:when test="${not empty cookie.mynick.value}">
 									<c:choose>
-										<c:when test="${board.no eq no}">
-											<input type="button" value="답글쓰기" class="input-btn" onclick="location.href='reply?no=${board.no}&context=${no}';">
-										</c:when>
-									</c:choose>
-									<c:choose>
 										<c:when test="${memberNo eq board.memberNo}">
-											<input type="button" value="추천하기" class="btn btn-info" onclick="alert('자신의 글은 추천할 수 없습니다'); return false;">
+											<input type="button" value="추천하기" class="btn btn-success pull-left" onclick="alert('자신의 글은 추천할 수 없습니다'); return false;">
 										</c:when>
 										<c:otherwise>
-											<input type="button" value="추천하기" class="btn btn-info" onclick="location.href='best?no=${board.no}&context=${no}';">
+											<input type="button" value="추천하기" class="btn btn-success pull-left" onclick="location.href='best?no=${board.no}&context=${no}';">
 										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${board.no eq no}">
+											<input type="button" value="답글쓰기" class="btn btn-primary pull-left" onclick="location.href='reply?no=${board.no}&context=${no}';">
+										</c:when>
 									</c:choose>
 								</c:when>
 								<c:otherwise>
-									<input type="button" value="답글쓰기" class="input-btn" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
-									<input type="button" value="추천하기" class="btn btn-info" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
+									<input type="button" value="추천하기" class="btn btn-success pull-left" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
+									<input type="button" value="답글쓰기" class="btn btn-primary pull-left" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
 								</c:otherwise>
 							</c:choose>
 	
-							<c:choose>
-								<c:when test="${memberNo eq board.memberNo}">
-									<input type="button" value="수정하기" class="input-btn" onclick="location.href='edit?no=${board.no}&context=${no}';">
-									<input type="button" value="삭제하기" class="input-btn board-delete" data-no="${board.no}" data-context="${no}">
-								</c:when>
-							</c:choose>
 					
+							<input type="button" value="목록으로" class="btn btn-default pull-right" onclick="location.href='${pageContext.request.contextPath}/board/${url}';">
+							
 							<c:choose>
 						       	<c:when test="${empty cookie.mynick.value}">
-									<input type="button" value="글쓰기" class="input-btn" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
+									<input type="button" value="글쓰기" class="btn btn-default pull-right" onclick="alert('로그인이 필요한 서비스 입니다'); return false;">
 						       	</c:when>
 						       	<c:otherwise>
-									<input type="button" value="글쓰기" class="input-btn" onclick="location.href='write?seq=1';">
+									<input type="button" value="글쓰기" class="btn btn-default pull-right" onclick="location.href='write?seq=1';">
 						       	</c:otherwise>
 							</c:choose>
-							<input type="button" value="목록으로" class="input-btn" onclick="location.href='${pageContext.request.contextPath}/board/${url}';">
+							
+							<c:choose>
+								<c:when test="${memberNo eq board.memberNo}">
+									<input type="button" value="수정하기" class="btn btn-warning pull-right" onclick="location.href='edit?no=${board.no}&context=${no}';">
+									<input type="button" value="삭제하기" class="btn btn-danger pull-right board-delete" data-no="${board.no}" data-context="${no}">
+								</c:when>
+							</c:choose>
 							<br>
 						</div>
 					</div>
 					<!-- 버튼 위치 공간 끝 -->
-					
-					<br><br>
 					
 					<!-- 첨부파일 출력 공간 -->
 					<c:if test="${board.originfile ne null}">
@@ -98,26 +98,57 @@
 						</div>
 					</c:if>
 					
-					<!-- 댓글 작성 공간 -->
-					<div class="box-footer">
+					<!-- 댓글 작성 공간 시작 -->
 					
-						<form action="#" class="board-comment" value="${board.no}">
-							<input type="hidden" name="topcontext" value="${no}">
-							<input type="hidden" name="context" value="${board.no}">
-							<input type="text" name="detail" class="user-input" placeholder="댓글 입력">
-							<c:choose>
-								<c:when test="${not empty cookie.mynick.value}">
-									<input type="submit" class="input-btn" value="등록">
-								</c:when>
-								<c:otherwise>
-									<input type="submit" class="input-btn" onclick="alert('로그인이 필요한 서비스 입니다'); return false;" value="등록">
-								</c:otherwise>
-							</c:choose>
-						</form>
-					
+					<div class="example-modal">
+						<div class="modal modal-primary">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="input-group">
+										<div class="modal-body">
+											<textarea placeholder="댓글 입력" name="detail" style="color: black; width:570px; height: 150px; resize: none;"></textarea>
+										</div>
+										
+										<div class="modal-footer">
+											<form action="#" class="board-comment" value="${board.no}">
+												<input type="hidden" name="topcontext" value="${no}">
+												<input type="hidden" name="context" value="${board.no}">
+										
+												<span class="input-group-btn">
+													<c:choose>
+														<c:when test="${not empty cookie.mynick.value}">
+																<input type="submit" class="btn btn-info btn-flat" value="등록">
+														</c:when>
+														<c:otherwise>
+																<input type="submit" class="btn btn-info btn-flat" onclick="alert('로그인이 필요한 서비스 입니다'); return false;" value="등록">
+														</c:otherwise>
+													</c:choose>
+												</span>
+											</form>
+										</div>
+										
+										
+									</div>
+								</div>
+							</div>					
+						</div>
 					</div>
 					
-					<!-- 댓글 출력 공간 -->
+					<!-- 댓글 작성 공간 끝 -->
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<!-- 댓글 출력 공간 시작 -->
 					
 					<div id="comments${board.no}">
 						<c:forEach var="comment" items="${list}">
@@ -145,6 +176,9 @@
 							</c:if>
 						</c:forEach>
 					</div>
+		
+					<!-- 댓글 출력 공간 끝 -->
+		
 		
 				</div>
 			</div>

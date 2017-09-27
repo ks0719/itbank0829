@@ -221,16 +221,25 @@ public class BoardController {
 			m.addAttribute("key", key);
 		}
 		
+		String url2 = "?page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		
 		m.addAttribute("url", url);
+		m.addAttribute("url2", url2);
 		m.addAttribute("memberNo", memberNo);
 		m.addAttribute("boardList", board);
 		m.addAttribute("list", list);
+		m.addAttribute("no", no);
 		
 		return "board/detail";
 	}
 	
 	@RequestMapping("/{path}/best")
-	public String best(@PathVariable String path, String no, String context) throws Exception {
+	public String best(@PathVariable String path, String no, String page, String search, String key, String context) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -240,8 +249,13 @@ public class BoardController {
 		
 		boardDao.best(noI);
 
-		if (context != null) return "redirect:/board/" + path + "/detail?no=" + context;
-		return "redirect:/board/" + path + "/detail?no=" + no;
+		String url = "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		
+		if (context != null) return "redirect:/board/" + path + "/detail?no=" + context + url;
+		return "redirect:/board/" + path + "/detail?no=" + no + url;
 	}
 
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
