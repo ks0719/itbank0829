@@ -66,9 +66,7 @@ public class LectureController {
 	@RequestMapping(value="/assess", method=RequestMethod.POST)
 	public String assess(HttpServletRequest req) throws Exception {
 		int no = Integer.parseInt(req.getParameter("no"));
-		String nick = getNick(req);
 		
-		myLectureDao.evalCount(no, nick);
 		lectureDao.assess(no, new Assess(req));
 		
 		return "redirect:/data/manageLecture?box=eval";
@@ -198,6 +196,8 @@ public class LectureController {
 		}
 		if (pageNo <= 0 ) pageNo = 1;
 		
+		lectureDao.end();
+		
 		int listCount = lectureDao.count(type, key);
 		log.debug(String.valueOf(listCount));
 		
@@ -235,11 +235,14 @@ public class LectureController {
 	public String list(HttpServletRequest req, Model m) {
 		int no = Integer.parseInt(req.getParameter("no"));
 		
+		lectureDao.clean();
+		
 		List<LectureVideo> list = lectureDao.videoList(no);
 		
 		m.addAttribute("list", list);
 		
-		return "lecture/lectureList";
+		if (list.isEmpty()) return "data/manageLecture";
+		else return "lecture/lectureList";
 	}
 	
 	@RequestMapping("/listening")

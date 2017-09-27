@@ -128,17 +128,41 @@ $(document).ready(function(){
 			}
 		});
 		
-		$(document).on("submit", ".board-comment", function() {
-			var contextNo = $(this).attr('value');
+		$(document).on("click", ".board-best", function() {
+			var contextNo = $(this).data('no');
+			event.preventDefault();
+        	
+        	$.ajax({
+        		url: "best",
+        		data: {"no" : contextNo},
+        		async : false,
+        		success: function(res) {
+					if (res == "true") {
+						alert("추천이 완료되었습니다");
+					} else {
+						alert("이미 추천하셨습니다");
+					}
+        		}
+        	});
+		});
+		
+		$(document).on("click", ".board-comment", function() {
+			var contextNo = $(this).data('no');
+			var topcontextNo = $(this).data('context');
+			var detail = $("#user-input" + contextNo).val().replace(/\n/g, "<br>");
+			if (detail == "") {
+				alert("댓글을 입력하세요");
+				return;
+			}
 			event.preventDefault();
         	
         	$.ajax({
         		url: "comment",
-        		data: $(this).serialize(),
+        		data: {"context" : contextNo, "topcontext" : topcontextNo, "detail" : detail},
         		async : false,
         		success: function(res) {
         			$("#comments"+contextNo).append(res);
-        			$(".user-input").val('');
+        			$("#user-input" + contextNo).val('');
         		}
         	});
 		});
@@ -877,6 +901,8 @@ function chat_start(){
     	<input type="hidden" value="${param}" name="param">
         <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary"onclick="return logincheck();"/>
         <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/idfind';" class="btn btn-default">아이디찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/pwfind';" class="btn btn-default">비밀번호찾기</button>
     </form>
     </div>
 </div>
@@ -1157,4 +1183,3 @@ function chat_order(){
 
 	
 	<div class="content-wrapper">
-	

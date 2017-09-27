@@ -199,6 +199,7 @@ public class LectureDao {
 	}
 	
 	public void end() {
+		System.out.println("end 부름");
 		String sql = "select * from lecture_info where state = '등록 가능'";
 		
 		List<LectureInfo> list = jdbcTemplate.query(sql, mapper);
@@ -220,6 +221,7 @@ public class LectureDao {
 	}
 
 	public void clean() {
+		System.out.println("clean 부름");
 		String sql = "select * from lecture_info where state = '마감'";
 		
 		List<LectureInfo> list = jdbcTemplate.query(sql, mapper);
@@ -258,10 +260,12 @@ public class LectureDao {
 		 
 		});
 		
-	    File file;
-		for (int i = 0; i < fileList.length; i++) {
-			file = new File("/resource/file/lectureVideo", fileList[i]);
-			file.delete();
+		if (fileList != null) {
+		    File file;
+			for (int i = 0; i < fileList.length; i++) {
+				file = new File("/resource/file/lectureVideo", fileList[i]);
+				file.delete();
+			}
 		}
 	}
 

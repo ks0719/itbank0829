@@ -43,7 +43,7 @@
 <textarea rows="20" cols="80" readonly>${mylecture.detail}</textarea>
 <br><br>
 <c:choose>
-	<c:when test="${mylecture.state eq '마감'}">
+	<c:when test="${mylecture.state eq '종료'}">
 		지식 평가 : ${mylecture.kin_grade}
 		<br>
 		가격 평가 : ${mylecture.price_grade}

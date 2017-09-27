@@ -15,17 +15,17 @@
 					<thead>
 					
 						<tr>
-							<th data-toggle="tooltip" title="분류로 정렬" data-placement="up" class="lecturer-array" value="sort" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-								분류
+							<th data-placement="up" class="lecturer-array" value="sort" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
+								분류로 정렬
 							</th>
 							<th>
 								강사명
 							</th>
-							<th data-toggle="tooltip" title="강의횟수로 정렬" data-placement="up" class="lecturer-array" value="count" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-								강의횟수
+							<th data-placement="up" class="lecturer-array" value="count" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
+								강의횟수순 정렬
 							</th>
-							<th data-toggle="tooltip" title="평점으로 정렬" data-placement="up" class="lecturer-array" value="grade" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-								평점
+							<th data-placement="up" class="lecturer-array" value="grade" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
+								평점순 정렬
 							</th>
 							<th>
 								등록일
@@ -73,7 +73,7 @@
 								<div class="form-group">
 									<form action="lecturer" class="wrap">
 										<input type="hidden" name="page" value="1">
-										<select name="type" title="검색 기준" class="user-input">
+										<select name="type" title="검색 기준" class="form-control" style="display: inline; width: 15%;">
 											<option value="sort">강사분류</option>
 											<option value="name">강사명</option>
 										</select>
