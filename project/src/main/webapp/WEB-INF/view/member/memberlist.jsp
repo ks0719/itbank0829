@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/view/template/header.jsp" %> 
-<html>
-<head>
 <script>
 
 $(document).ready(function(){
@@ -57,13 +55,16 @@ $(document).ready(function(){
 });
 </script>
 
-<title>회원리스트</title>
-</head>
-<body>
 <h1>회원리스트</h1>
-<div class="page-wrap">
-	<div class="table-wrap">
-		<table border="1" class="tableUnit" rules=rows>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-primary">
+			<div class="box-body no-padding">
+			
+			<div class="table-responsive">
+			
+		<table border="1" class="table table-bordered table-hover" >
+		<thead>
 			<tr>
 				<th>
 					<input type="checkbox" id="checkAll">
@@ -71,7 +72,7 @@ $(document).ready(function(){
 				<th>
 					번호
 				</th>
-				<th>
+				<th class="title">
 					회원ID
 				</th>
 				<th>
@@ -90,6 +91,10 @@ $(document).ready(function(){
 					마일리지
 				</th>
 			</tr>
+			</thead>
+			
+			
+			<tbody>
 			<c:forEach var="member" items="${list}">
 			<tr>
 				<td>
@@ -98,9 +103,6 @@ $(document).ready(function(){
 				<td>
 					${member.no}
 				</td>
-<!-- 				<td class="title"> -->
-<%-- 					[${info.head}] <a href="${path}/detail?no=${info.no}">${info.title}</a> --%>
-<!-- 				</td> -->
 				<td>
 					<a href="${pageContext.request.contextPath}/member/memberdetail?no=${member.no}">${member.id }</a>
 				</td>
@@ -121,49 +123,65 @@ $(document).ready(function(){
 				</td>
 			</tr>
 			</c:forEach>
-		</table>
-	</div>
-	
+			</tbody>
+			
+			
+	<tfoot>
+	<tr>
+	<td colspan="8" style="text-align:right;">
 	<%-- 회원 삭제 --%>
-	<div class="align-right">
-		<input type="button" value="삭제"  id="delete" class="input-btn" >
-	</div>
+		<input type="button" value="삭제"  id="delete" class="btn btn-primary" >
+	</td>
+	</tr>
 	
-	<div class="row">
-		<div class="paging-wrap">
+	<tr>
+	<td colspan="8" style="text-align:center;">
 			<c:if test="${startBlock > 1}">
-		        <div class="paging-unit"><a href="${url}&page=${startBlock - 1}">&lt;</a></div>
+		        <button class="btn btn-default btn-sm" onclick="location.href='${url}page=${startBlock - 1}'"><i class="fa fa-chevron-left"></i></button>
 			</c:if>
 	
 			<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
 				<c:choose>
 					<c:when test="${i eq page}">
-						<div class="paging-unit active">${i}</div>
+						<button class="btn btn-flat btn-sm">${i}</button>
 					</c:when>
 					<c:otherwise>
-	        			<div class="paging-unit"><a href="${url}&page=${i}">${i}</a></div>
+	        			<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${i}'">${i}</button>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 			
 			<c:if test="${endBlock < blockTotal}">
-	        	<div class="paging-unit"><a href="${url}&page=${endBlock + 1}">&gt;</a></div>
+	        	<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${endBlock + 1}'"><i class="fa fa-chevron-right"></i></button>
 			</c:if>
-	    </div>
-	</div>
-	
-	<form action="memberList" class="wrap">
+	</td>
+	</tr>
+			
+	<tr>	
+	<td colspan="8" style="text-align:center;">
+	<div class="form-group">
+	<form action="memberlist" class="wrap">
 		<input type="hidden" name="page" value="1">
-		<select name="type" title="분류선택" class="user-input">
+		<select name="type" title="분류선택" class="form-control" style="display: inline; width: 20%;">
 			<option value="id">ID검색</option>
 			<option value="name">이름검색</option>
 			<option value="nick">닉네임검색</option>
 		</select>
-		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
-		<input type="submit" value="검색" class="input-btn">
+		<input type="search" name="key" class="form-control" style="display: inline; width: 35%;" placeholder="검색 내용" value="${key}" required>
+		<input type="submit" value="검색" class="btn btn-primary">
 	</form>
+		  
+	</div>
+	</td>
+	</tr>
+		  </tfoot>
+		  </table>
+		  </div>  
+			    
+			</div>
+		</div>
+		
+	</div>
 </div>
-</body>
-</html>
 
 <%@ include file="/WEB-INF/view/template/footer.jsp" %> 

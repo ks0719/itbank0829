@@ -949,6 +949,7 @@ function findid(){
 		});
 	}
 	return result;
+}
 	
 //댓글창 크기 자동 조절 함수
 function resize(obj) {
@@ -1038,7 +1039,17 @@ function findpwsubmit(){
  	}
  	return result;
 }
-}
+
+//고객센터 textarea 리사이즈 함수
+$(window).resize(function(){
+	$(".b2cTextarea").width($("#b2cBox").width()-5);
+});
+
+$(document).ready(function(){
+	$(".b2cTextarea").width($("#b2cBox").width()-5);
+});
+
+
 
 </script>
 
@@ -1247,8 +1258,7 @@ function chat_order(){
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	            <span class="sr-only">Toggle navigation</span>
 	          </a>
-			<%=session.getAttribute("member") %>광고 or 공지 넣을 자리(회원 정보 메뉴로 들어가면 여기다 회원정보 화면에 있는 a태그들 넣을 것)
-			
+			<%=session.getAttribute("member") %>
 		</nav>
 	</header>
 	<!-- 헤더 끝 -->
