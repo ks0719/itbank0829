@@ -47,7 +47,7 @@
 		        	<c:when test="${!paid}">
 		        		<a href="${pageContext.request.contextPath}/lecture/req?no=${no}&page=${param.page}" class="btn btn-primary pull-right">신청하기</a>
 		        	</c:when>
-		        	<c:when test="${mynick eq info.teacher}">
+		        	<c:when test="${mynick ne info.teacher}">
 		        		신청불가
 		        	</c:when>
 		        	<c:otherwise>
