@@ -43,11 +43,11 @@
 					<br><br>
 					<label>[강의소개]</label>
 					<br>
-					<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 소개" name="career" style="font-size:15; color: black; resize: none;" rows="10" cols="70" readonly>${mylecture.intro}</textarea>
+					<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 소개" name="intro" style="font-size:15; color: black; resize: none;" rows="10" readonly>${mylecture.intro}</textarea>
 					<br><br>
 					<label>[강의계획]</label>
 					<br>
-					<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 계획" name="detail" style="font-size:15; color: black; resize: none;" rows="20" cols="70" readonly>${mylecture.detail}</textarea>
+					<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 계획" name="detail" style="font-size:15; color: black; resize: none;" rows="20" readonly>${mylecture.detail}</textarea>
 					<br><br>
 					
 					<c:choose>

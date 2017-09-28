@@ -41,9 +41,9 @@
 							<option value="Python">Python</option>
 						</select>
 						<br><br>
-						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="경력 소개" name="career" style="font-size:15; color: black; resize: none;" rows="10" cols="70" required>${profile.career}</textarea>
+						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="경력 소개" name="career" style="font-size:15; color: black; resize: none;" rows="10" required>${profile.career}</textarea>
 						<br><br>
-						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="자기 소개" name="intro" style="font-size:15; color: black; resize: none;" rows="20" cols="70" required>${profile.intro}</textarea>
+						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="자기 소개" name="intro" style="font-size:15; color: black; resize: none;" rows="20" required>${profile.intro}</textarea>
 						<br><br>
 						<input type="submit" class="btn btn-primary pull-right" value="수정하기">
 						<button class="btn btn-default pull-right" onclick="javscript:history.back();">이전 페이지로 돌아가기</button>

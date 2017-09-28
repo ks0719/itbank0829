@@ -280,14 +280,13 @@ $(document).ready(function(){
 			var filename = $(this).data('filename');
 
 			var result = confirm("정말 삭제하시겠습니까?");
+    		$(this).parents("tr").remove();
             
             if (result == true) {
                 $.ajax({
                 	url: "deleteVideo",
                 	data: {"no" : no, "filename" : filename},
-                	success: function(res) {
-                		$(this).parent().remove();
-                	}
+                	success: function(res) {}
                 });
             }
 		});

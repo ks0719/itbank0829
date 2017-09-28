@@ -2,6 +2,7 @@ package spring.db.lecture;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +31,8 @@ public class LectureDao {
 	RowMapper<LectureVideo> mapper3 = (rs, index) -> {
 		return new LectureVideo(rs);
 	};
+	
+	private String videoSavePath = "";
 	
 	public int insert(LectureInfo info) {
 		String sql = "select lecture_info_seq.nextval from dual";
@@ -262,9 +265,8 @@ public class LectureDao {
 	}
 	
 	private void deleteFile(String filename) {
-		System.out.println("파일삭제");
-		File f = new File("/resource/file/lectureVideo");
-		     
+		File f = new File(videoSavePath);
+		
 		String fileList[] = f.list(new FilenameFilter() {
 		 
 		    @Override
@@ -277,23 +279,24 @@ public class LectureDao {
 		if (fileList != null) {
 		    File file;
 			for (int i = 0; i < fileList.length; i++) {
-				file = new File("/resource/file/lectureVideo", fileList[i]);
-				boolean result = file.delete();
-				System.out.println("r : " + result);
+				file = new File(videoSavePath, fileList[i]);
+				file.delete();
 			}
 		}
 	}
 
 	public int videoCount(int no) {
-		String sql = "select count(*) from lecture_video where no = ?";
+		String sql = "select max(vno) from lecture_video where no = ?";
 
-		return jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class);
+		return jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class) == null ? 0 : jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class);
 	}
 
 	public void addVideo(int no, String title, String filename, String realname, String contentType, long size) {
-		String sql = "insert into lecture_video values(?, ?, ?, ?, ?, ?)";
+		String sql = "insert into lecture_video values(?, ?, ?, ?, ?, ?, ?)";
 		
-		jdbcTemplate.update(sql, no, title, filename, realname, contentType, size);
+		int count = videoCount(no) + 1;
+		
+		jdbcTemplate.update(sql, no, title, filename, realname, contentType, size, count);
 	}
 
 	public void editVideo(String filename, String title) {
@@ -302,29 +305,14 @@ public class LectureDao {
 		jdbcTemplate.update(sql, title, filename);
 	}
 
-	public void deleteVideo(int no, String filename) {
+	public void deleteVideo(int no, String savePath, String filename) {
 		String sql = "delete lecture_video where filename = ?";
 		
 		jdbcTemplate.update(sql, filename);
 		
-		String[] fname = filename.split(".");
-		System.out.println("filename : " + filename);
-		System.out.println("f : " + fname[0]);
-		deleteFile(fname[0]);
+		videoSavePath = savePath;
 		
-		sql = "select * from lecture_video where no = ? order by filename";
-		
-		List<LectureVideo> list = jdbcTemplate.query(sql, new Object[] {no}, mapper3);
-		
-		int count = 1;
-		for (LectureVideo l : list) {
-			sql = "update lecture_video set filename = ? where filename = ? order by filename";
-			
-			String[] ext = l.getFilename().split(".");
-			jdbcTemplate.update(sql, no + "(" + count + ")." + ext[ext.length - 1], l.getFilename());
-			
-			count++;
-		}
+		deleteFile(filename);
 	}
 
 }
