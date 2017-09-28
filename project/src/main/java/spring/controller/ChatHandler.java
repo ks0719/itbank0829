@@ -54,7 +54,7 @@ public class ChatHandler extends TextWebSocketHandler{
 			ws.sendMessage(newMessage);
 		}
 	}
-	@RequestMapping(value="/myfriendlist",method=RequestMethod.POST,produces = "application/json")
+	@RequestMapping(value="/ChatHandler/myfriendlist",method=RequestMethod.POST,produces = "application/json")
 	@ResponseBody
 	public	FriendVo myfriendlist(String mynick){
 		log.debug("들어옴?");

@@ -877,7 +877,7 @@ function chat_on(){
 		$("#chat").css("display","");
 		image.src="${pageContext.request.contextPath }/img/chat_close.png";
 		$.ajax({
-			url:"myfriendlist",
+			url:"/project/ChatHandler/myfriendlist",
 			type:"post",
 			data:{mynick:"${mynick}"},
 			dataType: "json",
@@ -1159,7 +1159,8 @@ function finalize(){
   cursor: pointer; 
   position: absolute;
    overflow: visible; 
-   visibility: visible;">
+   visibility: visible;
+   z-index: 9999;">
    채팅창
    <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
    <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
