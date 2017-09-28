@@ -54,13 +54,16 @@ public class ChatHandler extends TextWebSocketHandler{
 			ws.sendMessage(newMessage);
 		}
 	}
-	@RequestMapping(value="/myfriendlist",method=RequestMethod.POST,produces = "application/text; charset=utf8")
+	@RequestMapping(value="/ChatHandler/myfriendlist",method=RequestMethod.POST,produces = "application/json")
 	@ResponseBody
-	public	String myfriendlist(String mynick){
+	public	FriendVo myfriendlist(String mynick){
 		log.debug("들어옴?");
 		List<String> list=new ArrayList<String>();
 		list=mdao.myfriendlist(mynick);
-		log.debug("왜안떠?");
-		  return list.toString();
+		
+		FriendVo vo=new FriendVo();
+		vo.setId("친구목록");
+		vo.setList(list);
+		return vo;
 	}
 }

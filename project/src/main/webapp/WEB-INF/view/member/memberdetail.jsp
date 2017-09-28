@@ -2,14 +2,16 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<%@ include file="/WEB-INF/view/template/header.jsp" %>     
-<html>
-<head>
-<title>회원정보</title>
-</head>
-<body>
-	<h1>회원 정보</h1>
-
-	<table border="1" class="tableUnit" rules=rows>
+	    <div class="example-modal">
+	<div class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">회원 상세보기</h4>
+				</div>
+				<div class="modal-body"> 
+	
+	<table border="1" class="table table-bordered table-hover">
 	<c:forEach var="member" items="${memberList}">
 		<tbody>
 			<tr>
@@ -60,9 +62,14 @@
 		</tbody>
 		</c:forEach>
 	</table>
-</body>
-<div class="align-right">
-		<button class="input-btn"  onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
+		<button  class="btn btn-primary pull-right"  onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
+
 </div>
-</html>
+				<br>
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <%@ include file="/WEB-INF/view/template/footer.jsp" %> 

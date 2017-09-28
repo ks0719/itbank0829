@@ -5,9 +5,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;import org.springframework.http.HttpRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -162,7 +160,7 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="/member/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+	public String logout(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws UnsupportedEncodingException {
 		Cookie[] c=request.getCookies();
 		if(c!=null) {
 			for(int i=0; i<c.length; i++) {
@@ -173,6 +171,7 @@ public class MemberController {
 					ck.setPath("/");
 					ck.setMaxAge(0);
 					response.addCookie(ck);
+					session.setAttribute("member", null);
 				}
 			}
 		}
@@ -204,8 +203,11 @@ public class MemberController {
 	public String list(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
+		System.out.println("type~~~~"+type);
+		System.out.println("key~~~~"+key);
 		
 		String name=(String) session.getAttribute("member");
+		log.debug("권한 ? "+name);
 		if(name.equals("관리자")) {
 		
 		int pageNo;
@@ -246,7 +248,6 @@ public class MemberController {
 		model.addAttribute("url", url);
 		
 		return "member/memberlist";
-		
 		}else {
 			throw new Exception("일반 접근 제한");
 		}
@@ -373,15 +374,15 @@ public class MemberController {
 		String name=request.getParameter("name");
 		String phone=request.getParameter("phone");
 		
+		
 		String findpwcheck=memberDao.findpw(id, name, phone);
 		
 		if(findpwcheck!=null) {
 			model.addAttribute("id",id);
-//			model.addAttribute("findpwcheck", findpwcheck);
 			return "member/findpwresult";
 		}
 		
-		return"비밀번호 찾기 싫어 ?";
+		return"member/findpw";
 	}
 	
 	
@@ -395,16 +396,28 @@ public class MemberController {
 	public String findpwresultPOST(HttpServletRequest request, Model model) {
 		String id=request.getParameter("id");
 		String findnewpw=request.getParameter("findnewpw");
-		
-
-//		String spw=memberDao.findidpw(id);
-//		System.out.println("spw=="+spw);
-		
+		System.out.println("ID:"+id);
+		System.out.println("NEWpw:"+findnewpw);
 			findnewpw=passwordEncoder.encode(findnewpw);
 			boolean state=memberDao.changenewpw(id, findnewpw);
-			if(state) {
-				return "redirect:/";
-			}
-		return "member/findpwresult";
+			
+			if(state) return "redirect:/";
+			else return "member/findpwresult";
+	}
+	
+	@RequestMapping(value="/member/idFind", method=RequestMethod.POST)
+	public String idFind(@RequestParam String name, @RequestParam String phone) {
+		String result=memberDao.findid(name, phone);
+		if(result!=null) return "member/findid";
+		else return "member/findidresult";
+	}
+	
+	@RequestMapping(value="/member/passwordFind", method=RequestMethod.POST)
+	public String findpwchange(@RequestParam String id, @RequestParam String name, @RequestParam String phone) {
+		
+		String result=memberDao.findpw(id, name, phone);
+		
+		if(result!=null) return "member/findpw";
+		else return "member/findpwresult";
 	}
 }

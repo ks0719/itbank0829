@@ -868,8 +868,8 @@ $(document).ready(function(){
 	 		return true;
 	 	}
 	 		return false;
-	}
-	
+	}	
+	var list=null;
 function chat_on(){
 	var image=document.getElementById("img");
 	if($("#chat").css("display")=="none"){
@@ -877,24 +877,30 @@ function chat_on(){
 		$("#chat").css("display","");
 		image.src="${pageContext.request.contextPath }/img/chat_close.png";
 		$.ajax({
-			url:"myfriendlist",
+			url:"/project/ChatHandler/myfriendlist",
 			type:"post",
 			data:{mynick:"${mynick}"},
-			dataType: "text",
-				success : function(text){         
+			dataType: "json",
+				success : function(data){         
 					console.log("성공");
-					console.log(text);
-					},error: function(text){
+					console.log(data.list);
+					list=data.list;
+					document.getElementById("myfriendlist").innerHTML="";
+					$.each(list, function(i, elt) {
+						$("#myfriendlist").append("<button onclick='fr_btn(this.value);' class='fr_btn' value="+elt+">"+elt+"</button><br>");
+					});
+					},error: function(data){
 						console.log("실패");
-						console.log(text);
+						console.log(data);
 					}
 		});
-		
 	}else{
 		//console.log("닫힘");
 		$("#chat").css("display","none");
 		image.src="${pageContext.request.contextPath }/img/chat_open.png";
 	}
+}
+function fr_btn(value){
 }
 function chat_add(){
 	document.getElementById("chat_label").innerHTML="추가할 닉네임 입력";
@@ -907,7 +913,43 @@ function chat_start(){
 	document.getElementById("chat_label").innerHTML="대화할 친구 클릭";
 }
 
-
+function findid(){
+	var nameregex=/^[가-힣]{2,6}$/;
+	var nametarget=document.querySelector("#name");
+	var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/;
+	var phone=document.querySelector("#phone");
+	var result=false;
+	
+	if(nametarget.value==""){
+		alert("이름을 입력해주세요!");
+		result=false;
+	}else if(phone.value==""){
+		alert("핸드폰번호를 입력해주세요!");
+		result=false;
+	}else if(!nameregex.test(nametarget.value)){
+		alert("이름은 한글 2~6글자");
+		result=false;
+	}else if(!phoneregex.test(phone.value)){
+		alert("올바른 핸드폰번호를 입력해주세요!");
+		result=false;
+	}else{
+		$.ajax({
+			async: false,
+			url:"idFind",
+			type:"post",
+			data:({name:nametarget.value,phone:phone.value}),
+			dataType: "text",
+				success : function(){         
+					result=true;
+					
+					},error: function(){
+						alert("이름, 핸드폰번호를 확인해 주세요!");
+						result=false;
+					}
+		});
+	}
+	return result;
+	
 //댓글창 크기 자동 조절 함수
 function resize(obj) {
   obj.style.height = "1px";
@@ -923,17 +965,78 @@ $(window).resize(function(){
 });
 
 
+//비밀번호 찾기
+function findpw(){
+	var idregex=/^[a-zA-Z0-9]{8,20}$/;
+	var id=document.querySelector("#id");
+	var nameregex=/^[가-힣]{2,6}$/;
+	var name=document.querySelector("#name");
+	var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/;
+	var phone=document.querySelector("#phone");
+	var result=false;
+	
+	if(id.value==""){
+		alert("ID를 입력해주세요!");
+		result=false;
+	}else if(name.value==""){
+		alert("이름을 입력해주세요!");
+		result=false;
+	}else if(phone.value==""){
+		alert("핸드폰 번호를 입력해주세요!");
+		result=false;
+	}else if(!idregex.test(id.value)){
+		alert("ID는 영문,숫자 조합 8~20자");
+		result=false;
+	}else if(!nameregex.test(name.value)){
+		alert("이름은 한글 2~6글자");
+		result=false;
+	}else if(!phoneregex.test(phone.value)){
+		alert("올바른 핸드폰 번호를 입력하세요!");
+		result=false;
+	}else{
+		$.ajax({
+			async: false,
+			url:"passwordFind",
+			type:"post",
+			data:({id:id.value, name:name.value, phone:phone.value}),
+			dataType: "text",
+				success : function(){         
+					result=true;
+					
+					},error: function(){
+						alert("ID, 이름, 핸드폰번호를 확인해 주세요!");
+						result=false;
+					}
+		});
+	}
+	return result;
+	
+}
+
 //비밀번호 찾기->새로운설정
 function findpwsubmit(){
 	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
  	var findnewpw=document.querySelector("#findnewpw");
  	var refindnewpw=document.querySelector("#refindnewpw");
+ 	var result=false;
  	
- 	if(!pwregex.test(findnewpw.value)){
+ 	if(finnewpw.value==""){
+ 		alert("비밀번호를 입력해주세요!");
+ 		result=false;
+ 	}else if(refindnewpw.value==""){
+ 		alert("비밀번호를 입력해주세요!");
+ 		result=false;
+ 	}else if(!pwregex.test(findnewpw.value)){
  		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+ 		result=false;
  	}else if(findnewpw.value!=refindnewpw.value){
  		alert("비밀번호가 일치하지 않습니다.");
+ 		result=false;
+ 	}else{
+ 		alert("비밀번호가 변경되었습니다!");
+ 		result=true;
  	}
+ 	return result;
 }
 
 
@@ -976,7 +1079,6 @@ $(document).ready(function(){
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
-
 <div class="setDiv">
     <div class="mask"></div>
     <div class="window" id="login_area">
@@ -1067,16 +1169,16 @@ function finalize(){
   cursor: pointer; 
   position: absolute;
    overflow: visible; 
-   visibility: visible;">
+   visibility: visible;
+   z-index: 9999;">
    채팅창
    <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
    <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
    <table class="chat_table">
-   <thead>
+   <thead style="height: 100%;width: 100%;">
  <label style="padding: 10px;">내 친구 목록</label>
-   <div id="myfriendlist">
-   
-   </div>
+ <div id="myfriendlist" style="display: block; position: absolute; width:100%; height: 60%;overflow: auto;">
+ </div>
    </thead>
    <tbody>
    <div style="position: absolute;bottom: 30px;right: 0px;" >
@@ -1155,6 +1257,11 @@ function chat_order(){
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	            <span class="sr-only">Toggle navigation</span>
 	          </a>
+<<<<<<< HEAD
+=======
+			<%=session.getAttribute("member") %>광고 or 공지 넣을 자리(회원 정보 메뉴로 들어가면 여기다 회원정보 화면에 있는 a태그들 넣을 것)
+			
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 		</nav>
 	</header>
 	<!-- 헤더 끝 -->
@@ -1256,18 +1363,22 @@ function chat_order(){
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
 					</a>
 				</li>
+				
+				<c:set var="power" value='<%=(String)session.getAttribute("member") %>'/>
+				<c:if test="${!empty power  }">
 				<li id="member">
 					<a href="${pageContext.request.contextPath}/member/memberlist">
 						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
 					</a>
 				</li>
-				
 				<li>
 					<a href="${pageContext.request.contextPath}/teacher/applynot">
 						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span>
 					</a>
 				</li>
+				</c:if>
 			</ul>
+			
 			<!-- 사이드바 메뉴 끝 -->
 			
 			

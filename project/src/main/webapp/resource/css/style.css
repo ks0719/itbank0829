@@ -9,6 +9,12 @@
         text-align: center; 
         display: block
     }
+    .fr_btn{
+    margin-left: 5px;
+    margin-bottom: 8px;
+    width: 90px;
+    height: 30px;
+    }
 #nav ul{
 display:inline-block;
 border: 1px solid black;
@@ -168,10 +174,13 @@ form {
         .window {
             display: none;
             background-color: #ffffff;
-            width: 350px;
+            width: 530px;
             height: 250px;
             z-index:99999;
         }
+        
+        
+        
  <!-- 움직이는 레이어 팝업 -->
  #draggable { 
  width: 150px; 
