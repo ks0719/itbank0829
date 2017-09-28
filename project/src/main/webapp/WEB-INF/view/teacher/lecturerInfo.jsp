@@ -4,7 +4,7 @@
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-    <div class="example-modal">
+<div class="example-modal">
 	<div class="modal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -12,60 +12,42 @@
 					<h4 class="modal-title">강사 상세보기</h4>
 				</div>
 				<div class="modal-body"> 
-
-		<table width="600" class="table table-bordered table-hover">
-			<tbody>
-				<tr>
-					<td rowspan="2" width="20%">
-						<img src="<c:url value="/img/bono.png"/>" width="180" height="180">
-					</td>
-                    <td><input class="form-control" type="text" value="[${info.sort}] ${info.name}" readonly></td> 
-				</tr>
+					<table width="600" class="table table-bordered table-hover">
+						<tbody>
+							<tr>
+								<td rowspan="2" width="20%">
+									<img src="<c:url value="/img/bono.png"/>" width="180" height="180">
+								</td>
+                    			<td><input class="form-control" type="text" value="[${info.sort}] ${info.name}" readonly></td> 
+							</tr>
 				
-				<tr>
-                     <td><input class="form-control" type="text" value="${info.career}" readonly></td>
-				</tr>
- 
-                <tr>
-                    <td colspan="2"><textarea class="textarea" readonly>${info.intro}</textarea></td>
-                </tr>
-			</tbody>
-		</tabl
-	        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> iv        	ight" align="right">
-        	<c:if test="${info.name not eq mynick}">
-		        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
-        	</c:if>
-        	<a href="lecturer${url}">목록보기</a>
-        </div>
-=======
-		
-		
-		<tr>
-		<td>
-			평점 : ${info.grade} 강의횟수 : ${info.count}
-		</td>
-		</tr> 
-	
-		<tr>
-		<td class="right">
-			<a href="${pageContext.request.contextPath}/lecture/study?page=1&type=teacher&key=${info.name}" class="btn btn-primary pull-right">현재 진행중인 강의</a>
-	        <a href="" class="btn btn-primary pull-right" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
-        	<a href="lecturer${url}" class="btn btn-primary pull-right">목록보기</a>
-       	</td>
-       	</tr>
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
-	</div>
-	
-	
-	
-	</div>
-				<br>
-				<div class="modal-footer">
+							<tr>
+                     			<td><input class="form-control" type="text" value="${info.career}" readonly></td>
+							</tr>
+                			<tr>
+                    			<td colspan="2"><textarea class="textarea" readonly>${info.intro}</textarea></td>
+                			</tr>
+						</tbody>
+					</table>
+		        	<c:if test="${info.name not eq mynick}">
+				        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
+		        	</c:if>
+        			<a href="lecturer${url}">목록보기</a>
+        		</div>
+				<div class="pull-left">
+					평점 : ${info.grade} 강의횟수 : ${info.count}
 				</div>
+				<a href="${pageContext.request.contextPath}/lecture/study?page=1&type=teacher&key=${info.name}" class="btn btn-primary pull-right">현재 진행중인 강의</a>
+		        <a href="" class="btn btn-primary pull-right" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
+	        	<a href="lecturer${url}" class="btn btn-primary pull-right">목록보기</a>
+				<br>
+			</div>
+				
+			<div class="modal-footer">
+				<br>
 			</div>
 		</div>
 	</div>
 </div>
-	
 
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>
