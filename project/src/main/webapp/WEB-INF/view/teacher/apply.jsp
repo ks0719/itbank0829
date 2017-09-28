@@ -32,9 +32,9 @@
 			<option value="Python">Python</option>
 		</select>
 		<br><br>
-		<textarea class="form-control" rows="10" cols="80" name="career" placeholder="경력소개" required></textarea>
+		<textarea class="textarea" rows="10" cols="80" name="career" placeholder="경력소개" required></textarea>
 		<br><br>
-		<textarea class="form-control" rows="20" cols="80" name="intro" placeholder="자기소개" required></textarea>
+		<textarea class="textarea" rows="20" cols="80" name="intro" placeholder="자기소개" required></textarea>
 		<br><br>
 		<input class="btn btn-primary pull-right" type="submit" value="신청하기"> 
 		<button class="btn btn-primary pull-right" onclick="javscript:history.back();">이전 페이지로 돌아가기</button>

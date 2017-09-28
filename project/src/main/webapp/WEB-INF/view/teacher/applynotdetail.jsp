@@ -3,7 +3,6 @@
     
 <%@ include file="/WEB-INF/view/template/header.jsp" %> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
 <script>
 
 
@@ -53,27 +52,32 @@ $(document).ready(function(){
 	
 });
 </script>
-<head>
-<title>강사 상세보기</title>
-</head>
-<body>
+    <div class="example-modal">
+	<div class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">미승인 강사 상세보기</h4>
+				</div>
+				<div class="modal-body"> 
+
 <c:set var="teacherno" value="${teacher.teacherno }"/>
 
 
 <form action="" method="post" enctype="multipart/form-data">
 <input type="hidden" id="NNO" value="${teacher.teacherno }">
 <c:forEach var="teacher" items="${teacherList}">
-		<table width="600" class="borN">
+		<table width="600" class="table table-bordered table-hover">
 			<tbody>
 				<tr>
 					<td rowspan="2" width="20%">
-						<img src="${teacher.getPicture_realname() }" width="180" height="180">
+						<img  src="${teacher.getPicture_realname() }" width="180" height="180">
 					</td>
-                    <td><input type="text" class="row" id="test" value="${teacher.sort }" readonly></td> 
+                    <td><input class="form-control" type="text" class="row" id="test" value="${teacher.sort }"readonly></td> 
 				</tr>
 				
 				<tr>
-                     <td><input type="text" class="row" value="${teacher.name}" readonly></td>
+                     <td><input class="form-control" type="text" class="row" value="${teacher.name}" readonly></td>
 				</tr>
  
                 <tr>
@@ -88,12 +92,19 @@ $(document).ready(function(){
 		
 </c:forEach>
 		<br>
-		<button class="input-btn"  onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
-		<input class="input-btn" type="button" id="apply" value="승인" >
-		<input class="input-btn" type="button" id="Napply" value="거절">
+		<button class="btn btn-primary pull-right" onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
+		<input class="btn btn-primary pull-right" type="button" id="Napply" value="거절">
+		<input class="btn btn-primary pull-right" type="button" id="apply" value="승인" >
 </form>
-</body>
-</html>
+
+</div>
+				<br>
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 <%@ include file="/WEB-INF/view/template/footer.jsp" %> 
