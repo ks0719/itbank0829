@@ -50,6 +50,8 @@ public class TeacherController {
 	@Autowired
 	private MemberDao memberDao;
 	
+	private String videoSavePath;
+	
 	private String getNick(HttpServletRequest req) throws Exception {
 		Cookie[] c=req.getCookies();
 		if(c != null){
@@ -512,21 +514,19 @@ public class TeacherController {
 	public String addVideo(MultipartHttpServletRequest mRequest, Model m) throws Exception {
 		if (isTeacher(getNick(mRequest)) == false) throw new Exception("404");
 		
-		log.debug("addVideo부름");
-		
 		int no = Integer.parseInt(mRequest.getParameter("no"));
 		String title = mRequest.getParameter("title");
 		
 		int count = lectureDao.videoCount(no);
 
 		MultipartFile file = mRequest.getFile("video");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lectureVideo");
+		videoSavePath = mRequest.getServletContext().getRealPath("/resource/file/lectureVideo");
 		
-		log.debug("name: " + file.getOriginalFilename());
+		log.debug("savePath: " + videoSavePath);
 
 		String[] extension = file.getContentType().split("/");
 		String filename = no + "(" + (count + 1) + ")." + extension[extension.length - 1];
-		File target = new File(savePath, filename);
+		File target = new File(videoSavePath, filename);
 		if(!target.exists()) target.mkdirs();
 		file.transferTo(target);
 		
@@ -542,7 +542,7 @@ public class TeacherController {
 	
 	@RequestMapping("/deleteVideo")
 	public void deleteVideo(int no, String filename) {
-		lectureDao.deleteVideo(no, filename);
+		lectureDao.deleteVideo(no, videoSavePath, filename);
 	}
 	
 	@RequestMapping("/students")

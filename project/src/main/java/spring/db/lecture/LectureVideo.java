@@ -10,6 +10,7 @@ public class LectureVideo {
 	private String filerealname;
 	private String filetype;
 	private long filesize;
+	private int vno;
 	
 	public LectureVideo(ResultSet rs) throws SQLException {
 		setNo(rs.getInt("no"));
@@ -17,7 +18,8 @@ public class LectureVideo {
 		setFilename(rs.getString("filename"));
 		setFilerealname(rs.getString("filerealname"));
 		setFiletype(rs.getString("filetype"));
-		setFilesize(rs.getLong("filesize"));
+		setFilesize(rs.getLong("filesize"));;
+		setVno(rs.getInt("vno"));
 	}
 	public int getNo() {
 		return no;
@@ -54,6 +56,12 @@ public class LectureVideo {
 	}
 	public void setFilesize(long filesize) {
 		this.filesize = filesize;
+	}
+	public int getVno() {
+		return vno;
+	}
+	public void setVno(int vno) {
+		this.vno = vno;
 	}
 
 }
