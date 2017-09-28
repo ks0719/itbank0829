@@ -70,10 +70,10 @@ public class LectureController {
 	@RequestMapping(value="/assess", method=RequestMethod.POST)
 	public String assess(HttpServletRequest req) throws Exception {
 		int no = Integer.parseInt(req.getParameter("no"));
-		int grade = Integer.parseInt(req.getParameter(""));
+		int grade = Integer.parseInt(req.getParameter("teacher_grade"));
 		
-		lectureDao.assess(no, new Assess(req));
-//		teacherDao.assess(no, Integer.parseInt(req.getParameter("teacher")));
+		lectureDao.assess(no, getNick(req), new Assess(req));
+		teacherDao.assess(no, grade);
 		
 		return "redirect:/data/manageLecture?box=eval";
 	}

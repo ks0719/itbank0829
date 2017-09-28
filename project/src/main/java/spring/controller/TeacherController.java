@@ -2,6 +2,7 @@ package spring.controller;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
+import spring.db.lecture.LectureVideo;
 import spring.db.member.Member;
 import spring.db.member.MemberDao;
 import spring.db.mylecture.MyLecture;
@@ -463,6 +465,87 @@ public class TeacherController {
 		}
 
 		return "redirect:/teacher/myLecture";
+	}
+	
+	@RequestMapping("/videoList")
+	public String videoList(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
+		int no;
+		try {
+			no = Integer.parseInt(request.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+
+		List<LectureVideo> videoList = lectureDao.videoList(no);
+		
+		log.debug("videoList: " + videoList.size());
+		
+		m.addAttribute("videoList", videoList);
+
+		String where = request.getParameter("where");
+		String page = request.getParameter("page");
+		String search = request.getParameter("type");
+		String key = request.getParameter("key");
+
+		if (search != "" && key != null) {
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		String url = "where=" + where + "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		m.addAttribute("url", url);
+		m.addAttribute("no", no);
+		
+		return "teacher/videoList";
+	}
+	
+	@RequestMapping("/addForm")
+	public String addForm(HttpServletRequest request, Model m) {
+		m.addAttribute("no", request.getParameter("no"));
+		m.addAttribute("url", request.getParameter("url"));
+		
+		return "teacher/addForm";
+	}
+	
+	@RequestMapping("/addVideo")
+	public String addVideo(MultipartHttpServletRequest mRequest, Model m) throws Exception {
+		if (isTeacher(getNick(mRequest)) == false) throw new Exception("404");
+		
+		log.debug("addVideo부름");
+		
+		int no = Integer.parseInt(mRequest.getParameter("no"));
+		String title = mRequest.getParameter("title");
+		
+		int count = lectureDao.videoCount(no);
+
+		MultipartFile file = mRequest.getFile("video");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lectureVideo");
+		
+		log.debug("name: " + file.getOriginalFilename());
+
+		String[] extension = file.getContentType().split("/");
+		String filename = no + "(" + (count + 1) + ")." + extension[extension.length - 1];
+		File target = new File(savePath, filename);
+		if(!target.exists()) target.mkdirs();
+		file.transferTo(target);
+		
+		lectureDao.addVideo(no, title, filename, file.getOriginalFilename(), file.getContentType(), file.getSize());
+		
+		return "redirect:/teacher/videoList?no=" + no + "&" + mRequest.getParameter("url");
+	}
+	
+	@RequestMapping("/editVideo")
+	public void editVideo(String filename, String title) {
+		lectureDao.editVideo(filename, title);
+	}
+	
+	@RequestMapping("/deleteVideo")
+	public void deleteVideo(int no, String filename) {
+		lectureDao.deleteVideo(no, filename);
 	}
 	
 	@RequestMapping("/students")

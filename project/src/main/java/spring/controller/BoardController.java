@@ -85,7 +85,7 @@ public class BoardController {
 		if (nick == "") return false;
 		
 		int memberNo = getMemberNo(nick);
-		int no = Integer.parseInt(req.getParameter("no"));
+		int no = Integer.parseInt(req.getParameter("commentNo"));
 		
 		boolean result = commentDao.isWriter(no, memberNo);
 		return result;

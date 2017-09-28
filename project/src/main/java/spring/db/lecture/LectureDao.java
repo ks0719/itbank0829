@@ -155,17 +155,14 @@ public class LectureDao {
 		jdbcTemplate.update(sql, args);
 	}
 
-	public void assess(int no, Assess assess) {
+	public void assess(int no, String nick, Assess assess) {
 		String sql = "insert into assess values(?, ?, ?, ?, ?)";
-		
 		jdbcTemplate.update(sql, no, assess.getKin_grade(), assess.getPrice_grade(), assess.getKind_grade(), assess.getDetail());
 		
 		sql = "update teacher set students = students + 1 where teacherno = (select teacherno from lecture_info where no = ?)";
-		
 		jdbcTemplate.update(sql, no);
 		
 		sql = "select * from assess where no = ?";
-		
 		List<Assess> list = jdbcTemplate.query(sql, new Object[] {no}, mapper2);
 		
 		double kin_grade = 0.0;
@@ -186,8 +183,10 @@ public class LectureDao {
 		kind_grade /= (double) size;
 		
 		sql = "update lecture_info set kin_grade = ?, price_grade = ?, kind_grade = ? where no = ?";
-		
 		jdbcTemplate.update(sql, df.format(kin_grade), df.format(price_grade), df.format(kind_grade), no);
+		
+		sql = "update mylecture set eval = '평가 완료' where no = ? and id = ?";
+		jdbcTemplate.update(sql, no, nick);
 	}
 
 	public void video(int no, String title, String filename, String originalFilename, String contentType, long size) {
@@ -263,6 +262,7 @@ public class LectureDao {
 	}
 	
 	private void deleteFile(String filename) {
+		System.out.println("파일삭제");
 		File f = new File("/resource/file/lectureVideo");
 		     
 		String fileList[] = f.list(new FilenameFilter() {
@@ -278,8 +278,52 @@ public class LectureDao {
 		    File file;
 			for (int i = 0; i < fileList.length; i++) {
 				file = new File("/resource/file/lectureVideo", fileList[i]);
-				file.delete();
+				boolean result = file.delete();
+				System.out.println("r : " + result);
 			}
+		}
+	}
+
+	public int videoCount(int no) {
+		String sql = "select count(*) from lecture_video where no = ?";
+
+		return jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class);
+	}
+
+	public void addVideo(int no, String title, String filename, String realname, String contentType, long size) {
+		String sql = "insert into lecture_video values(?, ?, ?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sql, no, title, filename, realname, contentType, size);
+	}
+
+	public void editVideo(String filename, String title) {
+		String sql = "update lecture_video set title = ? where filename = ?";
+		
+		jdbcTemplate.update(sql, title, filename);
+	}
+
+	public void deleteVideo(int no, String filename) {
+		String sql = "delete lecture_video where filename = ?";
+		
+		jdbcTemplate.update(sql, filename);
+		
+		String[] fname = filename.split(".");
+		System.out.println("filename : " + filename);
+		System.out.println("f : " + fname[0]);
+		deleteFile(fname[0]);
+		
+		sql = "select * from lecture_video where no = ? order by filename";
+		
+		List<LectureVideo> list = jdbcTemplate.query(sql, new Object[] {no}, mapper3);
+		
+		int count = 1;
+		for (LectureVideo l : list) {
+			sql = "update lecture_video set filename = ? where filename = ?";
+			
+			String[] ext = l.getFilename().split(".");
+			jdbcTemplate.update(sql, no + "(" + count + ")." + ext[ext.length - 1], l.getFilename());
+			
+			count++;
 		}
 	}
 

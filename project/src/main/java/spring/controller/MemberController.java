@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;import org.springframework.http.HttpRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -334,5 +334,77 @@ public class MemberController {
 		}
 		log.debug("삭제:해당 닉네임이 없어?");
 		return "해당 닉네임을 가진 회원이 없습니다.";
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/member/findid", method=RequestMethod.GET)
+	public String findidGET() {
+		
+		return "member/findid";
+	}
+	
+	@RequestMapping(value="/member/findid",  method=RequestMethod.POST)
+	public String findidPOST(HttpServletRequest request, Model model) {
+		String name=request.getParameter("name");
+		String phone=request.getParameter("phone");
+		
+		String findidcheck=memberDao.findid(name, phone);
+		
+		if(findidcheck!=null) {
+			
+			model.addAttribute("findidcheck", findidcheck);
+			return "member/findidresult"; 
+		}
+		
+		return "아이디 찾기 싫어 ?";
+	}
+	
+	@RequestMapping(value="/member/findpw", method=RequestMethod.GET)
+	public String findpwGET() {
+		
+		return "member/findpw";
+	}
+	
+	@RequestMapping(value="/member/findpw", method=RequestMethod.POST)
+	public String findpwPOST(HttpServletRequest request, Model model) {
+		String id=request.getParameter("id");
+		String name=request.getParameter("name");
+		String phone=request.getParameter("phone");
+		
+		String findpwcheck=memberDao.findpw(id, name, phone);
+		
+		if(findpwcheck!=null) {
+			model.addAttribute("id",id);
+//			model.addAttribute("findpwcheck", findpwcheck);
+			return "member/findpwresult";
+		}
+		
+		return"비밀번호 찾기 싫어 ?";
+	}
+	
+	
+	@RequestMapping(value="/member/findpwresult", method=RequestMethod.GET)
+	public String findpwresultGET() {
+		
+		return "member/findpwresult";
+	}
+	
+	@RequestMapping(value="/member/findpwresult", method=RequestMethod.POST)
+	public String findpwresultPOST(HttpServletRequest request, Model model) {
+		String id=request.getParameter("id");
+		String findnewpw=request.getParameter("findnewpw");
+		
+
+//		String spw=memberDao.findidpw(id);
+//		System.out.println("spw=="+spw);
+		
+			findnewpw=passwordEncoder.encode(findnewpw);
+			boolean state=memberDao.changenewpw(id, findnewpw);
+			if(state) {
+				return "redirect:/";
+			}
+		return "member/findpwresult";
 	}
 }

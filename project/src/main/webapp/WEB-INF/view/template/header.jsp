@@ -12,6 +12,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
 
+
 function wrapWindowByMask(){
     // 화면의 높이와 너비를 변수로 만듭니다.
     var maskHeight = $(document).height();
@@ -57,9 +58,6 @@ $(document).ready(function(){
     });
     
 });
-
-
-
 
 
 	$(document).ready(function() {
@@ -149,7 +147,7 @@ $(document).ready(function(){
 		$(document).on("click", ".board-comment", function() {
 			var contextNo = $(this).data('no');
 			var topcontextNo = $(this).data('context');
-			var detail = $("#user-input" + contextNo).val().replace(/\n/g, "<br>");
+			var detail = $("#user-input" + contextNo).val();
 			if (detail == "") {
 				alert("댓글을 입력하세요");
 				return;
@@ -163,6 +161,7 @@ $(document).ready(function(){
         		success: function(res) {
         			$("#comments"+contextNo).append(res);
         			$("#user-input" + contextNo).val('');
+        			$("#user-input" + contextNo).height('85');
         		}
         	});
 		});
@@ -251,7 +250,62 @@ $(document).ready(function(){
 			} else {
 				location.href = path + "/detail?no=" + no + "&page=" + page;
 			}
-		});	
+		});
+		
+		$(document).on("click", ".video-edit", function() {
+			var filename = $(this).data('filename');
+            var label = $(this).text();
+            var title = $(this).parents("tr").children("td").first().next();
+            
+            if (label === "수정") {
+            	title.html("<input type='text' value='"+ title.text() + "'>");
+                
+                $(this).text("완료");
+            } else {
+                var title2 = title.children("input").val();
+                title.text(title2);
+                
+                $(this).text("수정");
+                
+                $.ajax({
+                	url: "editVideo",
+                	data: {"filename" : filename, "title" : title2},
+                	success: function(res) {}
+                });
+            }
+		});
+		
+		$(document).on("click", ".video-delete", function() {
+			var no = $(this).data('no');
+			var filename = $(this).data('filename');
+
+			var result = confirm("정말 삭제하시겠습니까?");
+            
+            if (result == true) {
+                $.ajax({
+                	url: "deleteVideo",
+                	data: {"no" : no, "filename" : filename},
+                	success: function(res) {
+                		$(this).parent().remove();
+                	}
+                });
+            }
+		});
+
+		$(document).on("click", "#video-form", function() {
+			var no = $(this).data('no');
+			var url = $(this).data('url');
+			console.log(url);
+        	
+        	$.ajax({
+        		url: "addForm",
+        		data: {"no" : no, "url" : url},
+        		async : false,
+        		success: function(res) {
+        			$("#addForm").html(res);
+        		}
+        	});
+		});
 	});
 	
 	function resisterOK() {
@@ -847,7 +901,6 @@ function chat_on(){
 	}
 }
 function fr_btn(value){
-	
 }
 function chat_add(){
 	document.getElementById("chat_label").innerHTML="추가할 닉네임 입력";
@@ -858,6 +911,35 @@ function chat_del(){
 }
 function chat_start(){
 	document.getElementById("chat_label").innerHTML="대화할 친구 클릭";
+}
+
+
+//댓글창 크기 자동 조절 함수
+function resize(obj) {
+  obj.style.height = "1px";
+  obj.style.height = (60+obj.scrollHeight)+"px";
+}
+
+$(document).ready(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
+
+$(window).resize(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
+
+
+//비밀번호 찾기->새로운설정
+function findpwsubmit(){
+	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+ 	var findnewpw=document.querySelector("#findnewpw");
+ 	var refindnewpw=document.querySelector("#refindnewpw");
+ 	
+ 	if(!pwregex.test(findnewpw.value)){
+ 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+ 	}else if(findnewpw.value!=refindnewpw.value){
+ 		alert("비밀번호가 일치하지 않습니다.");
+ 	}
 }
 </script>
 
@@ -907,8 +989,8 @@ function chat_start(){
     	<input type="hidden" value="${param}" name="param">
         <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary"onclick="return logincheck();"/>
         <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/idfind';" class="btn btn-default">아이디찾기</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/pwfind';" class="btn btn-default">비밀번호찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findid';" class="btn btn-default">아이디찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findpw';" class="btn btn-default">비밀번호찾기</button>
     </form>
     </div>
 </div>
@@ -986,7 +1068,6 @@ function finalize(){
    <thead style="height: 100%;width: 100%;">
  <label style="padding: 10px;">내 친구 목록</label>
  <div id="myfriendlist" style="display: block; position: absolute; width:100%; height: 60%;overflow: auto;">
- 
  </div>
    </thead>
    <tbody>
