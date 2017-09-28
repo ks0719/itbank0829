@@ -436,7 +436,6 @@ public class DataController {
 	@ResponseBody
 	public String newMail(Model m,@RequestParam String nick, @RequestParam String isSpam) throws UnsupportedEncodingException {
 		int newMail = mailDao.countNewMail(URLDecoder.decode(nick, "UTF-8"), Boolean.parseBoolean(isSpam));
-		
 		return String.valueOf(newMail);
 	}
 
