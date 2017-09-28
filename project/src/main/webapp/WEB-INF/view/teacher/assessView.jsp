@@ -31,7 +31,7 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				
+				<input type="button" class="btn btn-default pull-right" onclick="location.href='myLecture${url}';" value="돌아가기">
 			</div>
 			</div>
 		</div>
