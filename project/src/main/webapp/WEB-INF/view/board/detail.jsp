@@ -148,11 +148,14 @@
 									<h3 class="timeline-header">
 									
 										<c:choose>
-											<c:when test="${comment.writer != mynick && mynick!=null}">
-												<a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${comment.writer}', '쪽지보내기', 'width=800, height=500'); return false;">${comment.writer}</a>
+											<c:when test="${comment.writer == mynick}">
+												<a href="" onclick="alert('자신에게는 쪽지를 보낼 수 없습니다'); return false;">${comment.writer}</a>
+											</c:when>
+											<c:when test="${empty mynick}">
+												<a href="" onclick="return false;">${comment.writer}</a>
 											</c:when>
 											<c:otherwise>
-												<a href="" onclick="return false;">${comment.writer}</a>
+												<a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${comment.writer}', '쪽지보내기', 'width=800, height=500'); return false;">${comment.writer}</a>
 											</c:otherwise>
 										</c:choose>
 									</h3>

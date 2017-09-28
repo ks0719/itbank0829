@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.CookieGenerator;
 
+import spring.db.board.Board;
 import spring.db.board.BoardDao;
 import spring.db.board.CommentDao;
 import spring.db.lecture.LectureDao;
@@ -200,6 +201,12 @@ public class DataController {
 		
 		boolean isTeacher = isTeacher(getNick(request));
 		model.addAttribute("isTeacher", isTeacher);
+		
+		List<MyLecture> mlist = myLectureDao.list(getNick(request), "index", 0);
+		model.addAttribute("mlist", mlist);
+		
+		List<Board> blist = boardDao.mylist(getNick(request));
+		model.addAttribute("blist", blist);
 		
 		return "data/maininfo";
 	}
