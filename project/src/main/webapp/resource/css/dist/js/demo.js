@@ -26,36 +26,6 @@ $(function () {
     "z-index": "99999",
     "box-shadow": "0 1px 3px rgba(0,0,0,0.1)"
   }).addClass("no-print");
-  demo_settings.append(
-          "<h4 class='text-light-blue' style='margin: 0 0 5px 0; border-bottom: 1px solid #ddd; padding-bottom: 15px;'>Layout Options</h4>"
-          //Fixed layout
-          + "<div class='form-group'>"
-          + "<div class='checkbox'>"
-          + "<label>"
-          + "<input type='checkbox' onchange='change_layout(\"fixed\");'/> "
-          + "Fixed layout"
-          + "</label>"
-          + "</div>"
-          + "</div>"
-          //Boxed layout
-          + "<div class='form-group'>"
-          + "<div class='checkbox'>"
-          + "<label>"
-          + "<input type='checkbox' onchange='change_layout(\"layout-boxed\");'/> "
-          + "Boxed Layout"
-          + "</label>"
-          + "</div>"
-          + "</div>"
-          //Sidebar Collapse
-          + "<div class='form-group'>"
-          + "<div class='checkbox'>"
-          + "<label>"
-          + "<input type='checkbox' onchange='change_layout(\"sidebar-collapse\");'/> "
-          + "Collapsed Sidebar"
-          + "</label>"
-          + "</div>"
-          + "</div>"
-          );
   var skins_list = $("<ul />", {"class": 'list-unstyled'});
   var skin_blue =
           $("<li />", {style: "float:left; width: 50%; padding: 5px;"})

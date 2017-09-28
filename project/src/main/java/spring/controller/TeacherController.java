@@ -2,12 +2,14 @@ package spring.controller;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import spring.db.lecture.LectureDao;
 import spring.db.lecture.LectureInfo;
+import spring.db.lecture.LectureVideo;
 import spring.db.member.Member;
 import spring.db.member.MemberDao;
 import spring.db.mylecture.MyLecture;
@@ -69,10 +72,9 @@ public class TeacherController {
 		return "";
 	}
 	
-	private int getMemberNo(String nick) {
-		if (nick == "") return 0;
-		log.debug("nick : " + nick);
-		return memberDao.memberNo(nick);
+	private boolean isTeacher(String nick) {
+		if (nick == "") return false;
+		return memberDao.power(nick).equals("강사");
 	}
 	
 	private int getTeacherNo(String nick) {
@@ -97,12 +99,6 @@ public class TeacherController {
 			file = new File(savePath, fileList[i]);
 			file.delete();
 		}
-	}
-	
-	private int getteacherNo(String nick) {
-		if (nick == "") return 0;
-		log.debug("nick : " + nick);
-		return memberDao.memberNo(nick);
 	}
 	
 	@RequestMapping(value="/apply", method=RequestMethod.POST)
@@ -140,7 +136,7 @@ public class TeacherController {
 	public String applycheck(HttpServletRequest request, Model m) throws Exception {
 		String nick = getNick(request);
 		
-		boolean result = teacherDao.applycheck(nick);
+		boolean result = teacherDao.applycheck(getTeacherNo(nick));
 		
 		return String.valueOf(result);
 	}
@@ -234,7 +230,7 @@ public class TeacherController {
 			pageNo = 1;
 		}
 		
-		Teacher info = teacherDao.showOne(name);
+		Teacher info = teacherDao.showOne(getTeacherNo(name));
 		
 		String url = "?page=" + pageNo;
 		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");
@@ -246,15 +242,12 @@ public class TeacherController {
 		return "teacher/lecturerInfo";
 	}
 	
-	@RequestMapping("/teacherMain")
-	public String toMain() {
-		return "teacher/teacherMain";
-	}
-	
 	@RequestMapping("/profile")
 	public String profile(HttpServletRequest req, Model m) throws Exception {
-		String name = getNick(req);
-		Teacher info = teacherDao.showOne(name);
+		if (isTeacher(getNick(req)) == false) throw new Exception("404");
+		
+		int teacherNo = getTeacherNo(getNick(req));
+		Teacher info = teacherDao.showOne(teacherNo);
 		
 		m.addAttribute("profile", info);
 		
@@ -283,6 +276,8 @@ public class TeacherController {
 	@RequestMapping("/resister")
 	public String resister(HttpServletRequest req, Model m) throws Exception {
 		String nick = getNick(req);
+		if (isTeacher(nick) == false) throw new Exception("404");
+		
 		int teacherNo = getTeacherNo(nick);
 		
 		m.addAttribute("teacherNo", teacherNo);
@@ -336,6 +331,8 @@ public class TeacherController {
 		}
 		
 		String nick = getNick(req);
+		if (isTeacher(nick) == false) throw new Exception("404");
+		
 		String search = req.getParameter("search");
 		String key = req.getParameter("key");
 		
@@ -377,6 +374,8 @@ public class TeacherController {
 	
 	@RequestMapping("/myLecture")
 	public String myLecture(HttpServletRequest req, Model m) throws Exception {
+		if (isTeacher(getNick(req)) == false) throw new Exception("404");
+		
 		String where = req.getParameter("where");
 		String page = req.getParameter("page");
 		String search = req.getParameter("search");
@@ -403,6 +402,8 @@ public class TeacherController {
 	
 	@RequestMapping("/lectureEdit")
 	public String lectureEdit(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
 		int no;
 		try {
 			no = Integer.parseInt(request.getParameter("no"));
@@ -435,6 +436,8 @@ public class TeacherController {
 	
 	@RequestMapping(value="/lectureEdit", method=RequestMethod.POST)
 	public String lectureEdit(MultipartHttpServletRequest mRequest, Model m) throws Exception {
+		if (isTeacher(getNick(mRequest)) == false) throw new Exception("404");
+		
 		int no = Integer.parseInt(mRequest.getParameter("no"));
 		MultipartFile file = mRequest.getFile("file");
 		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecture");
@@ -464,8 +467,91 @@ public class TeacherController {
 		return "redirect:/teacher/myLecture";
 	}
 	
+	@RequestMapping("/videoList")
+	public String videoList(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
+		int no;
+		try {
+			no = Integer.parseInt(request.getParameter("no"));
+		} catch(Exception e) {
+			throw new Exception("404");
+		}
+
+		List<LectureVideo> videoList = lectureDao.videoList(no);
+		
+		log.debug("videoList: " + videoList.size());
+		
+		m.addAttribute("videoList", videoList);
+
+		String where = request.getParameter("where");
+		String page = request.getParameter("page");
+		String search = request.getParameter("type");
+		String key = request.getParameter("key");
+
+		if (search != "" && key != null) {
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		String url = "where=" + where + "&page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+		}
+		m.addAttribute("url", url);
+		m.addAttribute("no", no);
+		
+		return "teacher/videoList";
+	}
+	
+	@RequestMapping("/addForm")
+	public String addForm(HttpServletRequest request, Model m) {
+		m.addAttribute("no", request.getParameter("no"));
+		m.addAttribute("url", request.getParameter("url"));
+		
+		return "teacher/addForm";
+	}
+	
+	@RequestMapping("/addVideo")
+	public String addVideo(MultipartHttpServletRequest mRequest, Model m) throws Exception {
+		if (isTeacher(getNick(mRequest)) == false) throw new Exception("404");
+		
+		log.debug("addVideo부름");
+		
+		int no = Integer.parseInt(mRequest.getParameter("no"));
+		String title = mRequest.getParameter("title");
+		
+		int count = lectureDao.videoCount(no);
+
+		MultipartFile file = mRequest.getFile("video");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lectureVideo");
+		
+		log.debug("name: " + file.getOriginalFilename());
+
+		String[] extension = file.getContentType().split("/");
+		String filename = no + "(" + (count + 1) + ")." + extension[extension.length - 1];
+		File target = new File(savePath, filename);
+		if(!target.exists()) target.mkdirs();
+		file.transferTo(target);
+		
+		lectureDao.addVideo(no, title, filename, file.getOriginalFilename(), file.getContentType(), file.getSize());
+		
+		return "redirect:/teacher/videoList?no=" + no + "&" + mRequest.getParameter("url");
+	}
+	
+	@RequestMapping("/editVideo")
+	public void editVideo(String filename, String title) {
+		lectureDao.editVideo(filename, title);
+	}
+	
+	@RequestMapping("/deleteVideo")
+	public void deleteVideo(int no, String filename) {
+		lectureDao.deleteVideo(no, filename);
+	}
+	
 	@RequestMapping("/students")
 	public String students(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
 		int no;
 		try {
 			no = Integer.parseInt(request.getParameter("no"));
@@ -500,6 +586,8 @@ public class TeacherController {
 	
 	@RequestMapping("/qnaView")
 	public String qnaView(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
 		int no;
 		try {
 			no = Integer.parseInt(request.getParameter("no"));
@@ -531,6 +619,8 @@ public class TeacherController {
 	
 	@RequestMapping("/assessView")
 	public String assessView(HttpServletRequest request, Model m) throws Exception {
+		if (isTeacher(getNick(request)) == false) throw new Exception("404");
+		
 		int no;
 		try {
 			no = Integer.parseInt(request.getParameter("no"));
@@ -562,6 +652,8 @@ public class TeacherController {
 	
 	@RequestMapping("/withdrow")
 	public String withdrow(HttpServletRequest req, Model m) throws Exception {
+		if (isTeacher(getNick(req)) == false) throw new Exception("404");
+		
 		int point = memberDao.mypoint(getNick(req));
 		
 		m.addAttribute("point", point);
@@ -571,10 +663,14 @@ public class TeacherController {
 	
 	
 	@RequestMapping("/applynot")
-	public String notapply(HttpServletRequest request, Model model) {
+	public String notapply(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
 		
+		String name=(String) session.getAttribute("member");
+		if(name.equals("관리자")) {
+			
+	
 		int pageNo;
 		try {
 			pageNo = Integer.parseInt(request.getParameter("page"));
@@ -617,6 +713,9 @@ public class TeacherController {
 		
 		
 		return "teacher/applynot";
+		}else {
+			throw new Exception("일반 접근 제한");
+		}
 	}
 	
 	
@@ -643,7 +742,7 @@ public class TeacherController {
 		
 		teacherDao.stateedit2(no);
 		
-		return "redirect:teacher/applynot";
+		return "teacher/applynot";
 	}
 	
 	//여러개 거절
@@ -673,7 +772,13 @@ public class TeacherController {
 	
 	
 	@RequestMapping("/applynotdetail")
-	public String detail(HttpServletRequest request, String teacherno, Model model) throws Exception {
+	public String detail(HttpServletRequest request, String teacherno, Model model, HttpSession session) throws Exception {
+		
+		String name=(String) session.getAttribute("member");
+		if(name.equals("관리자")) {
+			
+			
+		
 		int noI;
 		try {
 			noI=Integer.parseInt(teacherno);
@@ -688,5 +793,8 @@ public class TeacherController {
 		model.addAttribute("teacherList",teacher);
 		
 		return "teacher/applynotdetail";
+		}else {
+			throw new Exception("일반 접근 제한");
+		}
 	}
 }

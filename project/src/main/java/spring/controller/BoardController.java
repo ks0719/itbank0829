@@ -85,7 +85,7 @@ public class BoardController {
 		if (nick == "") return false;
 		
 		int memberNo = getMemberNo(nick);
-		int no = Integer.parseInt(req.getParameter("no"));
+		int no = Integer.parseInt(req.getParameter("commentNo"));
 		
 		boolean result = commentDao.isWriter(no, memberNo);
 		return result;
@@ -221,16 +221,26 @@ public class BoardController {
 			m.addAttribute("key", key);
 		}
 		
+		String url2 = "?page=" + page;
+		if (search != null && key != null) {
+			url += "&search=" + search + "&key=" + key;
+			m.addAttribute("search", search);
+			m.addAttribute("key", key);
+		}
+		
 		m.addAttribute("url", url);
+		m.addAttribute("url2", url2);
 		m.addAttribute("memberNo", memberNo);
 		m.addAttribute("boardList", board);
 		m.addAttribute("list", list);
+		m.addAttribute("no", no);
 		
 		return "board/detail";
 	}
 	
 	@RequestMapping("/{path}/best")
-	public String best(@PathVariable String path, String no, String context) throws Exception {
+	@ResponseBody
+	public String best(String no, HttpServletRequest req) throws Exception {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -238,10 +248,13 @@ public class BoardController {
 			throw new Exception("404");
 		}
 		
-		boardDao.best(noI);
+		boolean result = boardDao.best(noI, getMemberNo(getNick(req)));
 
-		if (context != null) return "redirect:/board/" + path + "/detail?no=" + context;
-		return "redirect:/board/" + path + "/detail?no=" + no;
+		if (result) {
+			boardDao.best(noI);
+			return "true";
+		}
+		return "false";
 	}
 
 	@RequestMapping(value="/{path}/edit", method=RequestMethod.POST)
@@ -356,9 +369,10 @@ public class BoardController {
 	
 	@RequestMapping("/{path}/comment")
 	public String comment(@PathVariable String path, HttpServletRequest request, Model m) throws Exception {
+		if (request.getParameter("detail").equals("")) return null;
 		String nick = getNick(request);
 		int memberNo = getMemberNo(nick);
-//		log.debug("comment nick : " + nick);
+
 		Comment comment = commentDao.insert(nick, memberNo, new Comment(request));
 		m.addAttribute("comment", comment);
 		

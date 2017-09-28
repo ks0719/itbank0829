@@ -11,7 +11,7 @@
 		<input type="hidden" name="name" value="${profile.name}">
 		닉네임 : ${profile.name}
 		<br><br>
-		사진 : <input type="file" name="file" onchange="previewImage(this,'upload_photo')">
+		사진<input type="file" name="file" onchange="previewImage(this,'upload_photo')">
 		<br><br>
 		<c:choose>
 			<c:when test="${profile.picture_name ne null}">

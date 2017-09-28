@@ -3,77 +3,94 @@
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-<div class="page-wrap">
-	<div class="table-wrap lecturer">
-		<table border="1" class="tableUnit" rules=rows>
-			<tr>
-				<th class="lecturer-array" value="sort" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-					분류
-				</th>
-				<th>
-					강사명
-				</th>
-				<th class="lecturer-array" value="count" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-					강의횟수
-				</th>
-				<th class="lecturer-array" value="grade" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
-					평점
-				</th>
-				<th>
-					등록일
-				</th>
-			</tr>
-			<c:forEach var="teacher" items="${list}">
-			<tr data-name="${teacher.name}" data-page="${page}" data-type="${type}" data-key="${key}" class="toLecturerInfo" style="cursor: pointer">
-				<td>
-					${teacher.sort}
-				</td>
-				<td>
-					${teacher.name}
-				</td>
-				<td>
-					${teacher.count}
-				</td>
-				<td>
-					${teacher.grade}
-				</td>
-				<td>
-					${teacher.auto}
-				</td>
-			</tr>
-			</c:forEach>
-		</table>
-	</div>
-	<div class="row">
-		<div class="paging-wrap">
-			<c:if test="${startBlock > 1}">
-		        <div class="paging-unit"><a href="${url}&page=${startBlock - 1}">&lt;</a></div>
-			</c:if>
-			<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
-				<c:choose>
-					<c:when test="${i eq page}">
-						<div class="paging-unit active">${i}</div>
-					</c:when>
-					<c:otherwise>
-		       			<div class="paging-unit"><a href="${url}page=${i}">${i}</a></div>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-primary">
+			<div class="box-body no-padding">
 			
-			<c:if test="${endBlock < blockTotal}">
-		       	<div class="paging-unit"><a href="${url}&page=${endBlock + 1}">&gt;</a></div>
-			</c:if>
+			<div class="table-responsive">
+			
+				<table id="example2" class="table table-bordered table-hover">
+					<thead>
+					
+						<tr>
+							<th data-placement="up" class="lecturer-array" value="sort" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
+								분류로 정렬
+							</th>
+							<th>
+								강사명
+							</th>
+							<th data-placement="up" class="lecturer-array" value="count" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
+								강의횟수순 정렬
+							</th>
+							<th data-placement="up" class="lecturer-array" value="grade" data-page="${page}" data-type="${type}" data-key="${key}" style="cursor: pointer">
+								평점순 정렬
+							</th>
+							<th>
+								등록일
+							</th>
+						</tr>
+					
+					</thead>
+					<tbody>
+					
+						<c:forEach var="teacher" items="${list}">
+							<tr data-name="${teacher.name}" data-page="${page}" data-type="${type}" data-key="${key}" class="toLecturerInfo" style="cursor: pointer">
+								<td>${teacher.sort}</td>
+								<td>${teacher.name}</td>
+								<td>${teacher.count}</td>
+								<td>${teacher.grade}</td>
+								<td>${teacher.auto}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7" style="text-align:center;">
+								<c:if test="${startBlock > 1}">
+									<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${startBlock - 1}'"><i class="fa fa-chevron-left"></i></button>
+								</c:if>
+								
+								<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
+									<c:choose>
+										<c:when test="${i eq page}">
+											<button class="btn btn-flat btn-sm">${i}</button>
+										</c:when>
+										<c:otherwise>
+											<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${i}'">${i}</button>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								
+								<c:if test="${endBlock < blockTotal}">
+									<button class="btn btn-default btn-sm" onclick="location.href='${url}page=${endBlock + 1}'"><i class="fa fa-chevron-right"></i></button>
+								</c:if>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="7" style="text-align:center;">
+								<div class="form-group">
+									<form action="lecturer" class="wrap">
+										<input type="hidden" name="page" value="1">
+										<select name="type" title="검색 기준" class="form-control" style="display: inline; width: 15%;">
+											<option value="sort">강사분류</option>
+											<option value="name">강사명</option>
+										</select>
+										<input type="search" name="key" class="form-control" style="display: inline; width: 35%;" placeholder="검색 내용" value="${key}" required>
+										<input type="submit" value="검색" class="btn btn-primary">
+									</form>
+								</div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				
+			</div>
+			</div>
 		</div>
 	</div>
-	<form action="lecturer" class="wrap">
-		<input type="hidden" name="page" value="1">
-		<select name="type" title="검색 기준" class="user-input">
-			<option value="sort">강사분류</option>
-			<option value="name">강사명</option>
-		</select>
-		<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
-		<input type="submit" value="검색" class="input-btn">
-	</form>
 </div>
+
 
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>

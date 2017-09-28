@@ -14,7 +14,7 @@
 						말머리
 					</td>
 					<td class="text-left">
-						<select name="head" title="말머리" class="user-input">
+						<select name="head" title="말머리" class="form-control" style="display: inline; width: 13%;">
 							<option value="Java">Java</option>
 							<option value="JSP">JSP</option>
 							<option value="C언어">C언어</option>
@@ -35,7 +35,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<textarea rows="30" cols="30" name="detail" id="editor" required></textarea>
+						<textarea rows="30" cols="30" name="detail" id="editor" required style="text-align: center;"></textarea>
 					</td>
 				</tr>
 				<tr>

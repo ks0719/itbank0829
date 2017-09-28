@@ -30,7 +30,6 @@ public class Comment {
 		setMemberNo(rs.getInt("memberNo"));
 	}
 	public Comment(HttpServletRequest request) {
-		setWriter(request.getParameter("writer"));
 		setDetail(request.getParameter("detail"));
 		setTopcontext(Integer.parseInt(request.getParameter("topcontext")));
 		setContext(Integer.parseInt(request.getParameter("context")));
@@ -48,10 +47,10 @@ public class Comment {
 		this.writer = writer;
 	}
 	public String getDetail() {
-		return detail;
+		return detail.replace("\n", "<br>");
 	}
 	public void setDetail(String detail) {
-		this.detail = detail;
+		this.detail = detail.replace("\n", "<br>");
 	}
 	public int getTopcontext() {
 		return topcontext;

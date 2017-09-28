@@ -58,16 +58,18 @@
 						</tr>
 						<tr>
 							<td colspan="7" style="text-align:center;">
-								<form action="study" class="wrap">
-									<input type="hidden" name="page" value="1">
-									<select name="type" title="분류 선택" class="user-input">
-										<option value="tag">수업태그</option>
-										<option value="title">제목</option>
-										<option value="teacher">강사명</option>
-									</select>
-									<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
-									<input type="submit" value="검색" class="input-btn">
-								</form>
+								<div class="form-group">
+									<form action="study" class="wrap">
+										<input type="hidden" name="page" value="1">
+										<select name="type" title="분류 선택" class="form-control">
+											<option value="tag">수업태그</option>
+											<option value="title">제목</option>
+											<option value="teacher">강사명</option>
+										</select>
+										<input type="search" name="key" class="form-control" style="display: inline; width: 35%;" placeholder="검색 내용" value="${key}" required>
+										<input type="submit" value="검색" class="btn btn-primary">
+									</form>
+								</div>
 							</td>
 						</tr>
 					

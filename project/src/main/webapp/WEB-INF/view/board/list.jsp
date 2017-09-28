@@ -75,16 +75,18 @@
 						</tr>
 						<tr>
 							<td colspan="7" style="text-align:center;">
-								<form action="${path}" class="wrap">
-									<input type="hidden" name="page" value="1">
-									<select name="search" title="분류선택" class="user-input">
-										<option value="head">말머리</option>
-										<option value="title">제목</option>
-										<option value="writer">작성자</option>
-									</select>
-									<input type="search" name="key" class="user-input" placeholder="검색 내용" value="${key}" required>
-									<input type="submit" value="검색" class="input-btn">
-								</form>
+								<div class="form-group">
+									<form action="${path}" class="wrap">
+										<input type="hidden" name="page" value="1">
+										<select name="search" title="분류선택" class="form-control" style="display: inline; width: 13%;">
+											<option value="head">말머리</option>
+											<option value="title">제목</option>
+											<option value="writer">작성자</option>
+										</select>
+										<input type="search" name="key" class="form-control" style="display: inline; width: 35%;" placeholder="검색 내용" value="${key}" required>
+										<input type="submit" value="검색" class="btn btn-primary">
+									</form>
+								</div>
 							</td>
 						</tr>
 					</tfoot>

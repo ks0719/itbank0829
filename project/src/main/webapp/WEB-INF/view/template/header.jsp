@@ -12,6 +12,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
 
+
 function wrapWindowByMask(){
     // 화면의 높이와 너비를 변수로 만듭니다.
     var maskHeight = $(document).height();
@@ -33,6 +34,7 @@ function wrapWindowByMask(){
 
     // 레이어 팝업을 띄웁니다.
     $('.window').show();
+    document.getElementById("login_area").scrollIntoView();
 }
 
 $(document).ready(function(){
@@ -56,9 +58,6 @@ $(document).ready(function(){
     });
     
 });
-
-
-
 
 
 	$(document).ready(function() {
@@ -127,17 +126,42 @@ $(document).ready(function(){
 			}
 		});
 		
-		$(document).on("submit", ".board-comment", function() {
-			var contextNo = $(this).attr('value');
+		$(document).on("click", ".board-best", function() {
+			var contextNo = $(this).data('no');
+			event.preventDefault();
+        	
+        	$.ajax({
+        		url: "best",
+        		data: {"no" : contextNo},
+        		async : false,
+        		success: function(res) {
+					if (res == "true") {
+						alert("추천이 완료되었습니다");
+					} else {
+						alert("이미 추천하셨습니다");
+					}
+        		}
+        	});
+		});
+		
+		$(document).on("click", ".board-comment", function() {
+			var contextNo = $(this).data('no');
+			var topcontextNo = $(this).data('context');
+			var detail = $("#user-input" + contextNo).val();
+			if (detail == "") {
+				alert("댓글을 입력하세요");
+				return;
+			}
 			event.preventDefault();
         	
         	$.ajax({
         		url: "comment",
-        		data: $(this).serialize(),
+        		data: {"context" : contextNo, "topcontext" : topcontextNo, "detail" : detail},
         		async : false,
         		success: function(res) {
         			$("#comments"+contextNo).append(res);
-        			$(".user-input").val('');
+        			$("#user-input" + contextNo).val('');
+        			$("#user-input" + contextNo).height('85');
         		}
         	});
 		});
@@ -226,7 +250,62 @@ $(document).ready(function(){
 			} else {
 				location.href = path + "/detail?no=" + no + "&page=" + page;
 			}
-		});	
+		});
+		
+		$(document).on("click", ".video-edit", function() {
+			var filename = $(this).data('filename');
+            var label = $(this).text();
+            var title = $(this).parents("tr").children("td").first().next();
+            
+            if (label === "수정") {
+            	title.html("<input type='text' value='"+ title.text() + "'>");
+                
+                $(this).text("완료");
+            } else {
+                var title2 = title.children("input").val();
+                title.text(title2);
+                
+                $(this).text("수정");
+                
+                $.ajax({
+                	url: "editVideo",
+                	data: {"filename" : filename, "title" : title2},
+                	success: function(res) {}
+                });
+            }
+		});
+		
+		$(document).on("click", ".video-delete", function() {
+			var no = $(this).data('no');
+			var filename = $(this).data('filename');
+
+			var result = confirm("정말 삭제하시겠습니까?");
+            
+            if (result == true) {
+                $.ajax({
+                	url: "deleteVideo",
+                	data: {"no" : no, "filename" : filename},
+                	success: function(res) {
+                		$(this).parent().remove();
+                	}
+                });
+            }
+		});
+
+		$(document).on("click", "#video-form", function() {
+			var no = $(this).data('no');
+			var url = $(this).data('url');
+			console.log(url);
+        	
+        	$.ajax({
+        		url: "addForm",
+        		data: {"no" : no, "url" : url},
+        		async : false,
+        		success: function(res) {
+        			$("#addForm").html(res);
+        		}
+        	});
+		});
 	});
 	
 	function resisterOK() {
@@ -647,11 +726,16 @@ $(document).ready(function(){
 		}else if(location.indexOf('lecture')==0){
 			$("#lecture").addClass('active');
 		}else if(location.indexOf('teacher')==0){
-			$("#teacher").addClass('active');
+			//teacher로 주소가 시작하는 페이지가 많기 때문에 따로 설정 해줘야함
+			if(location.indexOf('teacher/applynot')!=0){
+				$("#teacher").addClass('active');
+			}
+			
 		}else if(location.indexOf('consumer')==0){
 			$("#consumer").addClass('active');
 		}else if(location.indexOf('member')==0){
-			$("#member").addClass('active');
+			//member로 주소가 시작하는 페이지가 많기 때문에 따로 설정 해줘야함
+			
 		}
 		
 	});
@@ -784,20 +868,39 @@ $(document).ready(function(){
 	 		return true;
 	 	}
 	 		return false;
-	}
-	
+	}	
+	var list=null;
 function chat_on(){
 	var image=document.getElementById("img");
 	if($("#chat").css("display")=="none"){
 		//console.log("열림");
 		$("#chat").css("display","");
 		image.src="${pageContext.request.contextPath }/img/chat_close.png";
-		
+		$.ajax({
+			url:"/project/ChatHandler/myfriendlist",
+			type:"post",
+			data:{mynick:"${mynick}"},
+			dataType: "json",
+				success : function(data){         
+					console.log("성공");
+					console.log(data.list);
+					list=data.list;
+					document.getElementById("myfriendlist").innerHTML="";
+					$.each(list, function(i, elt) {
+						$("#myfriendlist").append("<button onclick='fr_btn(this.value);' class='fr_btn' value="+elt+">"+elt+"</button><br>");
+					});
+					},error: function(data){
+						console.log("실패");
+						console.log(data);
+					}
+		});
 	}else{
 		//console.log("닫힘");
 		$("#chat").css("display","none");
 		image.src="${pageContext.request.contextPath }/img/chat_open.png";
 	}
+}
+function fr_btn(value){
 }
 function chat_add(){
 	document.getElementById("chat_label").innerHTML="추가할 닉네임 입력";
@@ -809,6 +912,134 @@ function chat_del(){
 function chat_start(){
 	document.getElementById("chat_label").innerHTML="대화할 친구 클릭";
 }
+
+function findid(){
+	var nameregex=/^[가-힣]{2,6}$/;
+	var nametarget=document.querySelector("#name");
+	var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/;
+	var phone=document.querySelector("#phone");
+	var result=false;
+	
+	if(nametarget.value==""){
+		alert("이름을 입력해주세요!");
+		result=false;
+	}else if(phone.value==""){
+		alert("핸드폰번호를 입력해주세요!");
+		result=false;
+	}else if(!nameregex.test(nametarget.value)){
+		alert("이름은 한글 2~6글자");
+		result=false;
+	}else if(!phoneregex.test(phone.value)){
+		alert("올바른 핸드폰번호를 입력해주세요!");
+		result=false;
+	}else{
+		$.ajax({
+			async: false,
+			url:"idFind",
+			type:"post",
+			data:({name:nametarget.value,phone:phone.value}),
+			dataType: "text",
+				success : function(){         
+					result=true;
+					
+					},error: function(){
+						alert("이름, 핸드폰번호를 확인해 주세요!");
+						result=false;
+					}
+		});
+	}
+	return result;
+	
+//댓글창 크기 자동 조절 함수
+function resize(obj) {
+  obj.style.height = "1px";
+  obj.style.height = (60+obj.scrollHeight)+"px";
+}
+
+$(document).ready(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
+
+$(window).resize(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
+
+
+//비밀번호 찾기
+function findpw(){
+	var idregex=/^[a-zA-Z0-9]{8,20}$/;
+	var id=document.querySelector("#id");
+	var nameregex=/^[가-힣]{2,6}$/;
+	var name=document.querySelector("#name");
+	var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/;
+	var phone=document.querySelector("#phone");
+	var result=false;
+	
+	if(id.value==""){
+		alert("ID를 입력해주세요!");
+		result=false;
+	}else if(name.value==""){
+		alert("이름을 입력해주세요!");
+		result=false;
+	}else if(phone.value==""){
+		alert("핸드폰 번호를 입력해주세요!");
+		result=false;
+	}else if(!idregex.test(id.value)){
+		alert("ID는 영문,숫자 조합 8~20자");
+		result=false;
+	}else if(!nameregex.test(name.value)){
+		alert("이름은 한글 2~6글자");
+		result=false;
+	}else if(!phoneregex.test(phone.value)){
+		alert("올바른 핸드폰 번호를 입력하세요!");
+		result=false;
+	}else{
+		$.ajax({
+			async: false,
+			url:"passwordFind",
+			type:"post",
+			data:({id:id.value, name:name.value, phone:phone.value}),
+			dataType: "text",
+				success : function(){         
+					result=true;
+					
+					},error: function(){
+						alert("ID, 이름, 핸드폰번호를 확인해 주세요!");
+						result=false;
+					}
+		});
+	}
+	return result;
+	
+}
+
+//비밀번호 찾기->새로운설정
+function findpwsubmit(){
+	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+ 	var findnewpw=document.querySelector("#findnewpw");
+ 	var refindnewpw=document.querySelector("#refindnewpw");
+ 	var result=false;
+ 	
+ 	if(finnewpw.value==""){
+ 		alert("비밀번호를 입력해주세요!");
+ 		result=false;
+ 	}else if(refindnewpw.value==""){
+ 		alert("비밀번호를 입력해주세요!");
+ 		result=false;
+ 	}else if(!pwregex.test(findnewpw.value)){
+ 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+ 		result=false;
+ 	}else if(findnewpw.value!=refindnewpw.value){
+ 		alert("비밀번호가 일치하지 않습니다.");
+ 		result=false;
+ 	}else{
+ 		alert("비밀번호가 변경되었습니다!");
+ 		result=true;
+ 	}
+ 	return result;
+}
+}
+
 </script>
 
 <head>
@@ -827,18 +1058,6 @@ function chat_start(){
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
     <link href="${pageContext.request.contextPath}/css/dist/css/skins/_all-skins.css" rel="stylesheet" type="text/css" />
-<!--     iCheck -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/iCheck/flat/blue.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Morris chart -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/morris/morris.css" rel="stylesheet" type="text/css" /> --%>
-<!--     jvectormap -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Date Picker -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css" /> --%>
-<!--     Daterange picker -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" /> --%>
-<!--     bootstrap wysihtml5 - text editor -->
-<%--     <link href="${pageContext.request.contextPath}/css/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" /> --%>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -850,11 +1069,10 @@ function chat_start(){
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
-
 <div class="setDiv">
     <div class="mask"></div>
-    <div class="window">
-    <div class="form-group">
+    <div class="window" id="login_area">
+    <div class="form-group" >
     <label>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</label>
     </div>
     <form action="${pageContext.request.contextPath }/member/login" method="post">
@@ -868,8 +1086,10 @@ function chat_start(){
     	</div>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary" onclick="return logincheck();"/>
+        <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary"onclick="return logincheck();"/>
         <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findid';" class="btn btn-default">아이디찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findpw';" class="btn btn-default">비밀번호찾기</button>
     </form>
     </div>
 </div>
@@ -939,15 +1159,16 @@ function finalize(){
   cursor: pointer; 
   position: absolute;
    overflow: visible; 
-   visibility: visible;">
+   visibility: visible;
+   z-index: 9999;">
    채팅창
    <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
    <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
    <table class="chat_table">
-   <thead>
-   <div id="myfriendlist">
-   
-   </div>
+   <thead style="height: 100%;width: 100%;">
+ <label style="padding: 10px;">내 친구 목록</label>
+ <div id="myfriendlist" style="display: block; position: absolute; width:100%; height: 60%;overflow: auto;">
+ </div>
    </thead>
    <tbody>
    <div style="position: absolute;bottom: 30px;right: 0px;" >
@@ -1026,7 +1247,8 @@ function chat_order(){
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	            <span class="sr-only">Toggle navigation</span>
 	          </a>
-			광고 or 공지 넣을 자리(회원 정보 메뉴로 들어가면 여기다 회원정보 화면에 있는 a태그들 넣을 것)
+			<%=session.getAttribute("member") %>광고 or 공지 넣을 자리(회원 정보 메뉴로 들어가면 여기다 회원정보 화면에 있는 a태그들 넣을 것)
+			
 		</nav>
 	</header>
 	<!-- 헤더 끝 -->
@@ -1128,18 +1350,22 @@ function chat_order(){
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
 					</a>
 				</li>
+				
+				<c:set var="power" value='<%=(String)session.getAttribute("member") %>'/>
+				<c:if test="${!empty power  }">
 				<li id="member">
 					<a href="${pageContext.request.contextPath}/member/memberlist">
 						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
 					</a>
 				</li>
-				
 				<li>
 					<a href="${pageContext.request.contextPath}/teacher/applynot">
 						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span>
 					</a>
 				</li>
+				</c:if>
 			</ul>
+			
 			<!-- 사이드바 메뉴 끝 -->
 			
 			
@@ -1149,4 +1375,3 @@ function chat_order(){
 
 	
 	<div class="content-wrapper">
-	

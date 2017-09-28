@@ -51,5 +51,7 @@
 <!-- 		<property name="maxInMemorySize" value="바이트"/> -->
 	</bean>
 
+	
+
 
 </beans>

@@ -25,6 +25,7 @@ import spring.db.member.MemberDao;
 import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
 import spring.db.teacher.Assess;
+import spring.db.teacher.TeacherDao;
 
 @Controller
 @RequestMapping("/lecture")
@@ -56,6 +57,9 @@ public class LectureController {
 	@Autowired
 	private MyLectureDao myLectureDao;
 	
+	@Autowired
+	private TeacherDao teacherDao;
+	
 	@RequestMapping("/assess")
 	public String assess(HttpServletRequest req, Model m) {
 		m.addAttribute("no", req.getParameter("no"));
@@ -66,10 +70,10 @@ public class LectureController {
 	@RequestMapping(value="/assess", method=RequestMethod.POST)
 	public String assess(HttpServletRequest req) throws Exception {
 		int no = Integer.parseInt(req.getParameter("no"));
-		String nick = getNick(req);
+		int grade = Integer.parseInt(req.getParameter("teacher_grade"));
 		
-		myLectureDao.evalCount(no, nick);
-		lectureDao.assess(no, new Assess(req));
+		lectureDao.assess(no, getNick(req), new Assess(req));
+		teacherDao.assess(no, grade);
 		
 		return "redirect:/data/manageLecture?box=eval";
 	}
@@ -198,6 +202,8 @@ public class LectureController {
 		}
 		if (pageNo <= 0 ) pageNo = 1;
 		
+		lectureDao.end();
+		
 		int listCount = lectureDao.count(type, key);
 		log.debug(String.valueOf(listCount));
 		
@@ -235,11 +241,14 @@ public class LectureController {
 	public String list(HttpServletRequest req, Model m) {
 		int no = Integer.parseInt(req.getParameter("no"));
 		
+		lectureDao.clean();
+		
 		List<LectureVideo> list = lectureDao.videoList(no);
 		
 		m.addAttribute("list", list);
 		
-		return "lecture/lectureList";
+		if (list.isEmpty()) return "data/manageLecture";
+		else return "lecture/lectureList";
 	}
 	
 	@RequestMapping("/listening")

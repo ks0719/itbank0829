@@ -122,20 +122,23 @@ public class TeacherDao {
 	}
 	
 
-	public Teacher showOne(String nick) throws Exception {
-		String sql = "select * from teacher where name = ? and state='active'";
+	public Teacher showOne(int no) throws Exception {
+		String sql = "select * from teacher where teacherno = ? and state='active'";
 		
-		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {nick}, mapper);
+		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
 		
 		if (list.isEmpty()) throw new Exception("404");
 		return list.get(0);
 	}
 
 	public boolean apply(Teacher teacher, int teacherNo) {
-		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait',?)";
+		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait', ?, 0)";
 		
-		String[] extension = teacher.getPicture_type().split("/");
-		String filename = "lecturer/" + teacher.getName() + "." + extension[extension.length - 1];
+		String filename = null;
+		if (teacher.getPicture_type() != null) {
+			String[] extension = teacher.getPicture_type().split("/");
+			filename = "lecturer/" + teacher.getName() + "." + extension[extension.length - 1];
+		}
 		
 		Object[] args = {teacher.getName(), teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
 				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(),teacherNo};
@@ -143,20 +146,14 @@ public class TeacherDao {
 		return jdbcTemplate.update(sql, args) > 0;
 	}
 
-	public boolean applycheck(String nick) {
-		String sql = "select count(*) from teacher where name = ?";
+	public boolean applycheck(int no) {
+		String sql = "select count(*) from teacher where teacherno = ?";
 		
-		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class) > 0;
-	}
-	
-	public boolean isTeacher(String nick) {
-		String sql = "select count(*) from teacher where name = ? and state = 'active'";
-		
-		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, Integer.class) > 0;
+		return jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class) > 0;
 	}
 
 	public void edit(Teacher teacher) {
-		String sql = "update teacher set sort = ?, career = ?, intro = ?, picture_name = ?, picture_realname = ?, picture_type = ?, picture_size = ? where name = ?";
+		String sql = "update teacher set sort = ?, career = ?, intro = ?, picture_name = ?, picture_realname = ?, picture_type = ?, picture_size = ? where teacherno = ?";
 		
 		String filename = null;
 		if (teacher.getPicture_type() != "") {
@@ -165,7 +162,7 @@ public class TeacherDao {
 		}
 		
 		Object[] args = {teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
-				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(), teacher.getName()};
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(), teacher.getTeacherno()};
 
 		jdbcTemplate.update(sql, args);
 	}
@@ -180,6 +177,31 @@ public class TeacherDao {
 		String sql = "select * from assess where no = ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
+	}
+	
+	public void assess(int no, int grade) {
+		String sql = "select * from teacher where teacherno = (select teacherno from lecture_info where no = ?)";
+		
+		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
+		Teacher teacher = list.get(0);
+		
+		String format = "#.##";
+		java.text.DecimalFormat df = new java.text.DecimalFormat(format);
+		
+		double result = 0.0;
+		if (teacher.getStudents() != 0) {
+			System.out.println("평점준학생수 : " + teacher.getStudents());
+			double origin = teacher.getGrade() * (teacher.getStudents() - 1);
+			System.out.println("origin : " + origin);
+			result = (origin + grade) / (double) teacher.getStudents();
+		} else {
+			result = grade;
+		}
+		System.out.println("result : " + result);
+		
+		sql = "update teacher set grade = ? where teacherno = (select teacherno from lecture_info where no = ?)";
+		
+		jdbcTemplate.update(sql, df.format(result), no);
 	}
 	
 	public List<Teacher>list(){

@@ -46,6 +46,14 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		  return nick;
 		 
 	  }
+	  
+	  public String powercheck(String id, String pw) {
+		  
+		  String sql="select power from member where id=? and pw=?";
+		  String power=jdbcTemplate.queryForObject(sql, new Object[] {id, pw},String.class);
+		  return power;
+	  }
+	  
 	  public String mypwid(String id) {
 		  String sql="select pw from member where id=?";
 		  String pw=jdbcTemplate.queryForObject(sql, new Object[] {id},String.class);
@@ -214,4 +222,41 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		}
 		return list;
 	}
+
+	public String power(String nick) {
+		String sql = "select power from member where nick = ?";
+		
+		return jdbcTemplate.queryForObject(sql, new Object[] {nick}, String.class);
+	}
+	
+	public String findid(String name, String phone) {
+		
+		String sql="select id from member where name=? and phone=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {name, phone},String.class);
+	}
+	
+	public String findpw(String id, String name, String phone) {
+		
+		String sql="select pw from member where id=? and name=? and phone=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {id, name, phone},String.class);
+	}
+	
+	public String findidpw(String id) {
+		
+		String sql="select pw from member where id=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] {id},String.class);
+	}
+	
+	
+	public boolean changenewpw(String id, String newpw) {
+		String sql="select count(*) from member where id=?";
+		boolean result=jdbcTemplate.queryForObject(sql, new Object[] {id},Integer.class)>0;
+		if(result) {
+			sql="update member set pw=? where id=?";
+			jdbcTemplate.update(sql, new Object[] {newpw,id});
+			return true;
+		}
+		return false;
+	}
 }
+

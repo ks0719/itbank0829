@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,11 +104,12 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="/member/login",method=RequestMethod.POST)
-	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response) throws UnsupportedEncodingException {
+	public String loginpost(HttpServletRequest request,Model model,HttpServletResponse response, HttpSession session) throws UnsupportedEncodingException {
 		
 		String id=request.getParameter("id");
 		String pw=request.getParameter("pw");
 		String nick = null;
+		String power=null;
 		//log.debug("id="+id+",pw="+pw);
 		String url=request.getParameter("page");
 		//log.debug("url="+url);
@@ -136,6 +138,7 @@ public class MemberController {
 		//log.debug("일치하냐? : "+passwordEncoder.matches(pw, encodepw));
 		if(passwordEncoder.matches(pw, encodepw))
 		nick=memberDao.logincheck(id, encodepw);
+		power=memberDao.powercheck(id, encodepw);
 		//log.debug("nick="+nick);
 		//log.debug("state="+state);
 		
@@ -145,6 +148,9 @@ public class MemberController {
 			cookie.setCookiePath("/");
 			cookie.setCookieMaxAge(-1);
 			cookie.addCookie(response, URLEncoder.encode(nick, "utf-8"));
+			
+			 session.setAttribute("member", power);
+			 
 		return "redirect:"+url;
 		}
 		else {
@@ -154,7 +160,7 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="/member/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+	public String logout(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws UnsupportedEncodingException {
 		Cookie[] c=request.getCookies();
 		if(c!=null) {
 			for(int i=0; i<c.length; i++) {
@@ -165,6 +171,7 @@ public class MemberController {
 					ck.setPath("/");
 					ck.setMaxAge(0);
 					response.addCookie(ck);
+					session.setAttribute("member", null);
 				}
 			}
 		}
@@ -193,10 +200,13 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/memberlist")
-	public String list(HttpServletRequest request, Model model) {
+	public String list(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
 		
+		String name=(String) session.getAttribute("member");
+		log.debug("권한 ? "+name);
+		if(name.equals("관리자")) {
 		
 		int pageNo;
 		try {
@@ -236,12 +246,17 @@ public class MemberController {
 		model.addAttribute("url", url);
 		
 		return "member/memberlist";
+		
+		}else {
+			throw new Exception("일반 접근 제한");
+		}
 	}
 	
 	@RequestMapping("/member/memberdetail")
-	public String detail(HttpServletRequest req, String no, Model m) throws Exception {
+	public String detail(HttpServletRequest req, String no, Model m, HttpSession session) throws Exception {
 	
-		
+		String name=(String) session.getAttribute("member");
+		if(name.equals("관리자")) {
 		int noI;
 		try {
 			noI = Integer.parseInt(no);
@@ -255,6 +270,9 @@ public class MemberController {
 		m.addAttribute("memberList",member);
 		
 		return "member/memberdetail";
+		}else {
+			throw new Exception("일반 접근 제한");
+		}
 	}
 	
 	
@@ -316,5 +334,89 @@ public class MemberController {
 		}
 		log.debug("삭제:해당 닉네임이 없어?");
 		return "해당 닉네임을 가진 회원이 없습니다.";
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/member/findid", method=RequestMethod.GET)
+	public String findidGET() {
+		
+		return "member/findid";
+	}
+	
+	@RequestMapping(value="/member/findid",  method=RequestMethod.POST)
+	public String findidPOST(HttpServletRequest request, Model model) {
+		String name=request.getParameter("name");
+		String phone=request.getParameter("phone");
+		
+		String findidcheck=memberDao.findid(name, phone);
+		
+		if(findidcheck!=null) {
+			
+			model.addAttribute("findidcheck", findidcheck);
+			return "member/findidresult"; 
+		}
+		
+		return "아이디 찾기 싫어 ?";
+	}
+	
+	@RequestMapping(value="/member/findpw", method=RequestMethod.GET)
+	public String findpwGET() {
+		
+		return "member/findpw";
+	}
+	
+	@RequestMapping(value="/member/findpw", method=RequestMethod.POST)
+	public String findpwPOST(HttpServletRequest request, Model model) {
+		String id=request.getParameter("id");
+		String name=request.getParameter("name");
+		String phone=request.getParameter("phone");
+		
+		
+		String findpwcheck=memberDao.findpw(id, name, phone);
+		
+		if(findpwcheck!=null) {
+			model.addAttribute("id",id);
+			return "member/findpwresult";
+		}
+		
+		return"member/findpw";
+	}
+	
+	
+	@RequestMapping(value="/member/findpwresult", method=RequestMethod.GET)
+	public String findpwresultGET() {
+		
+		return "member/findpwresult";
+	}
+	
+	@RequestMapping(value="/member/findpwresult", method=RequestMethod.POST)
+	public String findpwresultPOST(HttpServletRequest request, Model model) {
+		String id=request.getParameter("id");
+		String findnewpw=request.getParameter("findnewpw");
+		System.out.println("ID:"+id);
+		System.out.println("NEWpw:"+findnewpw);
+			findnewpw=passwordEncoder.encode(findnewpw);
+			boolean state=memberDao.changenewpw(id, findnewpw);
+			
+			if(state) return "redirect:/";
+			else return "member/findpwresult";
+	}
+	
+	@RequestMapping(value="/member/idFind", method=RequestMethod.POST)
+	public String idFind(@RequestParam String name, @RequestParam String phone) {
+		String result=memberDao.findid(name, phone);
+		if(result!=null) return "member/findid";
+		else return "member/findidresult";
+	}
+	
+	@RequestMapping(value="/member/passwordFind", method=RequestMethod.POST)
+	public String findpwchange(@RequestParam String id, @RequestParam String name, @RequestParam String phone) {
+		
+		String result=memberDao.findpw(id, name, phone);
+		
+		if(result!=null) return "member/findpw";
+		else return "member/findpwresult";
 	}
 }
