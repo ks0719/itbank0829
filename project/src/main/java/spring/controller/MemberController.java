@@ -172,6 +172,7 @@ public class MemberController {
 					ck.setMaxAge(0);
 					response.addCookie(ck);
 					session.setAttribute("member", null);
+					session.setAttribute("mynick", null);
 				}
 			}
 		}
