@@ -27,8 +27,8 @@
 							<td class="title" id="title${status.count}">${info.title}</td>
 							<td><a href="" onclick="window.open('${pageContext.request.contextPath}/lecture/listening?video=${info.filename}', '동영상 보기', 'width=800, height=500'); return false;">동영상 보기</a></td>
 							<td>
-								<Button class="video-edit" data-filename="${info.filename}">수정</Button>
-								<Button class="video-delete" data-no="${no}" data-filename="${info.filename}">삭제</Button>
+								<Button class="btn btn-warning video-edit" data-filename="${info.filename}">수정</Button>
+								<Button class="btn btn-danger video-delete" data-no="${no}" data-filename="${info.filename}">삭제</Button>
 							</td>
 						</tr>
 					</c:forEach>

@@ -5,7 +5,9 @@
 <form action="addVideo" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="no" value="${no}">
 	<input type="hidden" name="url" value="${url}">
-	<input type="text" name="title" placeholder="강의 제목" required>
+	<input type="text" class="form-control" name="title" placeholder="강의 제목" required>
+	<br>
 	<input type="file" name="video" required>
-	<input type="submit" value="추가">
+	<br>
+	<input type="submit" class="btn btn-primary" value="추가">
 </form>

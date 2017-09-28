@@ -449,7 +449,7 @@ public class TeacherController {
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
 		}
-
+		
 		m.addAttribute("no", no);
 		m.addAttribute("where", mRequest.getParameter("whrer"));
 		m.addAttribute("page", mRequest.getParameter("page"));
@@ -460,7 +460,8 @@ public class TeacherController {
 			m.addAttribute("key", key);
 		}
 
-		return "redirect:/teacher/myLecture";
+		log.debug(mRequest.getParameter("url"));
+		return "redirect:/teacher/myLecture?" + mRequest.getParameter("url");
 	}
 	
 	@RequestMapping("/videoList")

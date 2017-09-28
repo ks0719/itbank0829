@@ -3,10 +3,10 @@
 
 </div>
 	<footer class="main-footer">
-		<div class="pull-right hidden-xs">
+		<div class="pull-right hidden-xs" style="display: inline-block">
 			<b>Version</b> : test
 		</div>
-		<strong> KG ITBANK SW개발자양성 과정 2017 두 번째 프로젝트</strong> [웹 페이지 만들기]
+		<strong style="display: inline-block"> KG ITBANK SW개발자양성 과정 2017 두 번째 프로젝트</strong> [웹 페이지 만들기]
 	</footer>
 </div>	
     <!-- Bootstrap 3.3.2 JS -->
