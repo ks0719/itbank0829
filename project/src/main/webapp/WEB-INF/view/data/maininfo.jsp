@@ -4,26 +4,6 @@
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <table>
-<thead>
-<nav id="nav" >
-	<ul>
-		<li><a href="${pageContext.request.contextPath}/data/edit" class="no-uline">내 정보 변경</a></li>     
-        <li><a href="${pageContext.request.contextPath }/data/changepw" class="no-uline">비밀번호 변경</a></li>
-        <li><a href="" class="no-uline" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;">내 수강정보</a></li>
-		<li><a href="${pageContext.request.contextPath }/data/point" class="no-uline">포인트 샾</a></li>
-		<li><a href="${pageContext.request.contextPath}/member/deletemember" class="no-uline">회원 탈퇴</a></li>
-		<li><a href="#" class="no-uline">내가 쓴글</a></li>
-		<c:choose>
-			<c:when test="${isTeacher eq 'true'}">
-				<li><a href="${pageContext.request.contextPath}/teacher/profile" class="no-uline">강사 전용</a></li>
-			</c:when>
-			<c:otherwise>
-				<li><a href="#" id="lecturer-apply" value="${dto.nick}" class="no-uline">강사 신청</a></li>
-			</c:otherwise>
-		</c:choose>
-	</ul>
-</nav>
-</thead>
 <tbody>
 <hr>
 <nav class="navline">

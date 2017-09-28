@@ -17,7 +17,6 @@
     }
 #nav ul{
 display:inline-block;
-border: 1px solid black;
 }
 #nav ul li{
 	display: block;
@@ -31,12 +30,20 @@ text-align:center;
           width: 176px;
           
  }
-    nav.navline{
+  .topmenu { 
+ font-weight:bold;
+ color:white;
+text-decoration:none; 
+text-align:center;
+         display: block; 
+          width: 176px;
+          
+ }
+ nav.navline{
         display: inline-block;
         width: 600px;
         margin: 15px;
         height: 400px;
-        border: 1px solid black;
         
     }
 .page-wrap {
