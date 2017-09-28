@@ -852,6 +852,23 @@ function chat_del(){
 function chat_start(){
 	document.getElementById("chat_label").innerHTML="대화할 친구 클릭";
 }
+
+
+
+
+
+//비밀번호 찾기->새로운설정
+function findpwsubmit(){
+	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+ 	var findnewpw=document.querySelector("#findnewpw");
+ 	var refindnewpw=document.querySelector("#refindnewpw");
+ 	
+ 	if(!pwregex.test(findnewpw.value)){
+ 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+ 	}else if(findnewpw.value!=refindnewpw.value){
+ 		alert("비밀번호가 일치하지 않습니다.");
+ 	}
+}
 </script>
 
 <head>
