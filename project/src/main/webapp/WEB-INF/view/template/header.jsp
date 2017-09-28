@@ -1099,7 +1099,7 @@ $(document).ready(function(){
 <body class="skin-blue">
 	<div class="setDiv">
 		<div class="mask"></div>
-		<div class="window" id="login_area">
+		<div class="window" id="login_area" style="margin: 15px;">
 			<div class="form-group">
 				<label>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</label>
 			</div>
