@@ -14,7 +14,7 @@
 			
 			<div class="tab-content">
 				<div id="b2cBox" class="tab-pane active">
-					<textarea class="b2cTextarea" rows="20" style="outline: none; overflow-x:hidden; resize:none;" readonly>
+					<textarea class="b2cTextarea" rows="20" style="font-size:15px; outline: none; overflow-x:hidden; resize:none;" readonly>
 					<%@include file="/WEB-INF/view/consumer/basicrule.jsp" %>
 					</textarea>
 				</div>

@@ -1021,10 +1021,10 @@ function findpwsubmit(){
  	var result=false;
  	
  	if(findnewpw.value==""){
- 		alert("비밀번호를 입력해주세요!");
+ 		alert("새비밀번호를 입력해주세요!");
  		result=false;
  	}else if(refindnewpw.value==""){
- 		alert("비밀번호를 입력해주세요!");
+ 		alert("새비밀번호를 재입력해주세요!");
  		result=false;
  	}else if(!pwregex.test(findnewpw.value)){
  		alert("비밀번호는 영문,숫자,특수문자 8~20자");

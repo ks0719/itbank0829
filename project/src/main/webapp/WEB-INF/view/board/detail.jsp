@@ -146,7 +146,15 @@
 										<i class="fa fa-clock-o"></i>${comment.reg}
 									</span>
 									<h3 class="timeline-header">
-										<a href="#">${comment.writer}(누르면 쪽지로 가게끔 하기)</a>
+									
+										<c:choose>
+											<c:when test="${comment.writer != mynick && mynick!=null}">
+												<a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${comment.writer}', '쪽지보내기', 'width=800, height=500'); return false;">${comment.writer}</a>
+											</c:when>
+											<c:otherwise>
+												<a href="" onclick="return false;">${comment.writer}</a>
+											</c:otherwise>
+										</c:choose>
 									</h3>
 									<div class="timeline-body">
 										${comment.detail}
