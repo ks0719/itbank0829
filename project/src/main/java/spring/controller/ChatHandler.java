@@ -1,28 +1,37 @@
 package spring.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import spring.db.member.MemberDao;
+@Controller
 public class ChatHandler extends TextWebSocketHandler{
+	@Autowired
+	MemberDao mdao;
 	private Set<WebSocketSession> set = new HashSet<>();
 	private Logger log = LoggerFactory.getLogger(getClass());
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		set.add(session);
 		log.info("클라이언트 접속 : "+session.getRemoteAddress());
-		//Map<String,Object> attr=session.getAttributes();
-		//og.debug("별걸 다하네 : "+attr.get("mynick"));
+		Map<String,Object> attr=session.getAttributes();
+		//log.debug("별걸 다하네 : "+attr.get("mynick"));
 		//log.debug("이건또 뭐야?"+session.getAttributes());
 	}
 	@Override
@@ -44,5 +53,14 @@ public class ChatHandler extends TextWebSocketHandler{
 			WebSocketSession ws = iter.next();
 			ws.sendMessage(newMessage);
 		}
+	}
+	@RequestMapping(value="/myfriendlist",method=RequestMethod.POST,produces = "application/text; charset=utf8")
+	@ResponseBody
+	public	String myfriendlist(String mynick){
+		log.debug("들어옴?");
+		List<String> list=new ArrayList<String>();
+		list=mdao.myfriendlist(mynick);
+		log.debug("왜안떠?");
+		  return list.toString();
 	}
 }

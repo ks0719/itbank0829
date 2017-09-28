@@ -180,7 +180,16 @@ public class TeacherDao {
 	}
 	
 	public void assess(int no, int grade) {
+		String sql = "select * from teacher where teacherno = (select teacherno from lecture_info where no = ?)";
 		
+		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
+		Teacher teacher = list.get(0);
+		
+		double result = ((double)teacher.getGrade() * (teacher.getStudents() - 1) + grade) / teacher.getStudents();
+		
+		sql = "update teacher set grade = ? where teacherno = (select teacherno from lecture_info where no = ?)";
+		
+		jdbcTemplate.update(sql, result, no);
 	}
 	
 	public List<Teacher>list(){
