@@ -50,7 +50,7 @@ public class Comment {
 		return detail.replace("\n", "<br>");
 	}
 	public void setDetail(String detail) {
-		this.detail = detail;
+		this.detail = detail.replace("\n", "<br>");
 	}
 	public int getTopcontext() {
 		return topcontext;

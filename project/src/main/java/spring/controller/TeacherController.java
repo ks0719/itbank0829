@@ -480,8 +480,9 @@ public class TeacherController {
 
 		List<LectureVideo> videoList = lectureDao.videoList(no);
 		
+		log.debug("videoList: " + videoList.size());
+		
 		m.addAttribute("videoList", videoList);
-		m.addAttribute("teacherNo", getTeacherNo(getNick(request)));
 
 		String where = request.getParameter("where");
 		String page = request.getParameter("page");
@@ -497,6 +498,7 @@ public class TeacherController {
 			url += "&search=" + search + "&key=" + key;
 		}
 		m.addAttribute("url", url);
+		m.addAttribute("no", no);
 		
 		return "teacher/videoList";
 	}
@@ -504,6 +506,7 @@ public class TeacherController {
 	@RequestMapping("/addForm")
 	public String addForm(HttpServletRequest request, Model m) {
 		m.addAttribute("no", request.getParameter("no"));
+		m.addAttribute("url", request.getParameter("url"));
 		
 		return "teacher/addForm";
 	}
@@ -512,27 +515,37 @@ public class TeacherController {
 	public String addVideo(MultipartHttpServletRequest mRequest, Model m) throws Exception {
 		if (isTeacher(getNick(mRequest)) == false) throw new Exception("404");
 		
+		log.debug("addVideo부름");
+		
 		int no = Integer.parseInt(mRequest.getParameter("no"));
 		String title = mRequest.getParameter("title");
 		
 		int count = lectureDao.videoCount(no);
 
 		MultipartFile file = mRequest.getFile("video");
-		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lecture");
+		String savePath = mRequest.getServletContext().getRealPath("/resource/file/lectureVideo");
+		
+		log.debug("name: " + file.getOriginalFilename());
 
 		String[] extension = file.getContentType().split("/");
-		String filename = no + "(" + count + 1 + ")." + extension[extension.length - 1];
+		String filename = no + "(" + (count + 1) + ")." + extension[extension.length - 1];
 		File target = new File(savePath, filename);
 		if(!target.exists()) target.mkdirs();
 		file.transferTo(target);
 		
 		lectureDao.addVideo(no, title, filename, file.getOriginalFilename(), file.getContentType(), file.getSize());
 		
-		m.addAttribute("count", count + 1);
-		m.addAttribute("title", title);
-		m.addAttribute("filename", filename);
-		
-		return "teacher/addVideo";
+		return "redirect:/teacher/videoList?no=" + no + "&" + mRequest.getParameter("url");
+	}
+	
+	@RequestMapping("/editVideo")
+	public void editVideo(String filename, String title) {
+		lectureDao.editVideo(filename, title);
+	}
+	
+	@RequestMapping("/deleteVideo")
+	public void deleteVideo(int no, String filename) {
+		lectureDao.deleteVideo(no, filename);
 	}
 	
 	@RequestMapping("/students")

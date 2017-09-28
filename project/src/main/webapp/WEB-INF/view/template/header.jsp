@@ -252,42 +252,57 @@ $(document).ready(function(){
 			}
 		});
 		
-// 		$(document).on("click", ".video-edit", function() {
-// 			var count = $(this).data('count');
-// 			var origin = $(this).data('origin');
-			
-// 			String user = prompt("수정할 제목을 입력하세요", origin);
-			
-// 			if (user != "") {
-// 				$("#title" + count).val(user);
-// 			} else {
-// 				$("#title" + count).val(origin);
-// 			}
-// 		});
+		$(document).on("click", ".video-edit", function() {
+			var filename = $(this).data('filename');
+            var label = $(this).text();
+            var title = $(this).parents("tr").children("td").first().next();
+            
+            if (label === "수정") {
+            	title.html("<input type='text' value='"+ title.text() + "'>");
+                
+                $(this).text("완료");
+            } else {
+                var title2 = title.children("input").val();
+                title.text(title2);
+                
+                $(this).text("수정");
+                
+                $.ajax({
+                	url: "editVideo",
+                	data: {"filename" : filename, "title" : title2},
+                	success: function(res) {}
+                });
+            }
+		});
+		
+		$(document).on("click", ".video-delete", function() {
+			var no = $(this).data('no');
+			var filename = $(this).data('filename');
+
+			var result = confirm("정말 삭제하시겠습니까?");
+            
+            if (result == true) {
+                $.ajax({
+                	url: "deleteVideo",
+                	data: {"no" : no, "filename" : filename},
+                	success: function(res) {
+                		$(this).parent().remove();
+                	}
+                });
+            }
+		});
 
 		$(document).on("click", "#video-form", function() {
-			console.log("form");
 			var no = $(this).data('no');
+			var url = $(this).data('url');
+			console.log(url);
         	
         	$.ajax({
         		url: "addForm",
-        		data: {"no" : no},
+        		data: {"no" : no, "url" : url},
         		async : false,
         		success: function(res) {
         			$("#addForm").html(res);
-        		}
-        	});
-		});
-
-		$(document).on("submit", "#video-add", function() {
-			event.preventDefault();
-        	
-        	$.ajax({
-        		url: "addVideo",
-        		data: $(this).serialize(),
-        		async : false,
-        		success: function(res) {
-        			$("#videoList").append(res);
         		}
         	});
 		});
