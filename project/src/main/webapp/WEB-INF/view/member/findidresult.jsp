@@ -15,7 +15,7 @@
 	</div>
 				
 	<div class="align-right">
-		<button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findpw';" class="btn btn-default">비밀번호찾기</button>
+		<button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findpw';" class="btn btn-primary pull-right">비밀번호찾기</button>
 	</div>
 				<div class="modal-footer">
 				<br>
