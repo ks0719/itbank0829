@@ -1018,7 +1018,7 @@ function findpw(){
 function findpwsubmit(){
 	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
  	var findnewpw=document.querySelector("input[name=findnewpw]");
- 	var refindnewpw=document.querySelector("input[]");
+ 	var refindnewpw=document.querySelector("input[name=refindnewpw]");
  	var result=false;
  	
  	if(findnewpw.value==""){
