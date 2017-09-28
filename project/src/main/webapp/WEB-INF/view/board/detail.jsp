@@ -192,7 +192,7 @@
 															<c:when test="${memberNo eq comment.memberNo}">
 															
 															
-																<a href="" class="comment-delete" value="${comment.no}">삭제</a>
+																<a href="#" class="comment-delete" value="${comment.no}">삭제</a>
 																
 																
 																

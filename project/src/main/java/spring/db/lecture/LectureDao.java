@@ -282,4 +282,16 @@ public class LectureDao {
 		}
 	}
 
+	public int videoCount(int no) {
+		String sql = "select count(*) from lecture_video where no = ?";
+
+		return jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class);
+	}
+
+	public void addVideo(int no, String title, String filename, String realname, String contentType, long size) {
+		String sql = "insert into lecture_video values(?, ?, ?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sql, no, title, filename, realname, contentType, size);
+	}
+
 }

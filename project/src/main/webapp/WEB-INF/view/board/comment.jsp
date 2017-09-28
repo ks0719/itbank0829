@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:choose>
@@ -8,13 +8,13 @@
 			${comment.detail}-${comment.writer} ${comment.reg}
 			<c:choose>
 				<c:when test="${not empty cookie.mynick.value}">
-					<a href="" class="comment-best" value="${comment.no}">ÃßÃµ</a> <span id="best${comment.no}">${comment.best}</span>
+					<a href="" class="comment-best" value="${comment.no}">ì¶”ì²œ</a> <span id="best${comment.no}">${comment.best}</span>
 				</c:when>
 				<c:otherwise>
-					<a href="" onclick="alert('·Î±×ÀÎÀÌ ÇÊ¿äÇÑ ¼­ºñ½º ÀÔ´Ï´Ù'); return false;">ÃßÃµ</a> <span>${comment.best}</span>
+					<a href="" onclick="alert('ë¡œê·¸ì¸ì´ í•„ìš”í•œ ì„œë¹„ìŠ¤ ìž…ë‹ˆë‹¤'); return false;">ì¶”ì²œ</a> <span>${comment.best}</span>
 				</c:otherwise>
 			</c:choose>
-				<a href="" class="comment-delete" value="${comment.no}">»èÁ¦</a>
+				<a href="" class="comment-delete" value="${comment.no}">ì‚­ì œ</a>
 			<br>
 		</div>
 	</c:when>

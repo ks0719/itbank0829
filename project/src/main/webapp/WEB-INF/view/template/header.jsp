@@ -251,7 +251,47 @@ $(document).ready(function(){
 			} else {
 				location.href = path + "/detail?no=" + no + "&page=" + page;
 			}
-		});	
+		});
+		
+// 		$(document).on("click", ".video-edit", function() {
+// 			var count = $(this).data('count');
+// 			var origin = $(this).data('origin');
+			
+// 			String user = prompt("수정할 제목을 입력하세요", origin);
+			
+// 			if (user != "") {
+// 				$("#title" + count).val(user);
+// 			} else {
+// 				$("#title" + count).val(origin);
+// 			}
+// 		});
+
+		$(document).on("click", "#video-form", function() {
+			console.log("form");
+			var no = $(this).data('no');
+        	
+        	$.ajax({
+        		url: "addForm",
+        		data: {"no" : no},
+        		async : false,
+        		success: function(res) {
+        			$("#addForm").html(res);
+        		}
+        	});
+		});
+
+		$(document).on("submit", "#video-add", function() {
+			event.preventDefault();
+        	
+        	$.ajax({
+        		url: "addVideo",
+        		data: $(this).serialize(),
+        		async : false,
+        		success: function(res) {
+        			$("#videoList").append(res);
+        		}
+        	});
+		});
 	});
 	
 	function resisterOK() {
