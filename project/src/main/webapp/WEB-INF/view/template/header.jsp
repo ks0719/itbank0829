@@ -12,6 +12,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
 
+
 function wrapWindowByMask(){
     // 화면의 높이와 너비를 변수로 만듭니다.
     var maskHeight = $(document).height();
@@ -57,9 +58,6 @@ $(document).ready(function(){
     });
     
 });
-
-
-
 
 
 	$(document).ready(function() {
@@ -164,9 +162,6 @@ $(document).ready(function(){
         			$("#comments"+contextNo).append(res);
         			$("#user-input" + contextNo).val('');
         			$("#user-input" + contextNo).height('85');
-        			$(".needResize").each(function(){
-        				$(this).height(1).height($(this).prop('scrollHeight'));
-        			});
         		}
         	});
 		});
@@ -255,7 +250,47 @@ $(document).ready(function(){
 			} else {
 				location.href = path + "/detail?no=" + no + "&page=" + page;
 			}
-		});	
+		});
+		
+// 		$(document).on("click", ".video-edit", function() {
+// 			var count = $(this).data('count');
+// 			var origin = $(this).data('origin');
+			
+// 			String user = prompt("수정할 제목을 입력하세요", origin);
+			
+// 			if (user != "") {
+// 				$("#title" + count).val(user);
+// 			} else {
+// 				$("#title" + count).val(origin);
+// 			}
+// 		});
+
+		$(document).on("click", "#video-form", function() {
+			console.log("form");
+			var no = $(this).data('no');
+        	
+        	$.ajax({
+        		url: "addForm",
+        		data: {"no" : no},
+        		async : false,
+        		success: function(res) {
+        			$("#addForm").html(res);
+        		}
+        	});
+		});
+
+		$(document).on("submit", "#video-add", function() {
+			event.preventDefault();
+        	
+        	$.ajax({
+        		url: "addVideo",
+        		data: $(this).serialize(),
+        		async : false,
+        		success: function(res) {
+        			$("#videoList").append(res);
+        		}
+        	});
+		});
 	});
 	
 	function resisterOK() {
@@ -864,12 +899,13 @@ function resize(obj) {
   obj.style.height = (60+obj.scrollHeight)+"px";
 }
 
-$(".needResize").ready(function() {
-	$(".needResize").each(function(){
-		$(this).height(1).height($(this).prop('scrollHeight'));
-	});
+$(document).ready(function(){
+	$(".needResize").width($(".modal-body").width()-5);
 });
 
+$(window).resize(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
 
 
 //비밀번호 찾기->새로운설정

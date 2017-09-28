@@ -52,9 +52,14 @@
 		<br><br>
 		<Button onclick="location.href='assessView?no=${mylecture.no}&${url}';">평가보기</Button>
 	</c:when>
-	<c:otherwise>
+	<c:when test="${mylecture.state eq '등록 가능'}">
 		<Button onclick="location.href='lectureEdit?no=${mylecture.no}&${url}';">수정하기</Button>
-	</c:otherwise>
+		<c:choose>
+			<c:when test="${mylecture.type eq '인강'}">
+				<Button onclick="location.href='videoList?no=${mylecture.no}&${url}';">동영상 관리</Button>
+			</c:when>
+		</c:choose>
+	</c:when>
 </c:choose>
 <c:choose>
 	<c:when test="${mylecture.type eq '원격강의'}">
