@@ -892,6 +892,23 @@ function chat_del(){
 function chat_start(){
 	document.getElementById("chat_label").innerHTML="대화할 친구 클릭";
 }
+
+
+
+
+
+//비밀번호 찾기->새로운설정
+function findpwsubmit(){
+	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+ 	var findnewpw=document.querySelector("#findnewpw");
+ 	var refindnewpw=document.querySelector("#refindnewpw");
+ 	
+ 	if(!pwregex.test(findnewpw.value)){
+ 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+ 	}else if(findnewpw.value!=refindnewpw.value){
+ 		alert("비밀번호가 일치하지 않습니다.");
+ 	}
+}
 </script>
 
 <head>
@@ -941,8 +958,8 @@ function chat_start(){
     	<input type="hidden" value="${param}" name="param">
         <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary"onclick="return logincheck();"/>
         <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/idfind';" class="btn btn-default">아이디찾기</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/pwfind';" class="btn btn-default">비밀번호찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findid';" class="btn btn-default">아이디찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findpw';" class="btn btn-default">비밀번호찾기</button>
     </form>
     </div>
 </div>
