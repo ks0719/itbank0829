@@ -666,6 +666,8 @@ public class TeacherController {
 	public String notapply(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
+		System.out.println("type~~~~"+type);
+		System.out.println("key~~~~"+key);
 		
 		String name=(String) session.getAttribute("member");
 		if(name.equals("관리자")) {

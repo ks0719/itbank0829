@@ -203,6 +203,8 @@ public class MemberController {
 	public String list(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
+		System.out.println("type~~~~"+type);
+		System.out.println("key~~~~"+key);
 		
 		String name=(String) session.getAttribute("member");
 		log.debug("권한 ? "+name);
@@ -246,7 +248,6 @@ public class MemberController {
 		model.addAttribute("url", url);
 		
 		return "member/memberlist";
-		
 		}else {
 			throw new Exception("일반 접근 제한");
 		}
