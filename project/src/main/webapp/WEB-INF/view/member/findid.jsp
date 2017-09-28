@@ -1,19 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%@ include file="/WEB-INF/view/template/header.jsp" %> 
-<html>
-<head>
-<title>아이디 찾기</title>
-</head>
-<body>
+<div class="example-modal">
+	<div class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">아이디찾기</h4>
+				</div>
+				<div class="modal-body">     
+     
+     
 	<form action="" method="post" onsubmit="return findid();">
-		<h1>아이디찾기</h1>
-		<input type="text" name="name" id="name" placeholder="이름입력">
+		<input class="form-control" type="text" name="name" id="name" placeholder="이름입력" required>
 		<br><br>
-		<input type="number" name="phone" id="phone" placeholder="전화번호입력">
+		<input class="form-control" type="number" name="phone" id="phone" placeholder="전화번호입력" required>
 		<br><br>
-		<input type="submit" value="확인" >
+		<input class="btn btn-primary pull-right"   type="submit" value="확인" >
 	</form>
-</body>
-</html>
-    <%@ include file="/WEB-INF/view/template/footer.jsp" %> 
+	<br>
+	</div>
+				
+				<div class="modal-footer">
+				<br>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	
