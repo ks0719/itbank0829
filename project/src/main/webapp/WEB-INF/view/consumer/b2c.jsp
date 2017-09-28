@@ -13,5 +13,6 @@
 	제목<input type="text" name="title" required><br>
 	내용<br>
 	<textarea rows="30" cols="30" name="detail" required id="editor"></textarea>
+	<input type="submit" id="submit" value="등록하기">
 	</form>
 <%@ include file="/WEB-INF/view/template/footer.jsp"%>
