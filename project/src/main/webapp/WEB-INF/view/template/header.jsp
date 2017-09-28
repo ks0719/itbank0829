@@ -12,6 +12,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
 
+
 function wrapWindowByMask(){
     // 화면의 높이와 너비를 변수로 만듭니다.
     var maskHeight = $(document).height();
@@ -57,9 +58,6 @@ $(document).ready(function(){
     });
     
 });
-
-
-
 
 
 	$(document).ready(function() {
@@ -149,7 +147,7 @@ $(document).ready(function(){
 		$(document).on("click", ".board-comment", function() {
 			var contextNo = $(this).data('no');
 			var topcontextNo = $(this).data('context');
-			var detail = $("#user-input" + contextNo).val().replace(/\n/g, "<br>");
+			var detail = $("#user-input" + contextNo).val();
 			if (detail == "") {
 				alert("댓글을 입력하세요");
 				return;
@@ -163,6 +161,7 @@ $(document).ready(function(){
         		success: function(res) {
         			$("#comments"+contextNo).append(res);
         			$("#user-input" + contextNo).val('');
+        			$("#user-input" + contextNo).height('85');
         		}
         	});
 		});
@@ -251,7 +250,62 @@ $(document).ready(function(){
 			} else {
 				location.href = path + "/detail?no=" + no + "&page=" + page;
 			}
-		});	
+		});
+		
+		$(document).on("click", ".video-edit", function() {
+			var filename = $(this).data('filename');
+            var label = $(this).text();
+            var title = $(this).parents("tr").children("td").first().next();
+            
+            if (label === "수정") {
+            	title.html("<input type='text' value='"+ title.text() + "'>");
+                
+                $(this).text("완료");
+            } else {
+                var title2 = title.children("input").val();
+                title.text(title2);
+                
+                $(this).text("수정");
+                
+                $.ajax({
+                	url: "editVideo",
+                	data: {"filename" : filename, "title" : title2},
+                	success: function(res) {}
+                });
+            }
+		});
+		
+		$(document).on("click", ".video-delete", function() {
+			var no = $(this).data('no');
+			var filename = $(this).data('filename');
+
+			var result = confirm("정말 삭제하시겠습니까?");
+            
+            if (result == true) {
+                $.ajax({
+                	url: "deleteVideo",
+                	data: {"no" : no, "filename" : filename},
+                	success: function(res) {
+                		$(this).parent().remove();
+                	}
+                });
+            }
+		});
+
+		$(document).on("click", "#video-form", function() {
+			var no = $(this).data('no');
+			var url = $(this).data('url');
+			console.log(url);
+        	
+        	$.ajax({
+        		url: "addForm",
+        		data: {"no" : no, "url" : url},
+        		async : false,
+        		success: function(res) {
+        			$("#addForm").html(res);
+        		}
+        	});
+		});
 	});
 	
 	function resisterOK() {
@@ -814,8 +868,8 @@ $(document).ready(function(){
 	 		return true;
 	 	}
 	 		return false;
-	}
-	
+	}	
+	var list=null;
 function chat_on(){
 	var image=document.getElementById("img");
 	if($("#chat").css("display")=="none"){
@@ -826,21 +880,27 @@ function chat_on(){
 			url:"myfriendlist",
 			type:"post",
 			data:{mynick:"${mynick}"},
-			dataType: "text",
-				success : function(text){         
+			dataType: "json",
+				success : function(data){         
 					console.log("성공");
-					console.log(text);
-					},error: function(text){
+					console.log(data.list);
+					list=data.list;
+					document.getElementById("myfriendlist").innerHTML="";
+					$.each(list, function(i, elt) {
+						$("#myfriendlist").append("<button onclick='fr_btn(this.value);' class='fr_btn' value="+elt+">"+elt+"</button><br>");
+					});
+					},error: function(data){
 						console.log("실패");
-						console.log(text);
+						console.log(data);
 					}
 		});
-		
 	}else{
 		//console.log("닫힘");
 		$("#chat").css("display","none");
 		image.src="${pageContext.request.contextPath }/img/chat_open.png";
 	}
+}
+function fr_btn(value){
 }
 function chat_add(){
 	document.getElementById("chat_label").innerHTML="추가할 닉네임 입력";
@@ -854,6 +914,7 @@ function chat_start(){
 }
 
 
+<<<<<<< HEAD
 function findid(){
 	var nameregex=/^[가-힣]{2,6}$/;
 	var nametarget=document.querySelector("#name");
@@ -891,8 +952,21 @@ function findid(){
 	}
 	return result;
 	
+=======
+//댓글창 크기 자동 조절 함수
+function resize(obj) {
+  obj.style.height = "1px";
+  obj.style.height = (60+obj.scrollHeight)+"px";
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 }
 
+$(document).ready(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
+
+$(window).resize(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
 
 
 //비밀번호 찾기
@@ -999,7 +1073,6 @@ function findpwsubmit(){
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
-
 <div class="setDiv">
     <div class="mask"></div>
     <div class="window" id="login_area">
@@ -1095,11 +1168,10 @@ function finalize(){
    <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
    <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
    <table class="chat_table">
-   <thead>
+   <thead style="height: 100%;width: 100%;">
  <label style="padding: 10px;">내 친구 목록</label>
-   <div id="myfriendlist">
-   
-   </div>
+ <div id="myfriendlist" style="display: block; position: absolute; width:100%; height: 60%;overflow: auto;">
+ </div>
    </thead>
    <tbody>
    <div style="position: absolute;bottom: 30px;right: 0px;" >
