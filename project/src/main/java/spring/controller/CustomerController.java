@@ -76,7 +76,6 @@ public class CustomerController {
 		dto=dao.detail(no);
 		rdto=dao.rdetail(no);
 		if(rdto!=null) {
-			
 			model.addAttribute("rdto", rdto);
 		}
 		model.addAttribute("dto", dto);
@@ -100,6 +99,7 @@ public class CustomerController {
 		model.addAttribute("dto", dto);
 		return "consumer/reply";
 	}
+	
 	@RequestMapping(value="/consumer/reply",method=RequestMethod.POST)
 	public String replypost(@RequestParam(required=true) int no,Model model,HttpServletRequest request) throws Exception {
 		String nick=getNick(request);
@@ -107,6 +107,6 @@ public class CustomerController {
 		rdto.setNick(nick);
 		dao.rinsert(rdto);
 		log.debug("rdto"+rdto);
-		return "consumer/detail";
+		return "redirect:detail?no="+request.getParameter("no");
 	}
 }

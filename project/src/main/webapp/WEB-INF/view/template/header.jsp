@@ -1016,8 +1016,8 @@ function findpw(){
 //비밀번호 찾기->새로운설정
 function findpwsubmit(){
 	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
- 	var findnewpw=document.querySelector("#findnewpw");
- 	var refindnewpw=document.querySelector("#refindnewpw");
+ 	var findnewpw=document.querySelector("input[name=findnewpw]");
+ 	var refindnewpw=document.querySelector("input[name=refindnewpw]");
  	var result=false;
  	
  	if(findnewpw.value==""){
@@ -1097,7 +1097,7 @@ $(document).ready(function(){
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
         <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary"onclick="return logincheck();"/>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-success">회원가입하기</button>
         <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findid';" class="btn btn-default">아이디찾기</button>
         <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findpw';" class="btn btn-default">비밀번호찾기</button>
     </form>
@@ -1361,7 +1361,7 @@ function chat_order(){
 				</li>
 				
 				<c:set var="power" value='<%=(String)session.getAttribute("member") %>'/>
-				<c:if test="${!empty power  }">
+				<c:if test="${power eq '관리자' }">
 				<li id="member">
 					<a href="${pageContext.request.contextPath}/member/memberlist">
 						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>

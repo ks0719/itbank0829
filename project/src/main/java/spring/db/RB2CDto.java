@@ -22,7 +22,7 @@ public RB2CDto(HttpServletRequest request) {
 	
 }
 public RB2CDto(ResultSet rs) throws SQLException {
-	
+	setNick(rs.getString("nick"));
 	setNo(rs.getInt("no"));
 	setDetail(rs.getString("detail"));
 	setReg(rs.getString("reg"));

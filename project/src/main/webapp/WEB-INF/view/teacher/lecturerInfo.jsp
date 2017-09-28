@@ -4,18 +4,26 @@
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-	<div class="wrap">
-		<table width="600" class="borN">
+    <div class="example-modal">
+	<div class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">강사 상세보기</h4>
+				</div>
+				<div class="modal-body"> 
+
+		<table width="600" class="table table-bordered table-hover">
 			<tbody>
 				<tr>
 					<td rowspan="2" width="20%">
 						<img src="<c:url value="/img/bono.png"/>" width="180" height="180">
 					</td>
-                    <td><input type="text" class="row" value="[${info.sort}] ${info.name}" readonly></td> 
+                    <td><input class="form-control" type="text" value="[${info.sort}] ${info.name}" readonly></td> 
 				</tr>
 				
 				<tr>
-                     <td><input type="text" class="row" value="${info.career}" readonly></td>
+                     <td><input class="form-control" type="text" value="${info.career}" readonly></td>
 				</tr>
  
                 <tr>
@@ -23,14 +31,33 @@
                 </tr>
 			</tbody>
 		</table>
-        <div class="left" align="left">
-			평점 : ${info.grade} 강의횟수 : ${info.count} 
-			<a href="${pageContext.request.contextPath}/lecture/study?page=1&type=teacher&key=${info.name}">현재 진행중인 강의</a>
-        </div>
-        <div class="right" align="right">
-	        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
-        	<a href="lecturer${url}">목록보기</a>
-        </div>
+		
+		
+		<tr>
+		<td>
+			평점 : ${info.grade} 강의횟수 : ${info.count}
+		</td>
+		</tr> 
+	
+		<tr>
+		<td class="right">
+			<a href="${pageContext.request.contextPath}/lecture/study?page=1&type=teacher&key=${info.name}" class="btn btn-primary pull-right">현재 진행중인 강의</a>
+	        <a href="" class="btn btn-primary pull-right" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
+        	<a href="lecturer${url}" class="btn btn-primary pull-right">목록보기</a>
+       	</td>
+       	</tr>
 	</div>
+	
+	
+	
+	</div>
+				<br>
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	
 
 <%@ include file="/WEB-INF/view/template/footer.jsp" %>
