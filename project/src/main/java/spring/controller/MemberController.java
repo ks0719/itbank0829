@@ -5,9 +5,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;import org.springframework.http.HttpRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -162,7 +160,7 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="/member/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+	public String logout(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws UnsupportedEncodingException {
 		Cookie[] c=request.getCookies();
 		if(c!=null) {
 			for(int i=0; i<c.length; i++) {
@@ -173,6 +171,7 @@ public class MemberController {
 					ck.setPath("/");
 					ck.setMaxAge(0);
 					response.addCookie(ck);
+					session.setAttribute("member", null);
 				}
 			}
 		}
@@ -206,6 +205,7 @@ public class MemberController {
 		String key = request.getParameter("key");
 		
 		String name=(String) session.getAttribute("member");
+		log.debug("권한 ? "+name);
 		if(name.equals("관리자")) {
 		
 		int pageNo;
