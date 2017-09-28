@@ -30,9 +30,9 @@
 						</tbody>
 					</table>
 		        	<c:if test="${info.name ne mynick}">
-				        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
+				        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;" class="btn btn-primary pull-right">쪽지보내기</a> 
 		        	</c:if>
-        			<a href="lecturer${url}">목록보기</a>
+        			<a href="lecturer${url}"class="btn btn-primary pull-right">목록보기</a>
         		</div>
 				<div class="pull-left">
 					평점 : ${info.grade} 강의횟수 : ${info.count}
