@@ -148,7 +148,7 @@ $(document).ready(function(){
 		$(document).on("click", ".board-comment", function() {
 			var contextNo = $(this).data('no');
 			var topcontextNo = $(this).data('context');
-			var detail = $("#user-input" + contextNo).val().replace(/\n/g, "<br>");
+			var detail = $("#user-input" + contextNo).val();
 			if (detail == "") {
 				alert("댓글을 입력하세요");
 				return;
@@ -162,6 +162,10 @@ $(document).ready(function(){
         		success: function(res) {
         			$("#comments"+contextNo).append(res);
         			$("#user-input" + contextNo).val('');
+        			$("#user-input" + contextNo).height('85');
+        			$(".needResize").each(function(){
+        				$(this).height(1).height($(this).prop('scrollHeight'));
+        			});
         		}
         	});
 		});
@@ -838,6 +842,21 @@ function chat_del(){
 function chat_start(){
 	document.getElementById("chat_label").innerHTML="대화할 친구 클릭";
 }
+
+
+//댓글창 크기 자동 조절 함수
+function resize(obj) {
+  obj.style.height = "1px";
+  obj.style.height = (60+obj.scrollHeight)+"px";
+}
+
+$(".needResize").ready(function() {
+	$(".needResize").each(function(){
+		$(this).height(1).height($(this).prop('scrollHeight'));
+	});
+});
+
+
 </script>
 
 <head>

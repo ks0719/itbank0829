@@ -105,7 +105,7 @@
 								<div class="modal-content">
 									<div class="input-group">
 										<div class="modal-body">
-											<textarea placeholder="댓글 입력" id="user-input${board.no}" name="detail" style="color: black; width:570px; height: 150px;" required></textarea>
+											<textarea onkeydown="resize(this)" onkeyup="resize(this)" placeholder="댓글 입력" id="user-input${board.no}" name="detail" style="font-size:18; color: black; width:570px; height: 90px; resize: none;" required></textarea>
 										</div>
 										
 										<div class="modal-footer">
@@ -139,6 +139,13 @@
 								<div class="modal-content">
 									<div id="comments${board.no}">
 										<c:forEach var="comment" items="${list}">
+										
+										
+										
+										
+										
+										
+										<!-- 여기서부터 comment로 옮기면 됨 -->
 											<c:if test="${comment.context eq board.no}">
 												<div id="comment${comment.no}">
 													<div class="modal-header"></div>
@@ -149,10 +156,9 @@
 																		<div class="timeline-item">
 																			<span class="time"><i class="fa fa-clock-o"></i>${comment.reg}</span>
 														                    <h3 class="timeline-header"><a href="#">${comment.writer}(누르면 쪽지로 가게끔 하기)</a></h3>
-														                    <div class="timeline-body">
-														                    	${comment.detail}
+														                    <div class='timeline-footer pull-left'>
+														                    	<textarea class="needResize" style="font-size:15; outline: none; border:0 solid black; width:430px; min-height:90px; overflow:visible; resize:none;" readonly>${comment.detail}</textarea>
 														                    </div>
-														                    <div class='timeline-footer'></div>
 																		</div>
 																	</li>
 																</ul>
@@ -201,6 +207,12 @@
 													</div>
 												</div>
 											</c:if>
+											<!-- 여기까지 comment로 옮기면 됨 -->
+											
+											
+											
+											
+											
 										</c:forEach>
 									</div>
 								</div>
