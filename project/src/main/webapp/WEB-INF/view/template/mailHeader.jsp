@@ -169,7 +169,7 @@
 <body class="skin-mail">
 
 <c:set var="incodedNick" value="${cookie.mynick.value}"/>
-<c:if test="${!empty nick }">
+<c:if test="${!empty incodedNick }">
 	<%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("incodedNick"), "UTF-8"));%>
 </c:if>
 
