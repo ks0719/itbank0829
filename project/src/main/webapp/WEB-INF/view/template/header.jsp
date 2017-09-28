@@ -1350,8 +1350,9 @@ function chat_order(){
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
 					</a>
 				</li>
+				
 				<c:set var="power" value='<%=(String)session.getAttribute("member") %>'/>
-		<c:if test="${!empty power  }">
+				<c:if test="${!empty power  }">
 				<li id="member">
 					<a href="${pageContext.request.contextPath}/member/memberlist">
 						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
