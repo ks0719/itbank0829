@@ -64,9 +64,6 @@ table th, td {
 	text-align: right;
 	padding: 10px;
 }
-form {
-	width: 90%;
-}
 .paging-wrap {
 	display: inline-block;
 	min-width: 100px;
