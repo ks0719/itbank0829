@@ -1021,7 +1021,7 @@ function findpwsubmit(){
  	var refindnewpw=document.querySelector("#refindnewpw");
  	var result=false;
  	
- 	if(finnewpw.value==""){
+ 	if(findnewpw.value==""){
  		alert("비밀번호를 입력해주세요!");
  		result=false;
  	}else if(refindnewpw.value==""){
