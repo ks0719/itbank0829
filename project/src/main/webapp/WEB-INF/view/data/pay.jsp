@@ -11,7 +11,7 @@
          pay_method : 'card',
          merchant_uid : 'merchant_' + new Date().getTime(),
          name : '포인트 충전(${point}p)',
-         amount : '1000',
+         amount : '${money}',
          buyer_email : 'iamport@siot.do',
          buyer_name : '${list.name}',
          buyer_tel : '${list.phone}',
