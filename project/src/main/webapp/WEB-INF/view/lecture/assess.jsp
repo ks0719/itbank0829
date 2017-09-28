@@ -28,7 +28,7 @@
 	</select>
 	<br><br>
 	강사 평점 :
-	<select name="kind_grade" class="form-control">
+	<select name="teacher_grade" class="form-control">
 		<c:forEach var="i" begin="1" end="10" step="1">
 			<option value="${i}">${i}</option>
 		</c:forEach>
