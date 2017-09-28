@@ -1017,8 +1017,8 @@ function findpw(){
 //비밀번호 찾기->새로운설정
 function findpwsubmit(){
 	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
- 	var findnewpw=document.querySelector("#findnewpw");
- 	var refindnewpw=document.querySelector("#refindnewpw");
+ 	var findnewpw=document.querySelector("input[name=findnewpw]");
+ 	var refindnewpw=document.querySelector("input[]");
  	var result=false;
  	
  	if(findnewpw.value==""){

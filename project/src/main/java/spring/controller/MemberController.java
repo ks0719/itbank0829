@@ -393,11 +393,13 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/member/findpwresult", method=RequestMethod.POST)
-	public String findpwresultPOST(HttpServletRequest request, Model model) {
+	public String findpwresultPOST(HttpServletRequest request, Model model) throws Exception {
 		String id=request.getParameter("id");
+		
+		if(id=="") throw new Exception("일반 접근 제한!");
+		if(id==null) throw new Exception("일반 접근 제한!");
+		
 		String findnewpw=request.getParameter("findnewpw");
-		System.out.println("ID:"+id);
-		System.out.println("NEWpw:"+findnewpw);
 			findnewpw=passwordEncoder.encode(findnewpw);
 			boolean state=memberDao.changenewpw(id, findnewpw);
 			
