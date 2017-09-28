@@ -913,8 +913,6 @@ function chat_start(){
 	document.getElementById("chat_label").innerHTML="대화할 친구 클릭";
 }
 
-
-<<<<<<< HEAD
 function findid(){
 	var nameregex=/^[가-힣]{2,6}$/;
 	var nametarget=document.querySelector("#name");
@@ -952,12 +950,10 @@ function findid(){
 	}
 	return result;
 	
-=======
 //댓글창 크기 자동 조절 함수
 function resize(obj) {
   obj.style.height = "1px";
   obj.style.height = (60+obj.scrollHeight)+"px";
->>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 }
 
 $(document).ready(function(){
@@ -1042,7 +1038,7 @@ function findpwsubmit(){
  	}
  	return result;
 }
-
+}
 
 </script>
 
@@ -1250,7 +1246,8 @@ function chat_order(){
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	            <span class="sr-only">Toggle navigation</span>
 	          </a>
-			광고 or 공지 넣을 자리(회원 정보 메뉴로 들어가면 여기다 회원정보 화면에 있는 a태그들 넣을 것)
+			<%=session.getAttribute("member") %>광고 or 공지 넣을 자리(회원 정보 메뉴로 들어가면 여기다 회원정보 화면에 있는 a태그들 넣을 것)
+			
 		</nav>
 	</header>
 	<!-- 헤더 끝 -->
@@ -1352,18 +1349,21 @@ function chat_order(){
 						<i class="fa fa-info-circle"></i> <span>고객센터</span>
 					</a>
 				</li>
+				<c:set var="power" value='<%=(String)session.getAttribute("member") %>'/>
+		<c:if test="${!empty power  }">
 				<li id="member">
 					<a href="${pageContext.request.contextPath}/member/memberlist">
 						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
 					</a>
 				</li>
-				
 				<li>
 					<a href="${pageContext.request.contextPath}/teacher/applynot">
 						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span>
 					</a>
 				</li>
+				</c:if>
 			</ul>
+			
 			<!-- 사이드바 메뉴 끝 -->
 			
 			
