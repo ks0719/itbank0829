@@ -145,4 +145,10 @@ public class BoardDao {
 		return false;
 	}
 
+	public List<Board> mylist(String nick) {
+		String sql = "select * from board where writer = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {nick}, mapper);
+	}
+
 }
