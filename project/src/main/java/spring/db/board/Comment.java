@@ -47,7 +47,7 @@ public class Comment {
 		this.writer = writer;
 	}
 	public String getDetail() {
-		return detail;
+		return detail.replace("\n", "<br>");
 	}
 	public void setDetail(String detail) {
 		this.detail = detail.replace("\n", "<br>");

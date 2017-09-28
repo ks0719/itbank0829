@@ -12,6 +12,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
 
+
 function wrapWindowByMask(){
     // 화면의 높이와 너비를 변수로 만듭니다.
     var maskHeight = $(document).height();
@@ -57,9 +58,6 @@ $(document).ready(function(){
     });
     
 });
-
-
-
 
 
 	$(document).ready(function() {
@@ -163,6 +161,7 @@ $(document).ready(function(){
         		success: function(res) {
         			$("#comments"+contextNo).append(res);
         			$("#user-input" + contextNo).val('');
+        			$("#user-input" + contextNo).height('85');
         		}
         	});
 		});
@@ -909,7 +908,19 @@ function chat_start(){
 }
 
 
+//댓글창 크기 자동 조절 함수
+function resize(obj) {
+  obj.style.height = "1px";
+  obj.style.height = (60+obj.scrollHeight)+"px";
+}
 
+$(document).ready(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
+
+$(window).resize(function(){
+	$(".needResize").width($(".modal-body").width()-5);
+});
 
 
 //비밀번호 찾기->새로운설정
