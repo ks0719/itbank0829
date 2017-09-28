@@ -6,13 +6,13 @@
 <title>아이디 찾기</title>
 </head>
 <body>
-	<form action="" method="post">
+	<form action="" method="post" onsubmit="return findid();">
 		<h1>아이디찾기</h1>
-		<input type="text" name="name" placeholder="이름입력">
+		<input type="text" name="name" id="name" placeholder="이름입력">
 		<br><br>
-		<input type="number" name="phone" placeholder="전화번호입력">
+		<input type="number" name="phone" id="phone" placeholder="전화번호입력">
 		<br><br>
-		<input type="submit" value="확인">
+		<input type="submit" value="확인" >
 	</form>
 </body>
 </html>

@@ -9,12 +9,11 @@
 <title>비밀번호 설정</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath }/member/findpwresult" method="post" onsubmit="return findpwsubmit();">
+<form action="${pageContext.request.contextPath }/member/findpwresult" method="post"  onsubmit="return findpwsubmit();">
  <input type="hidden" value="${id }" name="id" >
-<%--  <input type="hidden" value="${findpwcheck }" name="pw" > --%>
 새 비밀번호 입력<input type="password"  name="findnewpw" id="findnewpw" required><br>
 새 비밀번호 재입력<input type="password"  name="refindnewpw" id="refindnewpw" required><br>
-<input type="submit"  value="변경하기">
+<input type="submit"  value="변경하기" >
 </form>
 </body>
 </html>

@@ -914,10 +914,50 @@ function chat_start(){
 }
 
 
+<<<<<<< HEAD
+function findid(){
+	var nameregex=/^[가-힣]{2,6}$/;
+	var nametarget=document.querySelector("#name");
+	var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/;
+	var phone=document.querySelector("#phone");
+	var result=false;
+	
+	if(nametarget.value==""){
+		alert("이름을 입력해주세요!");
+		result=false;
+	}else if(phone.value==""){
+		alert("핸드폰번호를 입력해주세요!");
+		result=false;
+	}else if(!nameregex.test(nametarget.value)){
+		alert("이름은 한글 2~6글자");
+		result=false;
+	}else if(!phoneregex.test(phone.value)){
+		alert("올바른 핸드폰번호를 입력해주세요!");
+		result=false;
+	}else{
+		$.ajax({
+			async: false,
+			url:"idFind",
+			type:"post",
+			data:({name:nametarget.value,phone:phone.value}),
+			dataType: "text",
+				success : function(){         
+					result=true;
+					
+					},error: function(){
+						alert("이름, 핸드폰번호를 확인해 주세요!");
+						result=false;
+					}
+		});
+	}
+	return result;
+	
+=======
 //댓글창 크기 자동 조절 함수
 function resize(obj) {
   obj.style.height = "1px";
   obj.style.height = (60+obj.scrollHeight)+"px";
+>>>>>>> branch 'master' of https://github.com/ks0719/itbank0829.git
 }
 
 $(document).ready(function(){
@@ -929,18 +969,81 @@ $(window).resize(function(){
 });
 
 
+//비밀번호 찾기
+function findpw(){
+	var idregex=/^[a-zA-Z0-9]{8,20}$/;
+	var id=document.querySelector("#id");
+	var nameregex=/^[가-힣]{2,6}$/;
+	var name=document.querySelector("#name");
+	var phoneregex=/^[010]{3}[0-9]{3,4}[0-9]{4}$/;
+	var phone=document.querySelector("#phone");
+	var result=false;
+	
+	if(id.value==""){
+		alert("ID를 입력해주세요!");
+		result=false;
+	}else if(name.value==""){
+		alert("이름을 입력해주세요!");
+		result=false;
+	}else if(phone.value==""){
+		alert("핸드폰 번호를 입력해주세요!");
+		result=false;
+	}else if(!idregex.test(id.value)){
+		alert("ID는 영문,숫자 조합 8~20자");
+		result=false;
+	}else if(!nameregex.test(name.value)){
+		alert("이름은 한글 2~6글자");
+		result=false;
+	}else if(!phoneregex.test(phone.value)){
+		alert("올바른 핸드폰 번호를 입력하세요!");
+		result=false;
+	}else{
+		$.ajax({
+			async: false,
+			url:"passwordFind",
+			type:"post",
+			data:({id:id.value, name:name.value, phone:phone.value}),
+			dataType: "text",
+				success : function(){         
+					result=true;
+					
+					},error: function(){
+						alert("ID, 이름, 핸드폰번호를 확인해 주세요!");
+						result=false;
+					}
+		});
+	}
+	return result;
+	
+}
+
 //비밀번호 찾기->새로운설정
 function findpwsubmit(){
 	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
  	var findnewpw=document.querySelector("#findnewpw");
  	var refindnewpw=document.querySelector("#refindnewpw");
+ 	var result=false;
  	
- 	if(!pwregex.test(findnewpw.value)){
+ 	if(finnewpw.value==""){
+ 		alert("비밀번호를 입력해주세요!");
+ 		result=false;
+ 	}else if(refindnewpw.value==""){
+ 		alert("비밀번호를 입력해주세요!");
+ 		result=false;
+ 	}else if(!pwregex.test(findnewpw.value)){
  		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+ 		result=false;
  	}else if(findnewpw.value!=refindnewpw.value){
  		alert("비밀번호가 일치하지 않습니다.");
+ 		result=false;
+ 	}else{
+ 		alert("비밀번호가 변경되었습니다!");
+ 		result=true;
  	}
+ 	return result;
 }
+
+
 </script>
 
 <head>

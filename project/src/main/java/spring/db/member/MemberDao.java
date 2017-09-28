@@ -247,6 +247,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		return jdbcTemplate.queryForObject(sql, new Object[] {id},String.class);
 	}
 	
+	
 	public boolean changenewpw(String id, String newpw) {
 		String sql="select count(*) from member where id=?";
 		boolean result=jdbcTemplate.queryForObject(sql, new Object[] {id},Integer.class)>0;
