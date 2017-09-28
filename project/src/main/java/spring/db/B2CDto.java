@@ -29,7 +29,6 @@ public B2CDto(HttpServletRequest request) {
 	setId(request.getParameter("id"));
 	setType(request.getParameter("type"));
 	setTitle(request.getParameter("title"));
-	System.out.println(request.getParameter("detail"));
 	setDetail(request.getParameter("detail"));
 //	setFilename(request.getParameter("filename"));
 //	setFiletype(request.getParameter("filetype"));
@@ -103,7 +102,7 @@ public void setTitle(String title) {
 	this.title = title;
 }
 public String getDetail() {
-	return detail.replaceAll("</p>", "<br>").replaceAll("<p>","");
+	return detail;
 }
 public void setDetail(String detail) {
 	this.detail = detail;
