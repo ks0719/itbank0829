@@ -78,7 +78,7 @@
 								<div class="form-group">
 									<form action="${path}" class="wrap">
 										<input type="hidden" name="page" value="1">
-										<select name="search" title="분류선택" class="form-control" style="display: inline; width: 13%;">
+										<select name="search" title="분류선택" class="form-control" style="display: inline; width: 90px;">
 											<option value="head">말머리</option>
 											<option value="title">제목</option>
 											<option value="writer">작성자</option>

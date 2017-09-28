@@ -935,6 +935,18 @@ function findpwsubmit(){
  		alert("비밀번호가 일치하지 않습니다.");
  	}
 }
+
+
+//고객센터 textarea 리사이즈 함수
+$(window).resize(function(){
+	$("#b2cTextarea").width($("#b2cBox").width()-5);
+});
+
+$(document).ready(function(){
+	$("#b2cTextarea").width($("#b2cBox").width()-5);
+});
+
+
 </script>
 
 <head>
@@ -1143,7 +1155,6 @@ function chat_order(){
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	            <span class="sr-only">Toggle navigation</span>
 	          </a>
-			광고 or 공지 넣을 자리(회원 정보 메뉴로 들어가면 여기다 회원정보 화면에 있는 a태그들 넣을 것)
 		</nav>
 	</header>
 	<!-- 헤더 끝 -->
