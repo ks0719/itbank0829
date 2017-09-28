@@ -377,7 +377,7 @@ public class MemberController {
 		
 		if(findpwcheck!=null) {
 			model.addAttribute("id",id);
-			model.addAttribute("findpwcheck", findpwcheck);
+//			model.addAttribute("findpwcheck", findpwcheck);
 			return "member/findpwresult";
 		}
 		
@@ -394,25 +394,17 @@ public class MemberController {
 	@RequestMapping(value="/member/findpwresult", method=RequestMethod.POST)
 	public String findpwresultPOST(HttpServletRequest request, Model model) {
 		String id=request.getParameter("id");
-		String pw=request.getParameter("pw");
 		String findnewpw=request.getParameter("findnewpw");
 		
-		System.out.println("pw==="+pw);
 
-		String spw=memberDao.findidpw(id);
-		System.out.println("spw=="+spw);
+//		String spw=memberDao.findidpw(id);
+//		System.out.println("spw=="+spw);
 		
-		boolean same=passwordEncoder.matches(pw, spw);
-		System.out.println("same:"+same);
-		if(same) {
 			findnewpw=passwordEncoder.encode(findnewpw);
 			boolean state=memberDao.changenewpw(id, findnewpw);
 			if(state) {
-				model.addAttribute("msg","비밀번호가 정상적으로 변경되었습니다.");
 				return "redirect:/";
 			}
-		}
-		model.addAttribute("msg", "비밀번호가 변경에 실패했습니다ㅠㅠ");
 		return "member/findpwresult";
 	}
 }

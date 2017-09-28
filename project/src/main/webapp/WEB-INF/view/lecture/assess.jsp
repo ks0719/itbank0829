@@ -27,6 +27,13 @@
 		</c:forEach>
 	</select>
 	<br><br>
+	강사 평점 :
+	<select name="teacher_grade" class="form-control">
+		<c:forEach var="i" begin="1" end="10" step="1">
+			<option value="${i}">${i}</option>
+		</c:forEach>
+	</select>
+	<br><br>
 	<textarea rows="10" cols="60" name="detail" placeholder="강사님께 한 마디" required></textarea>
 	<br><br>
 	<input type="submit" value="평가 완료">

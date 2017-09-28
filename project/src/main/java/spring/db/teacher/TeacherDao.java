@@ -132,7 +132,7 @@ public class TeacherDao {
 	}
 
 	public boolean apply(Teacher teacher, int teacherNo) {
-		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait',?)";
+		String sql = "insert into teacher values(?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, sysdate, 'wait', ?, 0)";
 		
 		String filename = null;
 		if (teacher.getPicture_type() != null) {
@@ -177,6 +177,31 @@ public class TeacherDao {
 		String sql = "select * from assess where no = ?";
 		
 		return jdbcTemplate.query(sql, new Object[] {no}, mapper3);
+	}
+	
+	public void assess(int no, int grade) {
+		String sql = "select * from teacher where teacherno = (select teacherno from lecture_info where no = ?)";
+		
+		List<Teacher> list = jdbcTemplate.query(sql, new Object[] {no}, mapper);
+		Teacher teacher = list.get(0);
+		
+		String format = "#.##";
+		java.text.DecimalFormat df = new java.text.DecimalFormat(format);
+		
+		double result = 0.0;
+		if (teacher.getStudents() != 0) {
+			System.out.println("평점준학생수 : " + teacher.getStudents());
+			double origin = teacher.getGrade() * (teacher.getStudents() - 1);
+			System.out.println("origin : " + origin);
+			result = (origin + grade) / (double) teacher.getStudents();
+		} else {
+			result = grade;
+		}
+		System.out.println("result : " + result);
+		
+		sql = "update teacher set grade = ? where teacherno = (select teacherno from lecture_info where no = ?)";
+		
+		jdbcTemplate.update(sql, df.format(result), no);
 	}
 	
 	public List<Teacher>list(){

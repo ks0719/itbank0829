@@ -25,6 +25,7 @@ import spring.db.member.MemberDao;
 import spring.db.mylecture.MyLecture;
 import spring.db.mylecture.MyLectureDao;
 import spring.db.teacher.Assess;
+import spring.db.teacher.TeacherDao;
 
 @Controller
 @RequestMapping("/lecture")
@@ -56,6 +57,9 @@ public class LectureController {
 	@Autowired
 	private MyLectureDao myLectureDao;
 	
+	@Autowired
+	private TeacherDao teacherDao;
+	
 	@RequestMapping("/assess")
 	public String assess(HttpServletRequest req, Model m) {
 		m.addAttribute("no", req.getParameter("no"));
@@ -66,8 +70,10 @@ public class LectureController {
 	@RequestMapping(value="/assess", method=RequestMethod.POST)
 	public String assess(HttpServletRequest req) throws Exception {
 		int no = Integer.parseInt(req.getParameter("no"));
+		int grade = Integer.parseInt(req.getParameter("teacher_grade"));
 		
-		lectureDao.assess(no, new Assess(req));
+		lectureDao.assess(no, getNick(req), new Assess(req));
+		teacherDao.assess(no, grade);
 		
 		return "redirect:/data/manageLecture?box=eval";
 	}

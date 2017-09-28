@@ -8,7 +8,7 @@
 <body>
 <form action="${pageContext.request.contextPath }/member/findpwresult" method="post">
  <input type="hidden" value="${id }" name="id" >
- <input type="hidden" value="${findpwcheck }" name="pw" >
+<%--  <input type="hidden" value="${findpwcheck }" name="pw" > --%>
 새 비밀번호 입력<input type="password"  name="findnewpw" required><br>
 새 비밀번호 재입력<input type="password"  name="refindnewpw" required><br>
 <input type="submit"  value="변경하기">
