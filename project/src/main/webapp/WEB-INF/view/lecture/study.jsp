@@ -61,7 +61,7 @@
 								<div class="form-group">
 									<form action="study" class="wrap">
 										<input type="hidden" name="page" value="1">
-										<select name="type" title="분류 선택" class="form-control">
+										<select name="type" title="분류 선택" class="form-control" style="display: inline; width: 15%;">
 											<option value="tag">수업태그</option>
 											<option value="title">제목</option>
 											<option value="teacher">강사명</option>
