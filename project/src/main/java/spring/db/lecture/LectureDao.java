@@ -155,13 +155,14 @@ public class LectureDao {
 		jdbcTemplate.update(sql, args);
 	}
 
-	public void assess(int no, Assess assess) {
+	public void assess(int no, String nick, Assess assess) {
 		String sql = "insert into assess values(?, ?, ?, ?, ?)";
-		
 		jdbcTemplate.update(sql, no, assess.getKin_grade(), assess.getPrice_grade(), assess.getKind_grade(), assess.getDetail());
 		
-		sql = "select * from assess where no = ?";
+		sql = "update teacher set students = students + 1 where teacherno = (select teacherno from lecture_info where no = ?)";
+		jdbcTemplate.update(sql, no);
 		
+		sql = "select * from assess where no = ?";
 		List<Assess> list = jdbcTemplate.query(sql, new Object[] {no}, mapper2);
 		
 		double kin_grade = 0.0;
@@ -182,8 +183,10 @@ public class LectureDao {
 		kind_grade /= (double) size;
 		
 		sql = "update lecture_info set kin_grade = ?, price_grade = ?, kind_grade = ? where no = ?";
-		
 		jdbcTemplate.update(sql, df.format(kin_grade), df.format(price_grade), df.format(kind_grade), no);
+		
+		sql = "update mylecture set eval = '평가 완료' where no = ? and id = ?";
+		jdbcTemplate.update(sql, no, nick);
 	}
 
 	public void video(int no, String title, String filename, String originalFilename, String contentType, long size) {
@@ -238,6 +241,16 @@ public class LectureDao {
 				sql = "update lecture_info set state='종료' where no = ?";
 				
 				jdbcTemplate.update(sql, info.getNo());
+				
+				// 강사 강의 횟수 증가
+				sql = "select count(*) from lecture_info where teacherno = ?";
+				
+				int count = jdbcTemplate.queryForObject(sql, new Object[] {info.getTeacherno()}, Integer.class);
+				
+				sql = "update teacher set count = ? where teacherno = ?";
+				
+				jdbcTemplate.update(sql, count, info.getTeacherno());
+				
 				
 				sql = "delete lecture_video where no = ?";
 				

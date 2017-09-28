@@ -33,6 +33,7 @@ function wrapWindowByMask(){
 
     // 레이어 팝업을 띄웁니다.
     $('.window').show();
+    document.getElementById("login_area").scrollIntoView();
 }
 
 $(document).ready(function(){
@@ -825,6 +826,19 @@ function chat_on(){
 		//console.log("열림");
 		$("#chat").css("display","");
 		image.src="${pageContext.request.contextPath }/img/chat_close.png";
+		$.ajax({
+			url:"myfriendlist",
+			type:"post",
+			data:{mynick:"${mynick}"},
+			dataType: "text",
+				success : function(text){         
+					console.log("성공");
+					console.log(text);
+					},error: function(text){
+						console.log("실패");
+						console.log(text);
+					}
+		});
 		
 	}else{
 		//console.log("닫힘");
@@ -857,6 +871,19 @@ $(".needResize").ready(function() {
 });
 
 
+
+//비밀번호 찾기->새로운설정
+function findpwsubmit(){
+	var pwregex=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*=+]).{8,20}$/;
+ 	var findnewpw=document.querySelector("#findnewpw");
+ 	var refindnewpw=document.querySelector("#refindnewpw");
+ 	
+ 	if(!pwregex.test(findnewpw.value)){
+ 		alert("비밀번호는 영문,숫자,특수문자 8~20자");
+ 	}else if(findnewpw.value!=refindnewpw.value){
+ 		alert("비밀번호가 일치하지 않습니다.");
+ 	}
+}
 </script>
 
 <head>
@@ -889,8 +916,8 @@ $(".needResize").ready(function() {
 
 <div class="setDiv">
     <div class="mask"></div>
-    <div class="window">
-    <div class="form-group">
+    <div class="window" id="login_area">
+    <div class="form-group" >
     <label>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</label>
     </div>
     <form action="${pageContext.request.contextPath }/member/login" method="post">
@@ -904,10 +931,10 @@ $(".needResize").ready(function() {
     	</div>
     	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
     	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary" onclick="return logincheck();"/>
+        <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary"onclick="return logincheck();"/>
         <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-default">회원가입하기</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/idfind';" class="btn btn-default">아이디찾기</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/pwfind';" class="btn btn-default">비밀번호찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findid';" class="btn btn-default">아이디찾기</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findpw';" class="btn btn-default">비밀번호찾기</button>
     </form>
     </div>
 </div>
@@ -983,6 +1010,7 @@ function finalize(){
    <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
    <table class="chat_table">
    <thead>
+ <label style="padding: 10px;">내 친구 목록</label>
    <div id="myfriendlist">
    
    </div>
