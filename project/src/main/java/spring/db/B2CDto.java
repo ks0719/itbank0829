@@ -29,6 +29,7 @@ public B2CDto(HttpServletRequest request) {
 	setId(request.getParameter("id"));
 	setType(request.getParameter("type"));
 	setTitle(request.getParameter("title"));
+	System.out.println(request.getParameter("detail"));
 	setDetail(request.getParameter("detail"));
 //	setFilename(request.getParameter("filename"));
 //	setFiletype(request.getParameter("filetype"));

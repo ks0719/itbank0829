@@ -939,11 +939,11 @@ function findpwsubmit(){
 
 //고객센터 textarea 리사이즈 함수
 $(window).resize(function(){
-	$("#b2cTextarea").width($("#b2cBox").width()-5);
+	$(".b2cTextarea").width($("#b2cBox").width()-5);
 });
 
 $(document).ready(function(){
-	$("#b2cTextarea").width($("#b2cBox").width()-5);
+	$(".b2cTextarea").width($("#b2cBox").width()-5);
 });
 
 
