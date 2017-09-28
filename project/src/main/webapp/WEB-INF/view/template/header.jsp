@@ -814,8 +814,8 @@ $(document).ready(function(){
 	 		return true;
 	 	}
 	 		return false;
-	}
-	
+	}	
+	var list=null;
 function chat_on(){
 	var image=document.getElementById("img");
 	if($("#chat").css("display")=="none"){
@@ -826,21 +826,28 @@ function chat_on(){
 			url:"myfriendlist",
 			type:"post",
 			data:{mynick:"${mynick}"},
-			dataType: "text",
-				success : function(text){         
+			dataType: "json",
+				success : function(data){         
 					console.log("성공");
-					console.log(text);
-					},error: function(text){
+					console.log(data.list);
+					list=data.list;
+					document.getElementById("myfriendlist").innerHTML="";
+					$.each(list, function(i, elt) {
+						$("#myfriendlist").append("<button onclick='fr_btn(this.value);' class='fr_btn' value="+elt+">"+elt+"</button><br>");
+					});
+					},error: function(data){
 						console.log("실패");
-						console.log(text);
+						console.log(data);
 					}
 		});
-		
 	}else{
 		//console.log("닫힘");
 		$("#chat").css("display","none");
 		image.src="${pageContext.request.contextPath }/img/chat_open.png";
 	}
+}
+function fr_btn(value){
+	
 }
 function chat_add(){
 	document.getElementById("chat_label").innerHTML="추가할 닉네임 입력";
@@ -881,7 +888,6 @@ function chat_start(){
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 </head> 
 <body class="skin-blue">
-
 <div class="setDiv">
     <div class="mask"></div>
     <div class="window" id="login_area">
@@ -977,11 +983,11 @@ function finalize(){
    <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
    <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
    <table class="chat_table">
-   <thead>
+   <thead style="height: 100%;width: 100%;">
  <label style="padding: 10px;">내 친구 목록</label>
-   <div id="myfriendlist">
-   
-   </div>
+ <div id="myfriendlist" style="display: block; position: absolute; width:100%; height: 60%;overflow: auto;">
+ 
+ </div>
    </thead>
    <tbody>
    <div style="position: absolute;bottom: 30px;right: 0px;" >
