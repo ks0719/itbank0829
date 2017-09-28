@@ -1362,7 +1362,7 @@ function chat_order(){
 				</li>
 				
 				<c:set var="power" value='<%=(String)session.getAttribute("member") %>'/>
-				<c:if test="${!empty power  }">
+				<c:if test="${power eq '관리자' }">
 				<li id="member">
 					<a href="${pageContext.request.contextPath}/member/memberlist">
 						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
