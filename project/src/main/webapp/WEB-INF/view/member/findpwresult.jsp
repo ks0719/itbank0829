@@ -14,6 +14,7 @@
 <input type="password" class="form-control" name="findnewpw" id="findnewpw" placeholder="새 비밀번호 입력" required><br>
 <input type="password" class="form-control"  name="refindnewpw" id="refindnewpw" placeholder="새 비밀번호 재입력" required><br>
 <input class="btn btn-primary pull-right" type="submit"  value="변경하기" >
+</form>
 </div>
 				<br>
 				<div class="modal-footer">
