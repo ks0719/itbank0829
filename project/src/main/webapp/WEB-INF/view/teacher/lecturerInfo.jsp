@@ -29,7 +29,7 @@
                 			</tr>
 						</tbody>
 					</table>
-		        	<c:if test="${info.name not eq mynick}">
+		        	<c:if test="${info.name ne mynick}">
 				        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
 		        	</c:if>
         			<a href="lecturer${url}">목록보기</a>
