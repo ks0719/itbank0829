@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.CookieGenerator;
 
 import spring.db.board.BoardDao;
@@ -432,8 +433,10 @@ public class DataController {
 	}
 	
 	@RequestMapping("/data/mail/newMail")
+	@ResponseBody
 	public String newMail(Model m,@RequestParam String nick, @RequestParam String isSpam) throws UnsupportedEncodingException {
 		int newMail = mailDao.countNewMail(URLDecoder.decode(nick, "UTF-8"), Boolean.parseBoolean(isSpam));
+		
 		return String.valueOf(newMail);
 	}
 
