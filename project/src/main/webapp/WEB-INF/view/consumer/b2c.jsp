@@ -36,7 +36,8 @@
 				</div>
 				<div class="box-footer">
 					<div class="pull-right">
-						<button id="submit" type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i>문의하기</button>
+						<button class="btn btn-default" onclick="location.href='${pageContext.request.contextPath }/consumer/b2clist'">목록으로</button>
+						<button id="submit" type="submit" class="btn btn-primary">문의하기</button>
 					</div>
 					<br>
 				</div>

@@ -19,7 +19,7 @@
 				
 					<div class="mailbox-read-info">
 						<h3><c:if test="${board.seq > 1}">답글 : </c:if>${board.title}</h3>
-                   		<h5>${board.writer}<span class="mailbox-read-time pull-right">${board.auto}</span></h5>
+                   		<h5>작성자 : ${board.writer}<span class="mailbox-read-time pull-right">${board.auto}</span></h5>
                    		<br>
 					</div>
 					
