@@ -71,11 +71,14 @@ public class CustomerController {
 		model.addAttribute("list", list);
 		return "consumer/b2clist";
 	}
+	
+	
 	@RequestMapping("/consumer/detail")
 	public String detail(@RequestParam(required=true) int no,Model model) {
 		dto=dao.detail(no);
 		rdto=dao.rdetail(no);
 		if(rdto!=null) {
+			model.addAttribute("consumerdetail", "consumerdetail");
 			model.addAttribute("rdto", rdto);
 		}
 		model.addAttribute("dto", dto);

@@ -1286,7 +1286,10 @@ function chat_order(){
 					role="button"> <span class="sr-only">Toggle navigation</span>
 				</a>
 				<c:choose>
-				<c:when test="${!empty dto }">
+				<c:when test="${!empty maininfo }">
+				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
+				</c:when>
+				<c:when test="${!empty consumerdetail }">
 				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
 				</c:when>
 				<c:when test="${!empty changepw }">

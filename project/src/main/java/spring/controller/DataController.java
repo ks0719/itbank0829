@@ -207,7 +207,7 @@ public class DataController {
 		
 		List<Board> blist = boardDao.mylist(getNick(request));
 		model.addAttribute("blist", blist);
-		
+		model.addAttribute("maininfo", "maininfo");
 		return "data/maininfo";
 	}
 
