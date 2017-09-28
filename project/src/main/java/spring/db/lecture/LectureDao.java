@@ -318,7 +318,7 @@ public class LectureDao {
 		
 		int count = 1;
 		for (LectureVideo l : list) {
-			sql = "update lecture_video set filename = ? where filename = ?";
+			sql = "update lecture_video set filename = ? where filename = ? order by filename";
 			
 			String[] ext = l.getFilename().split(".");
 			jdbcTemplate.update(sql, no + "(" + count + ")." + ext[ext.length - 1], l.getFilename());

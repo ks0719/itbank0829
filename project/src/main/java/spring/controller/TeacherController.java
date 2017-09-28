@@ -230,7 +230,7 @@ public class TeacherController {
 			pageNo = 1;
 		}
 		
-		Teacher info = teacherDao.showOne(getTeacherNo(getNick(req)));
+		Teacher info = teacherDao.showOne(getTeacherNo(name));
 		
 		String url = "?page=" + pageNo;
 		if (req.getParameter("type") != null && req.getParameter("key") != null) url += "&type=" + req.getParameter("type") + "&key=" + req.getParameter("key");
