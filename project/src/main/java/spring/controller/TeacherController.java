@@ -266,7 +266,7 @@ public class TeacherController {
 		}
 		teacherDao.edit(new Teacher(mRequest));
 		
-		return "teacher/teacherMain";
+		return "redirect:/teacher/profile";
 	}
 	
 	@RequestMapping("/resister")

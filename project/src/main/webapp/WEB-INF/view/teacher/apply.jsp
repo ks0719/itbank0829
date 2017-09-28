@@ -21,6 +21,7 @@
 		<div class="upload_photo" id="upload_photo" style="display: in-block; width: 150px; height: 150px;"> <!-- 스타일 지정 필수 -->
 			<img width="167px;" id="prev_upload_photo" src="http://www.placehold.it/150x150"/>
 		</div>
+
 		<br><br>
 		[주 언어] 
 		<select class="form-control" name="sort" title="언어 선택">
@@ -39,9 +40,7 @@
 		<input class="btn btn-primary pull-right" type="submit" value="신청하기"> 
 		<button class="btn btn-primary pull-right" onclick="javscript:history.back();">이전 페이지로 돌아가기</button>
 	</form>
-
-
-</div>
+				</div>
 				<br>
 				<div class="modal-footer">
 				</div>
