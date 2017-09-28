@@ -15,7 +15,7 @@
 							<li><a
 								href="${pageContext.request.contextPath}/member/deletemember"
 								class="topmenu">회원 탈퇴</a></li>
-							<li><a href="#" class="topmenu">내가 쓴글</a></li>
+<!-- 							<li><a href="#" class="topmenu">내가 쓴글</a></li> -->
 							<c:choose>
 								<c:when test="${isTeacher eq 'true'}">
 									<li><a

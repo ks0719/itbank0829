@@ -104,6 +104,7 @@ public class DataController {
 					boolean isTeacher = isTeacher(getNick(request));
 					model.addAttribute("isTeacher", isTeacher);
 					model.addAttribute("dto", dto);
+					model.addAttribute("dataedit", "dataedit");
 					break;
 				}
 			}

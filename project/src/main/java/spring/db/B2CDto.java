@@ -132,7 +132,7 @@ public void setFilesize(long filesize) {
 	this.filesize = filesize;
 }
 public String getReg() {
-	return reg;
+	return reg.substring(0,11);
 }
 public void setReg(String reg) {
 	this.reg = reg;

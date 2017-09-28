@@ -125,6 +125,7 @@ public class TeacherController {
 		String nick = getNick(request);
 		
 		m.addAttribute("teacherNo", getTeacherNo(nick));
+		m.addAttribute("apply", "apply");
 		
 		return "teacher/apply";
 	}
