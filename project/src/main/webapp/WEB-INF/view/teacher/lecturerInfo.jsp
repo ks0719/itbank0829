@@ -28,7 +28,9 @@
 			<a href="${pageContext.request.contextPath}/lecture/study?page=1&type=teacher&key=${info.name}">현재 진행중인 강의</a>
         </div>
         <div class="right" align="right">
-	        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
+        	<c:if test="${info.name not eq mynick}">
+		        <a href="" onclick="window.open('${pageContext.request.contextPath}/data/mail/send?nick=${info.name}', '쪽지보내기', 'width=800, height=500'); return false;">쪽지보내기</a> 
+        	</c:if>
         	<a href="lecturer${url}">목록보기</a>
         </div>
 	</div>
