@@ -373,15 +373,15 @@ public class MemberController {
 		String name=request.getParameter("name");
 		String phone=request.getParameter("phone");
 		
+		
 		String findpwcheck=memberDao.findpw(id, name, phone);
 		
 		if(findpwcheck!=null) {
 			model.addAttribute("id",id);
-//			model.addAttribute("findpwcheck", findpwcheck);
 			return "member/findpwresult";
 		}
 		
-		return"비밀번호 찾기 싫어 ?";
+		return"member/findpw";
 	}
 	
 	
@@ -395,16 +395,28 @@ public class MemberController {
 	public String findpwresultPOST(HttpServletRequest request, Model model) {
 		String id=request.getParameter("id");
 		String findnewpw=request.getParameter("findnewpw");
-		
-
-//		String spw=memberDao.findidpw(id);
-//		System.out.println("spw=="+spw);
-		
+		System.out.println("ID:"+id);
+		System.out.println("NEWpw:"+findnewpw);
 			findnewpw=passwordEncoder.encode(findnewpw);
 			boolean state=memberDao.changenewpw(id, findnewpw);
-			if(state) {
-				return "redirect:/";
-			}
-		return "member/findpwresult";
+			
+			if(state) return "redirect:/";
+			else return "member/findpwresult";
+	}
+	
+	@RequestMapping(value="/member/idFind", method=RequestMethod.POST)
+	public String idFind(@RequestParam String name, @RequestParam String phone) {
+		String result=memberDao.findid(name, phone);
+		if(result!=null) return "member/findid";
+		else return "member/findidresult";
+	}
+	
+	@RequestMapping(value="/member/passwordFind", method=RequestMethod.POST)
+	public String findpwchange(@RequestParam String id, @RequestParam String name, @RequestParam String phone) {
+		
+		String result=memberDao.findpw(id, name, phone);
+		
+		if(result!=null) return "member/findpw";
+		else return "member/findpwresult";
 	}
 }

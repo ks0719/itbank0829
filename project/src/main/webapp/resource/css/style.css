@@ -168,7 +168,7 @@ form {
         .window {
             display: none;
             background-color: #ffffff;
-            width: 350px;
+            width: 530px;
             height: 250px;
             z-index:99999;
         }
