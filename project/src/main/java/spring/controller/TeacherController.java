@@ -724,7 +724,7 @@ public class TeacherController {
 		
 		teacherDao.stateedit(teacherid);
 		
-		return "teacher/applynot";
+		return "redirect:teacher/applynot";
 		
 	}
 	
@@ -741,7 +741,7 @@ public class TeacherController {
 		
 		teacherDao.stateedit2(no);
 		
-		return "teacher/applynot";
+		return "redirect:teacher/applynot";
 	}
 	
 	//여러개 거절
@@ -749,7 +749,7 @@ public class TeacherController {
 	public String applydelete(@RequestParam String teacherid) {
 		
 		teacherDao.teachernotapply(teacherid);
-		return "teacher/applynot";
+		return "redirect:teacher/applynot";
 	}
 	
 	
@@ -766,7 +766,7 @@ public class TeacherController {
 		
 		teacherDao.notaccept(no);
 		
-		return "teacher/applynot";
+		return "redirect:teacher/applynot";
 	}
 	
 	

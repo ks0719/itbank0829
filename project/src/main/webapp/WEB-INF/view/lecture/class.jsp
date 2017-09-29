@@ -4,7 +4,7 @@
 
 <%@ include file="/WEB-INF/view/template/header.jsp" %>
 
-<div class="example-modal">
+<div class="example-modal borN">
 	<div class="modal">
 		<div class="modal-dialog">
 			<div class="modal-content">

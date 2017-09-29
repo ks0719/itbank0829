@@ -2,7 +2,6 @@ package spring.db.lecture;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -193,9 +192,9 @@ public class LectureDao {
 	}
 
 	public void video(int no, String title, String filename, String originalFilename, String contentType, long size) {
+		//VNO 필요
 		String sql = "insert into lecture_video values(?, ?, ?, ?, ?, ?)";
-		
-		jdbcTemplate.update(sql, no, title, filename, originalFilename, contentType, size);
+		jdbcTemplate.update(sql, new Object[] {no, title, filename, originalFilename, contentType, size});
 	}
 	
 	public List<LectureVideo> videoList(int no) {
