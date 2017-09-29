@@ -145,7 +145,13 @@ public class MailDao {
 		String spam_string = jdbcTemplate.queryForObject(sql,new Object[] {mail.getMail_receiver()}, String.class);
 		boolean isSpam = false;
 		if(spam_string!=null&&spam_string.indexOf(mail.getMail_writer())>=0) {
-			isSpam=true;
+			String[] spam_split = spam_string.split("-");
+			for(String s: spam_split) {
+				if(s.equals(mail.getMail_writer())) {
+					isSpam = true;
+					break;
+				}
+			}
 		}
 		String receiver_position=(isSpam)?"spam":"index";
 		
@@ -207,7 +213,12 @@ public class MailDao {
 		String sql = "select spam from member where nick=?";
 		String spam = jdbcTemplate.queryForObject(sql, new Object[] {mynick}, String.class);
 		
-		if(spam!=null&&spam.indexOf(target)>=0) return false;
+		if(spam!=null&&spam.indexOf(target)>=0) {
+			String[] spam_split = spam.split("-");
+			for(String s: spam_split) {
+				if(s.equals(target)) return false;
+			}
+		}
 		
 		target = (spam!=null)?spam+"-"+target:target;
 		
