@@ -308,6 +308,7 @@ public class TeacherController {
 		for(MultipartFile f : list) {
 			String[] extension = f.getContentType().split("/");
 			String filename = no + "(" + count + ")." + extension[extension.length - 1];
+			log.debug(filename);
 			
 			lectureDao.video(no, mRequest.getParameter("title") + count, filename, f.getOriginalFilename(), f.getContentType(), f.getSize());
 			
@@ -317,7 +318,7 @@ public class TeacherController {
 			count++;
 		}
 		
-		return "teacher/myLectures?where=myLecture&page=1";
+		return "redirect:/teacher/myLectures?where=myLecture&page=1";
 	}
 	
 	@RequestMapping("/myLectures")
