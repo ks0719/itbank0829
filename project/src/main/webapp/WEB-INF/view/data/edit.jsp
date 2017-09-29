@@ -11,7 +11,9 @@
 				</div>
 				<div class="modal-body"> 
 <form action="${pageContext.request.contextPath }/data/edit" method="post">
+<label>아이디</label>
 <input class="form-control" type="text" value="${dto.id }"  disabled><br>
+<label>닉네임</label>
 <div class="input-group">
 <input class="form-control" type="text" value="${dto.nick }" name="nick"  id="nick" readonly required >
 		<span class="input-group-btn">
@@ -19,7 +21,9 @@
 		</span>
 		</div>
 		<br>
+<label>이름</label>
 <input class="form-control" type="text" value="${dto.name }"  disabled><br>
+<label>우편 번호</label>
 <div class="input-group">
 <input class="form-control" type="text" value="${dto.post }" name="post" readonly>
 <span class="input-group-btn">
@@ -27,8 +31,10 @@
 		</span>
 		</div>
 		<br>
+		<label>상세 주소</label>
 <input class="form-control" type="text" value="${dto.addr1 }" name="addr1" readonly size="50"><br>
 <input class="form-control" type="text" value="${dto.addr2 }" name="addr2"  size="50"><br>
+<label>전화 번호</label>
 <div class="input-group">
 <input class="form-control" type="text" value="${dto.phone }" id="phone" name="phone" readonly required>
 <span class="input-group-btn">

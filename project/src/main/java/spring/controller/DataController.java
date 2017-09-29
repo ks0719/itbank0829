@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.CookieGenerator;
 
 import spring.db.board.Board;
@@ -88,7 +89,7 @@ public class DataController {
 	}
 
 	@RequestMapping("/data/edit")
-	public String editget(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
+	public String editget(HttpServletRequest request, Model model) throws Exception {
 		Cookie[] c = request.getCookies();
 		if (c != null) {
 			for (int i = 0; i < c.length; i++) {
@@ -100,7 +101,10 @@ public class DataController {
 				// log.debug("쿠키값 :"+cValue);
 				if (ck.getName().equals("mynick")) {
 					MyDto dto = myDao.select(cValue);
+					boolean isTeacher = isTeacher(getNick(request));
+					model.addAttribute("isTeacher", isTeacher);
 					model.addAttribute("dto", dto);
+					model.addAttribute("dataedit", "dataedit");
 					break;
 				}
 			}
@@ -129,11 +133,6 @@ public class DataController {
 		return "redirect:/data/maininfo";
 	}
 
-	@RequestMapping("/data/exit")
-	public String exit() {
-
-		return "data/exit";
-	}
 	
 	
 	@RequestMapping(value="/data/nickedit", method = RequestMethod.POST)
@@ -209,7 +208,7 @@ public class DataController {
 		
 		List<Board> blist = boardDao.mylist(getNick(request));
 		model.addAttribute("blist", blist);
-		
+		model.addAttribute("maininfo", "maininfo");
 		return "data/maininfo";
 	}
 
@@ -225,6 +224,10 @@ public class DataController {
 		String nick = getNick(request);
 		int point = mbdao.mypoint(nick);
 		model.addAttribute("point", point);
+		model.addAttribute("pointshop", "point");
+		boolean isTeacher = isTeacher(getNick(request));
+		model.addAttribute("isTeacher", isTeacher);
+		
 		return "data/point";
 	}
 
@@ -260,6 +263,8 @@ public class DataController {
 		model.addAttribute("list", list);
 		model.addAttribute("point", point);
 		model.addAttribute("money", money);
+		boolean isTeacher = isTeacher(getNick(request));
+		model.addAttribute("isTeacher", isTeacher);
 		return "data/pay";
 	}
 	
@@ -447,8 +452,10 @@ public class DataController {
 	}
 
 	@RequestMapping("/data/changepw")
-	public String changepw() {
-
+	public String changepw(Model model,HttpServletRequest request) throws Exception {
+		model.addAttribute("changepw", "changepw");
+		boolean isTeacher = isTeacher(getNick(request));
+		model.addAttribute("isTeacher", isTeacher);
 		return "data/changepw";
 	}
 
