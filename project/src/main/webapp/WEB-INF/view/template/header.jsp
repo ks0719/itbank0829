@@ -593,11 +593,18 @@ $(document).ready(function(){
 	 	var pwtarget=document.querySelector("#pw");
 	 	
 	 	var target = document.querySelector("#pw2");
+	 	var nameregex=/^[가-힣]{2,6}$/;
+	 	var nametarget=document.querySelector("#name");
 	 	
 	 	console.log(pwtarget.value);
 	 	console.log(target.value);
 	 	
-	 	if($("#id").attr("readonly")!='readonly'){
+	 	
+	 	if($("#name").val()==""){
+			alert("이름을 입력해 주세요!");	 	
+	 	}else if(!nameregex.test(nametarget.value)){
+	 		alert("이름은 한글 2~6글자입니다");
+	 	}else if($("#id").attr("readonly")!='readonly'){
 	 		alert("아이디 중복 확인을 해주세요");
 	 	}else if(!pwregex.test(pwtarget.value)){
 	 		alert("비밀번호는 영문,숫자,특수문자 8~20자");

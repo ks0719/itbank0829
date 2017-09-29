@@ -24,7 +24,7 @@
 						<br>
 						<input class="form-control" type="password" id="pw2" name="pw2" placeholder="PW재입력"  required>
 						<br>
-						<input class="form-control" type="text" name="name" placeholder="이름입력" required>
+						<input class="form-control" type="text" id="name" name="name" placeholder="이름입력" required>
 						<br>
 						<div class="input-group">
 							<input class="form-control" type="number" id="phone"name="phone" placeholder="번호입력(-없이)" required>
