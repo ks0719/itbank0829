@@ -92,10 +92,12 @@ public class TeacherController {
 		 
 		});
 		
-	    File file;
-		for (int i = 0; i < fileList.length; i++) {
-			file = new File(savePath, fileList[i]);
-			file.delete();
+		if (fileList != null) {
+		    File file;
+			for (int i = 0; i < fileList.length; i++) {
+				file = new File(savePath, fileList[i]);
+				file.delete();
+			}
 		}
 	}
 	
@@ -267,7 +269,8 @@ public class TeacherController {
 			if(!target.exists()) target.mkdirs();
 			file.transferTo(target);
 		}
-		teacherDao.edit(new Teacher(mRequest));
+		int teacherNo = getTeacherNo(getNick(mRequest));
+		teacherDao.edit(new Teacher(mRequest), teacherNo);
 		
 		return "redirect:/teacher/profile";
 	}
@@ -314,7 +317,7 @@ public class TeacherController {
 			count++;
 		}
 		
-		return "teacher/teacherMain";
+		return "teacher/myLectures?where=myLecture&page=1";
 	}
 	
 	@RequestMapping("/myLectures")

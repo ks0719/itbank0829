@@ -152,7 +152,9 @@ public class TeacherDao {
 		return jdbcTemplate.queryForObject(sql, new Object[] {no}, Integer.class) > 0;
 	}
 
-	public void edit(Teacher teacher) {
+	public void edit(Teacher teacher, int teacherno) {
+		System.out.println("수정");
+		System.out.println(teacherno);
 		String sql = "update teacher set sort = ?, career = ?, intro = ?, picture_name = ?, picture_realname = ?, picture_type = ?, picture_size = ? where teacherno = ?";
 		
 		String filename = null;
@@ -162,7 +164,7 @@ public class TeacherDao {
 		}
 		
 		Object[] args = {teacher.getSort(), teacher.getCareer(), teacher.getIntro(), 
-				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(), teacher.getTeacherno()};
+				filename, teacher.getPicture_realname(), teacher.getPicture_type(), teacher.getPicture_size(), teacherno};
 
 		jdbcTemplate.update(sql, args);
 	}
