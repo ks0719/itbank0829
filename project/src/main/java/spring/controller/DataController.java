@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.CookieGenerator;
 
 import spring.db.board.Board;
@@ -483,6 +482,14 @@ public class DataController {
 		return "data/redirect";
 
 	}
+	
+	@RequestMapping("/data/spam")
+	public String spam(HttpServletRequest req ,@RequestParam String nick) throws Exception {
+		if(!mailDao.spam(getNick(req), nick)) return null;
+		
+		return "data/mailDetail";
+	}
+	
 
 	@RequestMapping("/data/redirect")
 	public String redirect() {

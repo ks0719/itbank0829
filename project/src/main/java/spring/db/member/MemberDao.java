@@ -65,15 +65,21 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		return jdbcTemplate.queryForObject(sql, new Object[] {data},Integer.class)>0;
 	}
 	
-	public boolean delete(String nick, String pw) {
+	public void delete(String nick) {
+		//메일 삭제 처리
+		String sql = "update mail set receiver_position='delete' where MAIL_RECEIVER=?";
+		jdbcTemplate.update(sql, new Object[] {nick});
+		sql = "update mail set WRITER_POSITION='delete' where MAIL_WRITER=?";
+		jdbcTemplate.update(sql, new Object[] {nick});
+		sql = "delete mail where WRITER_POSITION='delete' and receiver_position='delete'";
+		jdbcTemplate.update(sql);
 		
-		String sql = "delete member where nick = ? and pw=?";
-		return jdbcTemplate.update(sql, new Object[] {nick,pw})>0;
-	}
-	
-	public void delete(String id) {
-		String sql="delete member where id=?";
-		jdbcTemplate.update(sql, new Object[] {id});
+		//내 수강정보 삭제 처리
+		sql = "update mylecture set id='탈퇴member' where id=?";
+		jdbcTemplate.update(sql, new Object[] {nick});
+		
+		sql="delete member where nick=?";
+		jdbcTemplate.update(sql, new Object[] {nick});
 	}
 	
 	public String edit(Member mb,String nick) {

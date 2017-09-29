@@ -200,8 +200,8 @@ public class MemberController {
 		String pw=req.getParameter("pw");
 		String spw=memberDao.mypwnick(nick);
 		boolean same=passwordEncoder.matches(pw, spw);
-		boolean result=memberDao.delete(nick,spw);
-		if(result==same) {
+		if(same) {
+			memberDao.delete(nick);
 		}else {
 			throw new Exception();
 		}
