@@ -211,8 +211,6 @@ public class MemberController {
 	public String list(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		String type = request.getParameter("type");
 		String key = request.getParameter("key");
-		System.out.println("type~~~~"+type);
-		System.out.println("key~~~~"+key);
 		
 		String name=(String) session.getAttribute("member");
 		log.debug("권한 ? "+name);
@@ -288,8 +286,7 @@ public class MemberController {
 	@RequestMapping(value="/member/checkBox", method = RequestMethod.POST)
 	public String unsignPost(@RequestParam String userid) {
 //		log.debug("뭐 넘어옴?:"+Arrays.toString(userid));
-//		System.out.println(userid);
-		memberDao.delete(userid);
+		memberDao.serverdelete(userid);
 	      return "member/memberlist";   
 	   }
 	
