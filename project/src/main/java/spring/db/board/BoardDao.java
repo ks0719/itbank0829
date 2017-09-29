@@ -146,9 +146,11 @@ public class BoardDao {
 	}
 
 	public List<Board> mylist(String nick) {
-		String sql = "select * from board where writer = ?";
+		int no = jdbcTemplate.queryForObject("select no from member where nick=?", new Object[] {nick} ,Integer.class);
 		
-		return jdbcTemplate.query(sql, new Object[] {nick}, mapper);
+		String sql = "select * from board where MEMBERNO = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {no}, mapper);
 	}
 
 }

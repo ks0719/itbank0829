@@ -180,9 +180,16 @@ public class MemberController {
 	}
 	
 	
+	private boolean isTeacher(String nick) {
+		if (nick == "") return false;
+		return memberDao.power(nick).equals("강사");
+	}
+	
 	@RequestMapping(value="member/deletemember", method=RequestMethod.GET)
-	public String deleteGet() {
-		
+	public String deleteGet(Model model,HttpServletRequest request) throws Exception {
+		model.addAttribute("deletemember", "deletemember");
+		boolean isTeacher = isTeacher(getNick(request));
+		model.addAttribute("isTeacher", isTeacher);
 		return "member/deletemember";
 	}
 	
@@ -193,8 +200,8 @@ public class MemberController {
 		String pw=req.getParameter("pw");
 		String spw=memberDao.mypwnick(nick);
 		boolean same=passwordEncoder.matches(pw, spw);
-		boolean result=memberDao.delete(nick,spw);
-		if(result==same) {
+		if(same) {
+			memberDao.delete(nick);
 		}else {
 			throw new Exception();
 		}

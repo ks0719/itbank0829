@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	<%@ page import = "java.net.URLDecoder" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.net.URLDecoder"%>
 <html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/resource/js/jquery.cookie.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resource/js/jquery.cookie.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/editor/js/HuskyEZCreator.js"
+	charset="utf-8"></script>
 <script type="text/javascript">
 
 
@@ -1053,63 +1057,90 @@ $(document).ready(function(){
 </script>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
-	<meta charset="utf-8">
-	<title>Welcome</title>
-	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-	<!-- Bootstrap 3.3.2 -->
-    <link href="${pageContext.request.contextPath}/css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />    
-    <!-- FontAwesome 4.7.0 -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
-    <!-- Ionicons 2.0.0 -->
-    <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.css" rel="stylesheet" type="text/css" />    
-    <!-- Theme style -->
-    <link href="${pageContext.request.contextPath}/css/dist/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-    <!-- AdminLTE Skins. Choose a skin from the css/skins 
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/style.css">
+<meta charset="utf-8">
+<title>Welcome</title>
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'>
+<!-- Bootstrap 3.3.2 -->
+<link
+	href="${pageContext.request.contextPath}/css/bootstrap/css/bootstrap.css"
+	rel="stylesheet" type="text/css" />
+<!-- FontAwesome 4.7.0 -->
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css"
+	rel="stylesheet" type="text/css" />
+<!-- Ionicons 2.0.0 -->
+<link
+	href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.css"
+	rel="stylesheet" type="text/css" />
+<!-- Theme style -->
+<link
+	href="${pageContext.request.contextPath}/css/dist/css/AdminLTE.css"
+	rel="stylesheet" type="text/css" />
+<!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
-    <link href="${pageContext.request.contextPath}/css/dist/css/skins/_all-skins.css" rel="stylesheet" type="text/css" />
+<link
+	href="${pageContext.request.contextPath}/css/dist/css/skins/_all-skins.css"
+	rel="stylesheet" type="text/css" />
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-    
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-</head> 
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+</head>
 <body class="skin-blue">
-<div class="setDiv">
-    <div class="mask"></div>
-    <div class="window" id="login_area">
-    <div class="form-group" >
-    <label>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</label>
-    </div>
-    <form action="${pageContext.request.contextPath }/member/login" method="post">
-    <div class="form-group">
-    	<label>아이디</label>
-    	<input type="text" name="id"  id="loginid" class="form-control" placeholder="아이디를 입력해주세요" required>
-    	</div>
-    	 <div class="form-group">
-    	<label>비밀번호</label>
-    	<input type="password" name="pw" id="loginpw" class="form-control" placeholder="비밀번호를 입력해주세요" required>
-    	</div>
-    	<input type="hidden" value="${pageContext.request.requestURL}" name="page">
-    	<input type="hidden" value="${param}" name="param">
-        <input type="submit" id="login_btn" value="로그인하기" class="btn btn-primary"onclick="return logincheck();"/>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/sign';" class="btn btn-success">회원가입하기</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findid';" class="btn btn-default">아이디찾기</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath }/member/findpw';" class="btn btn-default">비밀번호찾기</button>
-    </form>
-    </div>
-</div>
+	<div class="setDiv">
+		<div class="mask"></div>
+		<div class="window" id="login_area" style="margin: 15px;">
+			<div class="form-group">
+				<label>더 많은 정보를 제공받고 싶으시다면 로그인해주세요</label>
+			</div>
+			<form action="${pageContext.request.contextPath }/member/login"
+				method="post">
+				<div class="form-group">
+					<label>아이디</label> <input type="text" name="id" id="loginid"
+						class="form-control" placeholder="아이디를 입력해주세요" required>
+				</div>
+				<div class="form-group">
+					<label>비밀번호</label> <input type="password" name="pw" id="loginpw"
+						class="form-control" placeholder="비밀번호를 입력해주세요" required>
+				</div>
+				<input type="hidden" value="${pageContext.request.requestURL}"
+					name="page"> <input type="hidden" value="${param}"
+					name="param"> <input type="submit" id="login_btn"
+					value="로그인하기" class="btn btn-primary"
+					onclick="return logincheck();" />
+				<button type="button"
+					onclick="location.href='${pageContext.request.contextPath }/member/sign';"
+					class="btn btn-success">회원가입하기</button>
+				<button type="button"
+					onclick="location.href='${pageContext.request.contextPath }/member/findid';"
+					class="btn btn-default">아이디찾기</button>
+				<button type="button"
+					onclick="location.href='${pageContext.request.contextPath }/member/findpw';"
+					class="btn btn-default">비밀번호찾기</button>
+			</form>
+		</div>
+	</div>
 
-<c:set var="nick" value="${cookie.mynick.value}"/>
+	<c:set var="nick" value="${cookie.mynick.value}" />
 
-<c:if test="${!empty nick }">
-<%request.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8"));%>
-<%session.setAttribute("mynick", URLDecoder.decode((String)pageContext.getAttribute("nick"), "UTF-8")); %>
-<script>
+	<c:if test="${!empty nick }">
+		<%
+			request.setAttribute("mynick", URLDecoder.decode((String) pageContext.getAttribute("nick"), "UTF-8"));
+		%>
+		<%
+			session.setAttribute("mynick", URLDecoder.decode((String) pageContext.getAttribute("nick"), "UTF-8"));
+		%>
+		<script>
 $(document).ready(function(){
 	initialize();
 	
@@ -1160,48 +1191,45 @@ function finalize(){
 	console.log("웹소켓 연결 종료");
 }
 </script>
-<div id="draggable" class="ui-widget-content" style=
-"top: 70%;
- left: 75%; 
- height: 50px; 
- width: 330px;
-  border:1px solid; 
-  cursor: pointer; 
-  position: absolute;
-   overflow: visible; 
-   visibility: visible;
-   z-index: 9999;">
-   채팅창
-   <img alt="열기" src="${pageContext.request.contextPath }/img/chat_open.png" id="img" onclick="chat_on();" align="right">
-   <div class="chat_list" style="display: none; background-color: aqua; width:100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;" id="chat">
-   <table class="chat_table">
-   <thead style="height: 100%;width: 100%;">
- <label style="padding: 10px;">내 친구 목록</label>
- <div id="myfriendlist" style="display: block; position: absolute; width:100%; height: 60%;overflow: auto;">
- </div>
-   </thead>
-   <tbody>
-   <div style="position: absolute;bottom: 30px;right: 0px;" >
-   <label id="chat_label">아래의 버튼을 눌러주세요.</label>
-            <input type="text" id="chat_text" placeholder="입력.." onkeydown="chat_order();">
-        </div>
-        <div id="display"readonly style="resize: none;
-                outline:none;
-                width:100%;
-                height:80%;"></div>
-   </tbody>
-   <tfoot>
-   <div style="position: absolute; bottom: 0px;right: 0px;">
-   <img alt="시작하기" src="${pageContext.request.contextPath}/img/chat_start.png" onclick="chat_start();">
-   <img alt="추가하기" src="${pageContext.request.contextPath }/img/chat_add.png" onclick="chat_add();">
-   <img alt="삭제하기" src="${pageContext.request.contextPath }/img/chat_clear.png" onclick="chat_del();">
-   </div>
-   </tfoot>
-   </table>
-   </div>
-	</div>
-</c:if>
-<script>
+		<div id="draggable" class="ui-widget-content"
+			style="top: 70%; left: 75%; height: 50px; width: 330px; border: 1px solid; cursor: pointer; position: absolute; overflow: visible; visibility: visible; z-index: 9999;">
+			채팅창 <img alt="열기"
+				src="${pageContext.request.contextPath }/img/chat_open.png" id="img"
+				onclick="chat_on();" align="right">
+			<div class="chat_list"
+				style="display: none; background-color: aqua; width: 100%; height: 300px; margin-top: -321px; border: 1px solid; border-bottom: 0px; position: relative;"
+				id="chat">
+				<table class="chat_table">
+					<thead style="height: 100%; width: 100%;">
+						<label style="padding: 10px;">내 친구 목록</label>
+						<div id="myfriendlist"
+							style="display: block; position: absolute; width: 100%; height: 60%; overflow: auto;">
+						</div>
+					</thead>
+					<tbody>
+						<div style="position: absolute; bottom: 30px; right: 0px;">
+							<label id="chat_label">아래의 버튼을 눌러주세요.</label> <input type="text"
+								id="chat_text" placeholder="입력.." onkeydown="chat_order();">
+						</div>
+						<div id="display" readonly
+							style="resize: none; outline: none; width: 100%; height: 80%;"></div>
+					</tbody>
+					<tfoot>
+						<div style="position: absolute; bottom: 0px; right: 0px;">
+							<img alt="시작하기"
+								src="${pageContext.request.contextPath}/img/chat_start.png"
+								onclick="chat_start();"> <img alt="추가하기"
+								src="${pageContext.request.contextPath }/img/chat_add.png"
+								onclick="chat_add();"> <img alt="삭제하기"
+								src="${pageContext.request.contextPath }/img/chat_clear.png"
+								onclick="chat_del();">
+						</div>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</c:if>
+	<script>
 function chat_order(){
 	if(event.keyCode==13){
 		var value=$("#chat_label").text();
@@ -1247,140 +1275,169 @@ function chat_order(){
 		}
 	}
 }</script>
-<div class="wrapper">
-	<!-- 헤더 시작 -->
-	<header class="main-header">
-		<!-- 홈으로 버튼(로고로 사용해도됨) -->
-		<a href="${pageContext.request.contextPath}/" class="logo"><b>홈</b>으로</a>
-		<!-- 로고 옆 메뉴바 -->
-		<nav class="navbar navbar-static-top" role="navigation">
-			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-	            <span class="sr-only">Toggle navigation</span>
-	          </a>
-			<%=session.getAttribute("member") %>
-		</nav>
-	</header>
-	<!-- 헤더 끝 -->
-	<!-- 사이드바 시작 -->
-	<aside class="main-sidebar">
-		<section class="sidebar">
-			<!-- 유저 정보 시작 -->
-			<div class="user-panel">
+	<div class="wrapper">
+		<!-- 헤더 시작 -->
+		<header class="main-header">
+			<!-- 홈으로 버튼(로고로 사용해도됨) -->
+			<a href="${pageContext.request.contextPath}/" class="logo"><b>홈</b>으로</a>
+			<!-- 로고 옆 메뉴바 -->
+			<nav class="navbar navbar-static-top" role="navigation">
+				<a href="#" class="sidebar-toggle" data-toggle="offcanvas"
+					role="button"> <span class="sr-only">Toggle navigation</span>
+				</a>
 				<c:choose>
-					<c:when test="${empty nick}">
-					<div class="pull-right info">
-						<a href="#" class="showMask"><i class="fa fa-sign-in"></i><span>로그인</span></a>
-						<a href="${pageContext.request.contextPath}/member/sign"><i class="fa fa-user-plus"></i><span>회원가입</span></a>
-					</div>
-					</c:when>
-					<c:otherwise>
-						<div class="pull-left image">
-							<!-- 테스트용 이미지 -->
-							<img src="${pageContext.request.contextPath}/img/users--blue-flag-png-image-100720.png" class="img-circle" alt="User Image"/>
-						</div>
-						<div class="pull-left info">
-							<a href="${pageContext.request.contextPath}/data/maininfo" data-toggle="tooltip" title="내 정보 관리" data-placement="bottom">
-								<i class="fa fa-user-circle-o"></i>
-								<span>${mynick}</span>
-							</a>
-							<a href="" data-toggle="tooltip" title="쪽지함" data-placement="bottom" class="dropdown-toggle" data-toggle="dropdown" onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
-								<i class="fa fa-envelope"></i>
-								<!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
-								<span id="newMail" class="label label-success"></span>
-							</a>
-							
-							<br>
-							<a href="" onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;"><i class="fa fa-clipboard"></i><span>내 수강정보</span></a>
-							<br>
-							<a href="${pageContext.request.contextPath}/member/logout"><i class="fa fa-sign-out"></i><span>로그아웃</span></a>
-						</div>
-					</c:otherwise>
-				</c:choose>
-			
-			</div>
-			
-			<!-- 유저 정보 끝 -->
-			
-			<!--
+				<c:when test="${!empty dataedit }">
+				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
+				</c:when>
+				<c:when test="${!empty apply }">
+				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
+				</c:when>
+				<c:when test="${!empty maininfo }">
+				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
+				</c:when>
+				<c:when test="${!empty consumerdetail }">
+				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
+				</c:when>
+				<c:when test="${!empty changepw }">
+				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
+				</c:when>
+				<c:when test="${!empty deletemember }">
+				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
+				</c:when>
+				<c:when test="${!empty profile }">
+				<%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
+				</c:when>
+				<c:when test="${!empty teacherNo }">
+				<%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
+				</c:when>
+                <c:when test="${!empty mylectures}">
+                        <%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
+                </c:when>
+				<c:when test="${!empty pointshop }">
+				<%@ include file="/WEB-INF/view/template/topmenu.jsp" %>
+				</c:when>
+				<c:when test="${(empty pointshop)eq(!empty point) }">
+				<%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
+				</c:when>
+                    <c:otherwise>
+                       	
+                    </c:otherwise>
+                </c:choose>
+			</nav>
+		</header>
+		<!-- 헤더 끝 -->
+		<!-- 사이드바 시작 -->
+		<aside class="main-sidebar">
+			<section class="sidebar">
+				<!-- 유저 정보 시작 -->
+				<div class="user-panel">
+					<c:choose>
+						<c:when test="${empty nick}">
+							<div class="pull-right info">
+								<a href="#" class="showMask"><i class="fa fa-sign-in"></i><span>로그인</span></a>
+								<a href="${pageContext.request.contextPath}/member/sign"><i
+									class="fa fa-user-plus"></i><span>회원가입</span></a>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="pull-left image">
+								<!-- 테스트용 이미지 -->
+								<img
+									src="${pageContext.request.contextPath}/img/users--blue-flag-png-image-100720.png"
+									class="img-circle" alt="User Image" />
+							</div>
+							<div class="pull-left info">
+								<a href="${pageContext.request.contextPath}/data/maininfo"
+									data-toggle="tooltip" title="내 정보 관리" data-placement="bottom">
+									<i class="fa fa-user-circle-o"></i> <span>${mynick}</span>
+								</a> <a href="" data-toggle="tooltip" title="쪽지함"
+									data-placement="bottom" class="dropdown-toggle"
+									data-toggle="dropdown"
+									onclick="window.open('${pageContext.request.contextPath}/data/mail?box=index', '쪽지함', 'width=800, height=500'); return false;">
+									<i class="fa fa-envelope"></i> <!-- 여기는 함수 만들어서 숫자 계산 해줘야함 -->
+									<span id="newMail" class="label label-success"></span>
+								</a> <br> <a href=""
+									onclick="window.open('${pageContext.request.contextPath}/data/manageLecture?box=index', '수강관리', 'width=1000, height=500'); return false;"><i
+									class="fa fa-clipboard"></i><span>내 수강정보</span></a> <br> <a
+									href="${pageContext.request.contextPath}/member/logout"><i
+									class="fa fa-sign-out"></i><span>로그아웃</span></a>
+							</div>
+						</c:otherwise>
+					</c:choose>
+
+				</div>
+
+				<!-- 유저 정보 끝 -->
+
+				<!--
 				클릭이 된 상태는 treeview 뒤에  active가 붙어야 한다
 				클릭이 된 상태는 treeview-menu 뒤에 menu-open이 붙어야 한다
 				따라서 나중에 그 페이지에 들어갔을 때 class가 변경되도록 설정 해주는 함수를 만들어 줘야 한다
 			-->
-			<!-- 사이드바 메뉴 시작 -->
-			<ul class="sidebar-menu">
-					<li id="board" class="treeview">
-						<a href="#">
-							<i class="fa fa-edit"></i>
-							<span>커뮤니티</span> <i class="fa fa-angle-left pull-right"></i>
-						</a>
+				<!-- 사이드바 메뉴 시작 -->
+				<ul class="sidebar-menu">
+					<li id="board" class="treeview"><a href="#"> <i
+							class="fa fa-edit"></i> <span>커뮤니티</span> <i
+							class="fa fa-angle-left pull-right"></i>
+					</a>
 						<ul class="treeview-menu">
-						<li id="free">
-							<a href="${pageContext.request.contextPath}/board/free">
-								<i class="fa fa-circle-o"></i>자유게시판
-							</a>
-						</li>
-						<li id="info">
-							<a href="${pageContext.request.contextPath}/board/info">
-								<i class="fa fa-circle-o"></i>정보게시판
-							</a>
-						</li>
-						<li id="qna">
-							<a href="${pageContext.request.contextPath}/board/qna">
-								<i class="fa fa-circle-o"></i>Q&A게시판
-							</a>
-						</li>
-						<li id="require">
-							<a href="${pageContext.request.contextPath}/board/require">
-								<i class="fa fa-circle-o"></i>요청게시판
-							</a>
-						</li>
-						<li id="store">
-							<a href="${pageContext.request.contextPath}/board/store">
-								<i class="fa fa-circle-o"></i>판매게시판
-							</a>
-						</li>
-					</ul>
-				</li>
-				
-				<li id="lecture">
-					<a href="${pageContext.request.contextPath}/lecture/study?page=1">
-						<i class="fa fa-calendar-o"></i> <span>수업정보</span>
-					</a>
-				</li>
-				
-				<li id="teacher">
-					<a href="${pageContext.request.contextPath}/teacher/lecturer?page=1">
-						<i class="fa fa-id-card"></i> <span>강사정보</span>
-					</a>
-				</li>
-				
-				<li id="consumer">
-					<a href="${pageContext.request.contextPath}/consumer/basic">
-						<i class="fa fa-info-circle"></i> <span>고객센터</span>
-					</a>
-				</li>
-				
-				<c:set var="power" value='<%=(String)session.getAttribute("member") %>'/>
-				<c:if test="${power eq '관리자' }">
-				<li id="member">
-					<a href="${pageContext.request.contextPath}/member/memberlist">
-						<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
-					</a>
-				</li>
-				<li>
-					<a href="${pageContext.request.contextPath}/teacher/applynot">
-						<i class="fa fa-handshake-o"></i> <span>미승인 강사</span>
-					</a>
-				</li>
-				</c:if>
-			</ul>
-			
-			<!-- 사이드바 메뉴 끝 -->
-			
-			
-		</section>
-	</aside>
-	<!-- 사이드바 끝 -->
+							<li id="free"><a
+								href="${pageContext.request.contextPath}/board/free"> <i
+									class="fa fa-circle-o"></i>자유게시판
+							</a></li>
+							<li id="info"><a
+								href="${pageContext.request.contextPath}/board/info"> <i
+									class="fa fa-circle-o"></i>정보게시판
+							</a></li>
+							<li id="qna"><a
+								href="${pageContext.request.contextPath}/board/qna"> <i
+									class="fa fa-circle-o"></i>Q&A게시판
+							</a></li>
+							<li id="require"><a
+								href="${pageContext.request.contextPath}/board/require"> <i
+									class="fa fa-circle-o"></i>요청게시판
+							</a></li>
+							<li id="store"><a
+								href="${pageContext.request.contextPath}/board/store"> <i
+									class="fa fa-circle-o"></i>판매게시판
+							</a></li>
+						</ul></li>
 
-	
-	<div class="content-wrapper">
+					<li id="lecture"><a
+						href="${pageContext.request.contextPath}/lecture/study?page=1">
+							<i class="fa fa-calendar-o"></i> <span>수업정보</span>
+					</a></li>
+
+					<li id="teacher"><a
+						href="${pageContext.request.contextPath}/teacher/lecturer?page=1">
+							<i class="fa fa-id-card"></i> <span>강사정보</span>
+					</a></li>
+
+					<li id="consumer"><a
+						href="${pageContext.request.contextPath}/consumer/basic"> <i
+							class="fa fa-info-circle"></i> <span>고객센터</span>
+					</a></li>
+
+					<c:set var="power"
+						value='<%=(String) session.getAttribute("member")%>' />
+					<c:if test="${power eq '관리자' }">
+						<li id="member"><a
+							href="${pageContext.request.contextPath}/member/memberlist">
+								<i class="fa fa-address-book-o"></i> <span>회원리스트</span>
+						</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/teacher/applynot"> <i
+								class="fa fa-handshake-o"></i> <span>미승인 강사</span>
+						</a></li>
+					</c:if>
+				</ul>
+
+				<!-- 사이드바 메뉴 끝 -->
+
+
+			</section>
+		</aside>
+		<!-- 사이드바 끝 -->
+
+
+		<div class="content-wrapper">

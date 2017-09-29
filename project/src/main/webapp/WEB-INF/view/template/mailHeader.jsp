@@ -141,7 +141,24 @@
 			alert("메일이 보관함으로 이동되었습니다");
 		}
 		else alert("체크된 메일이 없습니다");
-    }﻿ 
+    }﻿
+    
+    function spam(nick){
+    	console.log(nick);
+    	$.ajax({
+			url:"spam",
+			type:"post",
+			data:{nick:nick},
+			dataType:"text",
+			success:function(){
+				alert(nick+"을(를) 차단하였습니다.");
+			},
+			error:function(data){
+				alert("이미 차단된 유저입니다.");
+			}
+		});
+    }
+    
 </script>
 
 <head>

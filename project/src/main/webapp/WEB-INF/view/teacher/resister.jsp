@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <div class="example-modal">
 	<div class="modal">
@@ -14,6 +14,7 @@
 				
 					<form action="resister" method="post" onsubmit="return resisterOK();" enctype="multipart/form-data" style="magin: 0px;">
 						<input type="hidden" name="teacherno" value="${teacherNo}">
+						<input type="hidden" name="teacher" value="${mynick}">
 						<label>[닉네임] ${mynick}</label>
 						<br><br>
 						<label>언어</label>

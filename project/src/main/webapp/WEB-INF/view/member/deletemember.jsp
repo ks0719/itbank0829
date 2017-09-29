@@ -9,12 +9,12 @@
 					<h4 class="modal-title">비밀번호 확인</h4>
 				</div>
 				<div class="modal-body">    
-<form action="logout" id="checkPw"method="post"  onsubmit="return pwCheck();">
-	<input class="form-control" type="password" name="pw"  id="pwcheck" placeholder="PW입력">
-	<br>
-	<input class="btn btn-primary pull-right" type="submit" value="확인">
-</form>
-</div>
+				<form action="logout" id="checkPw"method="post"  onsubmit="return pwCheck();">
+					<input class="form-control" type="password" name="pw"  id="pwcheck" placeholder="PW입력">
+					<br>
+					<input class="btn btn-primary pull-right" type="submit" value="확인">
+				</form>
+				</div>
 				<br>
 				<div class="modal-footer">
 				</div>
