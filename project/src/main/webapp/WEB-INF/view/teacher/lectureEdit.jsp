@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
-<%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <div class="example-modal">
 	<div class="modal">
@@ -68,11 +69,11 @@
 						<br><br>
 						<label>[강의소개]</label>
 						<br>
-						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 소개" name="career" style="font-size:15; color: black; resize: none;" rows="10" cols="70" readonly>${mylecture.intro}</textarea>
+						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 소개" name="career" style="font-size:15; color: black; resize: none;" rows="10" cols="70" required>${mylecture.intro}</textarea>
 						<br><br>
 						<label>[강의계획]</label>
 						<br>
-						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 계획" name="detail" style="font-size:15; color: black; resize: none;" rows="20" cols="70" readonly>${mylecture.detail}</textarea>
+						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 계획" name="detail" style="font-size:15; color: black; resize: none;" rows="20" cols="70" required>${mylecture.detail}</textarea>
 						<br><br>
 						
 						<input type="submit" class="btn btn-primary pull-right" value="수정하기">
@@ -87,4 +88,4 @@
 	</div>
 </div>
     
-<%@ include file="/WEB-INF/view/template/teacherFooter.jsp" %>
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>

@@ -101,7 +101,7 @@ $(document).ready(function(){
 					번호
 				</th>
 				<th class="title">
-					이름
+					닉네임
 				</th>
 				<th>
 					주언어

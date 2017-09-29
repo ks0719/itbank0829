@@ -52,10 +52,10 @@
 						<input type="text" class="form-control" name="price" id="price" placeholder="강의 가격" required>
 						<br>
 						<label>[강의소개]</label>
-						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 소개" name="intro" style="font-size:15; color: black; resize: none;" rows="10" required>${mylecture.intro}</textarea>
+						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 소개" name="intro" style="font-size:15; color: black; resize: none;" rows="10" required></textarea>
 						<br><br>
 						<label>[강의계획]</label>
-						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 계획" name="detail" style="font-size:15; color: black; resize: none;" rows="20" required>${mylecture.detail}</textarea>
+						<textarea class="needResize" onkeydown="resize(this)" onkeyup="resize(this)" placeholder="강의 계획" name="detail" style="font-size:15; color: black; resize: none;" rows="20" required></textarea>
 						<br><br>
 						<input type="submit" class="btn btn-primary pull-right" value="등록하기">
 					</form>

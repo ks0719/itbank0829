@@ -75,11 +75,17 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		jdbcTemplate.update(sql);
 		
 		//내 수강정보 삭제 처리
-		sql = "update mylecture set id='탈퇴member' where id=?";
+		sql = "update mylecture set id='탈퇴' member where id=?";
 		jdbcTemplate.update(sql, new Object[] {nick});
 		
 		sql="delete member where nick=?";
 		jdbcTemplate.update(sql, new Object[] {nick});
+	}
+	
+	public void serverdelete(String id) {
+		
+		String sql="delete member where id=?";
+		jdbcTemplate.update(sql, new Object[] {id});
 	}
 	
 	public String edit(Member mb,String nick) {
@@ -92,6 +98,7 @@ private Logger log=LoggerFactory.getLogger(getClass());
 		
 		return mb.getNick();
 	}
+	
 	
 	public Member select(String nick) {
 		String sql = "select * from member where nick=?";

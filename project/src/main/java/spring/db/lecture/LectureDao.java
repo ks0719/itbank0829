@@ -192,9 +192,11 @@ public class LectureDao {
 	}
 
 	public void video(int no, String title, String filename, String originalFilename, String contentType, long size) {
-		//VNO 필요
-		String sql = "insert into lecture_video values(?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, new Object[] {no, title, filename, originalFilename, contentType, size});
+		int count = videoCount(no) + 1;
+		
+		String sql = "insert into lecture_video values(?, ?, ?, ?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sql, no, title, filename, originalFilename, contentType, size, count);
 	}
 	
 	public List<LectureVideo> videoList(int no) {

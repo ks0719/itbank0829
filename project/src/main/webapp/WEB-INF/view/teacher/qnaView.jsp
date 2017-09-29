@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ include file="/WEB-INF/view/template/teacherHeader.jsp" %>
+<%@ include file="/WEB-INF/view/template/header.jsp" %>
 
 <div class="row borN">
 	<div class="col-xs-12">
@@ -61,4 +61,4 @@
 	<Button onclick="location.href='students${url}';">돌아가기</Button>
 </div>
 
-<%@ include file="/WEB-INF/view/template/teacherFooter.jsp" %>
+<%@ include file="/WEB-INF/view/template/footer.jsp" %>
