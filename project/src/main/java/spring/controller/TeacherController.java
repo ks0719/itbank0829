@@ -305,8 +305,6 @@ public class TeacherController {
 			String[] extension = f.getContentType().split("/");
 			String filename = no + "(" + count + ")." + extension[extension.length - 1];
 			
-			log.debug(no + ", " + filename + ", " + f.getOriginalFilename() + ", " + f.getContentType() + ", " + f.getSize());
-			
 			lectureDao.video(no, mRequest.getParameter("title") + count, filename, f.getOriginalFilename(), f.getContentType(), f.getSize());
 			
 			File target = new File(savePath, filename);
