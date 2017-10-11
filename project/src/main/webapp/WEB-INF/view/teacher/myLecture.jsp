@@ -71,7 +71,7 @@
 					</c:choose>
 					<c:choose>
 						<c:when test="${mylecture.type eq '원격강의'}">
-							<Button onclick="#">원격강의</Button>
+							<Button>원격강의</Button>
 						</c:when>
 					</c:choose>
 					<Button class="btn btn-default pull-right" onclick="location.href='myLectures?${url}';">목록으로</Button>
