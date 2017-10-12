@@ -665,7 +665,7 @@ $(document).ready(function(){
    		}
   		else{
   			$.ajax({
-  				url:"/project/member/login",
+  				url:"/teaching/member/login",
   				type:"post",
   				async: false,
 				data:({id:$("#loginid").val(), pw:$("#loginpw").val(),page:"${pageContext.request.requestURL}",param:"${param}"}),
@@ -706,14 +706,14 @@ $(document).ready(function(){
 		var mynick = "${cookie.mynick.value}";
 		
 		var error = $.ajax({
-			url:"/project/data/mail/newMail",
+			url:"/teaching/data/mail/newMail",
 			async: false,
 			type:"post",
 			data:({nick:mynick, isSpam:"false"}),
 			dataType:"text"
 		}).responseText;
 		
-		var newMail = error.substring(error.indexOf("/project/WEB-INF/view/")+"/project/WEB-INF/view/".length, error.indexOf(".jsp"))
+		var newMail = error.substring(error.indexOf("/teaching/WEB-INF/view/")+"/teaching/WEB-INF/view/".length, error.indexOf(".jsp"))
 		
 		if(newMail!=0){
 			$('#newMail').text(newMail);
@@ -721,7 +721,7 @@ $(document).ready(function(){
 		
 		
 		//현재 위치 계산
-		var location = window.location.pathname.replace('/project/','');
+		var location = window.location.pathname.replace('/teaching/','');
 		
 		if(location.indexOf('board')>=0){
 			$("#board").addClass('active');
@@ -887,7 +887,7 @@ function chat_on(){
 		$("#chat").css("display","");
 		image.src="${pageContext.request.contextPath }/img/chat_close.png";
 		$.ajax({
-			url:"/project/ChatHandler/myfriendlist",
+			url:"/teaching/ChatHandler/myfriendlist",
 			type:"post",
 			data:{mynick:"${mynick}"},
 			dataType: "json",
@@ -1164,7 +1164,7 @@ $(document).ready(function(){
 $(window).on("unload", finalize);
 
 function initialize(){
-	var websocketURI = "ws://localhost:8080/project/chat";
+	var websocketURI = "ws://localhost:8080/teaching/chat";
 	
 	//접속
 	window.websocket = new WebSocket(websocketURI);

@@ -29,7 +29,6 @@ import spring.db.member.MemberDao;
 
 @Controller
 public class MemberController {
-	private static final String serveraddr="http://localhost:8080/project/WEB-INF/view";
 	private Logger log=LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -111,7 +110,7 @@ public class MemberController {
 		String nick = null;
 		String power=null;
 		//log.debug("id="+id+",pw="+pw);
-		String url=request.getParameter("page");
+		String url=request.getHeader("referer");
 		//log.debug("url="+url);
 		String param = request.getParameter("param");
 		//log.debug("param="+param);
@@ -121,7 +120,7 @@ public class MemberController {
 		}
 //		log.debug(param);
 		
-		url=url.replaceAll(serveraddr, "").replaceAll(".jsp", "");
+		url=url.replaceAll(".jsp", "");
 		url += "?"+param;
 //		log.debug("url="+url);6
 		

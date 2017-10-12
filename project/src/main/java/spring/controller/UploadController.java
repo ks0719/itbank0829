@@ -1,10 +1,5 @@
 package spring.controller;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -13,7 +8,6 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -61,7 +55,8 @@ public class UploadController {
 	           // System.out.println("파일 기본경로 = "+defaultPath);
 	            //파일 기본경로 _ 상세경로
 	            //String path = "C:/Users/IT202-04/git/itbank0829/project/src/main/webapp/resource/photo_upload/";   
-	            String path = "D:/SW-1/5.Spring/sts-work/maven.1505120132372/project/src/main/webapp/resource/photo_upload/";   
+	            //String path = "D:/SW-1/5.Spring/sts-work/maven.1505120132372/project/src/main/webapp/resource/photo_upload/";
+	            String path=request.getServletContext().getRealPath("/resource/photo_upload/");
 	            File file = new File(path);
 	            //System.out.println("path:"+path);
 	            //디렉토리 존재하지 않을경우 디렉토리 생성
@@ -72,7 +67,7 @@ public class UploadController {
 	            String realname = UUID.randomUUID().toString() + "." + ext;
 	        ///////////////// 서버에 파일쓰기 ///////////////// 
 	            vo.getFiledata().transferTo(new File(path+realname));
-	            file_result += "&bNewLine=true&sFileName="+original_name+"&sFileURL=http://localhost:8080/project/resource/photo_upload/"+realname;
+	            file_result += "&bNewLine=true&sFileName="+original_name+"&sFileURL="+request.getServletContext().getContextPath()+"/resource/photo_upload"+realname;
 	           // System.out.println("file="+file_result);
 	        } else {
 	            file_result += "&errstr=error";
@@ -95,7 +90,7 @@ public class UploadController {
 		      String oldName = request.getHeader("file-name");
 		      // 파일 기본경로 _ 상세경로
 //		      String filePath = "C:/Users/IT202-04/git/itbank0829/project/src/main/webapp/resource/photo_upload/";
-		      String filePath = "D:/SW-1/5.Spring/sts-work/maven.1505120132372/project/src/main/webapp/resource/photo_upload/";   
+		      String filePath = request.getServletContext().getRealPath("/resource/photo_upload/");   
 		      String saveName = sb.append(new SimpleDateFormat("yyyyMMddHHmmss")
 		                          .format(System.currentTimeMillis()))
 		                          .append(UUID.randomUUID().toString())
@@ -113,28 +108,11 @@ public class UploadController {
 		      sb = new StringBuffer();
 		      sb.append("&bNewLine=true")
 		        .append("&sFileName=").append(oldName)
-		        .append("&sFileURL=").append("http://localhost:8080/project/resource/photo_upload/")
-		        .append(saveName);
+		        .append("&sFileURL=").append(request.getServletContext().getContextPath())
+		        .append("/resource/photo_upload/"+saveName);
 		    } catch (Exception e) {
 		      e.printStackTrace();
 		    }
 		    return sb.toString();
 		  }
-@RequestMapping("/capture")
-	public String capture(HttpServletRequest request) throws Exception {
-			String mynick=getNick(request);
-			Robot robot = new Robot();
-			//내 모니터 화면의 크기를 가져오는 방법
-			Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-			//모니터의 화면을 selectRect에 가로,세로 표현
-			Rectangle selectRect = new Rectangle((int)screen.getWidth(), (int)screen.getHeight());
-				BufferedImage buffimg = robot.createScreenCapture(selectRect);
-				File screenfile = new File(request.getServletContext().getRealPath("/resource/remote/"),mynick+"_screen.png");
-				ImageIO.write(buffimg, "png", screenfile);		
-
-	
-
-
-return "/capture";
-}
 }
