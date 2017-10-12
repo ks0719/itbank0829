@@ -317,6 +317,7 @@ public class TeacherController {
 			count++;
 		}
 		
+		//여기 페이지 전달 오류
 		return "teacher/myLectures?where=myLecture&page=1";
 	}
 	
